@@ -4,21 +4,40 @@ This implements a pipeline that analyses univariate tabular data.
 
 ## Input data
 
-The participants.tsv file from a specific open-access dataset from OpenNeuro. In principle the pipeline should also work with many other participants.tsv files from BIDS datasets.
+The input data is contained in the participants.tsv file from a specific [open-access dataset](https://doi.org/10.18112/openneuro.ds004148.v1.0.1). In principle the pipeline should also work with the participants.tsv file from many other BIDS datasets from OpenNeuro.
+
+    mkdir input
+    cd input/
+    wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
+    wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
+    wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_desctription.json
+    wget https://s3.amazonaws.com/openneuro.org/ds004148/README
+    wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
+    cd ..
 
 ## Output data
 
-A tsv-file containing the output of the computation, in this case the average age of the participants in the experiment.
+The output will consist of a tsv file with the average age of the participants.
 
-## Software prerequisites
+    mkdir -p output
+    date -Iseconds >> output/pipeline.log
 
-The R-software needs to be installed, specifically including the Rscript binary.
+### Software prerequisites
 
-R-package dependency: optparse needs to be installed, and on the R-package library path. This is because the pipeline code is a bit over-engineered for now, but this is on purpose. For now, I have installed the package (because it may not be present at default for a lean R install), and point to it in the below example, by specifying the R_LIBS_SITE variable.
+The R-software needs to be installed, specifically including the `Rscript` binary. The `optparse` package needs to be installed and on the path that is specified by `R_LIBS_SITE`. The `optparse` package is included in this pipeline as it may not be present in a clean R install. Alternatively the installation of the dependencies could be part of the code below.
 
-Deployment of the pipeline from the Linux command line is done using the following, assuming the working directory is at this level:
+## Running the pipeline
 
-    R_LIBS_SITE=./packages/
-    DATASET=./data/ds004148
-    OUTFILE=./result/ds004148_output.tsv
+Executing the pipeline from the Linux command-line is done using the following:
+
+    export R_LIBS_SITE=./packages/
+    DATASET=./input/participants.tsv
+    OUTFILE=./output/results.tsv
     Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
+
+## Cleaning up
+
+Cleaning up the input and output data is done using:
+
+    rm -rf input
+    rm -rf output
