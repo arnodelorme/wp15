@@ -8,9 +8,10 @@ a tsv-file containing the output of the computation, in this case the average ag
 
 Software prerequisites:
 the R-software needs to be installed, specifically including the Rscript binary.
-R-library dependency: optparse needs to be installed (it's a bit over-engineered for now, but this is on purpose).
+R-package dependency: optparse needs to be installed, and on the R-package library path. This is because the pipeline code is  a bit over-engineered for now, but this is on purpose. For now, I have installed the package (because it may not be present at default for a lean R install), and point to it in the below example, by specifying the R_LIBS_SITE variable.
 
-Deployment of the pipeline from the command line (if present working directory is at this level):
+Deployment of the pipeline from the Linux command line (if present working directory is at this level):
+R_LIBS_SITE=../Rpackages/
 DATASET=./data/ds004148
 OUTFILE=ds004148_output.tsv
 Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
