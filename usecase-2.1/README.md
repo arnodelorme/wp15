@@ -1,10 +1,10 @@
-# SIESTA WP15 use case 2.1
+# SIESTA - work package 15 - use case 2.1
 
 This implements a pipeline that analyses univariate tabular data.
 
 ## Input data
 
-The input data is contained in the participants.tsv file from a specific [open-access dataset](https://doi.org/10.18112/openneuro.ds004148.v1.0.1). In principle the pipeline should also work with the participants.tsv file from many other BIDS datasets from OpenNeuro.
+The input data is contained in the participants.tsv file from a specific open-access dataset [[1]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[2]].
 
     mkdir input
     cd input/
@@ -41,3 +41,8 @@ Cleaning up the input and output data is done using:
 
     rm -rf input
     rm -rf output
+
+## References
+
+[1]: https://doi.org/10.18112/openneuro.ds004148.v1.0.1
+[2]: https://openneuro.org
