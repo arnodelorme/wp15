@@ -10,7 +10,7 @@ The input data is contained in the participants.tsv file from a specific open-ac
     cd input/
     wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
     wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
-    wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_desctription.json
+    wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
     wget https://s3.amazonaws.com/openneuro.org/ds004148/README
     wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
     cd ..
