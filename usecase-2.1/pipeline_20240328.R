@@ -1,4 +1,15 @@
-#
+# This part of the script deals with possibly missing packages on-the-fly:
+# It downloads them and puts them in a tempdir + adds the tempdir to the 
+# path
+tdir <- tempdir()
+.libPaths(tdir)
+
+hasgetopt   <- c("getopt") %in% rownames(installed.packages())
+hasoptparse <- c("optparse") %in% rownames(installed.packages())
+if (hasgetopt==FALSE)   {install.packages("getopt",   lib=tdir, dependencies=FALSE, repos="https://cloud.r-project.org")}
+if (hasoptparse==FALSE) {install.packages("optparse", lib=tdir, dependencies=FALSE, repos="https://cloud.r-project.org")}
+
+# Load the required package for the option parsing
 library("optparse")
 
 option_list = list(
