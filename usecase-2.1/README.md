@@ -15,10 +15,6 @@ The input data is contained in the participants.tsv file from a specific open-ac
     wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
     cd ..
 
-## Creating pseudo input data
-
-_This is still to be implemented. It requires some BIDS-specific tooling to make the input dataset properly anonymous, possibly by replacing it with pseudodata. That allows the researcher to interact with the dataset and code to implement and test the pipeline. The pipeline should run on the pseudo data just as it runs on the real input data._
-
 ## Output data
 
 The output will consist of a tsv file with the average age of the participants.
