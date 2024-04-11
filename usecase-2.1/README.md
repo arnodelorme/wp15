@@ -24,13 +24,12 @@ The output will consist of a tsv file with the average age of the participants.
 
 ### Software prerequisites
 
-The R-software needs to be installed, specifically including the `Rscript` binary. The `optparse` package needs to be installed and on the path that is specified by `R_LIBS_SITE`. The `optparse` package is included in this pipeline as it may not be present in a clean R install. Alternatively the installation of the dependencies could be part of the code below.
+The R-software needs to be installed, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory.
 
 ## Running the pipeline
 
 Executing the pipeline from the Linux command-line is done using the following:
 
-    export R_LIBS_SITE=./packages/
     DATASET=./input/participants.tsv
     OUTFILE=./output/results.tsv
     Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
