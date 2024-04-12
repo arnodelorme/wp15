@@ -14,7 +14,9 @@ The input data is ...
 
 The output data will consist of ...
 
-    mkdir -p output
+```console
+mkdir -p output
+```
 
 ## Analysis pipeline
 
@@ -36,8 +38,10 @@ Executing the pipeline from the Linux command-line is done using the following:
 
 Cleaning up the input and output data is done using:
 
-    rm -rf input
-    rm -rf output
+```console
+rm -rf input
+rm -rf output
+```
 
 ## References
 
