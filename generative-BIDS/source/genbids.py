@@ -10,7 +10,7 @@ import pandas as pd
 import shutil
 from pathlib import Path
 
-def main(inputdir: str, outputdir: str, properties: dict, include: list[str]):
+def genbids(inputdir: str, outputdir: str, properties: dict, include: list[str]):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -45,9 +45,8 @@ def main(inputdir: str, outputdir: str, properties: dict, include: list[str]):
             if inputdata:
                 inputdata.to_csv(outputfile, sep='\t', encoding='utf-8', na_rep='n/a')
 
-
-# Shell usage
-if __name__ == "__main__":
+def main():
+    """Console script entry point"""
 
     # Parse the input arguments and run main(args)
     class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
@@ -64,4 +63,8 @@ if __name__ == "__main__":
     parser.add_argument('include',    help='The include pattern(s) that select the files in the BIDS input-directory that need to be generated in the output directory', default='*')
     args = parser.parse_args()
 
-    main(inputdir=args.inputdir, outputdir=args.outputdir, properties=args.properties, include=args.include)
+    genbids(inputdir=args.inputdir, outputdir=args.outputdir, properties=args.properties, include=args.include)
+
+
+if __name__ == "__main__":
+    main()
