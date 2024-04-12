@@ -62,7 +62,7 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            '  genbids.py bids pseudobids -c age sex height -i *.tsv *.json CHANGES README\n\n'
+                                            '  genbids bids pseudobids -c age sex height -i *.tsv *.json CHANGES README\n\n'
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
     parser.add_argument('inputdir',           help='The BIDS input-directory with the real data')
