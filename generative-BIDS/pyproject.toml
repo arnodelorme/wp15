@@ -3,7 +3,7 @@ requires         = ['setuptools >= 62.2.0', 'wheel', 'tomli >= 1.1.0 ; python_ve
 build-backend    = 'setuptools.build_meta'
 
 [project]
-name             = 'Generative BIDS'
+name             = 'Generative-BIDS'
 description      = 'Converts and organises raw MRI data-sets according to the Brain Imaging Data Structure (BIDS)'
 version          = '0.0.1'
 readme           = 'README.md'
@@ -14,8 +14,8 @@ classifiers      = ['Programming Language :: Python :: 3.8',
                     'Intended Audience :: Science/Research']
 dependencies     = ['pandas',
                     'numpy',
-                    'python-dateutil',
-                    'jsonschema']
+                    'scikit-learn',
+                    'python-dateutil']
 
 [project.urls]
 homepage         = 'https://github.com/SIESTA-eu/wp15'

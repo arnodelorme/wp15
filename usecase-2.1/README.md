@@ -2,6 +2,10 @@
 
 This implements a pipeline that analyses univariate tabular data.
 
+## Software installation
+
+The R-software needs to be installed, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory.
+
 ## Input data
 
 The input data is contained in the participants.tsv file from a specific open-access dataset [[1]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[2]].
@@ -22,10 +26,6 @@ The output will consist of a tsv file with the average age of the participants.
     mkdir -p output
     date -Iseconds >> output/pipeline.log
 
-### Software prerequisites
-
-The R-software needs to be installed, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory.
-
 ## Running the pipeline
 
 Executing the pipeline from the Linux command-line is done using the following:
@@ -40,6 +40,8 @@ Cleaning up the input and output data is done using:
 
     rm -rf input
     rm -rf output
+
+## Legal aspects
 
 ## References
 
