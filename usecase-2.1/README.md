@@ -32,7 +32,8 @@ cd ..
 A pseudo (randomized) version of the data can be generated using [genbids](https://github.com/SIESTA-eu/wp15/tree/main/generative-BIDS). See `genbids -h` for more information.
 
 ```console
-genbids input output -c age sex -i '*.tsv' '*.json' CHANGES README
+mkdir pseudo
+genbids input pseudo -c age sex -i '*.tsv' '*.json' CHANGES README
 ```
 
 ## Output data
@@ -45,10 +46,18 @@ mkdir -p output
 
 ## Executing the pipeline
 
-Executing the pipeline from the command-line terminal is done using:
+Executing the pipeline from the command-line terminal is done with the real input data like this
 
 ```console
 DATASET=./input/participants.tsv
+OUTFILE=./output/results.tsv
+Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
+```
+
+or with the the pseudo (randomized) version of the data like this
+
+```console
+DATASET=./pseudo/participants.tsv
 OUTFILE=./output/results.tsv
 Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
 ```
@@ -59,6 +68,7 @@ Cleaning up the input and output data can be done using:
 
 ```console
 rm -rf input
+rm -rf pseudo
 rm -rf output
 ```
 
