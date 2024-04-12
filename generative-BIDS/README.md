@@ -42,7 +42,7 @@ The output data will be saved in a user specified folder, which from now on is a
 
 ```console
 # Run genbids to create the pseudo BIDS output data (see `genbids -h` for more information)
-genbids input output -p age sex -i '*.tsv' '*.json' CHANGES README
+genbids input output -c age sex -i '*.tsv' '*.json' CHANGES README
 ```
 
 ## Cleaning up

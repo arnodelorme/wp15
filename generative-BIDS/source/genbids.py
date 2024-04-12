@@ -62,12 +62,12 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            '  genbids.py bids pseudobids -p age sex height -i *.tsv *.json CHANGES README\n\n'
+                                            '  genbids.py bids pseudobids -c age sex height -i *.tsv *.json CHANGES README\n\n'
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
     parser.add_argument('inputdir',           help='The BIDS input-directory with the real data')
     parser.add_argument('outputdir',          help='The BIDS output-directory with generated pseudo data')
-    parser.add_argument('-p', '--covariance', help='A list of variable names between which the covariance structure is preserved when generating the pseudo data', nargs='+')
+    parser.add_argument('-c', '--covariance', help='A list of variable names between which the covariance structure is preserved when generating the pseudo data', nargs='+')
     parser.add_argument('-i', '--include',    help='A list of include pattern(s) that select the files in the BIDS input-directory that are produced in the output directory', nargs='+', default=['*'])
     args = parser.parse_args()
 
