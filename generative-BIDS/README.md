@@ -23,5 +23,5 @@ Then install the generative BIDS tools.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
-pip install wp15/generative-BIDS
+venv/bin/pip install wp15/generative-BIDS
 ```
