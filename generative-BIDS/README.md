@@ -19,21 +19,39 @@ source venv/bin/activate
 
 # Then install the generative BIDS tools
 git clone https://github.com/SIESTA-eu/wp15.git
-cd wp15/generative-BIDS
-pip install .
+pip install wp15/generative-BIDS
 ```
+
+### Legal aspects
 
 ## Input data
 
 ### Use case 2.1
 
-As a proof of principle, a simple BIDS generator is created that takes [use case 2.1](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.1/README.md) as input data and exports a pseudo BIDS dataset to a different (possibly demilitarized) location.
+As a proof of principle, a simple BIDS generator is created that takes [use case 2.1](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.1/README.md) as input data and exports a pseudo BIDS dataset to a different (possibly demilitarized) location. For the following steps it is assumed that the use case 2.1 input data are present in a folder named ``input``
 
 ## Output data
 
+The output data will be saved in a user specified folder, which from now on is assumed to be named ``output``
+
+### Legal aspects
+
 ## Running the pipeline
 
+### Use case 2.1
+
+```console
+genbids input output  
+```
+
 ## Cleaning up
+
+Cleaning up the input and output data can be done using:
+
+```console
+rm -rf input
+rm -rf output
+```
 
 ## Legal aspects
 

@@ -61,7 +61,7 @@ if __name__ == "__main__":
     parser.add_argument('inputdir',   help='The BIDS input-directory with the real data')
     parser.add_argument('outputdir',  help='The BIDS output-directory with generated pseudo data')
     parser.add_argument('properties', help='The json file with the properties that need to be preserved in the generated pseudo data')
-    parser.add_argument('include',    help='The include pattern(s) that select the files in the BIDS input-directory that need to be generated in the output directory', nargs='+', default='*')
+    parser.add_argument('include',    help='The include pattern(s) that select the files in the BIDS input-directory that need to be generated in the output directory', default='*')
     args = parser.parse_args()
 
     main(inputdir=args.inputdir, outputdir=args.outputdir, properties=args.properties, include=args.include)

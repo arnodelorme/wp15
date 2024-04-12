@@ -2,20 +2,28 @@
 
 This implements a pipeline that analyses univariate tabular data. Specifically, it computes the mean age over a group of participants.
 
+## Software installation
+
+The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory.
+
+### Legal aspects
+
 ## Input data
 
 The input data is formatted as BIDS and contained in the participants.tsv file from a specific open-access dataset [[1]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[2]].
 
-    mkdir input
-    cd input/
-    wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
-    wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
-    wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
-    wget https://s3.amazonaws.com/openneuro.org/ds004148/README
-    wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
-    cd ..
+```console
+mkdir input
+cd input
+wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
+wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
+wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
+wget https://s3.amazonaws.com/openneuro.org/ds004148/README
+wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
+cd ..
+```
 
-### Legal aspects of the input data
+### Legal aspects
 
 ...
 
@@ -23,32 +31,28 @@ The input data is formatted as BIDS and contained in the participants.tsv file f
 
 The output data will consist of a tsv file with the average age of the participants.
 
-    mkdir -p output
+```console
+mkdir -p output
+```
 
-## Analysis pipeline
+## Executing the pipeline
 
-### Software requirements
+Executing the pipeline from the command-line terminal is done using:
 
-The R-software needs to be installed, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory.
+```console
+DATASET=./input/participants.tsv
+OUTFILE=./output/results.tsv
+Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
+```
 
-### Legal aspects of the required software
+## Cleaning up
 
-...
+Cleaning up the input and output data can be done using:
 
-### Executing the pipeline
-
-Executing the pipeline from the Linux command-line is done using the following:
-
-    DATASET=./input/participants.tsv
-    OUTFILE=./output/results.tsv
-    Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
-
-### Cleaning up
-
-Cleaning up the input and output data is done using:
-
-    rm -rf input
-    rm -rf output
+```console
+rm -rf input
+rm -rf output
+```
 
 ## References
 
