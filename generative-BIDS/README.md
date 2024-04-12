@@ -10,18 +10,20 @@ It requires some BIDS-specific tooling to make the input dataset properly anonym
 
 ## Software installation
 
-The generative BIDS software runs on multiple platforms (e.g. Linux, MacOS, Windows) that have a git and Python 3 installation. The tools and their depende can (should) be installed using (or equivalent):
+The generative BIDS software runs on multiple platforms (e.g. Linux, MacOS, Windows) that have a Python 3 installation.
 
-It is adviced (but not required) to first create a virtual environment.
+It is recommended (but not required) to first create a virtual environment.
 
 ```console
 python -m venv venv
 source venv/bin/activate
 ```
 
-Then install the generative BIDS tools.
+You can then install the generative BIDS tools using git and pip.
 
 ```console
-git clone https://github.com/SIESTA-eu/wp15.git
-pip install wp15/generative-BIDS
+git clone https://github.com/SIESTA-eu/wp15.git     # Or download the code yourself 
+pip install wp15/generative-BIDS                    # Or use an alternative installer
 ```
+
+## Legal Aspects
