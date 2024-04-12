@@ -27,6 +27,14 @@ cd ..
 
 ...
 
+## Pseudo data
+
+A pseudo (randomized) version of the data can be generated using [genbids](https://github.com/SIESTA-eu/wp15/tree/main/generative-BIDS). See `genbids -h` for more information.
+
+```console
+genbids input output -c age sex -i '*.tsv' '*.json' CHANGES README
+```
+
 ## Output data
 
 The output data will consist of a tsv file with the average age of the participants.
