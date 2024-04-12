@@ -36,12 +36,13 @@ The output data will be saved in a user specified folder, which from now on is a
 
 ### Legal aspects
 
-## Running the pipeline
+## Executing the pipeline
 
 ### Use case 2.1
 
 ```console
-genbids input output  
+# Run genbids to create the pseudo BIDS output data (see `genbids -h` for more information)
+genbids input output -p age sex -i '*.tsv' '*.json' CHANGES README
 ```
 
 ## Cleaning up
