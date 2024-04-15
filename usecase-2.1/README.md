@@ -8,6 +8,8 @@ The R-software can be installed on a Linux, MacOS or Windows computer, specifica
 
 ### Legal aspects
 
+The R-package and the optparse package are licensed under GPL-2 | GPL-3. 
+
 ## Input data
 
 The input data is formatted as BIDS and contained in the participants.tsv file from a specific open-access dataset [[1]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[2]].
