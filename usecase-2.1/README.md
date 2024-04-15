@@ -12,7 +12,7 @@ The R-package and the optparse package are licensed under GPL-2 | GPL-3.
 
 ## Input data
 
-The input data is formatted as BIDS and contained in the participants.tsv file from a specific open-access dataset [[1]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[2]].
+The input data is formatted as BIDS and contained in the participants.tsv file from a specific open-access dataset [[1]], which is described in more detail in an accompanying paper [[2]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[3]]. The data contains biometric information, i.e. indirect personal identifiers (age and height).
 
 ```console
 mkdir input
@@ -77,4 +77,5 @@ rm -rf output
 ## References
 
 [1]: https://doi.org/10.18112/openneuro.ds004148.v1.0.1
-[2]: https://openneuro.org
+[2]: https://doi.org/10.1038/s41597-022-01607-9
+[3]: https://openneuro.org
