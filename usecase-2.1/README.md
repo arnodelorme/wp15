@@ -27,7 +27,7 @@ cd ..
 
 ### Legal aspects
 
-...
+The input dataset has been released under the CC0 license.
 
 ## Pseudo data
 
