@@ -31,7 +31,7 @@ pip install wp15/generative-BIDS                    # Or use an alternative inst
 Currently there exist only a single tool named 'genbids'. Run ``genbids -h`` to see more information on the input arguments and output produced by this tool.
 
 ```console
-usage: genbids [-h] [-p COVARIANCE [COVARIANCE ...]] [-i INCLUDE [INCLUDE ...]] inputdir outputdir
+usage: genbids [-h] [-c COVARIANCE [COVARIANCE ...]] [-i INCLUDE [INCLUDE ...]] inputdir outputdir
 
 positional arguments:
   inputdir              The BIDS input-directory with the real data
@@ -39,15 +39,16 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -p COVARIANCE [COVARIANCE ...], --covariance COVARIANCE [COVARIANCE ...]
-                        A list of variable names between which the covariance structure is preserved when generating the pseudo data
-                        (default: None)
+  -c COVARIANCE [COVARIANCE ...], --covariance COVARIANCE [COVARIANCE ...]
+                        A list of variable names between which the covariance structure is
+                        preserved when generating the pseudo data (default: None)
   -i INCLUDE [INCLUDE ...], --include INCLUDE [INCLUDE ...]
-                        A list of include pattern(s) that select the files in the BIDS input-directory that are produced in the output
-                        directory (default: ['*'])
+                        A list of include pattern(s) that select the files in the BIDS
+                        input-directory that are produced in the output directory
+                        (default: ['*'])
 
 examples:
-  genbids bids pseudobids -p age sex height -i *.tsv *.json CHANGES README
+  genbids bids pseudobids -c age sex height -i *.tsv *.json CHANGES README
 
 author:
   Marcel Zwiers

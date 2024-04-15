@@ -15,8 +15,8 @@ from pathlib import Path
 def genbids(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
 
     # Defaults
-    inputdir   = Path(inputdir).resolve()
-    outputdir  = Path(outputdir).resolve()
+    inputdir  = Path(inputdir).resolve()
+    outputdir = Path(outputdir).resolve()
     outputdir.mkdir(parents=True, exist_ok=True)
 
     # Create pseudo-random out data for all files of each included data type
