@@ -16,10 +16,6 @@ Those data are openly (CCBY4.0) and freely available.
 
 The output data will consist of ...
 
-```console
-mkdir -p output
-```
-
 ## Analysis pipeline
 
 ### Software requirements
