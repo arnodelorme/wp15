@@ -22,7 +22,7 @@ mkdir -p output
 
 ### Software requirements
 
-[Matlab]() with the [EGGLAB]() external toolbox and the [LIMO MEEG] plugin. 
+[Matlab]() with the [EGGLAB]() external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. 
 *Installation*:
 EEGLAB
 
