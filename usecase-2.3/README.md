@@ -26,7 +26,8 @@ mkdir -p output
 
 [Matlab]() with the [EGGLAB]() external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-*Installation*:  
+*Installation*:  EEGLAB mus be added to the path, this can be done in the matlab command line as ``addpath(genpath(EEGLAB_folder))`` with `EEGLAB_folder` the actual path. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as shown below.  
+  
 EEGLAB  
 ├── Contents.m  
 ├── eeglablicense.txt  
