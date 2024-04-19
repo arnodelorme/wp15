@@ -6,7 +6,7 @@ There are two versions: 2.3.A. and 2.3.B. Version 2.3.A is fully automated, test
 
 ## Input data
 
-The input data is obtained manually by downloading the [ERPCore BIDS dataset](https://osf.io/9f5w7/).
+The input data is obtained manually by downloading the [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage).
 
 ### Legal aspects of the input data
 
