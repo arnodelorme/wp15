@@ -47,21 +47,26 @@ EEGLAB
 
 ### Executing the pipeline
 
-Executing the pipeline from the Linux command line: matlab -nojvm -nodisplay -nosplash -r "ERP_Core_WB('source','destination');exit"  
-Executing the pipeline from the matlab command line: ERP_Core_WB(source,destination)  
-source: path to the BIDS dataset  
-destination: path to the output folder  
+Executing the pipeline from the Linux command line: 
+```console
+matlab -nojvm -nodisplay -nosplash -r "ERP_Core_WB('source','destination');exit"
+```
+Executing the pipeline from the matlab command window: 
+```matlab
+ERP_Core_WB(source,destination)
+```
+`source` is the path to the BIDS dataset  
+`destination` is the path to the output folder  
 
-*Note*: to execute from thr Linux terminal , the matlab function must be in the path or the terminal is the folder where the ERP_Core_WB.m function is located.
-    ...
+*Note*: to execute from the Linux terminal, the matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
 
 ### Cleaning up
 
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input
-rm -rf output
+rm -rf source
+rm -rf destination
 ```
 
 ## References
