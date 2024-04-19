@@ -25,10 +25,21 @@ mkdir -p output
 ### Software requirements
 
 [Matlab]() with the [EGGLAB]() external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
+  
 *Installation*:  
-EEGLAB
-
-
+EEGLAB  
+├── Contents.m  
+├── eeglablicense.txt  
+├── eeglab.m  
+├── eeglab.prj  
+├── functions  
+├── plugins  
+&nbsp; &nbsp; &nbsp; &nbsp; ├── limo_master  
+├── README.md  
+├── sample_data  
+├── sample_locs  
+└── tutorial_scripts  
+  
 ### Legal aspects of the required software
 
 ...
