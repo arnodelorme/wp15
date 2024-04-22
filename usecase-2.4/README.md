@@ -2,7 +2,7 @@
 
 This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data.  The data are simple enough, allow automated data processing, and follow BIDS.
 
-There are two versions: ``2.4.A`` and ``2.4.B``. Version ``2.4.A`` is fully automated, testing whether this can be run on anonymized data. Version ``2.4.B`` requires user interaction at the input level, minimizing what information is given to users given a research question at the output level.
+There are two versions: `2.4.A` and `2.4.B`. Version `2.4.A` is fully automated, testing whether this can be run on anonymized data. Version `2.4.B` requires user interaction at the input level, minimizing what information is given to users given a research question at the output level.
 
 ## Input data
 
@@ -13,7 +13,14 @@ The BIDS input data is a freely available online resource named ERP CORE (https:
 3. The task stimuli used for eliciting N170, MMN, and N400, located in the stimuli folder
 4. Demographic information for all 40 participants ("participants.tsv &.json")
 
-The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage).
+The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage) or by installing and running the [OSF-client](https://github.com/osfclient/osfclient) (which downloads the data an order of magnitude faster).
+
+```console
+python -m venv venv
+source venv/bin/activate
+pip install osfclient
+osf -p 9f5w7 clone siesta_wp15
+```
 
 ### Legal aspects of the input data
 
@@ -29,7 +36,7 @@ The output data will consist of ...
 
 [Matlab](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-**Installation**:  EEGLAB mus be added to the path, this can be done in the matlab command line with ``pathtool`` or with ``addpath(genpath(path_to_EEGLAB_folder))``. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as illustrated below.
+**Installation**:  EEGLAB mus be added to the path, this can be done in the matlab command line with `pathtool` or with `addpath(genpath(path_to_EEGLAB_folder))`. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as illustrated below.
 
 EEGLAB  
 ├── Contents.m  
