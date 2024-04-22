@@ -54,7 +54,7 @@ ERP_Core_WB(source,destination)
 `source` is the path to the BIDS dataset  
 `destination` is the path to the output folder  
 
-*Note*: to execute from the Linux terminal, the matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
+> **Note**: to execute from the Linux terminal, the matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
 
 ### Cleaning up
 
