@@ -19,7 +19,7 @@ The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/file
 python -m venv venv
 source venv/bin/activate
 pip install osfclient
-osf -p 9f5w7 clone siesta_wp15
+osf -p 9f5w7 clone use_case_2.4.A
 ```
 
 ### Legal aspects of the input data
