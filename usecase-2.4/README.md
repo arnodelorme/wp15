@@ -10,7 +10,7 @@ The input data is obtained manually by downloading the [ERPCore BIDS dataset](ht
 
 ### Legal aspects of the input data
 
-Those data are openly (CCBY4.0) and freely available.
+Those data are openly ([CC-BY-4.0](https://spdx.org/licenses/CC-BY-4.0.html)) and freely available.
 
 ## Output data
 
