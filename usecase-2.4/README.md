@@ -20,10 +20,10 @@ The output data will consist of ...
 
 ### Software requirements
 
-[Matlab]() with the [EGGLAB]() external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
+[Matlab](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-*Installation*:  EEGLAB mus be added to the path, this can be done in the matlab command line as ``addpath(genpath(EEGLAB_folder))`` with `EEGLAB_folder` the actual path. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as shown below.  
-  
+**Installation**:  EEGLAB mus be added to the path, this can be done in the matlab command line as ``addpath(genpath(EEGLAB_folder))`` with `EEGLAB_folder` the actual path. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as illustrated below.
+
 EEGLAB  
 ├── Contents.m  
 ├── eeglablicense.txt  
@@ -35,7 +35,7 @@ EEGLAB
 ├── README.md  
 ├── sample_data  
 ├── sample_locs  
-└── tutorial_scripts  
+└── tutorial_scripts
   
 ### Legal aspects of the required software
 
@@ -44,15 +44,18 @@ EEGLAB
 ### Executing the pipeline
 
 Executing the pipeline from the Linux command line: 
+
 ```console
-matlab -nojvm -nodisplay -nosplash -r "ERP_Core_WB('source','destination');exit"
+matlab -nojvm -nodisplay -nosplash -r "ERP_Core_WB('source', 'destination'); exit"
 ```
+
 Executing the pipeline from the matlab command window: 
+
 ```matlab
-ERP_Core_WB(source,destination)
+ERP_Core_WB(source, destination)
 ```
-`source` is the path to the BIDS dataset  
-`destination` is the path to the output folder  
+
+Where `source` is the path to the BIDS dataset and `destination` is the path to the output folder
 
 > **Note**: to execute from the Linux terminal, the matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
 
