@@ -1,4 +1,4 @@
-# SIESTA - work package 15 - use case 2.4
+# SIESTA - work package 15 - use case 2.3
 
 This implements ...
 

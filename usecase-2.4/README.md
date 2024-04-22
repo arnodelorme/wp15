@@ -1,8 +1,8 @@
-# SIESTA - work package 15 - use case 2.3
+# SIESTA - work package 15 - use case 2.4
 
 This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data.  The data are simple enough, allow automated data processing, and follow BIDS.
 
-There are two versions: 2.3.A. and 2.3.B. Version 2.3.A is fully automated, testing whether this can be run on anonymized data. Version 2.3.B requires user interaction at the input level, minimizing what information is given to users given a research question at the output level.
+There are two versions: 2.4.A. and 2.4.B. Version 2.4.A is fully automated, testing whether this can be run on anonymized data. Version 2.4.B requires user interaction at the input level, minimizing what information is given to users given a research question at the output level.
 
 ## Input data
 
@@ -31,7 +31,7 @@ EEGLAB
 ├── eeglab.prj  
 ├── functions  
 ├── plugins  
-&nbsp; &nbsp; &nbsp; &nbsp; ├── limo_master  
+│ &nbsp; &nbsp; &nbsp; └── limo_master  
 ├── README.md  
 ├── sample_data  
 ├── sample_locs  
