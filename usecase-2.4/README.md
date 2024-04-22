@@ -13,7 +13,7 @@ The BIDS input data is a freely available online resource named ERP CORE (https:
 3. The task stimuli used for eliciting N170, MMN, and N400, located in the stimuli folder
 4. Demographic information for all 40 participants ("participants.tsv &.json")
 
-The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage) or by installing and running the [OSF-client](https://github.com/osfclient/osfclient) (which downloads the data an order of magnitude faster).
+The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage) or by installing and running the [OSF-client](https://github.com/osfclient/osfclient) (which downloads the data an order of magnitude faster):
 
 ```console
 python -m venv venv
