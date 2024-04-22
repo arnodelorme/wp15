@@ -6,7 +6,14 @@ There are two versions: ``2.4.A`` and ``2.4.B``. Version ``2.4.A`` is fully auto
 
 ## Input data
 
-The input data is obtained manually by downloading the [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage).
+The BIDS input data is a freely available online resource named ERP CORE (https://doi.org/10.18115/D5JW4R), consisting of optimized paradigms, experiment control scripts, example data from 40 neurotypical adults, data processing pipelines and analysis scripts, and a broad set of results for 7 widely used ERP components: N170, mismatch negativity (MMN), N2pc, N400, P3, lateralized readiness potential (LRP), and error-related negativity (ERN). Included in this dataset are:
+
+1. Raw data files for all 7 ERP components from 40 participants, located in subject folders 001-040
+2. The event code schemes for all experiment paradigms
+3. The task stimuli used for eliciting N170, MMN, and N400, located in the stimuli folder
+4. Demographic information for all 40 participants ("participants.tsv &.json")
+
+The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage).
 
 ### Legal aspects of the input data
 
@@ -22,7 +29,7 @@ The output data will consist of ...
 
 [Matlab](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-**Installation**:  EEGLAB mus be added to the path, this can be done in the matlab command line as ``addpath(genpath(EEGLAB_folder))`` with `EEGLAB_folder` the actual path. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as illustrated below.
+**Installation**:  EEGLAB mus be added to the path, this can be done in the matlab command line with ``pathtool`` or with ``addpath(genpath(path_to_EEGLAB_folder))``. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as illustrated below.
 
 EEGLAB  
 ├── Contents.m  
@@ -31,12 +38,12 @@ EEGLAB
 ├── eeglab.prj  
 ├── functions  
 ├── plugins  
-│ &nbsp; &nbsp; &nbsp; └── limo_master  
+│ &nbsp; &nbsp; &nbsp; └── limo_tools   
 ├── README.md  
 ├── sample_data  
 ├── sample_locs  
 └── tutorial_scripts
-  
+
 ### Legal aspects of the required software
 
 ...
