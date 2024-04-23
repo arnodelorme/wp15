@@ -53,7 +53,7 @@ rm -rf eeglab_current.zip wp15
 You should now have something like:
 
     ERP_Core_WB.m  
-    ERP_CORE_BIDS_Raw_Files/
+    ERP_CORE_BIDS_Raw_Files
     ├── CHANGES
     ├── LICENSE
     ├── [..]
