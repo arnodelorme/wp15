@@ -54,26 +54,21 @@ You should now have something like:
 
     ERP_Core_WB.m  
     ERP_CORE_BIDS_Raw_Files/
-    |-- CHANGES
-    |-- LICENSE
-    |-- README
-    |-- [..]
-    |-- sub-001
-    |-- sub-002
-    |-- sub-003
-    `-- [..]
+    ├── CHANGES
+    ├── LICENSE
+    ├── [..]
+    ├── sub-001
+    ├── sub-002
+    ├── sub-003
+    └── [..]
     eeglab2024.0  
     ├── [..]  
-    ├── eeglablicense.txt  
     ├── eeglab.m  
     ├── eeglab.prj  
     ├── functions  
     ├── plugins  
     │   └── limo_tools  
-    ├── README.md  
-    ├── sample_data  
-    ├── sample_locs  
-    └── tutorial_scripts
+    └── [..]
 
 ### Legal aspects of the required software
 
