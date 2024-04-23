@@ -61,7 +61,7 @@ You should now have something like:
     ├── eeglab.prj  
     ├── functions  
     ├── plugins  
-    │ &nbsp; &nbsp; &nbsp; └── limo_tools   
+    │   └── limo_tools  
     ├── README.md  
     ├── sample_data  
     ├── sample_locs  
@@ -86,9 +86,9 @@ addpath('eeglab2024.0')
 ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A')
 ```
 
-Where `source` is the path to the BIDS dataset and `destination` is the path to the output folder
+Where `ERP_CORE_BIDS_Raw_Files` is the input folder and `ERP_CORE_usecase_2.4.A` the output folder
 
-> **Note**: to execute from the Linux terminal, the matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
+> **Note**: The matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
 
 ### Cleaning up
 
