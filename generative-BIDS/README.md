@@ -19,7 +19,7 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-You can then install the generative BIDS tools using git and pip.
+You can then install the generative BIDS tools using git (with authentication for wp15) and pip.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git     # Or download the code yourself 

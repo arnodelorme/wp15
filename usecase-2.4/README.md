@@ -19,7 +19,9 @@ The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/file
 python -m venv venv
 source venv/bin/activate
 pip install osfclient
-osf -p 9f5w7 clone use_case_2.4.A
+osf -p 9f5w7 clone usecase_2.4.A
+mv usecase_2.4.A/osfstorage/ERP_CORE_BIDS_Raw_Files .
+rm -rf usecase_2.4.A venv
 ```
 
 ### Legal aspects of the input data
@@ -34,22 +36,36 @@ The output data will consist of ...
 
 ### Software requirements
 
-[Matlab](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
+The Github WP15 repository, [Matlab](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-**Installation**:  EEGLAB mus be added to the path, this can be done in the matlab command line with `pathtool` or with `addpath(genpath(path_to_EEGLAB_folder))`. Similarly, LIMO tools must be placed inside the EEGLAB plugin folder as illustrated below.
+**Installation**: Download the usecase-2.4.A script, EEGLAB and the LIMO tools. The latter must be placed inside the EEGLAB plugin folder as shown below.
 
-EEGLAB  
-├── Contents.m  
-├── eeglablicense.txt  
-├── eeglab.m  
-├── eeglab.prj  
-├── functions  
-├── plugins  
-│ &nbsp; &nbsp; &nbsp; └── limo_tools   
-├── README.md  
-├── sample_data  
-├── sample_locs  
-└── tutorial_scripts
+```console
+wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
+unzip eeglab_current.zip
+git clone https://github.com/LIMO-EEG-Toolbox/limo_tools.git
+mv limo_tools eeglab2024.0/plugins/
+git clone https://github.com/SIESTA-eu/wp15.git
+mv wp15/usecase-2.4/2.4.A/ERP_Core_WB.m .
+rm -rf eeglab_current.zip wp15  
+```
+
+You should now have something like:
+
+    ERP_CORE_BIDS_Raw_Files  
+    ERP_Core_WB.m  
+    eeglab2024.0  
+    ├── [..]  
+    ├── eeglablicense.txt  
+    ├── eeglab.m  
+    ├── eeglab.prj  
+    ├── functions  
+    ├── plugins  
+    │ &nbsp; &nbsp; &nbsp; └── limo_tools   
+    ├── README.md  
+    ├── sample_data  
+    ├── sample_locs  
+    └── tutorial_scripts
 
 ### Legal aspects of the required software
 
@@ -57,16 +73,17 @@ EEGLAB
 
 ### Executing the pipeline
 
-Executing the pipeline from the Linux command line: 
+Executing the pipeline from the Linux command line:
 
 ```console
-matlab -nojvm -nodisplay -nosplash -r "ERP_Core_WB('source', 'destination'); exit"
+matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0'); ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A'); exit"
 ```
 
 Executing the pipeline from the matlab command window: 
 
 ```matlab
-ERP_Core_WB(source, destination)
+addpath('eeglab2024.0')
+ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A')
 ```
 
 Where `source` is the path to the BIDS dataset and `destination` is the path to the output folder
@@ -78,8 +95,7 @@ Where `source` is the path to the BIDS dataset and `destination` is the path to 
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf source
-rm -rf destination
+rm -rf ERP_CORE_BIDS_Raw_Files ERP_CORE_usecase_2.4.A eeglab2024.0 ERP_Core_WB.m
 ```
 
 ## References

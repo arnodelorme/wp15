@@ -69,9 +69,7 @@ Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
 Cleaning up the input and output data can be done using:
 
 ```console
-rm -rf input
-rm -rf pseudo
-rm -rf output
+rm -rf input pseudo output
 ```
 
 ## References
