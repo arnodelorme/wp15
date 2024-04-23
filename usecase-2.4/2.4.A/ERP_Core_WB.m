@@ -1,9 +1,9 @@
-function ERP_Core_WB(source,destination)
+function ERP_Core_WB(source, destination)
 % ERP Core - whole brain analysis
 % Matlab function calling the EEGLAB toolbox and LIMO MEEG (master from
 % Github)
 % 
-% FORMAT ERP_Core_WB(source,destination)
+% FORMAT ERP_Core_WB(source, destination)
 % INPUTS             source is the folder where the ERPCore data are located
 %                    destination is the folder where all results are saved
 % OUTPUT the function does not return any variable, all results are saved
@@ -12,15 +12,9 @@ function ERP_Core_WB(source,destination)
 % Cyril Pernet, during the winter of 2024
 
 % start eeglab and check plug-ins
-close all;
-clear variables;
 rng('default');
 
-% variables
-% source       = '/indirect/bidsdata/external_data/ERP_Core/';
-% destination  = '/indirect/staff/cyrilpernet/ERP_core/data';
-
-[ALLEEG, EEG, CURRENTSET, ALLCOM] = eeglab;
+[ALLEEG, EEG, CURRENTSET, ALLCOM] = eeglab('nogui');
 if ~exist('pop_importbids','file')
     plugin_askinstall('bids-matlab-tools',[],1);
 end
@@ -427,8 +421,8 @@ for t = 1:length(task)
        mkdir(fullfile(foldername,'Ipsi-Contra'));
        cd(fullfile(foldername,'Ipsi-Contra'));
        labels = arrayfun(@(x) x.labels, AvgChanlocs.expected_chanlocs, 'UniformOutput', false);
-       table{1} = labels(1:12)'; table{2} = labels([16 18 19 20 23:30])';
-       channels = limo_pair_channels(AvgChanlocs.expected_chanlocs,'pairs',table,'figure','off');
+       table_channels{1} = labels(1:12)'; table_channels{2} = labels([16 18 19 20 23:30])';
+       channels = limo_pair_channels(AvgChanlocs.expected_chanlocs,'pairs',table_channels,'figure','off');
        limo_ipsi_contra(fullfile(foldername,'con1_files.txt'),...
            fullfile(foldername,'con2_files.txt'),...
            'channellocs',AvgChanlocs,'channelpairs',channels)
