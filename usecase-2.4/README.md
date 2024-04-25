@@ -85,7 +85,7 @@ You should now have something like:
 Executing the pipeline from the Linux command line:
 
 ```console
-matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0'); ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A'); exit"
+matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0','fieldtrip'); ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A'); exit"
 ```
 
 Executing the pipeline from the matlab command window: 
