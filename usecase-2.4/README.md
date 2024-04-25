@@ -92,10 +92,10 @@ Executing the pipeline from the matlab command window:
 
 ```matlab
 addpath('eeglab2024.0', 'fieldtrip')
-ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A')
+ERP_Core_WB(fullfile(pwd, 'ERP_CORE_BIDS_Raw_Files'), fullfile(pwd, 'ERP_CORE_usecase_2.4.A'))
 ```
 
-Where `ERP_CORE_BIDS_Raw_Files` is the input folder and `ERP_CORE_usecase_2.4.A` the output folder
+Where `ERP_CORE_BIDS_Raw_Files` is the input folder and `ERP_CORE_usecase_2.4.A` the output folder. The absolute paths need to be provided for the pipeline to run smoothly.
 
 > **Note**: The matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
 
