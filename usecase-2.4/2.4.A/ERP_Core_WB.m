@@ -1,15 +1,23 @@
-function ERP_Core_WB(source, destination)
+function ERP_Core_WB(source, destination, sublist)
 % ERP Core - whole brain analysis
 % Matlab function calling the EEGLAB toolbox and LIMO MEEG (master from
 % Github)
 % 
-% FORMAT ERP_Core_WB(source, destination)
+% FORMAT ERP_Core_WB(source, destination, [sublist])
 % INPUTS             source is the folder where the ERPCore data are located
 %                    destination is the folder where all results are saved
+%                    sublist is a cell-array with subject identifiers
+%                      to run for a subset of subjects only
+%                      for debugging purposes
 % OUTPUT the function does not return any variable, all results are saved
 %        on drive
 % 
-% Cyril Pernet, during the winter of 2024
+% Cyril Pernet, during the winter of 2024 + various updates by Marcel and
+% Jan-Mathijs
+
+if nargin<3
+  sublist = {};
+end
 
 % start eeglab and check plug-ins
 rng('default');
@@ -31,6 +39,14 @@ end
 
 % edit events.tsv files for meaningful epoching for N170
 all_sub = dir(fullfile(source,'sub-*'));
+if isempty(sublist)
+  sublist = 1:numel(all_sub);
+else
+  allsublist = {all_sub.name}';
+  sublist    = find(ismember(allsublist, sublist));  
+end
+
+
 for sub = 1:size(all_sub,1)
     root   = fullfile(all_sub(sub).folder,all_sub(sub).name);
     file   = [all_sub(sub).name '_ses-N170_task-N170_events.tsv'];
@@ -79,10 +95,10 @@ for t = 1:length(task)
 
     if strcmpi(task{t},'N170')
         [STUDY, ALLEEG] = pop_importbids(source, 'bidsevent','on','bidschanloc','on', ...
-        'bidstask',task{t},'eventtype', 'event', 'outputdir' ,outdir, 'studyName',task{t});
+        'bidstask',task{t},'eventtype', 'event', 'outputdir' ,outdir, 'studyName',task{t}, 'subjects', sublist);
     else
         [STUDY, ALLEEG] = pop_importbids(source, 'bidsevent','on','bidschanloc','on', ...
-        'bidstask',task{t},'eventtype', 'value', 'outputdir' ,outdir, 'studyName',task{t});
+        'bidstask',task{t},'eventtype', 'value', 'outputdir' ,outdir, 'studyName',task{t}, 'subjects', sublist);
     end
     ALLEEG = pop_select( ALLEEG, 'nochannel',{'HEOG_left','HEOG_right','VEOG_lower'});
     STUDY = pop_statparams(STUDY, 'default');
@@ -111,7 +127,7 @@ for t = 1:length(task)
             end
             % line freq removal
             EEG(s) = pop_zapline_plus(EEG(s),'noisefreqs','line',...
-                'coarseFreqDetectPowerDiff',4,'chunkLength',0,...
+                'coarseFreqDetectPowerDiff',4,'chunkLength',30,...
                 'adaptiveNremove',1,'fixedNremove',1,'plotResults',0);
             % remove bad channels
             EEG(s) = pop_clean_rawdata( EEG(s),'FlatlineCriterion',5,'ChannelCriterion',0.87, ...
@@ -145,8 +161,12 @@ for t = 1:length(task)
     % Save study
     if exist('error_report','var')
         mask = cellfun(@(x) ~isempty(x), error_report); % which subject/session
-        STUDY = std_rmdat(STUDY, EEG, 'datinds', find(mask));
-        EEG(mask) = [];
+        if all(mask)
+          error('there has been a processing issue with all included datasets, cannot proceed');
+        else
+          STUDY = std_rmdat(STUDY, EEG, 'datinds', find(mask));
+          EEG(mask) = [];
+        end
     end
     ALLEEG = EEG;
 
