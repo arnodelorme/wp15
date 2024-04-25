@@ -139,7 +139,6 @@ for t = 1:length(task)
             EEG(s) = pop_saveset(EEG(s),'savemode','resave');
         catch pipe_error
             error_report{s} = pipe_error.message; %#ok<SAGROW>
-            EEG(s) = [];
         end
     end
 
@@ -147,7 +146,7 @@ for t = 1:length(task)
     if exist('error_report','var')
         mask = cellfun(@(x) ~isempty(x), error_report); % which subject/session
         STUDY = std_rmdat(STUDY, EEG, 'datinds', find(mask));
-        EEG(find(mask)) = [];
+        EEG(mask) = [];
     end
     ALLEEG = EEG;
 
