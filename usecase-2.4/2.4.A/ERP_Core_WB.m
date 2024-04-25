@@ -213,6 +213,19 @@ for t = 1:length(task)
         'spec','off','ersp','off','itc','off');
 
     % 1st level analysis
+    try 
+      c = parcluster('local');
+      if c.NumWorkers==1
+        % we need to fool the current version (3.4) of limo into not attempting
+        % to check for and start a parallel pool, because this will lead to
+        % a crash
+        addpath(outdir);
+        fid = fopen(fullfile(outdir, 'limo_settings_script_user.m'), 'w');
+        fprintf(fid, 'limo_settings.psom = false');
+        fclose(fid);
+        assert(exist(fullfile('limo_settings_script_user', 'file')));
+      end
+    end
     [STUDY, ~, files] = pop_limo(STUDY, EEG, 'method','WLS','measure','daterp',...
         'timelim',analysis_window(t,:),'erase','on','splitreg','off','interaction','off');
 
