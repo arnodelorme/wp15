@@ -44,6 +44,7 @@ if isempty(sublist)
 else
   allsublist = {all_sub.name}';
   sublist    = find(ismember(allsublist, sublist));  
+  sublist    = sublist(:)';
 end
 
 
