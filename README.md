@@ -26,5 +26,5 @@ TODO: make flowchart
 2. data user -> requests anonymous data from the product owner
 3. data user -> sends analysis pipeline to the product owner and requests pseudomized data
 4. product owner -> requests permission (review) from the data owner to send the pseudonymized data to the data user
-5. data user -> repeats step 2 until pipeline is finished
+5. data user -> repeats step 3-4 until pipeline is finished
 6. ??
