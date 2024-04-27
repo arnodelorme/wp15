@@ -7,8 +7,8 @@ This repository contains the work that is done in the context of work package 15
 Throughout this work package we distinguish three types of data:
 
 1. Source or input data. This type of data typically concerns original data that, alongside features of scienctific interest, contains a rich set of indirect (quasi) personal data (but no direct personal data). When combined with other data sources, indirect personal data allows for re-identification of direct personal data (such as a subject's name or birthdate), and hence makes the data unfit for sharing it externally.
-2. Pseudonymized data. This type of data is derived from the source data, such that the indirect personal features have been removed (to a varying degree) from the data, while the scientific features of interest are preserved as much as possible.
-3. Anonymous data. This type of data is also derived from the data, but no longer contains any direct or indirect personal data and is therefore always fit for sharing it externally.
+2. Pseudonymized in-between data. This type of data is derived from the input data, such that the indirect personal features have been removed (to a varying degree) from the data, while the scientific features of interest are preserved sufficiently to allow implementing and testing an analysis pipeline.
+3. Anonymous output data. This type of data is also derived from the data, but no longer contains any direct or indirect personal data and is therefore always fit for sharing it externally.
 
 ## User roles
 
