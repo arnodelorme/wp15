@@ -1,6 +1,6 @@
 # SIESTA - work package 15 - use case 2.4
 
-This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data.  The data are simple enough, allow automated data processing, and follow BIDS.
+This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follow BIDS.
 
 There are two versions: `2.4.A` and `2.4.B`. Version `2.4.A` is fully automated, testing whether this can be run on anonymized data. Version `2.4.B` requires user interaction at the input level, minimizing what information is given to users given a research question at the output level.
 
@@ -36,7 +36,7 @@ The output data will consist of ...
 
 ### Software requirements
 
-The Github WP15 repository, [Matlab](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
+The Github WP15 repository, [MATLAB](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
 **Installation**: Download the usecase-2.4.A script, Fieldtrip, EEGLAB and the LIMO tools. The latter must be placed inside the EEGLAB plugin folder as shown below.
 
@@ -78,7 +78,13 @@ You should now have something like:
 
 ### Legal aspects of the required software
 
-...
+MATLAB is commercial software.
+
+EEGLAB is open source and released under the 2-clause BSD license.
+
+LIMO MEEG is open source software and released under the MIT License.
+
+FieldTrip is open source software and released under the GPLv3 license.
 
 ### Executing the pipeline
 
@@ -88,7 +94,7 @@ Executing the pipeline from the Linux command line:
 matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0','fieldtrip'); ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A'); exit"
 ```
 
-Executing the pipeline from the matlab command window: 
+Executing the pipeline from the MATLAB command window:
 
 ```matlab
 addpath('eeglab2024.0', 'fieldtrip')
@@ -97,7 +103,7 @@ ERP_Core_WB(fullfile(pwd, 'ERP_CORE_BIDS_Raw_Files'), fullfile(pwd, 'ERP_CORE_us
 
 Where `ERP_CORE_BIDS_Raw_Files` is the input folder and `ERP_CORE_usecase_2.4.A` the output folder. The absolute paths need to be provided for the pipeline to run smoothly.
 
-> **Note**: The matlab function must be in the matlab path or the terminal is located in the folder where the ERP_Core_WB.m function is.
+> **Note**: The MATLAB function must be in the MATLAB path or the terminal is located in the folder where the ERP_Core_WB.m function is.
 
 ### Cleaning up
 

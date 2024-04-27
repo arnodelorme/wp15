@@ -1,8 +1,9 @@
 function ERP_Core_WB(source, destination, sublist)
+
 % ERP Core - whole brain analysis
-% Matlab function calling the EEGLAB toolbox and LIMO MEEG (master from
-% Github)
-% 
+%
+% MATLAB function calling the EEGLAB toolbox and LIMO MEEG (master from GitHub)
+%
 % FORMAT ERP_Core_WB(source, destination, [sublist])
 % INPUTS             source is the folder where the ERPCore data are located
 %                    destination is the folder where all results are saved
@@ -11,9 +12,9 @@ function ERP_Core_WB(source, destination, sublist)
 %                      for debugging purposes
 % OUTPUT the function does not return any variable, all results are saved
 %        on drive
-% 
-% Cyril Pernet, during the winter of 2024 + various updates by Marcel and
-% Jan-Mathijs
+%
+% Copyright (C) 2024 Cyril Pernet, during the winter of 2024 + various updates
+% by Marcel and Jan-Mathijs
 
 if nargin<3
   sublist = {};
@@ -43,7 +44,7 @@ if isempty(sublist)
   sublist = 1:numel(all_sub);
 else
   % allsublist = {all_sub.name}';
-  % sublist    = find(ismember(allsublist, sublist));  
+  % sublist    = find(ismember(allsublist, sublist));
   % sublist    = sublist(:)';
   for k = 1:numel(sublist)
     subnr(k) = str2num(sublist{k}(end-2:end));
@@ -58,11 +59,11 @@ for sub = 1:size(all_sub,1)
     events = readtable(fullfile(root,['ses-N170' filesep 'eeg' filesep file]),...
         'FileType', 'text', 'Delimiter', '\t', 'TreatAsEmpty', {'N/A','n/a'});
     for s = size(events,1):-1:1
-        if events.value(s) <= 40    
+        if events.value(s) <= 40
             event{s} = 'faces';
         elseif (events.value(s) >= 41) && (events.value(s) < 101)
             event{s} = 'cars';
-        elseif (events.value(s) >= 101) && (events.value(s) < 141)    
+        elseif (events.value(s) >= 101) && (events.value(s) < 141)
             event{s} = 'scrambled_faces';
         else
             event{s} = 'scrambled_cars';
@@ -188,14 +189,14 @@ for t = 1:length(task)
             epoch_window(t,:) ,'epochinfo','yes');
     elseif strcmpi(task{t},'N2pc')
         EEG = pop_epoch(ALLEEG,{'111','112','121','122','211','212','221','222'},...
-            epoch_window(t,:) ,'epochinfo','yes');        
+            epoch_window(t,:) ,'epochinfo','yes');
     elseif strcmpi(task{t},'N400')
         EEG = pop_epoch(ALLEEG,{'111','112','121','122','211','212','221','222'},...
-            epoch_window(t,:) ,'epochinfo','yes');        
+            epoch_window(t,:) ,'epochinfo','yes');
     elseif strcmpi(task{t},'P3')
         EEG = pop_epoch(ALLEEG,{'11','12','13','14','15','21','22','23','24','25',...
             '31','32','33','34','35','41','42','43','44','45','51','52','53','54','55'},...
-            epoch_window(t,:) ,'epochinfo','yes');         
+            epoch_window(t,:) ,'epochinfo','yes');
     end
 
     EEG    = eeg_checkset(EEG);
@@ -217,7 +218,7 @@ for t = 1:length(task)
         'spec','off','ersp','off','itc','off');
 
     % 1st level analysis
-    try 
+    try
       c = parcluster('local');
       if c.NumWorkers==1
         % we need to fool the current version (3.4) of limo into not attempting
@@ -470,7 +471,7 @@ for t = 1:length(task)
        TM1  = limo_trimmed_mean(ipsilateral,20,.05);
        TM2  = limo_trimmed_mean(contralateral,20,.05);
        Diff = limo_trimmed_mean(contralateral-ipsilateral,20,.05);
-       figure; 
+       figure;
        channel = 10; % use PO7/PO8
        subplot(1,2,1); vect = LIMO.data.timevect; hold on
        plot(vect,squeeze(TM1(channel,:,2)),'LineWidth',2,'Color',[1 0 0]);
@@ -480,7 +481,7 @@ for t = 1:length(task)
        fillhandle = patch([vect fliplr(vect)], [squeeze(TM2(channel,:,1)) ,fliplr(squeeze(TM2(channel,:,3)))], [0 0 1]);
        set(fillhandle,'EdgeColor',[0 0 1],'FaceAlpha',0.2,'EdgeAlpha',0.8);%set edge color
        grid on; axis tight; box on; legend({'ipsi','contra'})
-       subplot(1,2,2); 
+       subplot(1,2,2);
        plot(vect,squeeze(Diff(channel,:,2)),'LineWidth',2,'Color',[0 0 1]);
        fillhandle = patch([vect fliplr(vect)], [squeeze(Diff(channel,:,1)) ,fliplr(squeeze(Diff(channel,:,3)))], [1 0 0]);
        set(fillhandle,'EdgeColor',[1 0 0],'FaceAlpha',0.2,'EdgeAlpha',0.8);%set edge color
@@ -511,7 +512,7 @@ for t = 1:length(task)
             limo_contrast(fullfile(R{s},'Yr.mat'), BFiles{s}, LFiles{s}, 'T', 1, unrelated(cond));
             con1_files{s,:} = fullfile(R{s},'con_1.mat');
             con2_files{s,:} = fullfile(R{s},'con_2.mat');
-        end      
+        end
         
         % 2nd level
        foldername = fullfile(STUDY.filepath,...
@@ -536,14 +537,14 @@ for t = 1:length(task)
             1, AvgChanlocs.expected_chanlocs, 'mean', 'Trimmed mean', [],'Con_unrelated')
         Diff = limo_plot_difference('Con_unrelated_single_subjects_mean.mat',...
             'Con_related_single_subjects_mean.mat',...
-            'type','paired','fig',0,'name','Con_diff');    
+            'type','paired','fig',0,'name','Con_diff');
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt'),...
             'con_1', AvgChanlocs.expected_chanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_related')
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt'),...
             'con_2', AvgChanlocs.expected_chanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_unrelated')
         Diff = limo_plot_difference('ERPs_unrelated_single_subjects_Weighted mean.mat',...
             'ERPs_related_single_subjects_Weighted mean.mat',...
-            'type','paired','fig',0,'name','ERP_diff');   
+            'type','paired','fig',0,'name','ERP_diff');
     
     
     elseif strcmpi(task{t},'P3')
@@ -553,7 +554,7 @@ for t = 1:length(task)
 	 % 33: Stimulus - block target C, trial stimulus C,
 	 % 44: Stimulus - block target D, trial stimulus D,
      % 55: Stimulus - block target E, trial stimulus E,
-     % 12, 13, 14, 15 
+     % 12, 13, 14, 15
      % 21, 23, 24, 25
      % 31, 32, 34, 35
      % 41, 42, 43, 45
@@ -574,7 +575,7 @@ for t = 1:length(task)
             limo_contrast(fullfile(R{s},'Yr.mat'), BFiles{s}, LFiles{s}, 'T', 1, target(cond));
             con1_files{s,:} = fullfile(R{s},'con_1.mat');
             con2_files{s,:} = fullfile(R{s},'con_2.mat');
-        end      
+        end
         
         % 2nd level
         foldername = fullfile(STUDY.filepath,...
@@ -599,14 +600,14 @@ for t = 1:length(task)
             1, AvgChanlocs.expected_chanlocs, 'mean', 'Trimmed mean', [],'Con_targets')
         Diff = limo_plot_difference('Con_targets_single_subjects_mean.mat',...
             'Con_distractors_single_subjects_mean.mat',...
-            'type','paired','fig',0,'name','Con_diff');   
+            'type','paired','fig',0,'name','Con_diff');
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_P3_P3_GLM_Channels_Time_WLS.txt'),...
             'con_1', AvgChanlocs.expected_chanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_distractors')
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_P3_P3_GLM_Channels_Time_WLS.txt'),...
             'con_2', AvgChanlocs.expected_chanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_targets')
         Diff = limo_plot_difference('ERPs_targets_single_subjects_Weighted mean.mat',...
             'ERPs_distractors_single_subjects_Weighted mean.mat',...
-            'type','paired','fig',0,'name','ERP_diff');   
+            'type','paired','fig',0,'name','ERP_diff');
 
     end
     clear STUDY ALLEEG EEG
