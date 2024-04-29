@@ -42,9 +42,13 @@ all_sub = dir(fullfile(source,'sub-*'));
 if isempty(sublist)
   sublist = 1:numel(all_sub);
 else
-  allsublist = {all_sub.name}';
-  sublist    = find(ismember(allsublist, sublist));  
-  sublist    = sublist(:)';
+  % allsublist = {all_sub.name}';
+  % sublist    = find(ismember(allsublist, sublist));  
+  % sublist    = sublist(:)';
+  for k = 1:numel(sublist)
+    subnr(k) = str2num(sublist{k}(end-2:end));
+  end
+  sublist = subnr(:)';
 end
 
 
