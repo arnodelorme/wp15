@@ -1,0 +1,4 @@
+generative-BIDS/venv/*
+generative-BIDS/build/*
+generative-BIDS/*.egg-info/*
+
