@@ -28,7 +28,7 @@ This can be conceived to be graphically depicted in a flowchart.
 4. data user -> requests the product owner for pseudo data to be disclosed (using tools developed in this WP)
 5. (optional) product owner -> requests the data owner for a review and permission to disclose the pseudo data to the data user
 6. (optional) data owner -> grants permission
-7. data user -> interactively implements and tests analysis pipeline on pseudonomized data
+7. data user -> interactively implements and tests analysis pipeline on pseudo data
 8. data user -> requests the product owner for the pipeline to be executed on the source data, output data is not yet disclosed
 9. product owner -> requests the data owner for a review and permission to disclose the output data to the data user
 10. data owner -> grants permission
