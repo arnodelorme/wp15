@@ -43,7 +43,7 @@ The Github WP15 repository, [MATLAB](https://www.mathworks.com) with the [EGGLAB
 ```console
 wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
 unzip eeglab_current.zip
-git clone https://github.com/LIMO-EEG-Toolbox/limo_tools.git
+git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
 mv limo_tools eeglab2024.0/plugins/
 git clone https://github.com/fieldtrip/fieldtrip.git
 git clone https://github.com/SIESTA-eu/wp15.git
