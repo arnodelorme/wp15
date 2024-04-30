@@ -36,9 +36,9 @@ The output data will consist of ...
 
 ### Software requirements
 
-The Github WP15 repository, [MATLAB](https://www.mathworks.com) with the [EGGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
+The GitHub WP15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-**Installation**: Download the usecase-2.4.A script, Fieldtrip, EEGLAB and the LIMO tools. The latter must be placed inside the EEGLAB plugin folder as shown below.
+**Installation**: Download the usecase-2.4.A script, EEGLAB, FieldTrip, and the LIMO tools. The latter must be placed inside the EEGLAB plugin folder as shown below.
 
 ```console
 wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
