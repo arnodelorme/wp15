@@ -8,7 +8,7 @@ The R-software can be installed on a Linux, MacOS or Windows computer, specifica
 
 ### Legal aspects
 
-The R-package and the optparse package are licensed under GPL-2 | GPL-3. 
+The R-package and the optparse package are licensed under GPL-2 | GPL-3.
 
 ## Input data
 
@@ -31,11 +31,11 @@ The input dataset has been released under the CC0 license.
 
 ## Pseudo data
 
-A pseudo (randomized) version of the data can be generated using [genbids](https://github.com/SIESTA-eu/wp15/tree/main/generative-BIDS). See `genbids -h` for more information.
+A scrambled version of the data can be generated using [genbids](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscramble -h` for more information.
 
 ```console
-mkdir pseudo
-genbids input pseudo -c age sex -i '*.tsv' '*.json' CHANGES README
+mkdir scrambled
+bidscramble input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README
 ```
 
 ## Output data
@@ -56,11 +56,11 @@ OUTFILE=./output/results.tsv
 Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
 ```
 
-or with the the pseudo (randomized) version of the data like this
+or with the the scrambled version of the data like this
 
 ```console
-DATASET=./pseudo/participants.tsv
-OUTFILE=./output/results.tsv
+DATASET=./scrambled/participants.tsv
+OUTFILE=./scrambled/results.tsv
 Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
 ```
 
@@ -69,7 +69,7 @@ Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
 Cleaning up the input and output data can be done using:
 
 ```console
-rm -rf input pseudo output
+rm -rf input scrambled output
 ```
 
 ## References
