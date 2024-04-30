@@ -55,3 +55,10 @@ author:
 ```
 
 ## Legal Aspects
+
+To be discussed.
+
+## Related tools
+
+- https://peerherholz.github.io/BIDSonym/
+- https://arx.deidentifier.org
