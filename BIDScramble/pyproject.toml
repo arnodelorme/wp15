@@ -3,9 +3,9 @@ requires         = ['setuptools >= 62.2.0', 'wheel', 'tomli >= 1.1.0 ; python_ve
 build-backend    = 'setuptools.build_meta'
 
 [project]
-name             = 'Generative-BIDS'
-description      = 'Generates pseudo-random datasets according to the Brain Imaging Data Structure (BIDS)'
-version          = '0.0.1'
+name             = 'BIDScramble'
+description      = 'Generates scrambled datasets that are organized according to the Brain Imaging Data Structure (BIDS)'
+version          = '0.0.2'
 readme           = 'README.md'
 requires-python  = '>= 3.8'
 authors          = [{email = 'm.zwiers@donders.ru.nl'}, {name = 'Marcel Zwiers'}]
@@ -22,4 +22,4 @@ homepage         = 'https://github.com/SIESTA-eu/wp15'
 repository       = 'https://github.com/SIESTA-eu/wp15'
 
 [project.scripts]
-genbids          = 'source.genbids:main'
+bidscramble      = 'source.bidscramble:main'

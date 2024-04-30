@@ -12,7 +12,7 @@ import numpy as np
 from pathlib import Path
 
 
-def genbids(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
+def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -62,7 +62,7 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            '  genbids bids pseudobids -c age sex height -i *.tsv *.json CHANGES README\n\n'
+                                            '  bidscramble bids pseudobids -c age sex height -i *.tsv *.json CHANGES README\n\n'
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
     parser.add_argument('inputdir',           help='The BIDS input-directory with the real data')
@@ -71,7 +71,7 @@ def main():
     parser.add_argument('-i', '--include',    help='A list of include pattern(s) that select the files in the BIDS input-directory that are produced in the output directory', nargs='+', default=['*'])
     args = parser.parse_args()
 
-    genbids(inputdir=args.inputdir, outputdir=args.outputdir, covariance=args.covariance, include=args.include)
+    bidscramble(inputdir=args.inputdir, outputdir=args.outputdir, covariance=args.covariance, include=args.include)
 
 
 if __name__ == "__main__":
