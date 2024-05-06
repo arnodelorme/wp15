@@ -230,7 +230,7 @@ for t = 1:length(task)
     if any(strcmpi(task{t},{'ERN','N170'}))
         [STUDY, EEG] = std_editset(STUDY, EEG, 'commands',{{'remove',4}},'updatedat','on','rmclust','on');
     elseif any(strcmpi(task{t},{'P3'}))
-        [STUDY, EEG] = std_editset(STUDY, EEG, 'commands',{{'remove',4,35}},'updatedat','on','rmclust','on');
+        [STUDY, EEG] = std_editset(STUDY, EEG, 'commands',{{'remove',4},{'remove',35}},'updatedat','on','rmclust','on');
     end
 
     % Create study design
@@ -259,6 +259,9 @@ for t = 1:length(task)
     % end
     [STUDY, ~, files] = pop_limo(STUDY, EEG, 'method','WLS','measure','daterp',...
         'timelim',analysis_window(t,:),'erase','on','splitreg','off','interaction','off');
+    if isempty(STUDY.filepath) % this seems to happen no unknown reason
+        STUDY.filepath = outdir;
+    end
 
     if strcmpi(task{t},'ERN')
         % ERN and CRN components are epoched for correct and errors
@@ -327,7 +330,7 @@ for t = 1:length(task)
                     'Full scalp analysis', 'type','Channels','nboot',1000,'tfce',1);
                 limo_get_effect_size('paired_samples_ttest_parameter_1_2.mat')
                 % ERPs (use limo_add_plots to visualize)
-                limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_ERN_ERN_GLM_Channels_Time_WLS.txt'), ...
+                limo_central_tendency_and_ci(fullfile(files.LIMO, 'LIMO_files_ERN_ERN_GLM_Channels_Time_WLS.txt'), ...
                     find(ERN), AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_errors')
                 limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_ERN_ERN_GLM_Channels_Time_WLS.txt'), ...
                     find(CRN), AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_correct')
@@ -375,8 +378,6 @@ for t = 1:length(task)
             con2_files{s,:} = fullfile(R{s},'con_2.mat');
         end
 
-        STUDY.filepath = fullfile(STUDY.filepath,...
-            ['derivatives' filesep 'LIMO_N170']);
         writecell(con1_files,fullfile(STUDY.filepath,'con1_files.txt'))
         writecell(con2_files,fullfile(STUDY.filepath,'con2_files.txt'))
 
@@ -562,9 +563,9 @@ for t = 1:length(task)
         Diff = limo_plot_difference('Con_unrelated_single_subjects_mean.mat',...
             'Con_related_single_subjects_mean.mat',...
             'type','paired','fig',0,'name','Con_diff');    
-        limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt'),...
+        limo_central_tendency_and_ci(fullfile(STUDY.filepath,['LIMO_N400' filesep 'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt']),...
             'con_1', AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_related')
-        limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt'),...
+        limo_central_tendency_and_ci(fullfile(STUDY.filepath,['LIMO_N400' filesep 'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt']),...
             'con_2', AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_unrelated')
         Diff = limo_plot_difference('ERPs_unrelated_single_subjects_Weighted mean.mat',...
             'ERPs_related_single_subjects_Weighted mean.mat',...
