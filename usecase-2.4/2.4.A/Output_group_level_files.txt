@@ -34,6 +34,7 @@
 /ERN/Difference_wave/paired_samples_ttest_parameter_1_2_Cohensd.mat   
 /ERN/Difference_wave/tfce/tfce_paired_samples_ttest_parameter_1_2.mat 
 /MMN/AvgChanlocs.mat
+/MMN/MMN/ERP_MMN.mat
 /MMN/MMN/ERPs_deviant_Trimmed_mean_of_Weighted mean.mat   
 /MMN/MMN/ERPs_deviant_single_subjects_Weighted mean.mat   
 /MMN/MMN/ERPs_standard_Trimmed_mean_of_Weighted mean.mat  
