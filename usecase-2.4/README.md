@@ -30,7 +30,7 @@ Those data are openly ([CC-BY-4.0](https://spdx.org/licenses/CC-BY-4.0.html)) an
 
 ## Output data
 
-The output data will consist of ...
+The output data will consist of only folders and files for group-level (aggregated) data. Many more files are generated but should not be given as output.  All the files are listed in the [Output_group_level_files.txt](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/2.4.A/Output_group_level_files.txt) file as with a relative path to `ERP_CORE_usecase_2.4.A` path (see below Executing the pipeline).
 
 ## Analysis pipeline
 
@@ -38,14 +38,13 @@ The output data will consist of ...
 
 The GitHub WP15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin.   
   
-**Installation**: Download the usecase-2.4.A script, EEGLAB, FieldTrip, and the LIMO tools. The latter must be placed inside the EEGLAB plugin folder as shown below.
+**Installation**: Download the usecase-2.4.A script, EEGLAB, and the LIMO tools. The latter must be placed inside the EEGLAB plugin folder as shown below.
 
 ```console
 wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
 unzip eeglab_current.zip
 git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
 mv limo_tools eeglab2024.0/plugins/
-git clone https://github.com/fieldtrip/fieldtrip.git
 git clone https://github.com/SIESTA-eu/wp15.git
 mv wp15/usecase-2.4/2.4.A/ERP_Core_WB.m .
 rm -rf eeglab_current.zip wp15  
@@ -70,34 +69,26 @@ You should now have something like:
     ├── plugins  
     │   └── limo_tools  
     └── [..]
-    fieldtrip  
-    ├── CITATION.cff
-    ├── COPYING
-    ├── Contents.m
-    └── [..]
 
 ### Legal aspects of the required software
 
 MATLAB is commercial software.
 
-EEGLAB is open source and released under the 2-clause BSD license.
+EEGLAB is open source and released under the 2-clause BSD license (the FieldTrip lite plugin is downloaded automatically; FieldTrip is open source software and released under the GPLv3 license).
 
-LIMO MEEG is open source software and released under the MIT License.
+LIMO MEEG is open-source software released under the MIT License.
 
-FieldTrip is open source software and released under the GPLv3 license.
-
-### Executing the pipeline
-
+###  
 Executing the pipeline from the Linux command line:
 
 ```console
-matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0','fieldtrip'); ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A'); exit"
+matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0'); ERP_Core_WB('ERP_CORE_BIDS_Raw_Files', 'ERP_CORE_usecase_2.4.A'); exit"
 ```
 
 Executing the pipeline from the MATLAB command window:
 
 ```matlab
-addpath('eeglab2024.0', 'fieldtrip')
+addpath('eeglab2024.0')
 ERP_Core_WB(fullfile(pwd, 'ERP_CORE_BIDS_Raw_Files'), fullfile(pwd, 'ERP_CORE_usecase_2.4.A'))
 ```
 
@@ -110,10 +101,10 @@ Where `ERP_CORE_BIDS_Raw_Files` is the input folder and `ERP_CORE_usecase_2.4.A`
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf ERP_CORE_BIDS_Raw_Files ERP_CORE_usecase_2.4.A eeglab2024.0 fieldtrip ERP_Core_WB.m
+rm -rf ERP_CORE_BIDS_Raw_Files ERP_CORE_usecase_2.4.A eeglab2024.0 ERP_Core_WB.m
 ```
 
 ## References
 
-[1]: https://www.example.com
-[2]: https://www.markdownguide.org/cheat-sheet/
+[1]: https://www.example.com  
+[2]: https://www.markdownguide.org/cheat-sheet/  
