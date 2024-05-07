@@ -25,6 +25,10 @@ wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
 cd ..
 ```
 
+### Data citation
+
+Yulin Wang and Wei Duan and Debo Dong and Lihong Ding and Xu Lei (2022). A test-retest resting and cognitive state EEG dataset. OpenNeuro. [Dataset] doi: doi:10.18112/openneuro.ds004148.v1.0.1
+
 ### Legal aspects
 
 The input dataset has been released under the CC0 license.
