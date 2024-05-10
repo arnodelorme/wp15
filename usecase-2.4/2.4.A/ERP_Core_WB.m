@@ -29,7 +29,7 @@ function ERP_Core_WB(source, destination, varargin)
 
 % start eeglab and check plug-ins
 rng('default');
-[ALLEEG, EEG, CURRENTSET, ALLCOM] = eeglab('nogui');
+ALLEEG = eeglab('nogui'); %#ok<NASGU>
 if ~exist('pop_importbids','file')
     plugin_askinstall('bids-matlab-tools',[],1);
 end
@@ -162,14 +162,14 @@ for t = 1:length(task)
                 'coarseFreqDetectPowerDiff',4,'chunkLength',30,...
                 'adaptiveNremove',1,'fixedNremove',1,'plotResults',0);
             % remove bad channels
-            EEG(s) = pop_clean_rawdata( EEG(s),'FlatlineCriterion',5,'ChannelCriterion',0.87, ...
-                'LineNoiseCriterion',4,'Highpass',[0.25 0.75] ,'BurstCriterion',20, ...
-                'WindowCriterion',0.25,'BurstRejection','on','Distance','Euclidian', ...
-                'WindowCriterionTolerances',[-Inf 7]);
+            EEG = pop_clean_rawdata( EEG,'FlatlineCriterion',5,'ChannelCriterion',0.8,...
+                'LineNoiseCriterion',4,'Highpass',[0.25 0.75] ,...
+                'BurstCriterion','off','WindowCriterion','off','BurstRejection','off',...
+                'Distance','Euclidian','WindowCriterionTolerances','off' );
             % interpolate missing channels and reference
             [~,idx] = setdiff({AvgChanlocs.expected_chanlocs.labels},{EEG(s).chanlocs.labels});
             if ~isempty(idx)
-                EEG(s) = pop_interp(EEG(s), AvgChanlocs.expected_chanlocs(idx), 'spherical');
+                EEG(s) = pop_interp(EEG(s), AvgChanlocs.expected_chanlocs(idx), 'sphericalKang');
             end
             EEG(s) = pop_reref(EEG(s),[],'interpchan','off');
 
@@ -186,7 +186,7 @@ for t = 1:length(task)
                 'WindowCriterionTolerances',[-Inf 7] );
             EEG(s) = pop_saveset(EEG(s),'savemode','resave');
         catch pipe_error
-            error_report{s} = pipe_error.message; %#ok<SAGROW>
+            error_report{s} = pipe_error.message; %#ok<AGROW>
         end
     end
 
@@ -337,12 +337,11 @@ for t = 1:length(task)
                 Diff = limo_plot_difference('ERPs_errors_single_subjects_Weighted mean.mat',...
                     'ERPs_correct_single_subjects_Weighted mean.mat',...
                     'type','paired','fig',0,'name','ERP_diff');
+                save('ERP_difference','Diff')
             end
         end
     elseif strcmpi(task{t},'MMN')
 
-        [~,R,BFiles] = limo_get_files([],[],[],...
-            fullfile(files.LIMO,'Beta_files_MMN_MMN_GLM_Channels_Time_WLS.txt'));
         % 2nd level
         mkdir(fullfile(STUDY.filepath,'MMN'));
         cd(fullfile(STUDY.filepath,'MMN'));
@@ -359,6 +358,7 @@ for t = 1:length(task)
         Diff = limo_plot_difference('ERPs_deviant_single_subjects_Weighted mean.mat',...
             'ERPs_standard_single_subjects_Weighted mean.mat',...
             'type','paired','fig',0,'name','ERP_MMN');
+        save('ERP_difference','Diff')
 
     elseif strcmpi(task{t},'N170')
         % there are two analyses
@@ -396,7 +396,8 @@ for t = 1:length(task)
         Diff = limo_plot_difference('ERPs_Faces_single_subjects_Weighted mean.mat',...
             'ERPs_Cars_single_subjects_Weighted mean.mat',...
             'type','paired','fig',0,'name','ERP_Difference');
-      
+        save('ERP_difference','Diff')
+
         mkdir(fullfile(STUDY.filepath,'Cars_vs_Faces_controlled'));
         cd(fullfile(STUDY.filepath,'Cars_vs_Faces_controlled'));
         for N=size(con1_files,1):-1:1
@@ -416,6 +417,7 @@ for t = 1:length(task)
         Diff = limo_plot_difference('Con_Faces_single_subjects_mean.mat',...
             'Con_Cars_single_subjects_mean.mat',...
             'type','paired','fig',0,'name','Con_diff');
+        save('Parameter_difference','Diff')
 
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_N170_N170_GLM_Channels_Time_WLS.txt'), ...
             1 , AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_Cars')
@@ -438,6 +440,7 @@ for t = 1:length(task)
         Diff = limo_plot_difference('ERPs_Faces_diff_single_subjects_Weighted mean.mat',...
             'ERPs_Cars_diff_single_subjects_Weighted mean.mat',...
             'type','paired','fig',0,'name','ERP_Faces_Cars_Difference');
+        save('ERP_difference','Diff')
 
    
     elseif strcmpi(task{t},'N2pc')
@@ -495,6 +498,8 @@ for t = 1:length(task)
        load('ipsilateral.mat'); TM1  = limo_trimmed_mean(ipsilateral,20,.05);
        load('contralateral.mat'); TM2  = limo_trimmed_mean(contralateral,20,.05);      
        Diff = limo_trimmed_mean(contralateral-ipsilateral,20,.05);
+       save('ERP_difference','Diff')
+
        figure; 
        channel = 10; % use PO7/PO8
        subplot(1,2,1); vect = LIMO.data.timevect; hold on
@@ -563,6 +568,7 @@ for t = 1:length(task)
         Diff = limo_plot_difference('Con_unrelated_single_subjects_mean.mat',...
             'Con_related_single_subjects_mean.mat',...
             'type','paired','fig',0,'name','Con_diff');    
+        save('Parameter_difference','Diff')
         limo_central_tendency_and_ci(fullfile(STUDY.filepath,['LIMO_N400' filesep 'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt']),...
             'con_1', AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_related')
         limo_central_tendency_and_ci(fullfile(STUDY.filepath,['LIMO_N400' filesep 'LIMO_files_N400_N400_GLM_Channels_Time_WLS.txt']),...
@@ -570,7 +576,8 @@ for t = 1:length(task)
         Diff = limo_plot_difference('ERPs_unrelated_single_subjects_Weighted mean.mat',...
             'ERPs_related_single_subjects_Weighted mean.mat',...
             'type','paired','fig',0,'name','ERP_diff');   
-        
+        save('ERP_difference','Diff')
+
     elseif strcmpi(task{t},'P3')
    
      % 11: Stimulus - block target A, trial stimulus A,
@@ -623,6 +630,7 @@ for t = 1:length(task)
         Diff = limo_plot_difference('Con_targets_single_subjects_mean.mat',...
             'Con_distractors_single_subjects_mean.mat',...
             'type','paired','fig',0,'name','Con_diff');   
+        save('Parameter_difference','Diff')
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_P3_P3_GLM_Channels_Time_WLS.txt'),...
             'con_1', AvgChanlocs, 'Weighted mean', 'Trimmed mean', [], 'ERPs_distractors')
         limo_central_tendency_and_ci(fullfile(files.LIMO,'LIMO_files_P3_P3_GLM_Channels_Time_WLS.txt'),...
@@ -630,6 +638,7 @@ for t = 1:length(task)
         Diff = limo_plot_difference('ERPs_targets_single_subjects_Weighted mean.mat',...
             'ERPs_distractors_single_subjects_Weighted mean.mat',...
             'type','paired','fig',0,'name','ERP_diff');   
+        save('ERP_difference','Diff')
 
     end
     clear STUDY ALLEEG EEG
