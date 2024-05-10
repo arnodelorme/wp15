@@ -6,6 +6,10 @@ This implements ...
 
 The input data is ...
 
+### Data citation
+
+Allison C. Nugent and Adam G Thomas and Margaret Mahoney and Alison Gibbons and Jarrod Smith and Antoinette Charles and Jacob S Shaw and Jeffrey D Stout and Anna M Namyst and Arshitha Basavaraj and Eric Earl and Travis Riddle and Joseph Snow and Shruti Japee and Adriana Pavletic and Stephen Sinclair and Vinai Roopchansingh and Peter A Bandettini and Joyce Chung (2023). The NIMH Healthy Research Volunteer Dataset. OpenNeuro. [Dataset] doi: doi:10.18112/openneuro.ds004215.v1.0.3
+
 ### Legal aspects of the input data
 
 ...

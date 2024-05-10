@@ -24,6 +24,10 @@ mv usecase_2.4.A/osfstorage/ERP_CORE_BIDS_Raw_Files .
 rm -rf usecase_2.4.A venv
 ```
 
+### Data citation
+
+Emily S. Kappenman, Jaclyn L. Farrens, Wendy Zhang, Andrew X. Stewart, Steven J. Luck (2021). ERP CORE: An open resource for human event-related potential research. NeuroImage. doi:j.neuroimage.2020.117465
+
 ### Legal aspects of the input data
 
 Those data are openly ([CC-BY-4.0](https://spdx.org/licenses/CC-BY-4.0.html)) and freely available.
