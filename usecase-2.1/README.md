@@ -8,11 +8,15 @@ The R-software can be installed on a Linux, MacOS or Windows computer, specifica
 
 ### Legal aspects
 
-The R-package and the optparse package are licensed under GPL-2 | GPL-3.
+The R-package and the optparse package are licensed under GPL-2 or GPL-3.
 
 ## Input data
 
-The input data is formatted as BIDS and contained in the participants.tsv file from a specific open-access dataset [[1]], which is described in more detail in an accompanying paper [[2]]. The pipeline should also work with many other BIDS datasets from OpenNeuro [[3]]. The data contains biometric information, i.e. indirect personal identifiers (age and height).
+The input data [[1]] dataset contains resting (eyes closed, eyes open) and cognitive (subtraction, music, memory) state EEG recordings with 60 participants during three experimental sessions together with sleep, emotion, mental health, and mind-wandering related measures. The data is described in more detail in an accompanying paper [[2]].
+
+The analysis pipeline demonstrated here only uses the tabular data that is included in the dataset. The tabular data contains biometric information, i.e. indirect personal identifiers (age and height). The pipeline should also work with many other BIDS datasets from OpenNeuro [[3]].
+
+The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
 ```console
 mkdir input

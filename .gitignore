@@ -2,3 +2,5 @@ generative-BIDS/venv/*
 generative-BIDS/build/*
 generative-BIDS/*.egg-info/*
 
+usecase-*/input
+usecase-*/output

@@ -1,19 +1,23 @@
 # SIESTA - work package 15 - use case 2.4
 
-This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follow BIDS.
+This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follows the BIDS standard.
 
 There are two versions: `2.4.A` and `2.4.B`. Version `2.4.A` is fully automated, testing whether this can be run on anonymized data. Version `2.4.B` requires user interaction at the input level, minimizing what information is given to users given a research question at the output level.
 
 ## Input data
 
-The BIDS input data is a freely available online resource named ERP CORE (https://doi.org/10.18115/D5JW4R), consisting of optimized paradigms, experiment control scripts, example data from 40 neurotypical adults, data processing pipelines and analysis scripts, and a broad set of results for 7 widely used ERP components: N170, mismatch negativity (MMN), N2pc, N400, P3, lateralized readiness potential (LRP), and error-related negativity (ERN). Included in this dataset are:
+The input data is a freely available online resource named ERP CORE [[1]], consisting of optimized paradigms, experiment control scripts, example data from 40 neurotypical adults, data processing pipelines and analysis scripts, and a broad set of results for 7 widely used ERP components: N170, mismatch negativity (MMN), N2pc, N400, P3, lateralized readiness potential (LRP), and error-related negativity (ERN).
+
+The input data consists of FIXME files with a combined size of FIXME.
+
+Included in this dataset are:
 
 1. Raw data files for all 7 ERP components from 40 participants, located in subject folders 001-040
 2. The event code schemes for all experiment paradigms
 3. The task stimuli used for eliciting N170, MMN, and N400, located in the stimuli folder
-4. Demographic information for all 40 participants ("participants.tsv &.json")
+4. Demographic information for all 40 participants ("participants.tsv & participants.json")
 
-The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage) or by installing and running the [OSF-client](https://github.com/osfclient/osfclient) (which downloads the data an order of magnitude faster):
+The data can be downloaded from [ERPCore BIDS dataset](https://osf.io/9f5w7/files/osfstorage) or by installing and running the [OSF-client](https://github.com/osfclient/osfclient). The command-line client is more stable for long downloads, preserves the directory structure and downloads the data an order of magnitude faster.
 
 ```console
 python -m venv venv
@@ -110,5 +114,5 @@ rm -rf ERP_CORE_BIDS_Raw_Files ERP_CORE_usecase_2.4.A eeglab2024.0 ERP_Core_WB.m
 
 ## References
 
-[1]: https://www.example.com  
+[1]: https://doi.org/10.18115/D5JW4R
 [2]: https://www.markdownguide.org/cheat-sheet/  

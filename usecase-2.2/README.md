@@ -4,7 +4,18 @@ This implements ...
 
 ## Input data
 
-The input data is ...
+The input data [[1]] consists of structural MRI and tabular data. The dataset is described in more detail in an accompanying publication [[2]].
+
+The input data consists of 277 files with a combined size of 1.18GB.
+
+Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed.
+
+```console
+npm install -g @openneuro/cli
+
+openneuro login
+openneuro download ds003826 input
+```
 
 ### Data citation
 
@@ -12,7 +23,7 @@ Michal Rafal Zareba and Magdalena Fafrowicz and Tadeusz Marek and Ewa Beldzik an
 
 ### Legal aspects of the input data
 
-...
+The input dataset has been released under the CC0 license.
 
 ## Output data
 
@@ -49,5 +60,5 @@ rm -rf output
 
 ## References
 
-[1]: https://www.example.com
-[2]: https://www.markdownguide.org/cheat-sheet/
+[1]: https://doi.org/10.18112/openneuro.ds003826.v3.0.1
+[2]: https://doi.org/10.1080/09291016.2021.1990501
