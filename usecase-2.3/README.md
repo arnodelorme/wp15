@@ -29,14 +29,18 @@ Wakeman, DG and Henson, RN (2024). Multisubject, multimodal face processing. Ope
 
 ### Legal aspects of the input data
 
-The input dataset has been released under the CC0 license.
+The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
+
+## Pseudo data
+
+A scrambled version of the data can be generated using ...
 
 ## Output data
 
 The output data will consist of ...
 
 ```console
-mkdir -p output
+mkdir output
 ```
 
 ## Analysis pipeline

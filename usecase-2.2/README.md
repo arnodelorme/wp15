@@ -23,14 +23,18 @@ Michal Rafal Zareba and Magdalena Fafrowicz and Tadeusz Marek and Ewa Beldzik an
 
 ### Legal aspects of the input data
 
-The input dataset has been released under the CC0 license.
+The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
+
+## Pseudo data
+
+A scrambled version of the data can be generated using ...
 
 ## Output data
 
 The output data will consist of ...
 
 ```console
-mkdir -p output
+mkdir output
 ```
 
 ## Analysis pipeline
@@ -47,7 +51,7 @@ mkdir -p output
 
 Executing the pipeline from the Linux command-line is done using the following:
 
-    ...
+...
 
 ### Cleaning up
 
