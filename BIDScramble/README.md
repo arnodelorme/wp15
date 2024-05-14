@@ -24,7 +24,7 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-Currently there exist only a single tool named 'genbids'. Run ``bidscramble -h`` to see more information on the input arguments and output produced by this tool.
+Currently there exist only a single tool named 'bidscramble'. Run ``bidscramble -h`` to see more information on the input arguments and on the output produced by this tool.
 
 ```console
 usage: bidscramble [-h] [-c COVARIANCE [COVARIANCE ...]] [-i INCLUDE [INCLUDE ...]] inputdir outputdir
