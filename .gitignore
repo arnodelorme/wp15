@@ -1,6 +1,8 @@
-generative-BIDS/venv/*
-generative-BIDS/build/*
-generative-BIDS/*.egg-info/*
+BIDScramble/venv/*
+BIDScramble/build/*
+BIDScramble/*.egg-info/*
 
 usecase-*/input
+usecase-*/scrambled
 usecase-*/output
+usecase-*/venv
