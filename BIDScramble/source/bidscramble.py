@@ -10,6 +10,7 @@ import pandas as pd
 import shutil
 import numpy as np
 import json
+from urllib.request import urlopen
 from pathlib import Path
 from . import __version__, __description__, __url__
 
@@ -37,6 +38,24 @@ def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: l
     readme_file = inputdir/'README'
     if readme_file.is_file():
         shutil.copyfile(readme_file, outputdir/readme_file.name)
+
+    # Copy or add the LICENSE file
+    license_file = inputdir/'LICENSE'
+    if license_file.is_file():
+        shutil.copyfile(license_file, outputdir/license_file.name)
+    else:
+        license = dataset_description.get('License')
+        if license:
+            # Read the SPDX licenses
+            response = urlopen('https://spdx.org/licenses/licenses.json')
+            licenses = json.loads(response.read())['licenses']
+            for item in licenses:
+                if license in (item['name'], item['licenseId']):
+                    print(f"Downloading SPDX license: {item['licenseId']}")
+                    response = urlopen(item['detailsUrl'])
+                    license  = json.loads(response.read())['licenseText']
+                    break
+            license_file.write_text(license)
 
     # Create pseudo-random out data for all files of each included data type
     for pattern in include:
