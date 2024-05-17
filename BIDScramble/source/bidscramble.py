@@ -29,7 +29,7 @@ def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: l
     else:
         with dataset_file.open('r') as fid:
             dataset_description = json.load(fid)
-    dataset_description['GeneratedBy'] = [{'Name':__package__ or 'bidscramble', 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
+    dataset_description['GeneratedBy'] = [{'Name':__package__, 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
     dataset_description['DatasetType'] = 'derivative'
     with (outputdir/dataset_file.name).open('w') as fid:
         json.dump(dataset_description, fid, indent=4)
