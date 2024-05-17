@@ -24,38 +24,35 @@ def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: l
 
     # Create a dataset description file
     dataset_file = inputdir/'dataset_description.json'
-    if not dataset_file.is_file():
-        dataset_description = {}
-    else:
+    description  = {}
+    if dataset_file.is_file():
         with dataset_file.open('r') as fid:
-            dataset_description = json.load(fid)
-    dataset_description['GeneratedBy'] = [{'Name':__package__, 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
-    dataset_description['DatasetType'] = 'derivative'
+            description = json.load(fid)
+    description['GeneratedBy'] = [{'Name':__package__, 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
+    description['DatasetType'] = 'derivative'
     with (outputdir/dataset_file.name).open('w') as fid:
-        json.dump(dataset_description, fid, indent=4)
+        json.dump(description, fid, indent=4)
 
     # Copy the README file if it exists
     readme_file = inputdir/'README'
     if readme_file.is_file():
         shutil.copyfile(readme_file, outputdir/readme_file.name)
 
-    # Copy or add the LICENSE file
+    # Copy or download the LICENSE file
+    license      = description.get('License')
     license_file = inputdir/'LICENSE'
     if license_file.is_file():
         shutil.copyfile(license_file, outputdir/license_file.name)
-    else:
-        license = dataset_description.get('License')
-        if license:
-            # Read the SPDX licenses
-            response = urlopen('https://spdx.org/licenses/licenses.json')
-            licenses = json.loads(response.read())['licenses']
-            for item in licenses:
-                if license in (item['name'], item['licenseId']):
-                    print(f"Downloading SPDX license: {item['licenseId']}")
-                    response = urlopen(item['detailsUrl'])
-                    license  = json.loads(response.read())['licenseText']
-                    break
-            license_file.write_text(license)
+    elif license:
+        response = urlopen('https://spdx.org/licenses/licenses.json')
+        licenses = json.loads(response.read())['licenses']
+        for item in licenses:
+            if license in (item['name'], item['licenseId']):
+                print(f"Adding a '{item['licenseId']}' SPDX license file")
+                response = urlopen(item['detailsUrl'])
+                license  = json.loads(response.read())['licenseText']
+                break
+        license_file.write_text(license)
 
     # Create pseudo-random out data for all files of each included data type
     for pattern in include:
