@@ -14,7 +14,6 @@ classifiers      = ['Programming Language :: Python :: 3.8',
                     'Intended Audience :: Science/Research']
 dependencies     = ['pandas',
                     'numpy',
-                    'scikit-learn',
                     'tomli >= 1.1.0 ; python_version < "3.11"',
                     'python-dateutil']
 
