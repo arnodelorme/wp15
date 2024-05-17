@@ -66,7 +66,7 @@ if ~exist('sublist','var')
 end
 
 if ~exist('task','var')
-    task = {'ERN','MMN','N170','N2pc','N400','P3'};
+    task = {'MMN','N170','N2pc','N400','P3','ERN'};
 end
 
 all_sub = dir(fullfile(source,'sub-*'));
@@ -162,7 +162,7 @@ for t = 1:length(task)
                 'coarseFreqDetectPowerDiff',4,'chunkLength',30,...
                 'adaptiveNremove',1,'fixedNremove',1,'plotResults',0);
             % remove bad channels
-            EEG = pop_clean_rawdata( EEG,'FlatlineCriterion',5,'ChannelCriterion',0.8,...
+            EEG(s) = pop_clean_rawdata(EEG(s),'FlatlineCriterion',5,'ChannelCriterion',0.8,...
                 'LineNoiseCriterion',4,'Highpass',[0.25 0.75] ,...
                 'BurstCriterion','off','WindowCriterion','off','BurstRejection','off',...
                 'Distance','Euclidian','WindowCriterionTolerances','off' );
@@ -171,7 +171,6 @@ for t = 1:length(task)
             if ~isempty(idx)
                 EEG(s) = pop_interp(EEG(s), AvgChanlocs.expected_chanlocs(idx), 'sphericalKang');
             end
-            EEG(s) = pop_reref(EEG(s),[],'interpchan','off');
 
             % ICA cleaning
             EEG(s) = pop_runica(EEG(s), 'icatype','picard','maxiter',500,'mode','standard','concatcond','on','options',{'pca',EEG(s).nbchan-1});
@@ -184,6 +183,9 @@ for t = 1:length(task)
                 'LineNoiseCriterion','off','Highpass','off','BurstCriterion',20,...
                 'WindowCriterion',0.25,'BurstRejection','on','Distance','Euclidian',...
                 'WindowCriterionTolerances',[-Inf 7] );
+
+            % re-reference
+            EEG(s) = pop_reref(EEG(s),[],'interpchan','off');
             EEG(s) = pop_saveset(EEG(s),'savemode','resave');
         catch pipe_error
             error_report{s} = pipe_error.message; %#ok<AGROW>
