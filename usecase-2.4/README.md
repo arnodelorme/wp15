@@ -59,7 +59,7 @@ git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
 mv limo_tools eeglab2024.0/plugins/
 git clone https://github.com/SIESTA-eu/wp15.git
 mv wp15/usecase-2.4/2.4.A/ERP_Core_WB.m .
-rm -rf eeglab_current.zip wp15
+rm eeglab_current.zip
 ```
 
 You should now have something like:
