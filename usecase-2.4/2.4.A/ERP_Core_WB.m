@@ -27,20 +27,36 @@ function ERP_Core_WB(source, destination, varargin)
 % Cyril Pernet, during the spring of 2024 
 % + various updates by Marcel and Jan-Mathijs
 
-% start eeglab and check plug-ins
+% start eeglab and check plugins
 rng('default');
 ALLEEG = eeglab('nogui'); %#ok<NASGU>
+
 if ~exist('pop_importbids','file')
     plugin_askinstall('bids-matlab-tools',[],1);
 end
+if ~exist('pop_importbids','file')
+    error('plugin bids-matlab-tools not installed');
+end
+
 if ~exist('pop_zapline_plus','file')
     plugin_askinstall('zapline-plus',[],1);
 end
+if ~exist('pop_zapline_plus','file')
+    error('plugin zapline-plus not installed');
+end
+
 if ~exist('picard','file')
     plugin_askinstall('picard', 'picard', 1);
 end
+if ~exist('picard','file')
+    error('plugin picard not installed');
+end
+
 if ~exist('ft_prepare_neighbours','file')
     plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
+end
+if ~exist('ft_prepare_neighbours','file')
+    error('plugin Fieldtrip-lite not installed');
 end
 
 % check options
