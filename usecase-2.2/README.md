@@ -8,7 +8,14 @@ The input data [[1]] consists of structural MRI and tabular data. The dataset is
 
 The input data consists of 277 files with a combined size of 1.18GB.
 
-Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed.
+Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed. To install a specific (latest) version of Node.js it is adviced to first [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation from there:
+
+```console
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install node    # "node" is an alias for the latest version (replace e.g. with "22.2.0" if needed)
+```
+
+If your node installation is up-to-date and working then make sure you have an openneuro account and in a new termminal run:
 
 ```console
 npm install -g @openneuro/cli
