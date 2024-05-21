@@ -12,7 +12,7 @@ Downloading the data with the [cli](https://docs.openneuro.org/packages/openneur
 
 ```console
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install node    # "node" is an alias for the latest version (replace e.g. with "22.2.0" if needed)
+nvm install node    # "node" is an alias for the latest version (replace e.g. with "21.7.3" if needed)
 ```
 
 If your node installation is up-to-date and working then make sure you have an openneuro account and in a new termminal run:
@@ -21,7 +21,7 @@ If your node installation is up-to-date and working then make sure you have an o
 npm install -g @openneuro/cli
 
 openneuro login
-openneuro download ds003826 input
+openneuro download ds003826 input   # Choose snapshot 3.0.1
 ```
 
 ### Data citation
