@@ -4,7 +4,7 @@ This implements ...
 
 ## Input data
 
-The input data [[1]] is a multi-subject, multi-modal neuroimaging dataset that is described in detail in teh accompanying data publication [[2]]. It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
+The input data [[1]] is a multi-subject, multi-modal neuroimaging dataset that is described in detail in the accompanying data publication [[2]]. It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
 
 The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using datalad [[3]].
 
