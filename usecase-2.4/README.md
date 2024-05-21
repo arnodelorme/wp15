@@ -62,10 +62,9 @@ mv limo_tools eeglab2024.0/plugins/
 git clone https://github.com/SIESTA-eu/wp15.git
 mv wp15/usecase-2.4/2.4.A/ERP_Core_WB.m .
 rm eeglab_current.zip
-matlab -r -nodesktop -nojvm 'plugin_askinstall('bids-matlab-tools',[],1)'
-matlab -r -nodesktop -nojvm 'plugin_askinstall('zapline-plus',[],1)'
-matlab -r -nodesktop -nojvm 'plugin_askinstall('picard',[],1)'
-matlab -r -nodesktop -nojvm 'plugin_askinstall('bids-matlab-tools',[],1)'
+matlab -r -nodesktop -nojvm 'addpath('eeglab2024.0'); eeglab; plugin_askinstall('bids-matlab-tools',[],1)'
+matlab -r -nodesktop -nojvm 'addpath('eeglab2024.0'); eeglab; plugin_askinstall('zapline-plus',[],1)'
+matlab -r -nodesktop -nojvm 'addpath('eeglab2024.0'); eeglab; plugin_askinstall('picard',[],1)'
 ```
 
 You should now have something like:
