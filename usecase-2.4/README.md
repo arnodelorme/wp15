@@ -136,8 +136,7 @@ where `input` is the input folder and `output` the output folder. The absolute p
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input
-rm -rf output
+rm -rf input scrambled output
 ```
 
 ## References

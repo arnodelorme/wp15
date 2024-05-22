@@ -66,7 +66,7 @@ OUTFILE=./output/results.tsv
 Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
 ```
 
-or with the the scrambled version of the data like this:
+or with the scrambled version of the data like this:
 
 ```console
 DATASET=./scrambled/participants.tsv
