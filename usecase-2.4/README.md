@@ -2,8 +2,6 @@
 
 This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follows the BIDS standard.
 
-Currently only vrsion `2.4.A` is implemented as fully automated, testing whether this can be run on anonymized data. Idally we would have a version `2.4.B` requiring user interaction at the input level, minimizing what information is given to users given a research question at the output level.
-
 ## Input data
 
 The input data is a freely available online resource named "ERP CORE" [[1]], consisting of optimized paradigms, experiment control scripts, example data from 40 neurotypical adults, data processing pipelines and analysis scripts, and a broad set of results for 7 widely used ERP components: N170, mismatch negativity (MMN), N2pc, N400, P3, lateralized readiness potential (LRP), and error-related negativity (ERN).
@@ -49,8 +47,8 @@ The output will consist of only files and folders for group-level aggregated dat
 ### Software Installation
 
 This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox.
-Once EEGLAB is installed, 
-and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. The FieldTrip-lite plugin is downloaded automatically.
+
+Once EEGLAB is installed, and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. The FieldTrip-lite plugin is downloaded automatically.
 
 The LIMO tools must be placed inside the EEGLAB plugin folder as shown below.
 
@@ -62,9 +60,6 @@ mv limo_tools eeglab2024.0/plugins/
 git clone https://github.com/SIESTA-eu/wp15.git
 mv wp15/usecase-2.4/2.4.A/ERP_Core_WB.m .
 rm eeglab_current.zip
-matlab -r -nodesktop -nojvm 'addpath('eeglab2024.0'); eeglab; plugin_askinstall('bids-matlab-tools',[],1)'
-matlab -r -nodesktop -nojvm 'addpath('eeglab2024.0'); eeglab; plugin_askinstall('zapline-plus',[],1)'
-matlab -r -nodesktop -nojvm 'addpath('eeglab2024.0'); eeglab; plugin_askinstall('picard',[],1)'
 ```
 
 You should now have something like:
@@ -107,19 +102,20 @@ FieldTrip is open source software and released under the GPLv3 license.
 Executing the pipeline from the Linux command-line is done like this:
 
 ```console
-matlab -nojvm -nodisplay -nosplash -r "addpath('eeglab2024.0'); ERP_Core_WB('input', 'output'); exit"
+matlab -nojvm -nodisplay -nosplash -r "restoredefaultpath; ERP_Core_WB_install; ERP_Core_WB('input', 'output'); exit"
 ```
 
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```matlab
-addpath('eeglab2024.0')
+restoredefaultpath;
+ERP_Core_WB_install;
 ERP_Core_WB(fullfile(pwd, 'input'), fullfile(pwd, 'output'))
 ```
 
 where `input` is the input folder and `output` the output folder. The absolute paths need to be provided for the pipeline to run smoothly.
 
-> **Note**: The MATLAB function `ERP_Core_WB.m` must be in the MATLAB path or the present working directory should be the folder containing the `ERP_Core_WB.m` script.
+> **Note**: The MATLAB functions `ERP_Core_WB_install.m` and `ERP_Core_WB.m` must be in the MATLAB path or in the present working directory.
 
 ### Cleaning up
 
