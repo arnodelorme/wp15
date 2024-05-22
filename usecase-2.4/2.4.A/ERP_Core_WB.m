@@ -52,6 +52,14 @@ if ~exist('picard','file')
     error('plugin picard not installed');
 end
 
+
+if ~exist('pop_iclabel','file')
+    plugin_askinstall('ICLabel', 'ICLabel', 1);
+end
+if ~exist('pop_iclabel','file')
+    error('plugin IClabel not installed');
+end
+
 if ~exist('ft_prepare_neighbours','file')
     plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
 end
