@@ -78,7 +78,7 @@ if ~exist('pop_importbids','file') || ...
         ~exist('ft_prepare_neighbours','file') || ...
         ~exist('limo_eeg','file')
     if index == 2
-        error('%s plugin is missing',missing{1});
+        error('installation error plungin %s',missing{1});
     else
         cellfun(@(x) warning('installation error plungin %s',x), missing)
         error('try install manually - see message above for which plugin(s) fail(s)')
