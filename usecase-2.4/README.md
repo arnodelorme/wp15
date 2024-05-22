@@ -82,32 +82,7 @@ You should now have something like:
     │   └── limo_tools
     └── [..]
 
-There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. This is best to install those directly from within the matlab environment, also ensuring all paths are set.
-
-```console
-matlab
-```
-
-Here edit the 1st line of code below with your path to EEGLAB and run the code in the MATLAB command window
-```matlab
-addpath('/usr/bin/matlab/eeglab'); eeglab('nogui')
-plugin_askinstall('bids-matlab-tools',[],1);
-plugin_askinstall('zapline-plus',[],1);
-plugin_askinstall('clean_rawdata',[],1);
-plugin_askinstall('picard', 'picard', 1);
-plugin_askinstall('ICLabel', 'picard', 1);
-plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
-if ~exist('pop_importbids','file') || ...
-        ~exist('pop_zapline_plus','file') || ...
-        ~exist('picard','file') || ...
-        ~exist('ft_prepare_neighbours','file') || ...
-        ~exist('limo_eeg','file')
-    error('1 or more of the necessary plugins is not found');
-else
-    disp('all plugins found')
-    savepath
-end
-```
+There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. This is best to install those directly from within the matlab environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/ERP_Core_WB_install.m)
 
 Once all is installed, the EEGLAB plugins directory should look likle this
 
