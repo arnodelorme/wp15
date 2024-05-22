@@ -37,23 +37,18 @@ end
 if ~exist('pop_zapline_plus','file')
     plugin_askinstall('zapline-plus',[],1);
 end
-
 if ~exist('pop_clean_rawdata','file')
     plugin_askinstall('clean_rawdata', 'clean_rawdata', 1);
 end
-
 if ~exist('picard','file')
     plugin_askinstall('picard', 'picard', 1);
 end
-
 if ~exist('pop_iclabel','file')
     plugin_askinstall('ICLabel', 'ICLabel', 1);
 end
-
 if ~exist('ft_prepare_neighbours','file')
     plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
 end
-
 if ~exist('pop_importbids','file') || ...
         ~exist('pop_zapline_plus','file') || ...
         ~exist('pop_clean_rawdata','file') || ...
@@ -63,7 +58,6 @@ if ~exist('pop_importbids','file') || ...
         ~exist('limo_eeg','file')
     error('1 or more of the necessary plugins is not found');
 end
-
 
 % check options
 if nargin == 1
