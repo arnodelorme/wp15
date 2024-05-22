@@ -1,18 +1,16 @@
 # SIESTA - work package 15 - use case 2.2
 
-This implements ...
+This implements the [MRIQC](https://mriqc.readthedocs.io/en/latest/) pipeline for obtaining standard QC measures from BIDS MRI datasets.
 
 ## Input data
 
-The input data [[1]] consists of structural MRI and tabular data. The dataset is described in more detail in an accompanying publication [[2]].
+The input dataset [[1]] contains structural T1-weighted MRI brain scans from 136 young individuals (87 females; age range from 18 to 35 years old) along with questionnaire-assessed measurements of trait-like chronotype, sleep quality and daytime sleepiness. The data is organized according to the BIDS standard (combined size of 1.18GB) and mostly useful to scientists interested in circadian rhythmicity, structural brain correlates of chronotypes in humans and the effects of sleeping habits and latitude on brain anatomy. The dataset is described in more detail in an accompanying publication [[2]].
 
-The input data consists of 277 files with a combined size of 1.18GB.
-
-Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed. To install a specific (latest) version of Node.js it is adviced to first [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation from there:
+Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed. To install a specific (latest) version of Node.js you can [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation(s) from there:
 
 ```console
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install node    # "node" is an alias for the latest version (replace e.g. with "21.7.3" if needed)
+nvm install node    # "node" is an alias for the latest version
 ```
 
 If your node installation is up-to-date and working then make sure you have an openneuro account and in a new termminal run:
@@ -24,6 +22,8 @@ openneuro login
 openneuro download ds003826 input   # Choose snapshot 3.0.1
 ```
 
+Tip: Use e.g. Node.js version 21.7.3 if you get errors from the openneuro client
+
 ### Data citation
 
 Michal Rafal Zareba and Magdalena Fafrowicz and Tadeusz Marek and Ewa Beldzik and Halszka Oginska and Aleksandra Domagalik (2022). Structural (t1) images of 136 young healthy adults; study of effects of chronotype, sleep quality and daytime sleepiness on brain structure. OpenNeuro. [Dataset] doi: doi:10.18112/openneuro.ds003826.v3.0.1
@@ -34,11 +34,15 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Pseudo data
 
-A scrambled version of the data can be generated using ...
+The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
+
+```console
+WIP
+```
 
 ## Output data
 
-The output data will consist of ...
+The output data consists of MRI QC parameters of each participant
 
 ```console
 mkdir output
@@ -48,25 +52,31 @@ mkdir output
 
 ### Software requirements
 
-...
+Running the analysis pipeline requires a working Apptainer installation (for instructions see [here](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux)). Next the MRIQC container needs to be build (NB: this requires root permission):
+
+```console
+sudo apptainer build mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
+```
 
 ### Legal aspects of the required software
 
-...
+The apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html) and qmriqc under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
 
 ### Executing the pipeline
 
 Executing the pipeline from the Linux command-line is done using the following:
 
-...
+```console
+apptainer run --cleanenv mriqc-24.0.0.sif input output participant
+apptainer run --cleanenv mriqc-24.0.0.sif input output group
+```
 
 ### Cleaning up
 
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input
-rm -rf output
+rm -rf input scrambled output
 ```
 
 ## References
