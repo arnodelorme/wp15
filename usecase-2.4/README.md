@@ -47,8 +47,8 @@ The output will consist of only files and folders for group-level aggregated dat
 ### Software Installation
 
 This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox.
-
-Once EEGLAB is installed, and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. The FieldTrip-lite plugin is downloaded automatically.
+Once EEGLAB is installed, 
+and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. 
 
 The LIMO tools must be placed inside the EEGLAB plugin folder as shown below.
 
@@ -58,6 +58,7 @@ unzip eeglab_current.zip
 git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
 mv limo_tools eeglab2024.0/plugins/
 git clone https://github.com/SIESTA-eu/wp15.git
+mv wp15/usecase-2.4/2.4.A/ERP_Core_WB.m .
 rm eeglab_current.zip
 ```
 
@@ -80,11 +81,51 @@ You should now have something like:
     ├── functions
     ├── plugins
     │   └── limo_tools
-    │   └── PICARD1.0
-    │   └── bids-matlab-tools7.0
-    │   └── Fieldtrip-lite20230309
-    │   └── zapline-plus1.2.1
     └── [..]
+
+There are also 6 additional EEGLAB plugins/dependencies to be installed (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite).
+This is best to install those directly from within the matlab environment, ensuring all paths are set.
+
+```console
+matlab
+```
+
+Here edit the 1st line of code below with your path to EEGLAB and run the code in the MATLAB command window
+```matlab
+addpath('/usr/bin/matlab/eeglab'); eeglab('nogui')
+plugin_askinstall('bids-matlab-tools',[],1);
+plugin_askinstall('zapline-plus',[],1);
+plugin_askinstall('clean_rawdata',[],1);
+plugin_askinstall('picard', 'picard', 1);
+plugin_askinstall('ICLabel', 'picard', 1);
+plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
+if ~exist('pop_importbids','file') || ...
+        ~exist('pop_zapline_plus','file') || ...
+        ~exist('picard','file') || ...
+        ~exist('ft_prepare_neighbours','file') || ...
+        ~exist('limo_eeg','file')
+    error('1 or more of the necessary plugins is not found');
+else
+    disp('all plugins found')
+    savepath
+end
+```
+
+Once all is installed, the EEGLAB plugins directory should look likle this
+
+    eeglab2024.0
+    ├── [..]
+    ├── eeglab.m
+    ├── eeglab.prj
+    ├── functions
+    ├── plugins
+    │   └── bids-matlab-tools8.0
+    │   └── clean_rawdata2.91
+    │   └── Fieldtrip-lite20240111
+    │   └── ICLabel1.6
+    │   └── limo_tools
+    │   └── PICARD1.0
+    │   └── zapline-plus1.2.1
 
 ### Legal aspects of the required software
 
