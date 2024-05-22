@@ -53,12 +53,13 @@ and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tool
 The LIMO tools must be placed inside the EEGLAB plugin folder as shown below.
 
 ```console
+git clone https://github.com/SIESTA-eu/wp15.git
+cd wp15
 wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
 unzip eeglab_current.zip
+rm eeglab_current.zip
 git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
 mv limo_tools eeglab2024.0/plugins/
-git clone https://github.com/SIESTA-eu/wp15.git
-rm eeglab_current.zip
 ```
 
 You should now have something like:
