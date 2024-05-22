@@ -34,38 +34,36 @@ ALLEEG = eeglab('nogui'); %#ok<NASGU>
 if ~exist('pop_importbids','file')
     plugin_askinstall('bids-matlab-tools',[],1);
 end
-if ~exist('pop_importbids','file')
-    error('plugin bids-matlab-tools not installed');
-end
-
 if ~exist('pop_zapline_plus','file')
     plugin_askinstall('zapline-plus',[],1);
 end
-if ~exist('pop_zapline_plus','file')
-    error('plugin zapline-plus not installed');
+
+if ~exist('pop_clean_rawdata','file')
+    plugin_askinstall('clean_rawdata', 'clean_rawdata', 1);
 end
 
 if ~exist('picard','file')
     plugin_askinstall('picard', 'picard', 1);
 end
-if ~exist('picard','file')
-    error('plugin picard not installed');
-end
-
 
 if ~exist('pop_iclabel','file')
     plugin_askinstall('ICLabel', 'ICLabel', 1);
-end
-if ~exist('pop_iclabel','file')
-    error('plugin IClabel not installed');
 end
 
 if ~exist('ft_prepare_neighbours','file')
     plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
 end
-if ~exist('ft_prepare_neighbours','file')
-    error('plugin Fieldtrip-lite not installed');
+
+if ~exist('pop_importbids','file') || ...
+        ~exist('pop_zapline_plus','file') || ...
+        ~exist('pop_clean_rawdata','file') || ...
+        ~exist('picard','file') || ...
+        ~exist('pop_iclabel','file') || ...
+        ~exist('ft_prepare_neighbours','file') || ...
+        ~exist('limo_eeg','file')
+    error('1 or more of the necessary plugins is not found');
 end
+
 
 % check options
 if nargin == 1
