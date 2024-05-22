@@ -4,6 +4,7 @@ addpath('eeglab2024.0');
 % the rest runs automatically
 eeglab('nogui')
 pluginfolder = fullfile(fileparts(which('eeglab.m')),'plugins');
+addpath(genpath(pluginfolder));
 
 index = 1;
 plugin_askinstall('bids-matlab-tools',[],1);
