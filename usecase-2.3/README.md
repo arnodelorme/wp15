@@ -20,7 +20,7 @@ cd input
 datalad get sub-*/ses-meg/meg/*
 
 # get the anatomical MRI data for all subjects
-datalad get sub-*/ses-mri/anat/*
+datalad get sub-*/ses-mri/anat/*mprage_T1w.nii.gz
 ```
 
 ### Data citation
@@ -37,7 +37,7 @@ A scrambled version of the data can be generated using ...
 
 ## Output data
 
-The output data will consist of ...
+The output data consists of single-subject data that might be considered personal, and group-averaged aggregated data.
 
 ```console
 mkdir output
@@ -47,11 +47,13 @@ mkdir output
 
 ### Software requirements
 
-...
+The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later.
 
 ### Legal aspects of the required software
 
-...
+MATLAB is commercial software and requires a license.
+
+FieldTrip is open source and released under the GPLv3 license.
 
 ### Executing the pipeline
 

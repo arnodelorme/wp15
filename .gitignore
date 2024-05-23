@@ -1,3 +1,7 @@
+._*
+*.swp
+*.bak
+
 BIDScramble/venv/*
 BIDScramble/build/*
 BIDScramble/*.egg-info/*
