@@ -26,7 +26,7 @@ This can be conceived to be graphically depicted in a flowchart.
 2. data user -> requests the product owner for access to the platform
 3. data user -> installs software and dependencies
 4. data user -> requests the product owner for scrambled data to be disclosed (using tools developed in this WP)
-5. (optional) product owner -> requests the data owner for a review and permission to disclose the scrambled data to the data user
+5. (optional) product owner -> scrambles the data and requests the data owner for a review and permission to disclose the scrambled data to the data user
 6. (optional) data owner -> grants permission
 7. data user -> interactively implements and tests analysis pipeline on scrambled data
 8. data user -> requests the product owner for the pipeline to be executed on the input data, output data is not yet disclosed
