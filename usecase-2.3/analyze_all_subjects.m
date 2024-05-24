@@ -1,10 +1,10 @@
 inputprefix = fullfile(pwd, 'input');
 outputprefix = fullfile(pwd, 'output');
 
-for subject=10:16
+for subject=1:16
   close all
 
-  nruns = 1; % FIXME
+  nruns = 6; % FIXME
   megfile = cell(1,nruns);
   for run=1:nruns
     megfile{run} = fullfile(inputprefix, sprintf('sub-%02d/ses-meg/meg/sub-%02d_ses-meg_task-facerecognition_run-%02d_meg.fif', subject, subject, run));

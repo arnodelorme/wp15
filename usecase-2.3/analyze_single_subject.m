@@ -54,7 +54,7 @@ if do_preprocessing
     cfg.baselinewindow = [-inf 0];
     cfg.demean = 'yes';
     block{i} = ft_preprocessing(cfg);
-
+    block{i} = ft_struct2single(block{i});
   end
 
   % show the two different types of trial codes
@@ -65,7 +65,7 @@ if do_preprocessing
   cfg.keepsampleinfo = 'no';
   cfg.outputfile = fullfile(outputpath, 'raw.mat');
   raw = ft_appenddata(cfg, block{:});
-
+  
   clear block raw
 
   %% deal with maxfiltering
@@ -91,6 +91,7 @@ if do_preprocessing
   cfg = [];
   cfg.baselinewindow = [-inf 0];
   cfg.demean = 'yes';
+  cfg.precision = 'single';
   cfg.inputfile = fullfile(outputpath, 'raw_subspace.mat');
   cfg.outputfile = fullfile(outputpath, 'raw_subspace_demean.mat');
   raw_subspace_demean = ft_preprocessing(cfg);
@@ -117,7 +118,11 @@ if do_artefacts
 
   % cfg.channel = 'eeg';
   % raw_clean = ft_rejectvisual(cfg, raw_clean);
-
+  
+  % some downstream analysis may get stuck if it encounters both a grad and elec fields
+  % FIXME this should be addressed in the fieldtrip code: specifically for me (JM) ft_combineplanar
+  % did not run without error, because it did not correctly detect the senstyp automatically
+  raw_clean = rmfield(raw_clean, 'elec');
   save(fullfile(outputpath, 'raw_clean'), 'raw_clean');
 
 end % do artefacts
@@ -162,10 +167,10 @@ if do_timelock
   print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar.png'));
 
   % remove the elec field, otherwise it is not detected as neuromag306
-  timelock_famous     = rmfield(timelock_famous, 'elec');
-  timelock_unfamiliar = rmfield(timelock_unfamiliar, 'elec');
-  timelock_scrambled  = rmfield(timelock_scrambled, 'elec');
-  timelock_faces      = rmfield(timelock_faces, 'elec');
+  timelock_famous     = removefields(timelock_famous, 'elec');
+  timelock_unfamiliar = removefields(timelock_unfamiliar, 'elec');
+  timelock_scrambled  = removefields(timelock_scrambled, 'elec');
+  timelock_faces      = removefields(timelock_faces, 'elec');
 
   timelock_famous_cmb      = ft_combineplanar(cfg, timelock_famous);
   timelock_unfamiliar_cmb  = ft_combineplanar(cfg, timelock_unfamiliar);
@@ -210,33 +215,37 @@ if do_frequency
   cfg.method = 'wavelet';
   cfg.width = 5;
   cfg.gwidth = 2;
-  cfg.keeptrials = 'yes';
+  % cfg.keeptrials = 'yes';
   cfg.toi = -0.5:0.02:1.2;
   cfg.foi = 2:2:50;
   cfg.inputfile = fullfile(outputpath, 'raw_clean.mat');
-  cfg.outputfile = fullfile(outputpath, 'freq.mat');
-  freq = ft_freqanalysis(cfg);
+  % cfg.outputfile = fullfile(outputpath, 'freq.mat');
+  % freq = ft_freqanalysis(cfg);
 
   %% compute selective averages
 
-  load(fullfile(outputpath, 'freq'));
+  % load(fullfile(outputpath, 'freq'));
 
-  cfg = [];
+  % cfg = [];
   cfg.trials = find(strcmp(raw_clean.trialinfo.stim_type, 'Famous'));
   cfg.outputfile = fullfile(outputpath, 'freq_famous.mat');
-  freq_famous = ft_freqdescriptives(cfg, freq);
+  % freq_famous = ft_freqdescriptives(cfg, freq);
+  freq_famous = ft_freqanalysis(cfg);
 
   cfg.trials = find(strcmp(raw_clean.trialinfo.stim_type, 'Unfamiliar'));
   cfg.outputfile = fullfile(outputpath, 'freq_unfamiliar.mat');
-  freq_unfamiliar = ft_freqdescriptives(cfg, freq);
+  % freq_unfamiliar = ft_freqdescriptives(cfg, freq);
+  freq_unfamiliar = ft_freqanalysis(cfg);
 
   cfg.trials = find(strcmp(raw_clean.trialinfo.stim_type, 'Scrambled'));
   cfg.outputfile = fullfile(outputpath, 'freq_scrambled.mat');
-  freq_scrambled = ft_freqdescriptives(cfg, freq);
+  % freq_scrambled = ft_freqdescriptives(cfg, freq);
+  freq_scrambled = ft_freqanalysis(cfg);
 
   cfg.trials = find(strcmp(raw_clean.trialinfo.stim_type, 'Famous') | strcmp(raw_clean.trialinfo.stim_type, 'Unfamiliar'));
   cfg.outputfile = fullfile(outputpath, 'freq_faces.mat');
-  freq_faces = ft_freqdescriptives(cfg, freq);
+  % freq_faces = ft_freqdescriptives(cfg, freq);
+  freq_faces = ft_freqanalysis(cfg);
 
   %% Combine planar and do visualization
 
