@@ -22,7 +22,7 @@ def test_bidscramble(tmp_path):
     # Create the output data
     bidscramble(tmp_path/'input', tmp_path/'output')
 
-    # Check if all the output data + LICENSE file is there
+    # Check if all output data + LICENSE file is there
     assert (tmp_path/'output'/'LICENSE').is_file()
     assert len(list((tmp_path/'input').rglob('*'))) == len(list((tmp_path/'output').rglob('*'))) - 1
 
