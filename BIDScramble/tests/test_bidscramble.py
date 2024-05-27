@@ -1,10 +1,15 @@
 import json
 import urllib.request, urllib.error
 from pathlib import Path
-import sys
-sys.path.append(str(Path(__file__).parents[2]))
-from source import __version__, __description__, __url__
-from source.bidscramble import bidscramble
+from importlib.util import find_spec
+if find_spec('bidscramble') is None:
+    import sys
+    sys.path.append(str(Path(__file__).parents[2]))
+    from source import __version__, __description__, __url__
+    from source.bidscramble import bidscramble
+else:
+    from bidscramble import __version__, __description__, __url__
+    from bidscramble.bidscramble import bidscramble
 
 
 def test_bidscramble(tmp_path):
