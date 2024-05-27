@@ -1,0 +1,18 @@
+name: CI BIDScramble
+on:
+  push:
+    paths:
+      - 'BIDScramble/**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./BIDScramble
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Tests with pytest
+        run: |
+          pytest tests
