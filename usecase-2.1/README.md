@@ -34,8 +34,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 A scrambled version of the data can be generated using [bidscramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscramble -h` for more information.
 
 ```console
-mkdir scrambled
-bidscramble input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README
+bidscramble_tsv input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README
 ```
 
 ## Output data
@@ -56,7 +55,7 @@ The R-software can be installed on a Linux, MacOS or Windows computer, specifica
 
 The R-package and the optparse package are licensed under GPL-2 or GPL-3.
 
-## Executing the pipeline
+### Executing the pipeline
 
 Executing the pipeline from the Linux command-line is done with the real input data like this:
 

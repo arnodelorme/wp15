@@ -37,7 +37,8 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
 
 ```console
-WIP
+mkdir scrambled
+bidscramble input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README
 ```
 
 ## Output data
@@ -50,28 +51,30 @@ mkdir output
 
 ## Analysis pipeline
 
-### Software requirements
+### Software installation
 
-Running the analysis pipeline requires a working Apptainer installation (for instructions see [here](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux)). Next the MRIQC container needs to be build (NB: this requires root permission):
+Running the analysis pipeline requires a working [Apptainer installation](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux) (version >= 2.5). Next the MRIQC container needs to be build (NB: this requires root permission):
 
 ```console
 sudo apptainer build mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 ```
 
-### Legal aspects of the required software
+### Legal aspects of the software
 
-The apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html) and qmriqc under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
+The apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html) and mriqc under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
 
 ### Executing the pipeline
 
-Executing the pipeline from the Linux command-line is done using the following:
+Executing the pipeline from the Linux command-line to generate the output data is done using the following:
 
 ```console
-apptainer run --cleanenv mriqc-24.0.0.sif input output participant
-apptainer run --cleanenv mriqc-24.0.0.sif input output group
+mkdir mriqc output
+apptainer run --cleanenv mriqc-24.0.0.sif input mriqc participant
+apptainer run --cleanenv mriqc-24.0.0.sif input mriqc group
+
 ```
 
-### Cleaning up
+## Cleaning up
 
 Cleaning up the input and output data is done using:
 

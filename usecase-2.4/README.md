@@ -44,7 +44,7 @@ The output will consist of only files and folders for group-level aggregated dat
 
 ## Analysis pipeline
 
-### Software Installation
+### Software installation
 
 This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox.
 Once EEGLAB is installed, 
@@ -101,7 +101,7 @@ Once all is installed, the EEGLAB plugins directory should look likle this
     │   └── PICARD1.0
     │   └── zapline-plus1.2.1
 
-### Legal aspects of the required software
+### Legal aspects of the software
 
 MATLAB is commercial software.
 
@@ -131,7 +131,7 @@ where `input` is the input folder and `output` the output folder. The absolute p
 
 > **Note**: The MATLAB functions `ERP_Core_WB_install.m` and `ERP_Core_WB.m` must be in the MATLAB path or in the present working directory.
 
-### Cleaning up
+## Cleaning up
 
 Cleaning up the input and output data is done using:
 

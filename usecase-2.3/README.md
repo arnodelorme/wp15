@@ -45,11 +45,11 @@ mkdir output
 
 ## Analysis pipeline
 
-### Software requirements
+### Software installation
 
 The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later.
 
-### Legal aspects of the required software
+### Legal aspects of the software
 
 MATLAB is commercial software and requires a license.
 
@@ -61,7 +61,7 @@ Executing the pipeline from the Linux command-line is done using the following:
 
 ...
 
-### Cleaning up
+## Cleaning up
 
 Cleaning up the input and output data is done using:
 
