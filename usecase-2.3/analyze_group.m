@@ -109,7 +109,7 @@ save(fullfile(outputprefix, 'group', 'diff_cmb_faces_vs_scrambled'), 'diff_cmb_f
 save(fullfile(outputprefix, 'group', 'diff_cmb_famous_vs_unfamiliar'), 'diff_cmb_famous_vs_unfamiliar');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% more detailled visualisation
+%% more detailed visualisation
 
 % add the statistical mask to the data
 diff_cmb_faces_vs_scrambled.mask = stat_cmb_faces_vs_scrambled.mask;

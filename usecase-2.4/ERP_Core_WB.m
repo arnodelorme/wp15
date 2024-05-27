@@ -161,7 +161,7 @@ for t = 1:length(task)
     end
     save(fullfile(outdir, 'AvgChanlocs.mat'),'AvgChanlocs')
 
-    %% Pre-procesing
+    %% Pre-processing
     % for each subject, downsample, clean 50Hz, remove bad channels,
     % interpolate, re-reference to the average, run ICA to remove
     % eye and muscle artefacts, delete bad segments

@@ -70,7 +70,7 @@ if do_preprocessing
 
   %% deal with maxfiltering
 
-  % the data has been maxfiltered and subsequently contatenated
+  % the data has been maxfiltered and subsequently concatenated
   % this will result in an ill-conditioned estimate of covariance or CSD
 
   cfg = [];

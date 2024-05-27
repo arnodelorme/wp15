@@ -1,6 +1,6 @@
 # BIDScramble
 
-The BIDScramble tool generates scrambled or pseudo-random BIDS datasets from existing BIDS datasets, while preserving statistical distributions of user-specified variables and preserving user-specified effects of interest. The ouput data of this tool is not (or at least minimally) traceable and does not contain personal data.
+The BIDScramble tool generates scrambled or pseudo-random BIDS datasets from existing BIDS datasets, while preserving statistical distributions of user-specified variables and preserving user-specified effects of interest. The output data of this tool is not (or at least minimally) traceable and does not contain personal data.
 
 It requires some BIDS-specific tooling to make the input dataset properly anonymous, possibly by replacing it with scrambled. That allows researchers to interact with pseudo-random datasets and code to implement and test their pipelines. The pipelines should run on the scrambled data just as it runs on the real input data.
 
