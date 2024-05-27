@@ -1,6 +1,5 @@
 import json
 import urllib.request, urllib.error
-from pathlib import Path
 from source import __version__, __description__, __url__
 from source.bidscramble import bidscramble
 
