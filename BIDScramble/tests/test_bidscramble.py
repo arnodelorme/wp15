@@ -1,7 +1,7 @@
 import json
 import urllib.request, urllib.error
-from bidscramble import __version__, __description__, __url__
-from bidscramble.bidscramble import bidscramble
+from source import __version__, __description__, __url__
+from source.bidscramble import bidscramble
 
 
 def test_bidscramble(tmp_path):

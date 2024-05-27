@@ -33,7 +33,6 @@ min_version      = 4.0
 envlist          = py38, py311
 
 [testenv]
-extras           = all
 deps             = pytest
 commands         = pytest
 """
