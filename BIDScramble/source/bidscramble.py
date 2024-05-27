@@ -15,7 +15,7 @@ from pathlib import Path
 from . import __version__, __description__, __url__
 
 
-def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
+def bidscramble(inputdir: str, outputdir: str):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -35,7 +35,7 @@ def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: l
     if dataset_file.is_file():
         with dataset_file.open('r') as fid:
             description = json.load(fid)
-    description['GeneratedBy'] = [{'Name':__package__, 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
+    description['GeneratedBy'] = [{'Name':'BIDScramble', 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
     description['DatasetType'] = 'derivative'
     with (outputdir/dataset_file.name).open('w') as fid:
         json.dump(description, fid, indent=4)
@@ -59,7 +59,7 @@ def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: l
                 response = urlopen(item['detailsUrl'])
                 license  = json.loads(response.read())['licenseText']
                 break
-        license_file.write_text(license)
+        (outputdir/license_file.name).write_text(license)
 
 
 def main():

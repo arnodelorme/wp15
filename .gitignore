@@ -5,6 +5,7 @@
 BIDScramble/venv/*
 BIDScramble/build/*
 BIDScramble/*.egg-info/*
+/BIDScramble/.tox/
 
 usecase-*/input
 usecase-*/scrambled
