@@ -34,6 +34,6 @@ def test_bidscramble(tmp_path):
     assert description['GeneratedBy'] == [{'Name':'BIDScramble', 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
     assert description['DatasetType'] == 'derivative'
 
-    # Check if the README has been copied
+    # Check if the README file has been copied
     readme = (tmp_path/'output'/'README').read_text()
     assert 'EEG' in readme

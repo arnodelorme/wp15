@@ -9,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: BIDScramble
+        working-directory: ./BIDScramble
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
       - name: Tests with pytest
         run: |
           pip install .
