@@ -22,6 +22,7 @@ repository       = 'https://github.com/SIESTA-eu/wp15'
 
 [project.scripts]
 bidscramble      = 'source.bidscramble:main'
+bidscramble_tsv  = 'source.bidscramble_tsv:main'
 
 [tool.pytest.ini_options]
 testpaths        = ['tests']
@@ -30,7 +31,7 @@ testpaths        = ['tests']
 legacy_tox_ini = """
 [tox]
 min_version      = 4.0
-envlist          = py38, py311
+envlist          = py38, py312
 
 [testenv]
 deps             = pytest
