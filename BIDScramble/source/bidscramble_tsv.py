@@ -12,7 +12,7 @@ import numpy as np
 from pathlib import Path
 
 
-def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
+def bidscramble_tsv(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -30,23 +30,26 @@ def bidscramble(inputdir: str, outputdir: str, covariance: list[str], include: l
             outputfile = outputdir/inputfile.relative_to(inputdir)
 
             # Load or copy the data
-            inputdata = pd.DataFrame()
+            tsvdata = pd.DataFrame()
             if inputfile.suffix == '.tsv':
                 print(f"Reading: {inputfile}")
-                inputdata = pd.read_csv(inputfile, sep='\t')
+                tsvdata = pd.read_csv(inputfile, sep='\t')
             else:
                 print(f"Saving: {outputfile}")
                 shutil.copyfile(inputfile, outputfile)
                 continue
 
-            # Permute columns that are not of interest
-            for column in inputdata.columns:
+            # Permute columns that are not of interest (i.e. preserving the relation between them)
+            for column in tsvdata.columns:
                 if column not in covariance:
-                    inputdata[column] = np.random.permutation(inputdata[column])
+                    tsvdata[column] = np.random.permutation(tsvdata[column])
+
+            # Permute the rows
+            tsvdata = tsvdata.sample(frac=1).reset_index(drop=True)
 
             # Save the output data
-            print(f"Saving: {outputfile}")
-            inputdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
+            print(f"Saving: {outputfile}\n ")
+            tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
 
 
 def main():
@@ -67,7 +70,7 @@ def main():
     parser.add_argument('-i', '--include',    help='A list of include pattern(s) that select the files in the BIDS input-directory that are produced in the output directory', nargs='+', default=['*'])
     args = parser.parse_args()
 
-    bidscramble(inputdir=args.inputdir, outputdir=args.outputdir, covariance=args.covariance, include=args.include)
+    bidscramble_tsv(inputdir=args.inputdir, outputdir=args.outputdir, covariance=args.covariance, include=args.include)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,10 @@
 import json
+import pandas as pd
+import math
 import urllib.request, urllib.error
 from source import __version__, __description__, __url__
 from source.bidscramble import bidscramble
+from source.bidscramble_tsv import bidscramble_tsv
 
 
 def test_bidscramble(tmp_path):
@@ -34,3 +37,33 @@ def test_bidscramble(tmp_path):
     # Check if the README file has been copied
     readme = (tmp_path/'output'/'README').read_text()
     assert 'EEG' in readme
+
+
+def test_bidscramble_tsv(tmp_path):
+
+    # Create the input data
+    (tmp_path/'input').mkdir()
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv', tmp_path/'input'/'participants.tsv')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'participants.json')
+
+    # Fix the "n/a " values
+    tsvdata = (tmp_path/'input'/'participants.tsv').read_text().replace('n/a ', 'n/a')
+    (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
+
+    # Create the output data
+    bidscramble_tsv(tmp_path/'input', tmp_path/'output', ['Height', 'Weight'], ['partici*.tsv'])
+    assert not (tmp_path/'output'/'participants.json').is_file()
+
+    # Check if the data is properly scrambled
+    inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
+    outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
+    assert inputdata.shape == outputdata.shape
+    assert not inputdata['participant_id'].equals(outputdata['participant_id'])
+    for key in ['Height', 'Weight', 'age']:
+        assert not inputdata[key].equals(outputdata[key])
+        assert math.isclose(inputdata[key].mean(), outputdata[key].mean())
+        assert math.isclose(inputdata[key].std(),  outputdata[key].std())
+
+    # Check if the relation between 'Height' and 'Weight' is preserved, but not between 'SAS_1stVisit' and 'SAS_2ndVisit'
+    assert math.isclose(inputdata['Height'].corr(inputdata['Weight']), outputdata['Height'].corr(outputdata['Weight']))
+    assert not math.isclose(inputdata['SAS_1stVisit'].corr(inputdata['SAS_2ndVisit']), outputdata['SAS_1stVisit'].corr(outputdata['SAS_2ndVisit']))
