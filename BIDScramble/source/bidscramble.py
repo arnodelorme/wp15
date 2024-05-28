@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
-'dataset_description.json', the 'README' and the 'LICENSE' files, which are copied over and updated
-if they exist.
+'dataset_description.json', the 'README', 'CHANGES' and the 'LICENSE' files, which are copied over and
+updated if they exist.
 """
 
 import argparse
@@ -40,17 +40,14 @@ def bidscramble(inputdir: str, outputdir: str):
     with (outputdir/dataset_file.name).open('w') as fid:
         json.dump(description, fid, indent=4)
 
-    # Copy the README file if it exists
-    readme_file = inputdir/'README'
-    if readme_file.is_file():
-        shutil.copyfile(readme_file, outputdir/readme_file.name)
+    # Copy the README, CHANGES and LICENSE files if they exist
+    for inputfile in (inputdir/'README', inputdir/'CHANGES', inputdir/'LICENSE'):
+        if inputfile.is_file():
+            shutil.copyfile(inputfile, outputdir/inputfile.name)
 
-    # Copy or download the LICENSE file
-    license      = description.get('License')
-    license_file = inputdir/'LICENSE'
-    if license_file.is_file():
-        shutil.copyfile(license_file, outputdir/license_file.name)
-    elif license:
+    # Download the LICENSE file if it's not there
+    license = description.get('License')
+    if not (inputdir/'LICENSE').is_file() and license:
         response = urlopen('https://spdx.org/licenses/licenses.json')
         licenses = json.loads(response.read())['licenses']
         for item in licenses:
@@ -58,8 +55,8 @@ def bidscramble(inputdir: str, outputdir: str):
                 print(f"Adding a '{item['licenseId']}' SPDX license file")
                 response = urlopen(item['detailsUrl'])
                 license  = json.loads(response.read())['licenseText']
+                (outputdir/'LICENSE').write_text(license)
                 break
-        (outputdir/license_file.name).write_text(license)
 
 
 def main():

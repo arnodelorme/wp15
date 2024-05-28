@@ -43,8 +43,9 @@ def test_bidscramble_tsv(tmp_path):
 
     # Create the input data
     (tmp_path/'input').mkdir()
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv', tmp_path/'input'/'participants.tsv')
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'participants.json')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv',  tmp_path/'input'/'participants.tsv')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv',  tmp_path/'input'/'partici_test.tsv')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'test.tsv')
 
     # Fix the "n/a " values
     tsvdata = (tmp_path/'input'/'participants.tsv').read_text().replace('n/a ', 'n/a')
@@ -52,7 +53,8 @@ def test_bidscramble_tsv(tmp_path):
 
     # Create the output data
     bidscramble_tsv(tmp_path/'input', tmp_path/'output', ['partici*.tsv'], ['Height', 'Weig*'])
-    assert not (tmp_path/'output'/'participants.json').is_file()
+    assert (tmp_path/'output'/'partici_test.tsv').is_file()
+    assert not (tmp_path/'output'/'test.tsv').is_file()
 
     # Check if the data is properly scrambled
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
