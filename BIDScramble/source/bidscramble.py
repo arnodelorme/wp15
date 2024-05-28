@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
-'dataset_description.json', the 'README', 'CHANGES' and the 'LICENSE' files, which are copied over and
-updated if they exist.
+'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied
+over and updated if they exist.
 """
 
 import argparse
@@ -40,10 +40,9 @@ def bidscramble(inputdir: str, outputdir: str):
     with (outputdir/dataset_file.name).open('w') as fid:
         json.dump(description, fid, indent=4)
 
-    # Copy the README, CHANGES and LICENSE files if they exist
-    for inputfile in (inputdir/'README', inputdir/'CHANGES', inputdir/'LICENSE'):
-        if inputfile.is_file():
-            shutil.copyfile(inputfile, outputdir/inputfile.name)
+    # Copy the README, CHANGES, etc root files if they exist
+    for fname in [name for name in ('README','README.txt','README.md','README.rst','CHANGES','LICENSE','CITATION.cff') if (inputdir/name).is_file()]:
+        shutil.copyfile(inputdir/fname, outputdir/fname)
 
     # Download the LICENSE file if it's not there
     license = description.get('License')
@@ -71,8 +70,8 @@ def main():
                                             '  bidscramble bids pseudobids\n\n'
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
-    parser.add_argument('inputdir',  help='The BIDS input-directory with the real data')
-    parser.add_argument('outputdir', help='The BIDS output-directory with empty pseudo data')
+    parser.add_argument('inputdir',  help='The input-directory with the real data')
+    parser.add_argument('outputdir', help='The output-directory with empty pseudo data')
     args = parser.parse_args()
 
     bidscramble(inputdir=args.inputdir, outputdir=args.outputdir)

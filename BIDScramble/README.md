@@ -32,8 +32,8 @@ Currently, there exist two scramble tools, i.e. `bidscramble` and `bidscramble_t
 usage: bidscramble [-h] inputdir outputdir
 
 Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
-'dataset_description.json', the 'README' and the 'LICENSE' files, which are copied over and updated
-if they exist.
+'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied
+over and updated if they exist.
 
 positional arguments:
   inputdir    The input-directory with the real data
@@ -58,14 +58,14 @@ Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS
 positional arguments:
   inputdir              The input-directory with the real data
   outputdir             The output-directory with generated pseudo data
-  include               A list of wildcard patterns that select the files in the input-
-                        directory to be included in the output directory
+  include               A list of wildcard patterns that select the files in the input-directory to be included in the output
+                        directory
 
 options:
   -h, --help            show this help message and exit
   -p PRESERVE [PRESERVE ...], --preserve PRESERVE [PRESERVE ...]
-                        A list of tsv column names between which the relationship is preserved when
-                        generating the pseudo data. Supports wildcard patterns (default: None)
+                        A list of tsv column names between which the relationship is preserved when generating the pseudo data.
+                        Supports wildcard patterns (default: None)
 
 examples:
   bidscramble bids pseudobids '*.tsv'
