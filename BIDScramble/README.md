@@ -24,27 +24,53 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-Currently there exist only a single tool named 'bidscramble'. Run ``bidscramble -h`` to see more information on the input arguments and on the output produced by this tool.
+Currently, there exist two scramble tools, i.e. `bidscramble` and `bidscramble_tsv`, that can be executed from a commandline terminal (run them with the `-h` flag for help):
+
+### bidscramble
 
 ```console
-usage: bidscramble [-h] [-c COVARIANCE [COVARIANCE ...]] [-i INCLUDE [INCLUDE ...]] inputdir outputdir
+usage: bidscramble [-h] inputdir outputdir
+
+Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
+'dataset_description.json', the 'README' and the 'LICENSE' files, which are copied over and updated
+if they exist.
 
 positional arguments:
-  inputdir              The BIDS input-directory with the real data
-  outputdir             The BIDS output-directory with generated pseudo data
+  inputdir    The input-directory with the real data
+  outputdir   The output-directory with empty pseudo data
+
+options:
+  -h, --help  show this help message and exit
+
+examples:
+  bidscramble bids pseudobids
+
+author:
+  Marcel Zwiers
+```
+### bidscramble_tsv
+
+```console
+usage: bidscramble_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include [include ...]
+
+Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory.
+
+positional arguments:
+  inputdir              The input-directory with the real data
+  outputdir             The output-directory with generated pseudo data
+  include               A list of wildcard patterns that select the files in the input-
+                        directory to be included in the output directory
 
 options:
   -h, --help            show this help message and exit
-  -c COVARIANCE [COVARIANCE ...], --covariance COVARIANCE [COVARIANCE ...]
-                        A list of variable names between which the covariance structure is
-                        preserved when generating the pseudo data (default: None)
-  -i INCLUDE [INCLUDE ...], --include INCLUDE [INCLUDE ...]
-                        A list of include pattern(s) that select the files in the BIDS
-                        input-directory that are produced in the output directory
-                        (default: ['*'])
+  -p PRESERVE [PRESERVE ...], --preserve PRESERVE [PRESERVE ...]
+                        A list of tsv column names between which the relationship is preserved when
+                        generating the pseudo data. Supports wildcard patterns (default: None)
 
 examples:
-  bidscramble bids pseudobids -c age sex height -i *.tsv *.json CHANGES README
+  bidscramble bids pseudobids '*.tsv'
+  bidscramble bids pseudobids participants.tsv -p participant_id 'SAS*'
+  bidscramble bids pseudobids 'partici*.tsv' -p '*' 
 
 author:
   Marcel Zwiers

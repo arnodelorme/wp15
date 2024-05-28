@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Adds scrambled versions of the tsv files in the input directory to the output directory.
+Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory.
 """
 
 import argparse
 import textwrap
 import pandas as pd
-import shutil
 import numpy as np
+from fnmatch import fnmatch
 from pathlib import Path
 
 
-def bidscramble_tsv(inputdir: str, outputdir: str, covariance: list[str], include: list[str]):
+def bidscramble_tsv(inputdir: str, outputdir: str, include: list[str], preserve: list[str]):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -22,26 +22,22 @@ def bidscramble_tsv(inputdir: str, outputdir: str, covariance: list[str], includ
     # Create pseudo-random out data for all files of each included data type
     for pattern in include:
 
-        inputfiles = inputdir.rglob(pattern)
-
-        for inputfile in inputfiles:
+        for inputfile in inputdir.rglob(pattern):
 
             # Define the output target
             outputfile = outputdir/inputfile.relative_to(inputdir)
 
-            # Load or copy the data
-            tsvdata = pd.DataFrame()
-            if inputfile.suffix == '.tsv':
+            # Load the (zipped) tsv data
+            if '.tsv' in inputfile.suffixes:
                 print(f"Reading: {inputfile}")
                 tsvdata = pd.read_csv(inputfile, sep='\t')
             else:
-                print(f"Saving: {outputfile}")
-                shutil.copyfile(inputfile, outputfile)
+                print(f"Skipping non-tsv file: {outputfile}")
                 continue
 
-            # Permute columns that are not of interest (i.e. preserving the relation between them)
+            # Permute columns that are not of interest (i.e. preserve the relation between columns of interest)
             for column in tsvdata.columns:
-                if column not in covariance:
+                if not any([fnmatch(column, keep) for keep in preserve]):
                     tsvdata[column] = np.random.permutation(tsvdata[column])
 
             # Permute the rows
@@ -61,16 +57,18 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            '  bidscramble bids pseudobids -c age sex height -i *.tsv *.json CHANGES README\n\n'
+                                            "  bidscramble bids pseudobids '*.tsv'\n"
+                                            "  bidscramble bids pseudobids participants.tsv -p participant_id 'SAS*'\n"
+                                            "  bidscramble bids pseudobids 'partici*.tsv' -p '*' \n\n"
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
-    parser.add_argument('inputdir',           help='The BIDS input-directory with the real data')
-    parser.add_argument('outputdir',          help='The BIDS output-directory with generated pseudo data')
-    parser.add_argument('-c', '--covariance', help='A list of variable names between which the covariance structure is preserved when generating the pseudo data', nargs='+')
-    parser.add_argument('-i', '--include',    help='A list of include pattern(s) that select the files in the BIDS input-directory that are produced in the output directory', nargs='+', default=['*'])
+    parser.add_argument('inputdir',         help='The input-directory with the real data')
+    parser.add_argument('outputdir',        help='The output-directory with generated pseudo data')
+    parser.add_argument('include',          help='A list of wildcard patterns that select the files in the input-directory to be included in the output directory', nargs='+')
+    parser.add_argument('-p', '--preserve', help='A list of tsv column names between which the relationship is preserved when generating the pseudo data. Supports wildcard patterns', nargs='+')
     args = parser.parse_args()
 
-    bidscramble_tsv(inputdir=args.inputdir, outputdir=args.outputdir, covariance=args.covariance, include=args.include)
+    bidscramble_tsv(inputdir=args.inputdir, outputdir=args.outputdir, include=args.include, preserve=args.preserve)
 
 
 if __name__ == "__main__":

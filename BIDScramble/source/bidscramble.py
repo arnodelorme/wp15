@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Creates a copy of the input directory in which all files are empty. Exceptions to this are the
+Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
 'dataset_description.json', the 'README' and the 'LICENSE' files, which are copied over and updated
 if they exist.
 """

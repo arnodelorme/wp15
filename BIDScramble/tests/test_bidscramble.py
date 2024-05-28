@@ -51,7 +51,7 @@ def test_bidscramble_tsv(tmp_path):
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
 
     # Create the output data
-    bidscramble_tsv(tmp_path/'input', tmp_path/'output', ['Height', 'Weight'], ['partici*.tsv'])
+    bidscramble_tsv(tmp_path/'input', tmp_path/'output', ['partici*.tsv'], ['Height', 'Weig*'])
     assert not (tmp_path/'output'/'participants.json').is_file()
 
     # Check if the data is properly scrambled
