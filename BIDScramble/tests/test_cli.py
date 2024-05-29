@@ -8,8 +8,8 @@ def test_cli():
 
     entrypoints = []
     for script in console_scripts:
-        if script.value.startswith('source'):
+        if script.value.startswith('bidscramble'):
             entrypoints.append(script.name)
             process = subprocess.run(f"{script.name} -h", shell=True)
             assert process.returncode == 0
-    assert 'bidscramble' in entrypoints
+    assert 'bidscrambler' in entrypoints

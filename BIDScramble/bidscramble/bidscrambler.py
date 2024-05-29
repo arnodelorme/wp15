@@ -15,7 +15,7 @@ from pathlib import Path
 from . import __version__, __description__, __url__
 
 
-def bidscramble(inputdir: str, outputdir: str):
+def bidscrambler(inputdir: str, outputdir: str):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -67,14 +67,14 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            '  bidscramble bids pseudobids\n\n'
+                                            '  bidscrambler bids pseudobids\n\n'
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
     parser.add_argument('inputdir',  help='The input-directory with the real data')
     parser.add_argument('outputdir', help='The output-directory with empty pseudo data')
     args = parser.parse_args()
 
-    bidscramble(inputdir=args.inputdir, outputdir=args.outputdir)
+    bidscrambler(inputdir=args.inputdir, outputdir=args.outputdir)
 
 
 if __name__ == "__main__":

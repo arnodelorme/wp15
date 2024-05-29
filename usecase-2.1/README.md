@@ -31,7 +31,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Pseudo data
 
-A scrambled version of the data can be generated using [bidscramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscramble -h` for more information.
+A scrambled version of the data can be generated using [bidscrambler_tsv](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscrambler_tsv -h` for more information.
 
 ```console
 bidscramble_tsv input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README

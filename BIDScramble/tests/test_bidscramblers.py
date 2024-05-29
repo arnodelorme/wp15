@@ -2,12 +2,12 @@ import json
 import pandas as pd
 import math
 import urllib.request, urllib.error
-from source import __version__, __description__, __url__
-from source.bidscramble import bidscramble
-from source.bidscramble_tsv import bidscramble_tsv
+from bidscramble import __version__, __description__, __url__
+from bidscramble.bidscrambler import bidscrambler
+from bidscramble.bidscrambler_tsv import bidscrambler_tsv
 
 
-def test_bidscramble(tmp_path):
+def test_bidscrambler(tmp_path):
 
     # Create the input data
     (tmp_path/'input').mkdir()
@@ -22,7 +22,7 @@ def test_bidscramble(tmp_path):
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    bidscramble(tmp_path/'input', tmp_path/'output')
+    bidscrambler(tmp_path/'input', tmp_path/'output')
 
     # Check if all output data + LICENSE file is there
     assert (tmp_path/'output'/'LICENSE').is_file()
@@ -39,7 +39,7 @@ def test_bidscramble(tmp_path):
     assert 'EEG' in readme
 
 
-def test_bidscramble_tsv(tmp_path):
+def test_bidscrambler_tsv(tmp_path):
 
     # Create the input data
     (tmp_path/'input').mkdir()
@@ -52,11 +52,11 @@ def test_bidscramble_tsv(tmp_path):
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
 
     # Create the output data
-    bidscramble_tsv(tmp_path/'input', tmp_path/'output', ['partici*.tsv'], ['Height', 'Weig*'])
+    bidscrambler_tsv(tmp_path/'input', tmp_path/'output', ['partici*.tsv'], ['Height', 'Weig*'])
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 
-    # Check if the data is properly scrambled
+    # Check if the participants.tsv data is properly scrambled
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
     outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
     assert inputdata.shape == outputdata.shape

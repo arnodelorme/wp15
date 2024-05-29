@@ -6,7 +6,7 @@ It requires some BIDS-specific tooling to make the input dataset properly anonym
 
 ## Software installation
 
-The BIDScramble software runs on multiple platforms (e.g. Linux, MacOS, Windows) that have a Python 3 installation.
+The BIDScramble software runs on multiple platforms (e.g. Linux, MacOS, Windows) that have a Python 3.8+ installation.
 
 It is recommended (but not required) to first create a virtual environment.
 
@@ -24,12 +24,12 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-Currently, there exist two scramble tools, i.e. `bidscramble` and `bidscramble_tsv`, that can be executed from a commandline terminal (run them with the `-h` flag for help):
+Currently, there exist two scramble tools, i.e. `bidscrambler` and `bidscrambler_tsv`, that can be executed from a commandline terminal (run them with the `-h` flag for help):
 
-### bidscramble
+### bidscrambler
 
 ```console
-usage: bidscramble [-h] inputdir outputdir
+usage: bidscrambler [-h] inputdir outputdir
 
 Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied
@@ -43,11 +43,12 @@ options:
   -h, --help  show this help message and exit
 
 examples:
-  bidscramble bids pseudobids
+  bidscrambler bids pseudobids
 
 author:
   Marcel Zwiers
 ```
+
 ### bidscramble_tsv
 
 ```console
@@ -68,9 +69,9 @@ options:
                         Supports wildcard patterns (default: None)
 
 examples:
-  bidscramble bids pseudobids '*.tsv'
-  bidscramble bids pseudobids participants.tsv -p participant_id 'SAS*'
-  bidscramble bids pseudobids 'partici*.tsv' -p '*' 
+  bidscrambler bids pseudobids '*.tsv'
+  bidscrambler bids pseudobids participants.tsv -p participant_id 'SAS*'
+  bidscrambler bids pseudobids 'partici*.tsv' -p '*' 
 
 author:
   Marcel Zwiers

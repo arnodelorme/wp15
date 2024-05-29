@@ -12,7 +12,7 @@ from fnmatch import fnmatch
 from pathlib import Path
 
 
-def bidscramble_tsv(inputdir: str, outputdir: str, include: list[str], preserve: list[str]):
+def bidscrambler_tsv(inputdir: str, outputdir: str, include: list[str], preserve: list[str]):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -57,9 +57,9 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            "  bidscramble bids pseudobids '*.tsv'\n"
-                                            "  bidscramble bids pseudobids participants.tsv -p participant_id 'SAS*'\n"
-                                            "  bidscramble bids pseudobids 'partici*.tsv' -p '*' \n\n"
+                                            "  bidscrambler bids pseudobids '*.tsv'\n"
+                                            "  bidscrambler bids pseudobids participants.tsv -p participant_id 'SAS*'\n"
+                                            "  bidscrambler bids pseudobids 'partici*.tsv' -p '*' \n\n"
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
     parser.add_argument('inputdir',         help='The input-directory with the real data')
@@ -68,7 +68,7 @@ def main():
     parser.add_argument('-p', '--preserve', help='A list of tsv column names between which the relationship is preserved when generating the pseudo data. Supports wildcard patterns', nargs='+')
     args = parser.parse_args()
 
-    bidscramble_tsv(inputdir=args.inputdir, outputdir=args.outputdir, include=args.include, preserve=args.preserve)
+    bidscrambler_tsv(inputdir=args.inputdir, outputdir=args.outputdir, include=args.include, preserve=args.preserve)
 
 
 if __name__ == "__main__":

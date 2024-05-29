@@ -38,7 +38,7 @@ The pseudo data consists of scrambled BIDS data that is organised according to t
 
 ```console
 mkdir scrambled
-bidscramble input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README
+bidscrambler input scrambled
 ```
 
 ## Output data
