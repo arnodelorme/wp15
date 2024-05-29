@@ -16,17 +16,21 @@ def test_bidscrambler(tmp_path):
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json', tmp_path/'input'/'dataset_description.json')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/README', tmp_path/'input'/'README')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES', tmp_path/'input'/'CHANGES')
+    (tmp_path/'input'/'code').mkdir()
+    (tmp_path/'input'/'derivatives').mkdir()
 
     # Fix the spdx identifier
     description = (tmp_path/'input'/'dataset_description.json').read_text().replace('CC0', 'CC0-1.0')
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    bidscrambler(tmp_path/'input', tmp_path/'output')
+    bidscrambler(tmp_path/'input', tmp_path/'output', '(?!derivatives)')
 
-    # Check if all output data + LICENSE file is there
+    # Check if all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()
-    assert len(list((tmp_path/'input').rglob('*'))) == len(list((tmp_path/'output').rglob('*'))) - 1
+    assert len(list((tmp_path/'input').rglob('*'))) == len(list((tmp_path/'output').rglob('*')))
+    assert (tmp_path/'output'/'code').is_dir()
+    assert not (tmp_path/'output'/'derivatives').is_dir()
 
     # Check if the 'GeneratedBy' and 'DatasetType' have been written
     with (tmp_path/'output'/'dataset_description.json').open('r') as fid:
@@ -52,7 +56,7 @@ def test_bidscrambler_tsv(tmp_path):
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
 
     # Create the output data
-    bidscrambler_tsv(tmp_path/'input', tmp_path/'output', ['partici*.tsv'], ['Height', 'Weig*'])
+    bidscrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici*.tsv', ['Height', 'Weig*'])
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 

@@ -34,12 +34,13 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 A scrambled version of the data can be generated using [bidscrambler_tsv](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscrambler_tsv -h` for more information.
 
 ```console
-bidscramble_tsv input scrambled -c age sex -i '*.tsv' '*.json' CHANGES README
+bidscrambler input scrambled
+bidscrambler_tsv input scrambled participants.tsv
 ```
 
 ## Output data
 
-The output data will consist of a tsv file with the average age of the participants.
+The output data will consist of a stub BIDS repository with a tsv file that contains the scrambled age of the participants.
 
 ```console
 mkdir output

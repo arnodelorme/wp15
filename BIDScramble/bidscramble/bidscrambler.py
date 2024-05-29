@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
-'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied
-over and updated if they exist.
+Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
+'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over
+and updated if they exist.
 """
 
 import argparse
+import re
 import textwrap
 import shutil
 import json
@@ -15,16 +16,18 @@ from pathlib import Path
 from . import __version__, __description__, __url__
 
 
-def bidscrambler(inputdir: str, outputdir: str):
+def bidscrambler(inputdir: str, outputdir: str, pattern: str):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
     outputdir = Path(outputdir).resolve()
     outputdir.mkdir(parents=True, exist_ok=True)
 
-    # Create placeholder output files for all input files
+    # Create placeholder output files for selected input files
     for inputfile in inputdir.rglob('*'):
-        if inputfile.is_dir():
+        if not re.match(pattern, str(inputfile.relative_to(inputdir))):
+            continue
+        elif inputfile.is_dir():
             (outputdir/inputfile.relative_to(inputdir)).mkdir(parents=True, exist_ok=True)
         else:
             (outputdir/inputfile.relative_to(inputdir)).touch()
@@ -67,14 +70,18 @@ def main():
 
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
-                                            '  bidscrambler bids pseudobids\n\n'
+                                            '  bidscrambler bids pseudobids\n'
+                                            "  bidscrambler bids pseudobids '.*\.(nii|json|tsv)'\n"
+                                            '  bidscrambler bids pseudobids (?!derivatives)\n'
+                                            "  bidscrambler bids pseudobids '.*(?!/(func|sub.*scans.tsv))\n\n"
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
-    parser.add_argument('inputdir',  help='The input-directory with the real data')
-    parser.add_argument('outputdir', help='The output-directory with empty pseudo data')
+    parser.add_argument('inputdir',        help='The input-directory with the real data')
+    parser.add_argument('outputdir',       help='The output-directory with empty pseudo data')
+    parser.add_argument('-p', '--pattern', help='A regular expression pattern that is matched against the relative path of the input data to be included as output data', default='.*')
     args = parser.parse_args()
 
-    bidscrambler(inputdir=args.inputdir, outputdir=args.outputdir)
+    bidscrambler(inputdir=args.inputdir, outputdir=args.outputdir, pattern=args.pattern)
 
 
 if __name__ == "__main__":

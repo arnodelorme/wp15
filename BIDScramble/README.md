@@ -49,10 +49,10 @@ author:
   Marcel Zwiers
 ```
 
-### bidscramble_tsv
+### bidscrambler_tsv
 
 ```console
-usage: bidscramble_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include [include ...]
+usage: bidscrambler_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include [include ...]
 
 Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory.
 

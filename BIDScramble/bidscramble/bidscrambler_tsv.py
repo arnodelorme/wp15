@@ -12,7 +12,7 @@ from fnmatch import fnmatch
 from pathlib import Path
 
 
-def bidscrambler_tsv(inputdir: str, outputdir: str, include: list[str], preserve: list[str]):
+def bidscrambler_tsv(inputdir: str, outputdir: str, pattern: str, preserve: list[str]):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -20,32 +20,30 @@ def bidscrambler_tsv(inputdir: str, outputdir: str, include: list[str], preserve
     outputdir.mkdir(parents=True, exist_ok=True)
 
     # Create pseudo-random out data for all files of each included data type
-    for pattern in include:
+    for inputfile in inputdir.rglob(pattern):
 
-        for inputfile in inputdir.rglob(pattern):
+        # Define the output target
+        outputfile = outputdir/inputfile.relative_to(inputdir)
 
-            # Define the output target
-            outputfile = outputdir/inputfile.relative_to(inputdir)
+        # Load the (zipped) tsv data
+        if '.tsv' in inputfile.suffixes:
+            print(f"Reading: {inputfile}")
+            tsvdata = pd.read_csv(inputfile, sep='\t')
+        else:
+            print(f"Skipping non-tsv file: {outputfile}")
+            continue
 
-            # Load the (zipped) tsv data
-            if '.tsv' in inputfile.suffixes:
-                print(f"Reading: {inputfile}")
-                tsvdata = pd.read_csv(inputfile, sep='\t')
-            else:
-                print(f"Skipping non-tsv file: {outputfile}")
-                continue
+        # Permute columns that are not of interest (i.e. preserve the relation between columns of interest)
+        for column in tsvdata.columns:
+            if not any([fnmatch(column, keep) for keep in preserve]):
+                tsvdata[column] = np.random.permutation(tsvdata[column])
 
-            # Permute columns that are not of interest (i.e. preserve the relation between columns of interest)
-            for column in tsvdata.columns:
-                if not any([fnmatch(column, keep) for keep in preserve]):
-                    tsvdata[column] = np.random.permutation(tsvdata[column])
+        # Permute the rows
+        tsvdata = tsvdata.sample(frac=1).reset_index(drop=True)
 
-            # Permute the rows
-            tsvdata = tsvdata.sample(frac=1).reset_index(drop=True)
-
-            # Save the output data
-            print(f"Saving: {outputfile}\n ")
-            tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
+        # Save the output data
+        print(f"Saving: {outputfile}\n ")
+        tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
 
 
 def main():
@@ -62,13 +60,13 @@ def main():
                                             "  bidscrambler bids pseudobids 'partici*.tsv' -p '*' \n\n"
                                             'author:\n'
                                             '  Marcel Zwiers\n ')
-    parser.add_argument('inputdir',         help='The input-directory with the real data')
-    parser.add_argument('outputdir',        help='The output-directory with generated pseudo data')
-    parser.add_argument('include',          help='A list of wildcard patterns that select the files in the input-directory to be included in the output directory', nargs='+')
+    parser.add_argument('inputdir',         help='The input directory with the real data')
+    parser.add_argument('outputdir',        help='The output directory with generated pseudo data')
+    parser.add_argument('include',          help='A wildcard pattern for selecting input files to be included in the output directory')
     parser.add_argument('-p', '--preserve', help='A list of tsv column names between which the relationship is preserved when generating the pseudo data. Supports wildcard patterns', nargs='+')
     args = parser.parse_args()
 
-    bidscrambler_tsv(inputdir=args.inputdir, outputdir=args.outputdir, include=args.include, preserve=args.preserve)
+    bidscrambler_tsv(inputdir=args.inputdir, outputdir=args.outputdir, pattern=args.include, preserve=args.preserve)
 
 
 if __name__ == "__main__":
