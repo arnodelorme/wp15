@@ -24,57 +24,81 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-Currently, there exist two scramble tools, i.e. `bidscrambler` and `bidscrambler_tsv`, that can be executed from a commandline terminal (run them with the `-h` flag for help):
+Currently, there exist three scrambler tools, i.e. `bidscrambler`, `bidscrambler_tsv` and `bidscrambler_json`, that can be executed from a commandline terminal (run them with the `-h` flag for help):
 
 ### bidscrambler
 
-```console
-usage: bidscrambler [-h] inputdir outputdir
+```
+usage: bidscrambler [-h] [-p PATTERN] inputdir outputdir
 
-Creates a copy of the BIDS input directory in which all files are empty. Exceptions to this are the
-'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied
-over and updated if they exist.
+Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
+'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over
+and updated if they exist.
 
 positional arguments:
-  inputdir    The input-directory with the real data
-  outputdir   The output-directory with empty pseudo data
+  inputdir              The input directory with the real data
+  outputdir             The output directory with empty pseudo data
 
 options:
-  -h, --help  show this help message and exit
+  -h, --help            show this help message and exit
+  -p PATTERN, --pattern PATTERN
+                        A regular expression pattern that is matched against the relative path of the input
+                        data to be included as output data (default: .*)
 
 examples:
   bidscrambler bids pseudobids
-
-author:
-  Marcel Zwiers
+  bidscrambler bids pseudobids '.*\.(nii|json|tsv)'
+  bidscrambler bids pseudobids (?!derivatives)
+  bidscrambler bids pseudobids '.*(?!/(func|sub.*scans.tsv))
 ```
 
 ### bidscrambler_tsv
 
-```console
-usage: bidscrambler_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include [include ...]
+```
+usage: bidscrambler_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include
 
-Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory.
+Adds permuted versions of the tsv files in the BIDS input directory to the BIDS output directory.
 
 positional arguments:
-  inputdir              The input-directory with the real data
-  outputdir             The output-directory with generated pseudo data
-  include               A list of wildcard patterns that select the files in the input-directory to be included in the output
-                        directory
+  inputdir              The input directory with the real data
+  outputdir             The output directory with generated pseudo data
+  include               A wildcard pattern for selecting input files to be included in the output directory
 
 options:
   -h, --help            show this help message and exit
   -p PRESERVE [PRESERVE ...], --preserve PRESERVE [PRESERVE ...]
-                        A list of tsv column names between which the relationship is preserved when generating the pseudo data.
-                        Supports wildcard patterns (default: None)
+                        A list of tsv column names between which the relationship is preserved when
+                        generating the pseudo data. Supports wildcard patterns (default: None)
 
 examples:
-  bidscrambler bids pseudobids '*.tsv'
-  bidscrambler bids pseudobids participants.tsv -p participant_id 'SAS*'
-  bidscrambler bids pseudobids 'partici*.tsv' -p '*' 
+  bidscrambler_tsv bids pseudobids '*.tsv'
+  bidscrambler_tsv bids pseudobids participants.tsv -p participant_id 'SAS*'
+  bidscrambler_tsv bids pseudobids 'partici*.tsv' -p '*'
+```
 
-author:
-  Marcel Zwiers
+### bidscrambler_json
+
+```
+usage: bidscrambler_json [-h] [-p PRESERVE] inputdir outputdir include
+
+Adds empty-value versions of the json files in the BIDS input directory to the BIDS output directory.
+
+positional arguments:
+  inputdir              The input directory with the real data
+  outputdir             The output directory with generated pseudo data
+  include               A wildcard pattern for selecting input files to be included in the output directory
+
+options:
+  -h, --help            show this help message and exit
+  -p PRESERVE, --preserve PRESERVE
+                        A regular expression pattern that is matched against all keys in the json input
+                        files. Associated values are copied over to the output files when a key matches
+                        positively, else the normal empty value is used (default: None)
+
+examples:
+  bidscrambler_json bids pseudobids '*.json'
+  bidscrambler_json bids pseudobids participants.json -p '.*'
+  bidscrambler_json bids pseudobids '*.json' -p (?!(AcquisitionTime|.*Date))
 ```
 
 ## Legal Aspects

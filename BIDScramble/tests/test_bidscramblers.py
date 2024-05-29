@@ -5,6 +5,7 @@ import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
 from bidscramble.bidscrambler import bidscrambler
 from bidscramble.bidscrambler_tsv import bidscrambler_tsv
+from bidscramble.bidscrambler_json import bidscrambler_json
 
 
 def test_bidscrambler(tmp_path):
@@ -73,3 +74,27 @@ def test_bidscrambler_tsv(tmp_path):
     # Check if the relation between 'Height' and 'Weight' is preserved, but not between 'SAS_1stVisit' and 'SAS_2ndVisit'
     assert math.isclose(inputdata['Height'].corr(inputdata['Weight']), outputdata['Height'].corr(outputdata['Weight']))
     assert not math.isclose(inputdata['SAS_1stVisit'].corr(inputdata['SAS_2ndVisit']), outputdata['SAS_1stVisit'].corr(outputdata['SAS_2ndVisit']))
+
+
+def test_bidscrambler_json(tmp_path):
+
+    # Create the input data
+    eegjson = 'sub-01/ses-session1/eeg/sub-01_ses-session1_task-eyesclosed_eeg.json'
+    (tmp_path/'input'/'sub-01'/'ses-session1'/'eeg').mkdir(parents=True)
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'participants.json')
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004148/{eegjson}", tmp_path/'input'/eegjson)
+
+    # Create the output data
+    bidscrambler_json(tmp_path/'input', tmp_path/'output', 'sub*.json', '(?!(RecordingDuration|.*Channel))')
+    assert (tmp_path/'output'/eegjson).is_file()
+    assert not (tmp_path/'output'/'participants.json').is_file()
+
+    # Check if the participants.json data is properly preserved/emptied
+    with (tmp_path/'input'/eegjson).open('r') as fid:
+        inputdata = json.load(fid)
+    with (tmp_path/'output'/eegjson).open('r') as fid:
+        outputdata = json.load(fid)
+    assert inputdata.keys() == outputdata.keys()
+    assert inputdata['TaskDescription'] == outputdata['TaskDescription']
+    assert not outputdata['RecordingDuration']
+    assert not outputdata['EMGChannelCount']

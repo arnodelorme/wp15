@@ -37,8 +37,8 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
 
 ```console
-mkdir scrambled
 bidscrambler input scrambled
+bidscrambler_tsv input scrambled '*.tsv'
 ```
 
 ## Output data
