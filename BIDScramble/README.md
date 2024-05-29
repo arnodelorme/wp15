@@ -106,7 +106,7 @@ examples:
 ```
 usage: bidscrambler_nii [-h] inputdir outputdir include {blur,permute} ...
 
-Adds scrambled versions of the nii files in the BIDS input directory to the BIDS output directory.
+Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory.
 
 positional arguments:
   inputdir        The input directory with the real data
@@ -121,8 +121,8 @@ options:
 
 examples:
   bidscrambler_nii bids pseudobids '*.nii*'
-  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' -p blur 20
-  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' -p permute x z'
+  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur 20
+  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' permute x z'
 ```
 
 ## Legal Aspects

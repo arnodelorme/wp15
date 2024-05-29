@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Adds scrambled versions of the nii files in the BIDS input directory to the BIDS output directory.
+Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory.
 """
 
 import argparse
@@ -40,8 +40,8 @@ def bidscrambler_nii(inputdir: str, outputdir: str, include: str, method: str, f
             for dim in dims:
                 np.random.default_rng().shuffle(data, axis[dim])    # NB: Assumes data is oriented in a standard way (i.e. no dim-flips, no rotations > 45 deg)
         elif method == 'blur':
-            voxdim = sum(inputimg.header['pixdim'][1:4]) / 3
-            data   = sp.ndimage.gaussian_filter(data, sigma=fwhm/2.355/voxdim)
+            sigma = list(fwhm/inputimg.header['pixdim'][1:4]/2.355) + [0]*5     # No smoothing over any further dimensions such as time
+            data  = sp.ndimage.gaussian_filter(data, sigma=sigma)
         else:
             data = data * 0
 
@@ -61,14 +61,14 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
                                             "  bidscrambler_nii bids pseudobids '*.nii*'\n"
-                                            "  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' -p blur 20\n"
-                                            "  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' -p permute x z'\n ")
+                                            "  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur 20\n"
+                                            "  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' permute x z'\n ")
     parser.add_argument('inputdir',         help='The input directory with the real data')
     parser.add_argument('outputdir',        help='The output directory with generated pseudo data')
     parser.add_argument('include',          help='A wildcard pattern for selecting input files to be included in the output directory')
     subparsers = parser.add_subparsers(dest='method', help='Feature preservation methods (by default the output images are nulled)')
     subparser  = subparsers.add_parser('blur',      help='Apply a Gaussian smoothing filter to the output images')
-    subparser.add_argument('fwhm',          help='The FWHM of the 3D Gaussian smoothing kernel', type=float)
+    subparser.add_argument('fwhm',          help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
     subparser  = subparsers.add_parser('permute',   help='Randomly permute the output images')
     subparser.add_argument('dims',          help='The image dimensions along which the permutions will be applied', nargs='*', choices=['x','y','z','t'], default=['x','y'])
     args = parser.parse_args()
