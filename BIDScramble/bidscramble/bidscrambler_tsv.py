@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Adds permuted versions of the tsv files in the BIDS input directory to the BIDS output directory.
+Adds randomly permuted versions of the tsv files in the BIDS input directory to the BIDS output directory.
 """
 
 import argparse

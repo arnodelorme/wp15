@@ -15,11 +15,11 @@ def clearvalues(data: dict, preserve: str):
 
     for key, value in data.items():
         if re.match(preserve, str(key)):
-            data[key] = value
+            continue
         elif isinstance(value, dict):
             clearvalues(value, preserve)
         else:
-            data[key] = None
+            data[key] = type(value)()
 
 
 def bidscrambler_json(inputdir: str, outputdir: str, include: str, preserve: str):

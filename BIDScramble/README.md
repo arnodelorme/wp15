@@ -57,7 +57,7 @@ examples:
 ```
 usage: bidscrambler_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include
 
-Adds permuted versions of the tsv files in the BIDS input directory to the BIDS output directory.
+Adds randomly permuted versions of the tsv files in the BIDS input directory to the BIDS output directory.
 
 positional arguments:
   inputdir              The input directory with the real data
@@ -99,6 +99,30 @@ examples:
   bidscrambler_json bids pseudobids '*.json'
   bidscrambler_json bids pseudobids participants.json -p '.*'
   bidscrambler_json bids pseudobids '*.json' -p (?!(AcquisitionTime|.*Date))
+```
+
+### bidscrambler_nii
+
+```
+usage: bidscrambler_nii [-h] inputdir outputdir include {blur,permute} ...
+
+Adds scrambled versions of the nii files in the BIDS input directory to the BIDS output directory.
+
+positional arguments:
+  inputdir        The input directory with the real data
+  outputdir       The output directory with generated pseudo data
+  include         A wildcard pattern for selecting input files to be included in the output directory
+  {blur,permute}  Feature preservation methods (by default the output images are nulled)
+    blur          Apply a Gaussian smoothing filter to the output images
+    permute       Randomly permute the output images
+
+options:
+  -h, --help      show this help message and exit
+
+examples:
+  bidscrambler_nii bids pseudobids '*.nii*'
+  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' -p blur 20
+  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' -p permute x z'
 ```
 
 ## Legal Aspects
