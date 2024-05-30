@@ -1,11 +1,15 @@
 import json
+
+import numpy as np
 import pandas as pd
 import math
+import nibabel as nib
 import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
 from bidscramble.bidscrambler import bidscrambler
 from bidscramble.bidscrambler_tsv import bidscrambler_tsv
 from bidscramble.bidscrambler_json import bidscrambler_json
+from bidscramble.bidscrambler_nii import bidscrambler_nii
 
 
 def test_bidscrambler(tmp_path):
@@ -98,3 +102,68 @@ def test_bidscrambler_json(tmp_path):
     assert inputdata['TaskDescription'] == outputdata['TaskDescription']
     assert not outputdata['RecordingDuration']
     assert not outputdata['EMGChannelCount']
+
+
+def test_bidscrambler_nii(tmp_path):
+
+    # Create the input data
+    niifile = 'sub-01/ses-mri/dwi/sub-01_ses-mri_dwi.nii.gz'
+    (tmp_path/'input'/'sub-01'/'ses-mri'/'dwi').mkdir(parents=True)
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/participants.tsv', tmp_path/'input'/'participants.tsv')
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{niifile}", tmp_path/'input'/niifile)
+
+    # Create nulled output data
+    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', '')
+    assert (tmp_path/'output'/niifile).is_file()
+    assert not (tmp_path/'output'/'participants.tsv').is_file()
+
+    # Check if the NIfTI data is properly nulled
+    outimg  = nib.load(tmp_path/'output'/niifile)
+    outdata = outimg.get_fdata()
+    assert outdata.shape == (96, 96, 68, 65)
+    assert outdata.sum() == 0
+
+    # Create blurred output data
+    (tmp_path/'output'/niifile).unlink()
+    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', 'blur', fwhm=12)
+    assert (tmp_path/'output'/niifile).is_file()
+
+    # Check if the NIfTI data is properly blurred
+    inimg   = nib.load(tmp_path/'input'/niifile)
+    indata  = inimg.get_fdata()
+    outimg  = nib.load(tmp_path/'output'/niifile)
+    outdata = outimg.get_fdata()
+    assert outdata.shape == (96, 96, 68, 65)
+    assert outdata.sum() > 1000000
+    assert outdata.sum() - indata.sum() < 1
+    assert np.abs(outdata - indata).sum() > 1000
+
+    # Create permuted output data
+    (tmp_path/'output'/niifile).unlink()
+    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', 'permute', dims=['x','z'], independent=False)
+    assert (tmp_path/'output'/niifile).is_file()
+
+    # Check if the NIfTI data is properly permuted
+    inimg   = nib.load(tmp_path/'input'/niifile)
+    indata  = inimg.get_fdata()
+    outimg  = nib.load(tmp_path/'output'/niifile)
+    outdata = outimg.get_fdata()
+    assert outdata.shape == (96, 96, 68, 65)
+    assert outdata.sum() > 1000000
+    assert outdata.sum() - indata.sum() < 1
+    assert np.abs(outdata - indata).sum() > 1000
+
+    # Create independently permuted output data
+    (tmp_path/'output'/niifile).unlink()
+    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', 'permute', dims=['x'], independent=True)
+    assert (tmp_path/'output'/niifile).is_file()
+
+    # Check if the NIfTI data is properly permuted
+    inimg   = nib.load(tmp_path/'input'/niifile)
+    indata  = inimg.get_fdata()
+    outimg  = nib.load(tmp_path/'output'/niifile)
+    outdata = outimg.get_fdata()
+    assert outdata.shape == (96, 96, 68, 65)
+    assert outdata.sum() > 1000000
+    assert outdata.sum() - indata.sum() < 1
+    assert np.abs(outdata - indata).sum() > 1000

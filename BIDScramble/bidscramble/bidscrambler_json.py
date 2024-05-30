@@ -27,7 +27,6 @@ def bidscrambler_json(inputdir: str, outputdir: str, include: str, preserve: str
     # Defaults
     inputdir  = Path(inputdir).resolve()
     outputdir = Path(outputdir).resolve()
-    outputdir.mkdir(parents=True, exist_ok=True)
 
     # Create pseudo-random out data for all files of each included data type
     for inputfile in inputdir.rglob(include):
@@ -49,6 +48,7 @@ def bidscrambler_json(inputdir: str, outputdir: str, include: str, preserve: str
 
         # Save the output data
         print(f"Saving: {outputfile}\n ")
+        outputfile.parent.mkdir(parents=True, exist_ok=True)
         with outputfile.open('w') as fid:
             json.dump(jsondata, fid, indent=4)
 

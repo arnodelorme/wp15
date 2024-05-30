@@ -112,9 +112,9 @@ positional arguments:
   inputdir        The input directory with the real data
   outputdir       The output directory with generated pseudo data
   include         A wildcard pattern for selecting input files to be included in the output directory
-  {blur,permute}  Feature preservation methods (by default the output images are nulled)
-    blur          Apply a Gaussian smoothing filter to the output images
-    permute       Randomly permute the output images
+  {blur,permute}  Scrambling methods (by default the output images are nulled). Add -h for more help
+    blur          Apply a 3D Gaussian smoothing filter
+    permute       Randomly permute the image along one or more dimensions
 
 options:
   -h, --help      show this help message and exit

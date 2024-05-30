@@ -17,7 +17,6 @@ def bidscrambler_tsv(inputdir: str, outputdir: str, include: str, preserve: list
     # Defaults
     inputdir  = Path(inputdir).resolve()
     outputdir = Path(outputdir).resolve()
-    outputdir.mkdir(parents=True, exist_ok=True)
 
     # Create pseudo-random out data for all files of each included data type
     for inputfile in inputdir.rglob(include):
@@ -42,6 +41,7 @@ def bidscrambler_tsv(inputdir: str, outputdir: str, include: str, preserve: list
 
         # Save the output data
         print(f"Saving: {outputfile}\n ")
+        outputfile.parent.mkdir(parents=True, exist_ok=True)
         tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
 
 

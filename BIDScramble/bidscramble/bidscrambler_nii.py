@@ -13,12 +13,11 @@ from pathlib import Path
 from typing import List
 
 
-def bidscrambler_nii(inputdir: str, outputdir: str, include: str, method: str, fwhm: float=0, dims: List[str]=()):
+def bidscrambler_nii(inputdir: str, outputdir: str, include: str, method: str, fwhm: float=0, dims: List[str]=(), independent: bool=False):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
     outputdir = Path(outputdir).resolve()
-    outputdir.mkdir(parents=True, exist_ok=True)
 
     # Create pseudo-random out data for all files of each included data type
     for inputfile in inputdir.rglob(include):
@@ -36,17 +35,21 @@ def bidscrambler_nii(inputdir: str, outputdir: str, include: str, method: str, f
         # Apply the feature preservation method
         data = inputimg.get_fdata()
         if method == 'permute':
-            axis = dict([(y,x) for x,y in enumerate(['x','y','z','t'])])
+            axis = dict([(d,n) for n,d in enumerate(['x','y','z','t'])])        # NB: Assumes data is oriented in a standard way (i.e. no dim-flips, no rotations > 45 deg)
             for dim in dims:
-                np.random.default_rng().shuffle(data, axis[dim])    # NB: Assumes data is oriented in a standard way (i.e. no dim-flips, no rotations > 45 deg)
+                if independent:
+                    np.random.default_rng().permuted(data, axis=axis[dim], out=data)
+                else:
+                    np.random.default_rng().shuffle(data, axis=axis[dim])
         elif method == 'blur':
-            sigma = list(fwhm/inputimg.header['pixdim'][1:4]/2.355) + [0]*5     # No smoothing over any further dimensions such as time
-            data  = sp.ndimage.gaussian_filter(data, sigma=sigma)
+            sigma = list(fwhm/inputimg.header['pixdim'][1:4]/2.355) + [0]*(data.ndim-3)     # No smoothing over any further dimensions such as time
+            data = sp.ndimage.gaussian_filter(data, sigma)
         else:
             data = data * 0
 
         # Save the output data
         print(f"Saving: {outputfile}\n ")
+        outputfile.parent.mkdir(parents=True, exist_ok=True)
         outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)
         nib.save(outputimg, outputfile)
 
@@ -61,16 +64,18 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=CustomFormatter, description=textwrap.dedent(__doc__),
                                      epilog='examples:\n'
                                             "  bidscrambler_nii bids pseudobids '*.nii*'\n"
+                                            "  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur -h\n"
                                             "  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur 20\n"
                                             "  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' permute x z'\n ")
     parser.add_argument('inputdir',         help='The input directory with the real data')
     parser.add_argument('outputdir',        help='The output directory with generated pseudo data')
     parser.add_argument('include',          help='A wildcard pattern for selecting input files to be included in the output directory')
-    subparsers = parser.add_subparsers(dest='method', help='Feature preservation methods (by default the output images are nulled)')
-    subparser  = subparsers.add_parser('blur',      help='Apply a Gaussian smoothing filter to the output images')
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling methods (by default the output images are nulled). Add -h for more help')
+    subparser = subparsers.add_parser('blur',      help='Apply a 3D Gaussian smoothing filter')
     subparser.add_argument('fwhm',          help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
-    subparser  = subparsers.add_parser('permute',   help='Randomly permute the output images')
-    subparser.add_argument('dims',          help='The image dimensions along which the permutions will be applied', nargs='*', choices=['x','y','z','t'], default=['x','y'])
+    subparser = subparsers.add_parser('permute',   help='Perfom random permutations along one or more image dimensions')
+    subparser.add_argument('dims',          help='The dimensions along which the image will be permuted', nargs='*', choices=['x','y','z','t'], default=['x','y'])
+    subparser.add_argument('-i', '--independent', help='Make all permutations along a dimension independent', action='store_true')
     args = parser.parse_args()
 
     bidscrambler_nii(**vars(args))
