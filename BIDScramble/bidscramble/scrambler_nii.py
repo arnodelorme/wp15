@@ -2,20 +2,21 @@ import numpy as np
 import scipy as sp
 import nibabel as nib
 import re
+from tqdm import tqdm
 from pathlib import Path
 from typing import List
 
 
-def scrambler_nii(bidsfolder: str, outputfolder: str, include: str, method: str, fwhm: float=0, dims: List[str]=(), independent: bool=False, **_):
+def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str, fwhm: float=0, dims: List[str]=(), independent: bool=False, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    for inputfile in inputdir.rglob('*'):
+    for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
 
-        if not re.match(include, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
+        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
             continue
 
         # Define the output target
@@ -45,6 +46,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, include: str, method: str,
 
         # Save the output data
         print(f"Saving: {outputfile}\n ")
-        outputfile.parent.mkdir(parents=True, exist_ok=True)
-        outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)
-        nib.save(outputimg, outputfile)
+        if not dryrun:
+            outputfile.parent.mkdir(parents=True, exist_ok=True)
+            outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)
+            nib.save(outputimg, outputfile)

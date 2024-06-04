@@ -1,12 +1,13 @@
 import json
 import re
+from tqdm import tqdm
 from pathlib import Path
 
 
 def clearvalues(data: dict, preserve: str):
 
     for key, value in data.items():
-        if re.match(preserve, str(key)):
+        if re.fullmatch(preserve, str(key)):
             continue
         elif isinstance(value, dict):
             clearvalues(value, preserve)
@@ -14,21 +15,20 @@ def clearvalues(data: dict, preserve: str):
             data[key] = type(value)()
 
 
-def scrambler_json(bidsfolder: str, outputfolder: str, include: str, preserve: str, **_):
+def scrambler_json(bidsfolder: str, outputfolder: str, select: str, preserve: str, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    for inputfile in inputdir.rglob('*'):
+    for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
 
-        if not re.match(include, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
+        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
             continue
 
         # Define the output target
         outputfile = outputdir/inputfile.relative_to(inputdir)
-        outputfile.parent.mkdir(parents=True, exist_ok=True)
 
         # Load the json data
         if inputfile.suffix == '.json':
@@ -39,10 +39,11 @@ def scrambler_json(bidsfolder: str, outputfolder: str, include: str, preserve: s
             continue
 
         # Clear values that are not of interest
-        clearvalues(jsondata, preserve)
+        clearvalues(jsondata, preserve or '^$')
 
         # Save the output data
         print(f"Saving: {outputfile}\n ")
-        outputfile.parent.mkdir(parents=True, exist_ok=True)
-        with outputfile.open('w') as fid:
-            json.dump(jsondata, fid, indent=4)
+        if not dryrun:
+            outputfile.parent.mkdir(parents=True, exist_ok=True)
+            with outputfile.open('w') as fid:
+                json.dump(jsondata, fid, indent=4)

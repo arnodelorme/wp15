@@ -24,106 +24,145 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-Currently, there exist three scrambler tools, i.e. `bidscrambler`, `bidscrambler_tsv` and `bidscrambler_json`, that can be executed from a commandline terminal (run them with the `-h` flag for help):
+To scramble BIDS data you can run the command-line tool named ``scrambler``. At base, this tool has an input and out argument, followed by a ``Data type``.
 
-### bidscrambler
+### scrambler
 
 ```
-usage: bidscrambler [-h] [-p PATTERN] inputdir outputdir
+usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json} ...
+
+The general workflow to build up a scrambled BIDS dataset is by consecutive running `scrambler` for the datatype(s)
+of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
+and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
+
+positional arguments:
+  bidsfolder           The BIDS (or BIDS-like) input directory with the original data
+  outputfolder         The output directory with the scrambled pseudo data
+
+options:
+  -h, --help           show this help message and exit
+
+Data type:
+  {stub,tsv,nii,json}  Add -h, --help for more information
+    stub               Short help for scrambler_stub
+    tsv                Short help for scrambler_tsv
+    nii                Short help for scrambler_nii
+    json               Short help for scrambler
+
+examples:
+  scrambler data/bids data/pseudobids stub -h
+  scrambler data/bids data/pseudobids nii -h
+```
+
+#### Data type: stub
+
+```
+usage: scrambler bidsfolder outputfolder stub [-h] [-s SELECT] [-d]
 
 Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over
-and updated if they exist.
-
-positional arguments:
-  inputdir              The input directory with the real data
-  outputdir             The output directory with empty pseudo data
+and updated if possible.
 
 options:
   -h, --help            show this help message and exit
-  -p PATTERN, --pattern PATTERN
-                        A regular expression pattern that is matched against the relative path of the input
-                        data to be included as output data (default: .*)
+  -s SELECT, --select SELECT
+                        A fullmatch regular expression pattern that is matched against the relative
+                        path of the input data. Files that match are scrambled and saved in
+                        outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
+                        (default: False)
 
 examples:
-  bidscrambler bids pseudobids
-  bidscrambler bids pseudobids '.*\.(nii|json|tsv)'
-  bidscrambler bids pseudobids (?!derivatives)
-  bidscrambler bids pseudobids '.*(?!/(func|sub.*scans.tsv))
+  scrambler data/bids data/pseudobids stub
+  scrambler data/bids data/pseudobids stub -s '.*\.(nii|json|tsv)'
+  scrambler data/bids data/pseudobids stub -s '.*(?<!derivatives)'
+  scrambler data/bids data/pseudobids stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
-### bidscrambler_tsv
+#### Data type: tsv
 
 ```
-usage: bidscrambler_tsv [-h] [-p PRESERVE [PRESERVE ...]] inputdir outputdir include
+usage: scrambler bidsfolder outputfolder tsv [-h] [-s SELECT] [-d] {permute} ...
 
-Adds randomly permuted versions of the tsv files in the BIDS input directory to the BIDS output directory.
+Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory. If no scrambling
+method is specified, the default behavior is to null all values.
 
 positional arguments:
-  inputdir              The input directory with the real data
-  outputdir             The output directory with generated pseudo data
-  include               A wildcard pattern for selecting input files to be included in the output directory
+  {permute}             Scrambling method (by default the values are nulled). Add -h, --help for more
+                        information
+    permute             Randomly permute the column values of the tsv files
 
 options:
   -h, --help            show this help message and exit
-  -p PRESERVE [PRESERVE ...], --preserve PRESERVE [PRESERVE ...]
-                        A list of tsv column names between which the relationship is preserved when
-                        generating the pseudo data. Supports wildcard patterns (default: None)
+  -s SELECT, --select SELECT
+                        A fullmatch regular expression pattern that is matched against the relative
+                        path of the input data. Files that match are scrambled and saved in
+                        outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
+                        (default: False)
 
 examples:
-  bidscrambler_tsv bids pseudobids '*.tsv'
-  bidscrambler_tsv bids pseudobids participants.tsv -p participant_id 'SAS*'
-  bidscrambler_tsv bids pseudobids 'partici*.tsv' -p '*'
+  scrambler data/bids data/pseudobids tsv
+  scrambler data/bids data/pseudobids tsv permute
+  scrambler data/bids data/pseudobids tsv permute -s '.*_events.tsv' -p '.*'
+  scrambler data/bids data/pseudobids tsv permute -s participants.tsv -p (participant_id|SAS.*)
 ```
 
-### bidscrambler_json
+#### Data type: json
 
 ```
-usage: bidscrambler_json [-h] [-p PRESERVE] inputdir outputdir include
+usage: scrambler bidsfolder outputfolder json [-h] [-s SELECT] [-d] [-p PRESERVE]
 
-Adds empty-value versions of the json files in the BIDS input directory to the BIDS output directory.
-
-positional arguments:
-  inputdir              The input directory with the real data
-  outputdir             The output directory with generated pseudo data
-  include               A wildcard pattern for selecting input files to be included in the output directory
+Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no preserve
+expression is specified, the default behavior is to null all values.
 
 options:
   -h, --help            show this help message and exit
+  -s SELECT, --select SELECT
+                        A fullmatch regular expression pattern that is matched against the relative
+                        path of the input data. Files that match are scrambled and saved in
+                        outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
+                        (default: False)
   -p PRESERVE, --preserve PRESERVE
-                        A regular expression pattern that is matched against all keys in the json input
-                        files. Associated values are copied over to the output files when a key matches
-                        positively, else the normal empty value is used (default: None)
+                        A fullmatch regular expression pattern that is matched against all keys in
+                        the json files. The json values are copied over when a key matches positively
+                        (default: None)
 
 examples:
-  bidscrambler_json bids pseudobids '*.json'
-  bidscrambler_json bids pseudobids participants.json -p '.*'
-  bidscrambler_json bids pseudobids '*.json' -p (?!(AcquisitionTime|.*Date))
+  scrambler data/bids data/pseudobids json
+  scrambler data/bids data/pseudobids json participants.json -p '.*'
+  scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
 ```
 
-### bidscrambler_nii
+#### Data type: nii
 
 ```
-usage: bidscrambler_nii [-h] inputdir outputdir include {blur,permute} ...
+usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute} ...
 
-Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory.
+Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no scrambling
+method is specified, the default behavior is to null all image values.
 
 positional arguments:
-  inputdir        The input directory with the real data
-  outputdir       The output directory with generated pseudo data
-  include         A wildcard pattern for selecting input files to be included in the output directory
-  {blur,permute}  Scrambling method (by default the output images are nulled). Add -h for more help
-    blur          Apply a 3D Gaussian smoothing filter
-    permute       Perfom random permutations along one or more image dimensions
+  {blur,permute}        Scrambling method (by default the images are nulled). Add -h, --help for more
+                        information
+    blur                Apply a 3D Gaussian smoothing filter
+    permute             Perform random permutations along one or more image dimensions
 
 options:
-  -h, --help      show this help message and exit
+  -h, --help            show this help message and exit
+  -s SELECT, --select SELECT
+                        A fullmatch regular expression pattern that is matched against the relative
+                        path of the input data. Files that match are scrambled and saved in
+                        outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
+                        (default: False)
 
 examples:
-  bidscrambler_nii bids pseudobids '*.nii*'
-  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur -h
-  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur 20
-  bidscrambler_nii bids pseudobids 'sub-*_bold.nii' permute x z'
+  scrambler data/bids data/pseudobids nii
+  scrambler data/bids data/pseudobids nii blur -h
+  scrambler data/bids data/pseudobids nii blur 20 -s 'sub-.*_T1w.nii.gz'
+  scrambler data/bids data/pseudobids nii permute x z -i -s 'sub-.*_bold.nii'
 ```
 
 ## Legal Aspects

@@ -1,19 +1,20 @@
 import pandas as pd
 import numpy as np
 import re
+from tqdm import tqdm
 from pathlib import Path
 
 
-def scrambler_tsv(bidsfolder: str, outputfolder: str, include: str, preserve: str, **_):
+def scrambler_tsv(bidsfolder: str, outputfolder: str, select: str, method: str, preserve: str, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    for inputfile in inputdir.rglob('*'):
+    for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
 
-        if not re.match(include, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
+        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
             continue
 
         # Define the output target
@@ -27,14 +28,18 @@ def scrambler_tsv(bidsfolder: str, outputfolder: str, include: str, preserve: st
             continue
 
         # Permute columns that are not of interest (i.e. preserve the relation between columns of interest)
-        for column in tsvdata.columns:
-            if not re.match(preserve, column):
-                tsvdata[column] = np.random.permutation(tsvdata[column])
+        if method == 'permute':
+            for column in tsvdata.columns:
+                if not re.fullmatch(preserve or '^$', column):
+                    tsvdata[column] = np.random.permutation(tsvdata[column])
+        else:
+            tsvdata = pd.DataFrame(columns=tsvdata.columns, index=tsvdata.index)
 
         # Permute the rows
         tsvdata = tsvdata.sample(frac=1).reset_index(drop=True)
 
         # Save the output data
         print(f"Saving: {outputfile}\n ")
-        outputfile.parent.mkdir(parents=True, exist_ok=True)
-        tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
+        if not dryrun:
+            outputfile.parent.mkdir(parents=True, exist_ok=True)
+            tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')

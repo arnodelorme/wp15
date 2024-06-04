@@ -5,9 +5,9 @@ import math
 import nibabel as nib
 import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
-from bidscramble.scrambler import scrambler_stub
+from bidscramble.scrambler_stub import scrambler_stub
 from bidscramble.scrambler_tsv import scrambler_tsv
-from bidscramble.scrambler_json import scrambler_json
+from bidscramble.scrambler import scrambler
 from bidscramble.scrambler_nii import scrambler_nii
 
 
@@ -28,7 +28,7 @@ def test_scrambler_stub(tmp_path):
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    scrambler_stub(tmp_path/'input', tmp_path/'output', '(?!derivatives)')
+    scrambler_stub(tmp_path/'input', tmp_path/'output', '.*(?<!derivatives)')
 
     # Check if all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()
@@ -59,12 +59,24 @@ def test_scrambler_tsv(tmp_path):
     tsvdata = (tmp_path/'input'/'participants.tsv').read_text().replace('n/a ', 'n/a')
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
 
-    # Create the output data
-    scrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\.tsv', '(Height|Weig.*)')
+    # Create nulled output data
+    scrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', '', '')
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 
-    # Check if the participants.tsv data is properly scrambled
+    # Check if the participants.tsv data is properly nulled
+    inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
+    outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
+    assert inputdata.shape == outputdata.shape
+    for column, values in outputdata.items():
+        assert column in inputdata.columns
+        assert values.isnull().all()
+
+    # Create permuted output data
+    (tmp_path/'output'/'participants.tsv').unlink()
+    scrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', 'permute', '(Height|Weig.*)')
+
+    # Check if the participants.tsv data is properly permuted
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
     outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
     assert inputdata.shape == outputdata.shape
@@ -88,7 +100,7 @@ def test_scrambler_json(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004148/{eegjson}", tmp_path/'input'/eegjson)
 
     # Create the output data
-    scrambler_json(tmp_path/'input', tmp_path/'output', 'sub.*\.json', '(?!(RecordingDuration|.*Channel))')
+    scrambler(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', '(?!RecordingDuration|Channel).*')
     assert (tmp_path/'output'/eegjson).is_file()
     assert not (tmp_path/'output'/'participants.json').is_file()
 
@@ -112,7 +124,7 @@ def test_scrambler_nii(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{niifile}", tmp_path/'input'/niifile)
 
     # Create nulled output data
-    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', '')
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', '')
     assert (tmp_path/'output'/niifile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
@@ -124,7 +136,7 @@ def test_scrambler_nii(tmp_path):
 
     # Create blurred output data
     (tmp_path/'output'/niifile).unlink()
-    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', 'blur', fwhm=12)
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'blur', fwhm=12)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly blurred
@@ -139,7 +151,7 @@ def test_scrambler_nii(tmp_path):
 
     # Create permuted output data
     (tmp_path/'output'/niifile).unlink()
-    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', 'permute', dims=['x','z'], independent=False)
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'permute', dims=['x','z'], independent=False)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly permuted
@@ -154,7 +166,7 @@ def test_scrambler_nii(tmp_path):
 
     # Create independently permuted output data
     (tmp_path/'output'/niifile).unlink()
-    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', 'permute', dims=['x'], independent=True)
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'permute', dims=['x'], independent=True)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly permuted
