@@ -50,7 +50,7 @@ def addparser_tsv(parsers, help: str):
     parser = parsers.add_parser('tsv', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scrambler_tsv)
 
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method (by default the values are nulled). Add -h, --help for more information')
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
     subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
     subparser.add_argument('-p', '--preserve', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
@@ -71,7 +71,7 @@ def addparser_nii(parsers, help: str):
     parser = parsers.add_parser('nii', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scrambler_nii)
 
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method (by default the images are nulled). Add -h, --help for more information')
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
     subparser = subparsers.add_parser('blur', parents=[parent], description=description, help='Apply a 3D Gaussian smoothing filter')
     subparser.add_argument('fwhm', help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
     subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Perform random permutations along one or more image dimensions')
