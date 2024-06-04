@@ -107,33 +107,6 @@ examples:
   scrambler data/bids data/pseudobids tsv permute -s participants.tsv -p (participant_id|SAS.*)
 ```
 
-#### Data type: json
-
-```
-usage: scrambler bidsfolder outputfolder json [-h] [-s SELECT] [-d] [-p PRESERVE]
-
-Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no preserve
-expression is specified, the default behavior is to null all values.
-
-options:
-  -h, --help            show this help message and exit
-  -s SELECT, --select SELECT
-                        A fullmatch regular expression pattern that is matched against the relative
-                        path of the input data. Files that match are scrambled and saved in
-                        outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
-                        (default: False)
-  -p PRESERVE, --preserve PRESERVE
-                        A fullmatch regular expression pattern that is matched against all keys in
-                        the json files. The json values are copied over when a key matches positively
-                        (default: None)
-
-examples:
-  scrambler data/bids data/pseudobids json
-  scrambler data/bids data/pseudobids json participants.json -p '.*'
-  scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
-```
-
 #### Data type: nii
 
 ```
@@ -161,6 +134,33 @@ examples:
   scrambler data/bids data/pseudobids nii blur -h
   scrambler data/bids data/pseudobids nii blur 20 -s 'sub-.*_T1w.nii.gz'
   scrambler data/bids data/pseudobids nii permute x z -i -s 'sub-.*_bold.nii'
+```
+
+#### Data type: json
+
+```
+usage: scrambler bidsfolder outputfolder json [-h] [-s SELECT] [-d] [-p PRESERVE]
+
+Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no preserve
+expression is specified, the default behavior is to null all values.
+
+options:
+  -h, --help            show this help message and exit
+  -s SELECT, --select SELECT
+                        A fullmatch regular expression pattern that is matched against the relative
+                        path of the input data. Files that match are scrambled and saved in
+                        outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
+                        (default: False)
+  -p PRESERVE, --preserve PRESERVE
+                        A fullmatch regular expression pattern that is matched against all keys in
+                        the json files. The json values are copied over when a key matches positively
+                        (default: None)
+
+examples:
+  scrambler data/bids data/pseudobids json
+  scrambler data/bids data/pseudobids json participants.json -p '.*'
+  scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
 ```
 
 ## Legal Aspects
