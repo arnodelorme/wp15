@@ -88,8 +88,7 @@ Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS
 method is specified, the default behavior is to null all values.
 
 positional arguments:
-  {permute}             Scrambling method. Add -h, --help for more
-                        information
+  {permute}             Scrambling method. Add -h, --help for more information
     permute             Randomly permute the column values of the tsv files
 
 options:
@@ -144,8 +143,7 @@ Adds scrambled versions of the NIfTI files in the BIDS input directory to the BI
 method is specified, the default behavior is to null all image values.
 
 positional arguments:
-  {blur,permute}        Scrambling method. Add -h, --help for more
-                        information
+  {blur,permute}        Scrambling method. Add -h, --help for more information
     blur                Apply a 3D Gaussian smoothing filter
     permute             Perform random permutations along one or more image dimensions
 
