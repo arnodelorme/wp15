@@ -100,7 +100,7 @@ def main():
     """Console script entry point"""
 
     description = textwrap.dedent("""
-    The general workflow to build up a scrambled BIDS dataset is by consecutive running `scrambler` for the datatype(s)
+    The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
     of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
     and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
     """)

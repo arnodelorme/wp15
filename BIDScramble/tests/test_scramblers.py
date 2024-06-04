@@ -7,7 +7,7 @@ import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
 from bidscramble.scrambler_stub import scrambler_stub
 from bidscramble.scrambler_tsv import scrambler_tsv
-from bidscramble.scrambler import scrambler
+from bidscramble.scrambler_json import scrambler_json
 from bidscramble.scrambler_nii import scrambler_nii
 
 
@@ -100,7 +100,7 @@ def test_scrambler_json(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004148/{eegjson}", tmp_path/'input'/eegjson)
 
     # Create the output data
-    scrambler(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', '(?!RecordingDuration|Channel).*')
+    scrambler_json(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', '(?!RecordingDuration|Channel).*')
     assert (tmp_path/'output'/eegjson).is_file()
     assert not (tmp_path/'output'/'participants.json').is_file()
 

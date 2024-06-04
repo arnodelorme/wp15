@@ -31,7 +31,7 @@ To scramble BIDS data you can run the command-line tool named ``scrambler``. At 
 ```
 usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json} ...
 
-The general workflow to build up a scrambled BIDS dataset is by consecutive running `scrambler` for the datatype(s)
+The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
 of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
 and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
 
