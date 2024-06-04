@@ -12,4 +12,4 @@ def test_cli():
             entrypoints.append(script.name)
             process = subprocess.run(f"{script.name} -h", shell=True)
             assert process.returncode == 0
-    assert 'bidscrambler' in entrypoints
+    assert 'scrambler' in entrypoints

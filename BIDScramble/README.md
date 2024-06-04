@@ -112,15 +112,16 @@ positional arguments:
   inputdir        The input directory with the real data
   outputdir       The output directory with generated pseudo data
   include         A wildcard pattern for selecting input files to be included in the output directory
-  {blur,permute}  Scrambling methods (by default the output images are nulled). Add -h for more help
+  {blur,permute}  Scrambling method (by default the output images are nulled). Add -h for more help
     blur          Apply a 3D Gaussian smoothing filter
-    permute       Randomly permute the image along one or more dimensions
+    permute       Perfom random permutations along one or more image dimensions
 
 options:
   -h, --help      show this help message and exit
 
 examples:
   bidscrambler_nii bids pseudobids '*.nii*'
+  bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur -h
   bidscrambler_nii bids pseudobids 'sub-*_T1w.nii.gz' blur 20
   bidscrambler_nii bids pseudobids 'sub-*_bold.nii' permute x z'
 ```
@@ -131,5 +132,6 @@ This code is released under the GPLv3 license.
 
 ## Related tools
 
+- https://github.com/PennLINC/CuBIDS
 - https://peerherholz.github.io/BIDSonym/
 - https://arx.deidentifier.org

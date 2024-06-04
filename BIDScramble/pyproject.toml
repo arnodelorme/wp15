@@ -23,10 +23,7 @@ homepage          = 'https://github.com/SIESTA-eu/wp15'
 repository        = 'https://github.com/SIESTA-eu/wp15'
 
 [project.scripts]
-bidscrambler      = 'bidscramble.bidscrambler:main'
-bidscrambler_tsv  = 'bidscramble.bidscrambler_tsv:main'
-bidscrambler_nii  = 'bidscramble.bidscrambler_nii:main'
-bidscrambler_json = 'bidscramble.bidscrambler_json:main'
+scrambler         = 'bidscramble.scrambler:main'
 
 [tool.pytest.ini_options]
 testpaths         = ['tests']

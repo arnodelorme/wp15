@@ -1,18 +1,17 @@
 import json
-
 import numpy as np
 import pandas as pd
 import math
 import nibabel as nib
 import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
-from bidscramble.bidscrambler import bidscrambler
-from bidscramble.bidscrambler_tsv import bidscrambler_tsv
-from bidscramble.bidscrambler_json import bidscrambler_json
-from bidscramble.bidscrambler_nii import bidscrambler_nii
+from bidscramble.scrambler import scrambler_stub
+from bidscramble.scrambler_tsv import scrambler_tsv
+from bidscramble.scrambler_json import scrambler_json
+from bidscramble.scrambler_nii import scrambler_nii
 
 
-def test_bidscrambler(tmp_path):
+def test_scrambler_stub(tmp_path):
 
     # Create the input data
     (tmp_path/'input').mkdir()
@@ -29,7 +28,7 @@ def test_bidscrambler(tmp_path):
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    bidscrambler(tmp_path/'input', tmp_path/'output', '(?!derivatives)')
+    scrambler_stub(tmp_path/'input', tmp_path/'output', '(?!derivatives)')
 
     # Check if all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()
@@ -48,7 +47,7 @@ def test_bidscrambler(tmp_path):
     assert 'EEG' in readme
 
 
-def test_bidscrambler_tsv(tmp_path):
+def test_scrambler_tsv(tmp_path):
 
     # Create the input data
     (tmp_path/'input').mkdir()
@@ -61,7 +60,7 @@ def test_bidscrambler_tsv(tmp_path):
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
 
     # Create the output data
-    bidscrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici*.tsv', ['Height', 'Weig*'])
+    scrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\.tsv', '(Height|Weig.*)')
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 
@@ -80,7 +79,7 @@ def test_bidscrambler_tsv(tmp_path):
     assert not math.isclose(inputdata['SAS_1stVisit'].corr(inputdata['SAS_2ndVisit']), outputdata['SAS_1stVisit'].corr(outputdata['SAS_2ndVisit']))
 
 
-def test_bidscrambler_json(tmp_path):
+def test_scrambler_json(tmp_path):
 
     # Create the input data
     eegjson = 'sub-01/ses-session1/eeg/sub-01_ses-session1_task-eyesclosed_eeg.json'
@@ -89,7 +88,7 @@ def test_bidscrambler_json(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004148/{eegjson}", tmp_path/'input'/eegjson)
 
     # Create the output data
-    bidscrambler_json(tmp_path/'input', tmp_path/'output', 'sub*.json', '(?!(RecordingDuration|.*Channel))')
+    scrambler_json(tmp_path/'input', tmp_path/'output', 'sub.*\.json', '(?!(RecordingDuration|.*Channel))')
     assert (tmp_path/'output'/eegjson).is_file()
     assert not (tmp_path/'output'/'participants.json').is_file()
 
@@ -104,7 +103,7 @@ def test_bidscrambler_json(tmp_path):
     assert not outputdata['EMGChannelCount']
 
 
-def test_bidscrambler_nii(tmp_path):
+def test_scrambler_nii(tmp_path):
 
     # Create the input data
     niifile = 'sub-01/ses-mri/dwi/sub-01_ses-mri_dwi.nii.gz'
@@ -113,7 +112,7 @@ def test_bidscrambler_nii(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{niifile}", tmp_path/'input'/niifile)
 
     # Create nulled output data
-    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', '')
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', '')
     assert (tmp_path/'output'/niifile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
@@ -125,7 +124,7 @@ def test_bidscrambler_nii(tmp_path):
 
     # Create blurred output data
     (tmp_path/'output'/niifile).unlink()
-    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', 'blur', fwhm=12)
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', 'blur', fwhm=12)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly blurred
@@ -140,7 +139,7 @@ def test_bidscrambler_nii(tmp_path):
 
     # Create permuted output data
     (tmp_path/'output'/niifile).unlink()
-    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', 'permute', dims=['x','z'], independent=False)
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', 'permute', dims=['x','z'], independent=False)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly permuted
@@ -155,7 +154,7 @@ def test_bidscrambler_nii(tmp_path):
 
     # Create independently permuted output data
     (tmp_path/'output'/niifile).unlink()
-    bidscrambler_nii(tmp_path/'input', tmp_path/'output', 'sub*.nii.gz', 'permute', dims=['x'], independent=True)
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\.nii.gz', 'permute', dims=['x'], independent=True)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly permuted
