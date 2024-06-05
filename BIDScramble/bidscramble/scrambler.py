@@ -115,10 +115,10 @@ def main():
 
     # Add the subparsers
     subparsers = parser.add_subparsers(dest='method', title='Data type', help='Add -h, --help for more information', required=True)
-    addparser_stub(subparsers, help='Short help for scrambler_stub')
-    addparser_tsv(subparsers,  help='Short help for scrambler_tsv')
-    addparser_nii(subparsers,  help='Short help for scrambler_nii')
-    addparser_json(subparsers, help='Short help for scrambler')
+    addparser_stub(subparsers, help='Saves a dummy bidsfolder skeleton in outputfolder')
+    addparser_tsv(subparsers,  help='Saves scrambled tsv files in outputfolder')
+    addparser_nii(subparsers,  help='Saves scrambled NIfTI files in outputfolder')
+    addparser_json(subparsers, help='Saves scrambled json files in outputfolder')
 
     # Execute the scrambler function
     args = parser.parse_args()
