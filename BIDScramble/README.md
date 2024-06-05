@@ -44,10 +44,10 @@ options:
 
 Data type:
   {stub,tsv,nii,json}  Add -h, --help for more information
-    stub               Short help for scrambler_stub
-    tsv                Short help for scrambler_tsv
-    nii                Short help for scrambler_nii
-    json               Short help for scrambler
+    stub               Saves a dummy bidsfolder skeleton in outputfolder
+    tsv                Saves scrambled tsv files in outputfolder
+    nii                Saves scrambled NIfTI files in outputfolder
+    json               Saves scrambled json files in outputfolder
 
 examples:
   scrambler data/bids data/pseudobids stub -h
