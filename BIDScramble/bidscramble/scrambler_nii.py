@@ -26,7 +26,6 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str, 
         if '.nii' in inputfile.suffixes:
             inputimg = nib.load(inputfile)
         else:
-            print(f"Skipping non-nii file: {outputfile}")
             continue
 
         # Apply the feature preservation method
@@ -45,7 +44,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str, 
             data = data * 0
 
         # Save the output data
-        print(f"Saving: {outputfile}\n ")
+        tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
             outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)

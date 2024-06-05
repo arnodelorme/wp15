@@ -20,7 +20,7 @@ def scrambler_stub(bidsfolder: str, outputfolder: str, select: str, dryrun: bool
         outputfile = outputdir/inputfile.relative_to(inputdir)
         if not re.fullmatch(select, str(inputfile.relative_to(inputdir))):
             continue
-        print(f"--> {outputfile}")
+        tqdm.write(f"--> {outputfile}")
         if inputfile.is_dir() and not dryrun:
             (outputfile).mkdir(parents=True, exist_ok=True)
         elif not dryrun:

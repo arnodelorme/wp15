@@ -35,14 +35,13 @@ def scrambler_json(bidsfolder: str, outputfolder: str, select: str, preserve: st
             with open(inputfile, 'r') as f:
                 jsondata = json.load(f)
         else:
-            print(f"Skipping non-json file: {outputfile}")
             continue
 
         # Clear values that are not of interest
         clearvalues(jsondata, preserve or '^$')
 
         # Save the output data
-        print(f"Saving: {outputfile}\n ")
+        tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
             with outputfile.open('w') as fid:

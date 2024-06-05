@@ -24,7 +24,6 @@ def scrambler_tsv(bidsfolder: str, outputfolder: str, select: str, method: str, 
         if '.tsv' in inputfile.suffixes:
             tsvdata = pd.read_csv(inputfile, sep='\t')
         else:
-            print(f"Skipping non-tsv file: {outputfile}")
             continue
 
         # Permute columns that are not of interest (i.e. preserve the relation between columns of interest)
@@ -39,7 +38,7 @@ def scrambler_tsv(bidsfolder: str, outputfolder: str, select: str, method: str, 
         tsvdata = tsvdata.sample(frac=1).reset_index(drop=True)
 
         # Save the output data
-        print(f"Saving: {outputfile}\n ")
+        tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
             tsvdata.to_csv(outputfile, sep='\t', index=False, encoding='utf-8', na_rep='n/a')
