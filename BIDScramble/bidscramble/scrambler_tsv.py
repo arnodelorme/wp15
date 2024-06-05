@@ -5,7 +5,7 @@ from tqdm import tqdm
 from pathlib import Path
 
 
-def scrambler_tsv(bidsfolder: str, outputfolder: str, select: str, method: str, preserve: str, dryrun: bool=False, **_):
+def scrambler_tsv(bidsfolder: str, outputfolder: str, select: str='^$', method: str='', preserve: str='^$', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()

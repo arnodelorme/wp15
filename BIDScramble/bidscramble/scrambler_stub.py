@@ -7,7 +7,7 @@ from pathlib import Path
 from . import __version__, __description__, __url__
 
 
-def scrambler_stub(bidsfolder: str, outputfolder: str, select: str, dryrun: bool=False, **_):
+def scrambler_stub(bidsfolder: str, outputfolder: str, select: str='^$', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
