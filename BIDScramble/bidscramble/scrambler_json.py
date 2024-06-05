@@ -24,23 +24,18 @@ def scrambler_json(bidsfolder: str, outputfolder: str, select: str='^$', preserv
     # Create pseudo-random out data for all files of each included data type
     for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
 
-        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
+        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or inputfile.suffix != '.json':
             continue
-
-        # Define the output target
-        outputfile = outputdir/inputfile.relative_to(inputdir)
 
         # Load the json data
-        if inputfile.suffix == '.json':
-            with open(inputfile, 'r') as f:
-                jsondata = json.load(f)
-        else:
-            continue
+        with open(inputfile, 'r') as f:
+            jsondata = json.load(f)
 
         # Clear values that are not of interest
         clearvalues(jsondata, preserve or '^$')
 
         # Save the output data
+        outputfile = outputdir/inputfile.relative_to(inputdir)
         tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)

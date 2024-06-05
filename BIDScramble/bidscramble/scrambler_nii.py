@@ -16,17 +16,11 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str='^$', method: 
     # Create pseudo-random out data for all files of each included data type
     for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
 
-        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or inputfile.is_dir():
+        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or '.nii' not in inputfile.suffixes:
             continue
-
-        # Define the output target
-        outputfile = outputdir/inputfile.relative_to(inputdir)
 
         # Load the (zipped) nii data
-        if '.nii' in inputfile.suffixes:
-            inputimg = nib.load(inputfile)
-        else:
-            continue
+        inputimg = nib.load(inputfile)
 
         # Apply the feature preservation method
         data = inputimg.get_fdata()
@@ -44,6 +38,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str='^$', method: 
             data = data * 0
 
         # Save the output data
+        outputfile = outputdir/inputfile.relative_to(inputdir)
         tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
