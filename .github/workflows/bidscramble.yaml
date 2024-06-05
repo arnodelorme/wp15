@@ -3,6 +3,13 @@ on:
   push:
     paths:
       - 'BIDScramble/**'
+      - '!**.md'
+      - '!**.rst'
+  pull_request:
+    paths:
+      - 'BIDScramble/**'
+      - '!**.md'
+      - '!**.rst'
 
 jobs:
   tests:
