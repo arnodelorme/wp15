@@ -7,10 +7,10 @@ from pathlib import Path
 def clearvalues(data: dict, preserve: str):
 
     for key, value in data.items():
+        if isinstance(value, dict):
+            clearvalues(value, preserve)
         if re.fullmatch(preserve, str(key)):
             continue
-        elif isinstance(value, dict):
-            clearvalues(value, preserve)
         else:
             data[key] = type(value)()
 
