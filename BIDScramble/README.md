@@ -110,15 +110,17 @@ examples:
 #### Data type: nii
 
 ```
-usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute} ...
+usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute,diffuse} ...
 
 Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no scrambling
 method is specified, the default behavior is to null all image values.
 
 positional arguments:
-  {blur,permute}        Scrambling method. Add -h, --help for more information
+  {blur,permute,diffuse}
+                        Scrambling method. Add -h, --help for more information
     blur                Apply a 3D Gaussian smoothing filter
     permute             Perform random permutations along one or more image dimensions
+    diffuse             Perform random permutations using a sliding 3D permutation kernel
 
 options:
   -h, --help            show this help message and exit

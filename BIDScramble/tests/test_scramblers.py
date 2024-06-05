@@ -129,8 +129,7 @@ def test_scrambler_nii(tmp_path):
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
     # Check if the NIfTI data is properly nulled
-    outimg  = nib.load(tmp_path/'output'/niifile)
-    outdata = outimg.get_fdata()
+    outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() == 0
 
@@ -140,10 +139,8 @@ def test_scrambler_nii(tmp_path):
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly blurred
-    inimg   = nib.load(tmp_path/'input'/niifile)
-    indata  = inimg.get_fdata()
-    outimg  = nib.load(tmp_path/'output'/niifile)
-    outdata = outimg.get_fdata()
+    indata  = nib.load(tmp_path/'input'/niifile).get_fdata()
+    outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
     assert outdata.sum() - indata.sum() < 1
@@ -155,10 +152,7 @@ def test_scrambler_nii(tmp_path):
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly permuted
-    inimg   = nib.load(tmp_path/'input'/niifile)
-    indata  = inimg.get_fdata()
-    outimg  = nib.load(tmp_path/'output'/niifile)
-    outdata = outimg.get_fdata()
+    outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
     assert outdata.sum() - indata.sum() < 1
@@ -170,10 +164,19 @@ def test_scrambler_nii(tmp_path):
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check if the NIfTI data is properly permuted
-    inimg   = nib.load(tmp_path/'input'/niifile)
-    indata  = inimg.get_fdata()
-    outimg  = nib.load(tmp_path/'output'/niifile)
-    outdata = outimg.get_fdata()
+    outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
+    assert outdata.shape == (96, 96, 68, 65)
+    assert outdata.sum() > 1000000
+    assert outdata.sum() - indata.sum() < 1
+    assert np.abs(outdata - indata).sum() > 1000
+
+    # Create diffused output data
+    (tmp_path/'output'/niifile).unlink()
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'diffuse', radius=25)
+    assert (tmp_path/'output'/niifile).is_file()
+
+    # Check if the NIfTI data is properly diffused
+    outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
     assert outdata.sum() - indata.sum() < 1

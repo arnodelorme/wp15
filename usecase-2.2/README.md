@@ -39,7 +39,7 @@ The pseudo data consists of scrambled BIDS data that is organised according to t
 ```console
 scrambler input scrambled stub
 scrambler input scrambled json -p '(?!AcquisitionTime).*'
-scrambler input scrambled tsv permute -p '(bids_name|cnr)'
+scrambler input scrambled nii permute y -i
 ```
 
 ## Output data
@@ -69,9 +69,9 @@ The apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/do
 Executing the pipeline from the Linux command-line to generate the output data is done using the following:
 
 ```console
-mkdir mriqc output
-apptainer run --cleanenv mriqc-24.0.0.sif input mriqc participant
-apptainer run --cleanenv mriqc-24.0.0.sif input mriqc group
+mkdir output
+apptainer run --cleanenv mriqc-24.0.0.sif input output participant
+apptainer run --cleanenv mriqc-24.0.0.sif input output group
 ```
 
 ## Cleaning up

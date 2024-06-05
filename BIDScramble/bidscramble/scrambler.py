@@ -77,6 +77,8 @@ def addparser_nii(parsers, help: str):
     subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Perform random permutations along one or more image dimensions')
     subparser.add_argument('dims', help='The dimensions along which the image will be permuted', nargs='*', choices=['x', 'y', 'z', 't'], default=['x', 'y'])
     subparser.add_argument('-i','--independent', help='Make all permutations along a dimension independent (instead of permuting slices as a whole)', action='store_true')
+    subparser = subparsers.add_parser('diffuse', parents=[parent], description=description, help='Perform random permutations using a sliding 3D permutation kernel')
+    subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float)
 
 
 def addparser_json(parsers, help: str):
