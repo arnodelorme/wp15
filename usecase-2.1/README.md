@@ -34,8 +34,8 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 A scrambled version of the data can be generated using [bidscrambler_tsv](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscrambler_tsv -h` for more information.
 
 ```console
-bidscrambler input scrambled
-bidscrambler_tsv input scrambled participants.tsv
+scrambler input scrambled stub
+scrambler input scrambled tsv permute -s participants.tsv
 ```
 
 ## Output data

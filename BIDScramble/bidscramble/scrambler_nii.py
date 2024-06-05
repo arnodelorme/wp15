@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import List
 
 
-def scrambler_nii(bidsfolder: str, outputfolder: str, select: str='^$', method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False, dryrun: bool=False, **_):
+def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
