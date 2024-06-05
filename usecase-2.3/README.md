@@ -36,7 +36,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
 
 ```console
-bidscrambler input scrambled stub
+scrambler input scrambled stub
 [WIP]
 ```
 

@@ -17,9 +17,11 @@ def scrambler_stub(bidsfolder: str, outputfolder: str, select: str, dryrun: bool
     # Create placeholder output files for selected input files
     print(f"Creating BIDS stub data in: {outputdir}")
     for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
-        outputfile = outputdir/inputfile.relative_to(inputdir)
+
         if not re.fullmatch(select, str(inputfile.relative_to(inputdir))):
             continue
+
+        outputfile = outputdir/inputfile.relative_to(inputdir)
         tqdm.write(f"--> {outputfile}")
         if inputfile.is_dir() and not dryrun:
             (outputfile).mkdir(parents=True, exist_ok=True)

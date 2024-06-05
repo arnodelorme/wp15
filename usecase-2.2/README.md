@@ -37,8 +37,9 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
 
 ```console
-bidscrambler input scrambled stub
-bidscrambler input scrambled tsv permute
+scrambler input scrambled stub
+scrambler input scrambled json -p '(?!AcquisitionTime).*'
+scrambler input scrambled tsv permute -p '(bids_name|cnr)'
 ```
 
 ## Output data
@@ -71,7 +72,6 @@ Executing the pipeline from the Linux command-line to generate the output data i
 mkdir mriqc output
 apptainer run --cleanenv mriqc-24.0.0.sif input mriqc participant
 apptainer run --cleanenv mriqc-24.0.0.sif input mriqc group
-
 ```
 
 ## Cleaning up
