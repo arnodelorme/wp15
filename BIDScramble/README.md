@@ -24,7 +24,7 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-To scramble BIDS data you can run the command-line tool named ``scrambler``. At its base, this tool has an input and output argument, followed by a ``Data type`` subcommand. The meaning and use of these arguments is explained in more detail in the following sections.
+To scramble BIDS data you can run the command-line tool named ``scrambler``. At its base, this tool has an input and output argument, followed by a ``Data type`` subcommand. The meaning and usage of these arguments is explained in more detail in the following sections.
 
 ### scrambler
 
