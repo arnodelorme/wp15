@@ -75,10 +75,13 @@ def addparser_nii(parsers, help: str):
     subparser = subparsers.add_parser('blur', parents=[parent], description=description, help='Apply a 3D Gaussian smoothing filter')
     subparser.add_argument('fwhm', help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
     subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Perform random permutations along one or more image dimensions')
-    subparser.add_argument('dims', help='The dimensions along which the image will be permuted', nargs='*', choices=['x', 'y', 'z', 't'], default=['x', 'y'])
+    subparser.add_argument('dims', help='The dimensions along which the images will be permuted', nargs='*', choices=['x','y','z','t','u','v','w'], default=['x','y'])
     subparser.add_argument('-i','--independent', help='Make all permutations along a dimension independent (instead of permuting slices as a whole)', action='store_true')
     subparser = subparsers.add_parser('diffuse', parents=[parent], description=description, help='Perform random permutations using a sliding 3D permutation kernel')
-    subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float)
+    subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float, default=5)
+    subparser = subparsers.add_parser('wobble', parents=[parent], description=description, help='Deform the images using 3D random waveforms')
+    subparser.add_argument('-a','--amplitude', help='The amplitude of the random waveform', type=float, default=25)
+    subparser.add_argument('-f','--freqrange', help='The highest and lowest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[0.5, 5])
 
 
 def addparser_json(parsers, help: str):
@@ -105,7 +108,7 @@ def main():
     The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
     of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
     and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
-    """)
+    To combine different scrambling methods, simply re-run `scrambler` using the already scrambled data as input folder.""")
 
     # Add the baseparser
     parser = argparse.ArgumentParser(formatter_class=DefaultsFormatter, description=description,

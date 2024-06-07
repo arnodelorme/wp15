@@ -34,6 +34,7 @@ usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json} ...
 The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
 of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
 and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
+To combine different scrambling methods, simply re-run `scrambler` using the already scrambled data as input folder.
 
 positional arguments:
   bidsfolder           The BIDS (or BIDS-like) input directory with the original data

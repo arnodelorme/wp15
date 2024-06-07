@@ -181,3 +181,15 @@ def test_scrambler_nii(tmp_path):
     assert outdata.sum() > 1000000
     assert outdata.sum() - indata.sum() < 1
     assert np.abs(outdata - indata).sum() > 1000
+
+    # Create wobbled output data
+    (tmp_path/'output'/niifile).unlink()
+    scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'wobble', amplitude=25, freqrange=[0.05, 0.5])
+    assert (tmp_path/'output'/niifile).is_file()
+
+    # Check if the NIfTI data is properly diffused
+    outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
+    assert outdata.shape == (96, 96, 68, 65)
+    assert outdata.sum() > 1000000
+    assert outdata.sum() - indata.sum() < 1
+    assert np.abs(outdata - indata).sum() > 1000
