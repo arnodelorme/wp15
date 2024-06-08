@@ -21,7 +21,8 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
 
         # Load the (zipped) nii data
         inputimg: nib.ni1.Nifti1Image = nib.load(inputfile)
-        data = inputimg.get_fdata()
+        data   = inputimg.get_fdata()
+        voxdim = inputimg.header['pixdim'][1:4]
         if data.ndim < 3 and method in ('diffuse', 'wobble'):
             tqdm.write(f"WARNING: {inputfile} only has {data.ndim} image dimensions (must be 3 or more), aborting '{method}' scrambling...")
             continue
@@ -36,11 +37,11 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
                     np.random.default_rng().shuffle(data, axis=axis[dim])
 
         elif method == 'blur':
-            sigma = list(fwhm/inputimg.header['pixdim'][1:4]/2.355) + [0]*4     # No smoothing over any further dimensions such as time (Nifti supports up to 7 dimensions)
+            sigma = list(abs(fwhm/voxdim/2.355)) + [0]*4         # No smoothing over any further dimensions such as time (Nifti supports up to 7 dimensions)
             data  = sp.ndimage.gaussian_filter(data, sigma[0:data.ndim])
 
         elif method == 'diffuse':
-            window = np.int16(2 * radius / inputimg.header['pixdim'][1:4])      # Size of the sliding window
+            window = abs(np.int16(2 * radius / voxdim))     # Size of the sliding window
             step   = [int(d/4) or 1 for d in window]                            # Sliding step (NB: int >= 1): e.g. 1/4 of the size of the sliding window (to speed up)
             for x in range(0, data.shape[0] - window[0], step[0]):
                 for y in range(0, data.shape[1] - window[1], step[1]):
@@ -65,13 +66,13 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             # 1. Add random k-space phase gradients in a mid-range frequency band while using a sliding window in image space
             # 2. Use a random deformation/warp field (see e.g. https://antspy.readthedocs.io/en/latest/registration.html)
             # 3. Apply random wavy (tapered wrap-around?) translations (https://numpy.org/doc/stable/reference/generated/numpy.roll.html) in x, y and z (repeatedly if that is still reversible?)
-            for dim in (0,1,2):
+            for dim in (0,1,2,1,0):
                 for axis in [ax for ax in (0,1,2) if ax != dim]:
                     index  = np.arange(data.shape[dim], dtype=np.float64)
                     wobble = 0 * index
-                    lowfreq, highfreq = np.float64(freqrange) * inputimg.header['pixdim'][dim+1] / index[-1]
+                    lowfreq, highfreq = abs(np.float64(freqrange) * voxdim[dim] / index[-1])
                     if highfreq > 0.5:
-                        tqdm.write(f"WARNING: the high-frequency in {freqrange} is higher than the maximum possible spatial frequency: {0.5*index[-1] / inputimg.header['pixdim'][dim+1]}")
+                        tqdm.write(f"WARNING: the high-frequency in {freqrange} is higher than the Nyquist / maximum possible frequency: {0.5*index[-1] / voxdim[dim]}")
                     for f in np.arange(0, 0.5, 1 / index[-1]):
                         if lowfreq <= f <= highfreq:
                             wobble += np.sin(2*np.pi * (f * index + np.random.rand()))

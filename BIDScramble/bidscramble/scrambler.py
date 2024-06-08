@@ -64,9 +64,9 @@ def addparser_nii(parsers, help: str):
 
     epilog = ('examples:\n'
               '  scrambler data/bids data/pseudobids nii\n'
-              '  scrambler data/bids data/pseudobids nii blur -h\n'
-              "  scrambler data/bids data/pseudobids nii blur 20 -s 'sub-.*_T1w.nii.gz'\n"
-              "  scrambler data/bids data/pseudobids nii permute x z -i -s 'sub-.*_bold.nii'\n ")
+              '  scrambler data/bids data/pseudobids nii diffuse -h\n'
+              "  scrambler data/bids data/pseudobids nii diffuse 8 -s 'sub-.*_MP2RAGE.nii.gz'\n"
+              "  scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'\n ")
 
     parser = parsers.add_parser('nii', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scrambler_nii)
@@ -74,14 +74,14 @@ def addparser_nii(parsers, help: str):
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
     subparser = subparsers.add_parser('blur', parents=[parent], description=description, help='Apply a 3D Gaussian smoothing filter')
     subparser.add_argument('fwhm', help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
-    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Perform random permutations along one or more image dimensions')
+    subparser = subparsers.add_parser('permute', parents=[parent], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations along one or more image dimensions')
     subparser.add_argument('dims', help='The dimensions along which the images will be permuted', nargs='*', choices=['x','y','z','t','u','v','w'], default=['x','y'])
     subparser.add_argument('-i','--independent', help='Make all permutations along a dimension independent (instead of permuting slices as a whole)', action='store_true')
-    subparser = subparsers.add_parser('diffuse', parents=[parent], description=description, help='Perform random permutations using a sliding 3D permutation kernel')
+    subparser = subparsers.add_parser('diffuse', parents=[parent], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations using a sliding 3D permutation kernel')
     subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float, default=5)
-    subparser = subparsers.add_parser('wobble', parents=[parent], description=description, help='Deform the images using 3D random waveforms')
-    subparser.add_argument('-a','--amplitude', help='The amplitude of the random waveform', type=float, default=25)
-    subparser.add_argument('-f','--freqrange', help='The highest and lowest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[0.5, 5])
+    subparser = subparsers.add_parser('wobble', parents=[parent], formatter_class=DefaultsFormatter, description=description, help='Deform the images using 3D random waveforms')
+    subparser.add_argument('-a','--amplitude', help='The amplitude of the random waveform', type=float, default=2)
+    subparser.add_argument('-f','--freqrange', help='The highest and lowest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])
 
 
 def addparser_json(parsers, help: str):

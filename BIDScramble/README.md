@@ -111,17 +111,18 @@ examples:
 #### Data type: nii
 
 ```
-usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute,diffuse} ...
+usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute,diffuse,wobble} ...
 
 Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no scrambling
 method is specified, the default behavior is to null all image values.
 
 positional arguments:
-  {blur,permute,diffuse}
+  {blur,permute,diffuse,wobble}
                         Scrambling method. Add -h, --help for more information
     blur                Apply a 3D Gaussian smoothing filter
     permute             Perform random permutations along one or more image dimensions
     diffuse             Perform random permutations using a sliding 3D permutation kernel
+    wobble              Deform the images using 3D random waveforms
 
 options:
   -h, --help            show this help message and exit
@@ -134,9 +135,9 @@ options:
 
 examples:
   scrambler data/bids data/pseudobids nii
-  scrambler data/bids data/pseudobids nii blur -h
-  scrambler data/bids data/pseudobids nii blur 20 -s 'sub-.*_T1w.nii.gz'
-  scrambler data/bids data/pseudobids nii permute x z -i -s 'sub-.*_bold.nii'
+  scrambler data/bids data/pseudobids nii diffuse -h
+  scrambler data/bids data/pseudobids nii diffuse 8 -s 'sub-.*_MP2RAGE.nii.gz'
+  scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
 #### Data type: json
