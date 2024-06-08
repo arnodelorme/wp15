@@ -5,14 +5,14 @@ addpath('eeglab2024.0');
 eeglab('nogui')
 pluginfolder = fullfile(fileparts(which('eeglab.m')),'plugins');
 
-%%
+%% follows https://eeglab.org/others/Compiled_EEGLAB.html#can-i-compile-eeglab-myself
 
-plugin_askinstall('bids-matlab-tools','pop_importbids',1);
-plugin_askinstall('zapline-plus','pop_zapline_plus',1);
-plugin_askinstall('clean_rawdata','pop_clean_rawdata',1);
-plugin_askinstall('picard', 'picard', 1);
-plugin_askinstall('ICLabel', 'pop_iclabel', 1);
-plugin_askinstall('Fieldtrip-lite', 'ft_prepare_neighbours', 1);
+plugin_askinstall('bids-matlab-tools', 'bids_export', true);
+plugin_askinstall('zapline-plus','pop_zapline_plus',true);
+plugin_askinstall('clean_rawdata', 'eegplugin_clean_rawdata', true);
+plugin_askinstall('IClabel', 'eegplugin_iclabel', true);
+plugin_askinstall('PICARD', 'picard', true);
+plugin_askinstall('Fieldtrip-lite', 'ft_defaults', true);
 
 %%
 % FIXME, move directories one level up
