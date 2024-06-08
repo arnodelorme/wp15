@@ -45,7 +45,7 @@ scrambler input scrambled stub
 
 ## Output data
 
-The output will consist of only files and folders for group-level aggregated data. Many more individual-subject files are generated but should not be given as output. The output files corresponding to the aggregated data are listed in the `output_manifest.txt` file.
+The output that is to be shared consists of only files and folders for group-level aggregated data. Many more individual-subject files are generated but should not be given as output. The output files corresponding to the aggregated data are listed in the `whitelist.txt` file.
 
 ## Analysis pipeline
 
