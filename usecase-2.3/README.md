@@ -4,9 +4,9 @@ This implements ...
 
 ## Input data
 
-The input data [[1]] is a multi-subject, multi-modal neuroimaging dataset that is described in detail in the accompanying data publication [[2]]. It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
+The [input dataset](https://doi.org/10.18112/openneuro.ds000117.v1.0.6) is a multi-subject, multi-modal neuroimaging dataset that is described in detail in the accompanying [data publication](https://doi.org/10.1038/sdata.2015.1). It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
 
-The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using datalad [[3]].
+The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using [datalad](https://www.datalad.org).
 
 ```console
 python -m venv venv
@@ -82,9 +82,3 @@ cd ..
 rm -rf input
 rm -rf output
 ```
-
-## References
-
-[1]: https://doi.org/10.18112/openneuro.ds000117.v1.0.6
-[2]: https://doi.org/10.1038/sdata.2015.1
-[3]: https://www.datalad.org

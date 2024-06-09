@@ -4,7 +4,7 @@ This implements the [MRIQC](https://mriqc.readthedocs.io/en/latest/) pipeline fo
 
 ## Input data
 
-The input dataset [[1]] contains structural T1-weighted MRI brain scans from 136 young individuals (87 females; age range from 18 to 35 years old) along with questionnaire-assessed measurements of trait-like chronotype, sleep quality and daytime sleepiness. The data is organized according to the BIDS standard (combined size of 1.18GB) and mostly useful to scientists interested in circadian rhythmicity, structural brain correlates of chronotypes in humans and the effects of sleeping habits and latitude on brain anatomy. The dataset is described in more detail in an accompanying publication [[2]].
+The [input dataset](https://doi.org/10.18112/openneuro.ds003826.v3.0.1) contains structural T1-weighted MRI brain scans from 136 young individuals (87 females; age range from 18 to 35 years old) along with questionnaire-assessed measurements of trait-like chronotype, sleep quality and daytime sleepiness. The data is organized according to the BIDS standard (combined size of 1.18GB) and mostly useful to scientists interested in circadian rhythmicity, structural brain correlates of chronotypes in humans and the effects of sleeping habits and latitude on brain anatomy. The dataset is described in more detail in an [accompanying publication](https://doi.org/10.1080/09291016.2021.1990501).
 
 Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed. To install a specific (latest) version of Node.js you can [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation(s) from there:
 
@@ -82,7 +82,3 @@ Cleaning up the input and output data is done using:
 rm -rf input scrambled output
 ```
 
-## References
-
-[1]: https://doi.org/10.18112/openneuro.ds003826.v3.0.1
-[2]: https://doi.org/10.1080/09291016.2021.1990501

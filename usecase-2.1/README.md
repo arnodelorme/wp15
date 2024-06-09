@@ -4,9 +4,9 @@ This implements an analysis of univariate tabular data. Specifically, it compute
 
 ## Input data
 
-The input data [[1]] dataset contains resting (eyes closed, eyes open) and cognitive (subtraction, music, memory) state EEG recordings with 60 participants during three experimental sessions together with sleep, emotion, mental health, and mind-wandering related measures. The data is described in more detail in an accompanying paper [[2]].
+The [input dataset](https://doi.org/10.18112/openneuro.ds004148.v1.0.1) contains resting (eyes closed, eyes open) and cognitive (subtraction, music, memory) state EEG recordings with 60 participants during three experimental sessions together with sleep, emotion, mental health, and mind-wandering related measures. The data is described in more detail in an [accompanying paper](https://doi.org/10.1038/s41597-022-01607-9).
 
-The analysis pipeline demonstrated here only uses the tabular data that is included in the dataset. The tabular data contains biometric information, i.e. indirect personal identifiers (age and height). The pipeline should also work with many other BIDS datasets from OpenNeuro [[3]].
+The analysis pipeline demonstrated here only uses the tabular data that is included in the dataset. The tabular data contains biometric information, i.e. indirect personal identifiers (age and height). The pipeline should also work with many other BIDS datasets from [OpenNeuro](https://openneuro.org).
 
 The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
@@ -81,9 +81,3 @@ Cleaning up the input and output data can be done using:
 ```console
 rm -rf input scrambled output
 ```
-
-## References
-
-[1]: https://doi.org/10.18112/openneuro.ds004148.v1.0.1
-[2]: https://doi.org/10.1038/s41597-022-01607-9
-[3]: https://openneuro.org

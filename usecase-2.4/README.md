@@ -1,10 +1,10 @@
 # SIESTA - work package 15 - use case 2.4
 
-This implements the Event-Related Potential [(ERP)](https://en.wikipedia.org/wiki/Event-related_potential) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follows the BIDS standard.
+This implements the [Event-Related Potential](https://en.wikipedia.org/wiki/Event-related_potential) or ERP analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follows the BIDS standard.
 
 ## Input data
 
-The input data is a freely available online resource named "ERP CORE" [[1]], consisting of optimized paradigms, experiment control scripts, example data from 40 neurotypical adults, data processing pipelines and analysis scripts, and a broad set of results for 7 widely used ERP components: N170, mismatch negativity (MMN), N2pc, N400, P3, lateralized readiness potential (LRP), and error-related negativity (ERN).
+The input data is a freely available online resource named ["ERP CORE"](https://doi.org/10.18115/D5JW4R), consisting of optimized paradigms, experiment control scripts, example data from 40 neurotypical adults, data processing pipelines and analysis scripts, and a broad set of results for 7 widely used ERP components: N170, mismatch negativity (MMN), N2pc, N400, P3, lateralized readiness potential (LRP), and error-related negativity (ERN).
 
 The input data consists of about 2000 files with a combined size of 24.1GB.
 
@@ -143,7 +143,3 @@ Cleaning up the input and output data is done using:
 ```console
 rm -rf input scrambled output
 ```
-
-## References
-
-[1]: https://doi.org/10.18115/D5JW4R
