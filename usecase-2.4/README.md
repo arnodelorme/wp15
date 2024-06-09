@@ -1,6 +1,8 @@
 # SIESTA - work package 15 - use case 2.4
 
-This implements the [Event-Related Potential](https://en.wikipedia.org/wiki/Event-related_potential) or ERP analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follows the BIDS standard.
+This implements the [Event-Related Potential](https://en.wikipedia.org/wiki/Event-related_potential) (ERP) analysis of 'classical' [ElectroEncephalography](https://en.wikipedia.org/wiki/Electroencephalography) research paradigms. This represents a very common type of biomedical data. The data are simple enough, allow automated data processing, and follows the BIDS standard.
+
+The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
 ## Input data
 
@@ -33,15 +35,6 @@ Emily S. Kappenman, Jaclyn L. Farrens, Wendy Zhang, Andrew X. Stewart, Steven J.
 ### Legal aspects of the input data
 
 The input dataset has been released under the [CC-BY-4.0](https://spdx.org/licenses/CC-BY-4.0.html) license.
-
-## Pseudo data
-
-The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
-
-```console
-scrambler input scrambled stub
-[WIP]
-```
 
 ## Output data
 
@@ -142,4 +135,15 @@ Cleaning up the input and output data is done using:
 
 ```console
 rm -rf input scrambled output
+```
+
+## Scrambled data
+
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scrambler input scrambled stub
+[WIP]
 ```

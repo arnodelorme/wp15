@@ -2,6 +2,8 @@
 
 This implements an analysis of univariate tabular data. Specifically, it computes the mean age over a group of participants.
 
+The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
+
 ## Input data
 
 The [input dataset](https://doi.org/10.18112/openneuro.ds004148.v1.0.1) contains resting (eyes closed, eyes open) and cognitive (subtraction, music, memory) state EEG recordings with 60 participants during three experimental sessions together with sleep, emotion, mental health, and mind-wandering related measures. The data is described in more detail in an [accompanying paper](https://doi.org/10.1038/s41597-022-01607-9).
@@ -28,15 +30,6 @@ Yulin Wang and Wei Duan and Debo Dong and Lihong Ding and Xu Lei (2022). A test-
 ### Legal aspects of the input data
 
 The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
-
-## Pseudo data
-
-A scrambled version of the data can be generated using [bidscrambler_tsv](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble). See `bidscrambler_tsv -h` for more information.
-
-```console
-scrambler input scrambled stub
-scrambler input scrambled tsv permute -s participants.tsv
-```
 
 ## Output data
 
@@ -80,4 +73,15 @@ Cleaning up the input and output data can be done using:
 
 ```console
 rm -rf input scrambled output
+```
+
+## Scrambled data
+
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scrambler input scrambled stub
+scrambler input scrambled tsv permute -s participants.tsv
 ```

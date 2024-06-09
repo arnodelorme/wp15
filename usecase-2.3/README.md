@@ -1,6 +1,8 @@
 # SIESTA - work package 15 - use case 2.3
 
-This implements ...
+This implements an Event-Related Field (ERF) analysis on [Magnetoencephalography](https://en.wikipedia.org/wiki/Magnetoencephalography) (MEG) data.
+
+The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
 ## Input data
 
@@ -31,14 +33,6 @@ Wakeman, DG and Henson, RN (2024). Multisubject, multimodal face processing. Ope
 
 The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
 
-## Pseudo data
-
-The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
-
-```console
-scrambler input scrambled stub
-[WIP]
-```
 
 ## Output data
 
@@ -81,4 +75,15 @@ cd ..
 # remove the input and output directory
 rm -rf input
 rm -rf output
+```
+
+## Scrambled data
+
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly.
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scrambler input scrambled stub
+[WIP]
 ```

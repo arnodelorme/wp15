@@ -1,6 +1,8 @@
 # SIESTA - work package 15 - use case 2.2
 
-This implements the [MRIQC](https://mriqc.readthedocs.io/en/latest/) pipeline for obtaining standard QC measures from BIDS MRI datasets.
+This implements the [MRIQC](https://mriqc.readthedocs.io/en/latest/) pipeline for obtaining standard QC measures from an MRI dataset.
+
+The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
 ## Input data
 
@@ -31,16 +33,6 @@ Michal Rafal Zareba and Magdalena Fafrowicz and Tadeusz Marek and Ewa Beldzik an
 ### Legal aspects of the input data
 
 The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
-
-## Pseudo data
-
-The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
-
-```console
-scrambler input scrambled stub
-scrambler input scrambled json -p '(?!AcquisitionTime).*'
-scrambler input scrambled nii permute y -i
-```
 
 ## Output data
 
@@ -82,3 +74,14 @@ Cleaning up the input and output data is done using:
 rm -rf input scrambled output
 ```
 
+## Scrambled data
+
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scrambler input scrambled stub
+scrambler input scrambled json -p '(?!AcquisitionTime).*'
+scrambler input scrambled nii permute y -i
+```
