@@ -51,7 +51,7 @@ mkdir output
 
 ### Software installation
 
-The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later.
+The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later. (FIXME will update with fieldtrip download and installation instructions once the required code made it into a released version).
 
 ### Legal aspects of the software
 
@@ -63,6 +63,13 @@ FieldTrip is open source and released under the GPLv3 license.
 
 Executing the pipeline from the Linux command-line is done using the following:
 
+Executing the pipeline from the MATLAB command window is done like this:
+
+  restoredefaultpath;
+  addpath('fieldtrip');
+  analyze_all_subjects
+  analyze_group
+  
 ...
 
 ## Cleaning up
