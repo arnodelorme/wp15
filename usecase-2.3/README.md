@@ -8,7 +8,7 @@ The pipeline is expected to be executed on a Linux computer, although it might a
 
 The [input dataset](https://doi.org/10.18112/openneuro.ds000117.v1.0.6) is a multi-subject, multi-modal neuroimaging dataset that is described in detail in the accompanying [data publication](https://doi.org/10.1038/sdata.2015.1). It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
 
-The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using [datalad](https://www.datalad.org).
+The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using [datalad](https://www.datalad.org). In order to be able to use datalad, a sufficiently recent version of git is required. The older CentOS nodes on the DCCN cluster, running git version 1.8.3.1 could not do the job. The newer AlmaLinux nodes run git version 2.39.3. This worked.
 
 ```console
 python -m venv venv
