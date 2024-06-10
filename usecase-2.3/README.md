@@ -17,6 +17,8 @@ python -m pip install datalad
 python -m pip install datalad-installer
 
 datalad-installer git-annex -m datalad/git-annex:release --install-dir venv
+mv venv/usr/lib/* venv/lib/.
+mv venv/usr/bin/* venv/bin/.
 
 git clone https://github.com/OpenNeuroDatasets/ds000117.git input
 cd input
