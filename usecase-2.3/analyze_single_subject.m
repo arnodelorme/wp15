@@ -2,7 +2,7 @@ do_explore        = false;
 do_preprocessing  = true;
 do_artefacts      = true;
 do_timelock       = true;
-do_frequency      = true;
+do_frequency      = false;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Reading and converting the original data files
