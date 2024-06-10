@@ -14,6 +14,9 @@ The input data consists of 1671 files with a combined size of 84.82GB and can be
 python -m venv venv
 source venv/bin/activate
 python -m pip install datalad
+python -m pip install datalad-installer
+
+datalad-installer git-annex -m datalad/git-annex:release --install-dir venv
 
 git clone https://github.com/OpenNeuroDatasets/ds000117.git input
 cd input
