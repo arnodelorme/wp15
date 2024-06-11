@@ -9,7 +9,7 @@ function ERP_Core_WB(source, destination, varargin)
 %         - destination (optional) is the folder where all results are saved
 %           if not specified, results are in source/derivatives
 %         - options as key-value pairs (for debugging purposes)
-%         'task',{'ERN,'MMN'} is a cell-array with task name to analyze
+%         'tasklist',{'ERN,'MMN'} is a cell-array with task name to analyze
 %                (by default it is {'ERN','MMN','N170','N2pc','N400','P3'}) 
 %         'sublist',{'sub-001','sub-002','sub-003','sub-005','sub-006','sub-009'}
 %                  is a cell-array with subject identifiers to run for a subset of subjects only 
@@ -27,35 +27,38 @@ function ERP_Core_WB(source, destination, varargin)
 % Cyril Pernet, during the spring of 2024 
 % + various updates by Marcel and Jan-Mathijs
 
+% arguments that could be made optional epoch_window, baseline_window, analysis_window, ICAname
+
 % start eeglab and check plugins
 rng('default');
 ALLEEG = eeglab('nogui'); %#ok<NASGU>
 
 if ~exist('pop_importbids','file')
-    plugin_askinstall('bids-matlab-tools',[],1);
+    plugin_askinstall('bids-matlab-tools', 'bids_export', true);
 end
 if ~exist('pop_zapline_plus','file')
-    plugin_askinstall('zapline-plus',[],1);
+    plugin_askinstall('zapline-plus','pop_zapline_plus',true);
 end
 if ~exist('pop_clean_rawdata','file')
-    plugin_askinstall('clean_rawdata', 'clean_rawdata', 1);
+    plugin_askinstall('clean_rawdata', 'eegplugin_clean_rawdata', true);
 end
 if ~exist('picard','file')
-    plugin_askinstall('picard', 'picard', 1);
+    plugin_askinstall('PICARD', 'picard', true);
 end
 if ~exist('pop_iclabel','file')
-    plugin_askinstall('ICLabel', 'ICLabel', 1);
+    pplugin_askinstall('IClabel', 'eegplugin_iclabel', true);
 end
 if ~exist('ft_prepare_neighbours','file')
-    plugin_askinstall('Fieldtrip-lite', 'Fieldtrip-lite', 1);
+    plugin_askinstall('Fieldtrip-lite', 'ft_defaults', true);
 end
-if ~exist('pop_importbids','file') || ...
-        ~exist('pop_zapline_plus','file') || ...
-        ~exist('pop_clean_rawdata','file') || ...
-        ~exist('picard','file') || ...
-        ~exist('pop_iclabel','file') || ...
-        ~exist('ft_prepare_neighbours','file') || ...
-        ~exist('limo_eeg','file')
+
+if ~exist('pop_importbids.m','file') || ...
+        ~exist('pop_zapline_plus.m','file') || ...
+        ~exist('pop_clean_rawdata.m','file') || ...
+        ~exist('picard.m','file') || ...
+        ~exist('pop_iclabel.m','file') || ...
+        ~exist('ft_prepare_neighbours.m','file') || ...
+        ~exist('limo_eeg.m','file')
     error('1 or more of the necessary plugins is not found');
 end
 
@@ -92,7 +95,21 @@ else
   sublist = find(ismember({all_sub.name}', sublist))';  
 end
 
-% edit events.tsv files for correct epoching +26ms for stimuli ??
+% edit participants.tsv checking the same subjects are present
+participants = readtable(fullfile(source,'participants.tsv'), 'FileType', 'text', ...
+    'Delimiter', '\t', 'TreatAsEmpty', {'N/A','n/a'}); N = size(participants,1);
+for p=length(participants.participant_id):-1:1
+    name_match(:,p) = arrayfun(@(x) strcmpi(x.name,participants.participant_id{p}),all_sub);
+end
+if ~isempty(find(sum(name_match,1)==0))
+    participants(find(sum(name_match,1)==0),:) = [];
+    warning('mismatch between files and participants.tsv -%g subject(s)',N-size(participants,1))
+    writetable(participants, fullfile(source,'participants.tsv'), 'FileType', 'text', 'Delimiter', '\t');    
+end
+
+% edit events.tsv files 
+% should we correct epoching +26ms for stimuli from events.tsv files? as opposed to eeg channels
+
 % edit events.tsv files for meaningful epoching for N170
 if any(contains(task,'N170'))
     for sub = 1:size(all_sub,1)
@@ -136,7 +153,7 @@ analysis_window(3:6,:) = repmat([-200 600],4,1);
 for t = 1:length(task)
 
     %% IMPORT
-    outdir = fullfile(destination,task{t});
+    outdir = fullfile(destination,['task-' task{t}]);
     if ~exist(outdir,'dir')
         mkdir(outdir)
     end
@@ -262,19 +279,7 @@ for t = 1:length(task)
         'spec','off','ersp','off','itc','off');
 
     % 1st level analysis
-    % try -- not need with the updated limo_check_ppool
-    %   c = parcluster('local');
-    %   if c.NumWorkers==1
-    %     % we need to fool the current version (3.4) of limo into not attempting
-    %     % to check for and start a parallel pool, because this will lead to
-    %     % a crash
-    %     addpath(outdir);
-    %     fid = fopen(fullfile(outdir, 'limo_settings_script_user.m'), 'w');
-    %     fprintf(fid, 'limo_settings.psom = false');
-    %     fclose(fid);
-    %     assert(exist(fullfile('limo_settings_script_user', 'file')));
-    %   end
-    % end
+ 
     [STUDY, ~, files] = pop_limo(STUDY, EEG, 'method','WLS','measure','daterp',...
         'timelim',analysis_window(t,:),'erase','on','splitreg','off','interaction','off');
     if isempty(STUDY.filepath) % this seems to happen no unknown reason
@@ -317,8 +322,8 @@ for t = 1:length(task)
         % 2nd level
         for c = 1:3
             if c == 1
-                mkdir(fullfile(STUDY.filepath,'ERN'));
-                cd(fullfile(STUDY.filepath,'ERN'));
+                mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'ERN']));
+                cd(fullfile(STUDY.filepath,['2nd_level' filesep 'ERN']));
                 limo_random_select('one sample t-test',AvgChanlocs,...
                     'LIMOfiles',con1_files,'parameter',1, 'analysis_type',...
                     'Full scalp analysis', 'type','Channels','nboot',1000,'tfce',1);
@@ -327,8 +332,8 @@ for t = 1:length(task)
                 limo_central_tendency_and_ci(fullfile(STUDY.filepath,'con1_files.txt'),...
                     1, AvgChanlocs.expected_chanlocs, 'mean', 'Trimmed mean', 21,'FCz_ERP')
             elseif c == 2
-                mkdir(fullfile(STUDY.filepath,'CRN'));
-                cd(fullfile(STUDY.filepath,'CRN'));
+                mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'CRN']));
+                cd(fullfile(STUDY.filepath,['2nd_level' filesep 'CRN']));
                 limo_random_select('one sample t-test',AvgChanlocs,...
                     'LIMOfiles',con2_files,'parameter',1, 'analysis_type',...
                     'Full scalp analysis', 'type','Channels','nboot',1000,'tfce',1);
@@ -337,8 +342,8 @@ for t = 1:length(task)
                 limo_central_tendency_and_ci(fullfile(STUDY.filepath,'con2_files.txt'),...
                     1, AvgChanlocs.expected_chanlocs, 'mean', 'Trimmed mean', 21,'FCz_ERP')
             else
-                mkdir(fullfile(STUDY.filepath,'Difference_wave'));
-                cd(fullfile(STUDY.filepath,'Difference_wave'));
+                mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'Difference_wave']));
+                cd(fullfile(STUDY.filepath,['2nd_level' filesep 'Difference_wave']));
                 for N=size(con1_files,1):-1:1
                     data{1,N} = con1_files{N};
                     data{2,N} = con2_files{N};
@@ -361,8 +366,8 @@ for t = 1:length(task)
     elseif strcmpi(task{t},'MMN')
 
         % 2nd level
-        mkdir(fullfile(STUDY.filepath,'MMN'));
-        cd(fullfile(STUDY.filepath,'MMN'));
+        mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'MMN']));
+        cd(fullfile(STUDY.filepath,['2nd_level' filesep 'MMN']));
         limo_random_select('paired t-test',AvgChanlocs,...
             'LIMOfiles',fullfile(files.LIMO,'Beta_files_MMN_MMN_GLM_Channels_Time_WLS.txt'), ...
             'parameter',[1 2], 'analysis_type',...
@@ -399,8 +404,8 @@ for t = 1:length(task)
         writecell(con1_files,fullfile(STUDY.filepath,'con1_files.txt'))
         writecell(con2_files,fullfile(STUDY.filepath,'con2_files.txt'))
 
-        mkdir(fullfile(STUDY.filepath,'Cars_vs_Faces'));
-        cd(fullfile(STUDY.filepath,'Cars_vs_Faces'));
+        mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'Cars_vs_Faces']));
+        cd(fullfile(STUDY.filepath,['2nd_level' filesep 'Cars_vs_Faces']));
         limo_random_select('paired t-test',AvgChanlocs,...
             'LIMOfiles',fullfile(files.LIMO,'Beta_files_N170_N170_GLM_Channels_Time_WLS.txt'), ...
             'parameter',[2 1], 'analysis_type',...
@@ -416,8 +421,8 @@ for t = 1:length(task)
             'type','paired','fig',0,'name','ERP_Difference');
         save('ERP_difference','Diff')
 
-        mkdir(fullfile(STUDY.filepath,'Cars_vs_Faces_controlled'));
-        cd(fullfile(STUDY.filepath,'Cars_vs_Faces_controlled'));
+        mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'Cars_vs_Faces_controlled']));
+        cd(fullfile(STUDY.filepath,['2nd_level' filesep 'Cars_vs_Faces_controlled']));
         for N=size(con1_files,1):-1:1
             data{1,N} = con1_files{N};
             data{2,N} = con2_files{N};
@@ -498,8 +503,8 @@ for t = 1:length(task)
        writecell(con1_files,fullfile(STUDY.filepath,'con1_files.txt'))
        writecell(con2_files,fullfile(STUDY.filepath,'con2_files.txt'))
 
-       mkdir(fullfile(STUDY.filepath,'Ipsi-Contra'));
-       cd(fullfile(STUDY.filepath,'Ipsi-Contra'));
+       mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'Ipsi-Contra']));
+       cd(fullfile(STUDY.filepath,['2nd_level' filesep 'Ipsi-Contra']));
        labels = arrayfun(@(x) x.labels, AvgChanlocs.expected_chanlocs, 'UniformOutput', false);
        table_channels{1} = labels(1:12)'; table_channels{2} = labels([16 18 19 20 23:30])';
        channels = limo_pair_channels(AvgChanlocs.expected_chanlocs,'pairs',table_channels,'figure','off');
@@ -568,8 +573,8 @@ for t = 1:length(task)
        writecell(con1_files,fullfile(STUDY.filepath,'con1_files.txt'))
        writecell(con2_files,fullfile(STUDY.filepath,'con2_files.txt'))
 
-       mkdir(fullfile(STUDY.filepath,'N400'));
-        cd(fullfile(STUDY.filepath,'N400'));
+       mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'N400']));
+        cd(fullfile(STUDY.filepath,['2nd_level' filesep 'N400']));
         for N=size(con1_files,1):-1:1
             data{1,N} = con1_files{N};
             data{2,N} = con2_files{N};
@@ -630,8 +635,8 @@ for t = 1:length(task)
        writecell(con1_files,fullfile(STUDY.filepath,'con1_files.txt'))
        writecell(con2_files,fullfile(STUDY.filepath,'con2_files.txt'))
 
-       mkdir(fullfile(STUDY.filepath,'P3'));
-        cd(fullfile(STUDY.filepath,'P3'));
+       mkdir(fullfile(STUDY.filepath,['2nd_level' filesep 'P3']));
+        cd(fullfile(STUDY.filepath,['2nd_level' filesep 'P3']));
         for N=size(con1_files,1):-1:1
             data{1,N} = con2_files{N};
             data{2,N} = con1_files{N};
