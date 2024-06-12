@@ -31,19 +31,19 @@ def test_scrambler_stub(tmp_path):
     # Create the output data
     scrambler_stub(tmp_path/'input', tmp_path/'output', '.*(?<!derivatives)')
 
-    # Check if all output data - `derivatives` + `LICENSE` is there
+    # Check that all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()
     assert len(list((tmp_path/'input').rglob('*'))) == len(list((tmp_path/'output').rglob('*')))
     assert (tmp_path/'output'/'code').is_dir()
     assert not (tmp_path/'output'/'derivatives').is_dir()
 
-    # Check if the 'GeneratedBy' and 'DatasetType' have been written
+    # Check that the 'GeneratedBy' and 'DatasetType' have been written
     with (tmp_path/'output'/'dataset_description.json').open('r') as fid:
         description = json.load(fid)
     assert description['GeneratedBy'] == [{'Name':'BIDScramble', 'Version':__version__, 'Description:':__description__, 'CodeURL':__url__}]
     assert description['DatasetType'] == 'derivative'
 
-    # Check if the README file has been copied
+    # Check that the README file has been copied
     readme = (tmp_path/'output'/'README').read_text()
     assert 'EEG' in readme
 
@@ -65,7 +65,7 @@ def test_scrambler_tsv(tmp_path):
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 
-    # Check if the participants.tsv data is properly nulled
+    # Check that the participants.tsv data is properly nulled
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
     outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
     assert inputdata.shape == outputdata.shape
@@ -77,7 +77,7 @@ def test_scrambler_tsv(tmp_path):
     (tmp_path/'output'/'participants.tsv').unlink()
     scrambler_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', 'permute', '(Height|Weig.*)')
 
-    # Check if the participants.tsv data is properly permuted
+    # Check that the participants.tsv data is properly permuted
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
     outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
     assert inputdata.shape == outputdata.shape
@@ -87,7 +87,7 @@ def test_scrambler_tsv(tmp_path):
         assert math.isclose(inputdata[key].mean(), outputdata[key].mean())
         assert math.isclose(inputdata[key].std(),  outputdata[key].std())
 
-    # Check if the relation between 'Height' and 'Weight' is preserved, but not between 'SAS_1stVisit' and 'SAS_2ndVisit'
+    # Check that the relation between 'Height' and 'Weight' is preserved, but not between 'SAS_1stVisit' and 'SAS_2ndVisit'
     assert math.isclose(inputdata['Height'].corr(inputdata['Weight']), outputdata['Height'].corr(outputdata['Weight']))
     assert not math.isclose(inputdata['SAS_1stVisit'].corr(inputdata['SAS_2ndVisit']), outputdata['SAS_1stVisit'].corr(outputdata['SAS_2ndVisit']))
 
@@ -105,7 +105,7 @@ def test_scrambler_json(tmp_path):
     assert (tmp_path/'output'/eegjson).is_file()
     assert not (tmp_path/'output'/'participants.json').is_file()
 
-    # Check if the participants.json data is properly preserved/emptied
+    # Check that the participants.json data is properly preserved/emptied
     with (tmp_path/'input'/eegjson).open('r') as fid:
         inputdata = json.load(fid)
     with (tmp_path/'output'/eegjson).open('r') as fid:
@@ -129,7 +129,7 @@ def test_scrambler_nii(tmp_path):
     assert (tmp_path/'output'/niifile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
-    # Check if the NIfTI data is properly nulled
+    # Check that the NIfTI data is properly nulled
     outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() == 0
@@ -139,7 +139,7 @@ def test_scrambler_nii(tmp_path):
     scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'blur', fwhm=12)
     assert (tmp_path/'output'/niifile).is_file()
 
-    # Check if the NIfTI data is properly blurred
+    # Check that the NIfTI data is properly blurred
     indata  = nib.load(tmp_path/'input'/niifile).get_fdata()
     outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
@@ -152,7 +152,7 @@ def test_scrambler_nii(tmp_path):
     scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'permute', dims=['x','z'], independent=False)
     assert (tmp_path/'output'/niifile).is_file()
 
-    # Check if the NIfTI data is properly permuted
+    # Check that the NIfTI data is properly permuted
     outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
@@ -164,7 +164,7 @@ def test_scrambler_nii(tmp_path):
     scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'permute', dims=['x'], independent=True)
     assert (tmp_path/'output'/niifile).is_file()
 
-    # Check if the NIfTI data is properly permuted
+    # Check that the NIfTI data is properly permuted
     outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
@@ -176,7 +176,7 @@ def test_scrambler_nii(tmp_path):
     scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'diffuse', radius=25)
     assert (tmp_path/'output'/niifile).is_file()
 
-    # Check if the NIfTI data is properly diffused
+    # Check that the NIfTI data is properly diffused
     outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
@@ -188,7 +188,7 @@ def test_scrambler_nii(tmp_path):
     scrambler_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'wobble', amplitude=25, freqrange=[0.05, 0.5])
     assert (tmp_path/'output'/niifile).is_file()
 
-    # Check if the NIfTI data is properly diffused
+    # Check that the NIfTI data is properly diffused
     outdata = nib.load(tmp_path/'output'/niifile).get_fdata()
     assert outdata.shape == (96, 96, 68, 65)
     assert outdata.sum() > 1000000
@@ -197,6 +197,13 @@ def test_scrambler_nii(tmp_path):
 
 
 def test_scrambler_swap(tmp_path):
+
+    def load_data(jsonfile):
+        with (tmp_path/'input'/jsonfile).open('r') as fid:
+            inputdata = json.load(fid)
+        with (tmp_path/'output'/jsonfile).open('r') as fid:
+            outputdata = json.load(fid)
+        return inputdata, outputdata
 
     # Create the input data
     funcjsons = []
@@ -211,16 +218,15 @@ def test_scrambler_swap(tmp_path):
     funcjsons.append('sub-01/func/sub-01_task-closed_run-05_bold.json')
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds005194/{funcjsons[-1]}", tmp_path/'input'/funcjsons[-1])
 
-    # Create the output data for swapping between subjects and runs
-    scrambler_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject', 'run'])
-    for funcjson in funcjsons:
-        assert (tmp_path/'output'/funcjson).is_file()
+    # Create the output data for swapping between subjects and runs. N.B: Run-05 swapping will sometimes fail due to random sampling, so try it multiple times
+    for n in range(3):
+        scrambler_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject', 'run'])
+        for funcjson in funcjsons:
+            assert (tmp_path/'output'/funcjson).is_file()
+        inputdata, outputdata = load_data(funcjsons[-1])        # Get the unique run-05 data
+        if inputdata['AcquisitionTime'] != outputdata['AcquisitionTime']: break
 
-    # Check if the run-05 json data is properly swapped
-    with (tmp_path/'input'/funcjsons[-1]).open('r') as fid:
-        inputdata = json.load(fid)
-    with (tmp_path/'output'/funcjsons[-1]).open('r') as fid:
-        outputdata = json.load(fid)
+    # Check that the run-05 json data is properly swapped
     assert inputdata.keys() == outputdata.keys()
     assert inputdata['AcquisitionTime'] != outputdata['AcquisitionTime']
 
@@ -231,16 +237,12 @@ def test_scrambler_swap(tmp_path):
     for funcjson in funcjsons:
         assert (tmp_path/'output'/funcjson).is_file()
 
-    # Check if the run-01 json data is swapped
-    with (tmp_path/'input'/funcjsons[0]).open('r') as fid:
-        inputdata = json.load(fid)
-    with (tmp_path/'output'/funcjsons[0]).open('r') as fid:
-        outputdata = json.load(fid)
+    # Check that the json data is swapped
+    for funcjson in funcjsons[0:3]:                                         # NB: make it extremely rare to fail due to random sampling (only when failing 3 times in a row)
+        inputdata, outputdata = load_data(funcjson)
+        if inputdata['AcquisitionTime'] != outputdata['AcquisitionTime']: break
     assert inputdata['AcquisitionTime'] != outputdata['AcquisitionTime']
 
-    # Check if the run-05 json data is not swapped
-    with (tmp_path/'input'/funcjsons[-1]).open('r') as fid:
-        inputdata = json.load(fid)
-    with (tmp_path/'output'/funcjsons[-1]).open('r') as fid:
-        outputdata = json.load(fid)
+    # Check that the run-05 json data is not swapped
+    inputdata, outputdata = load_data(funcjsons[-1])
     assert inputdata['AcquisitionTime'] == outputdata['AcquisitionTime']
