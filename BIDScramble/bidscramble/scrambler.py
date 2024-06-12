@@ -6,6 +6,7 @@ from .scrambler_stub import scrambler_stub
 from .scrambler_tsv import scrambler_tsv
 from .scrambler_nii import scrambler_nii
 from .scrambler_json import scrambler_json
+from .scrambler_swap import scrambler_swap
 
 # Use a parent parser to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
@@ -101,6 +102,23 @@ def addparser_json(parsers, help: str):
     parser.set_defaults(func=scrambler_json)
 
 
+def addparser_swap(parsers, help: str):
+
+    description = textwrap.dedent("""
+    Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save them as output.
+    """)
+
+    epilog = ('examples:\n'
+              '  scrambler data/bids data/pseudobids swap\n'
+              "  scrambler data/bids data/pseudobids swap -s '.*\.(nii|json|tsv)'\n"
+              "  scrambler data/bids data/pseudobids swap -s '.*(?<!derivatives)'\n"
+              "  scrambler data/bids data/pseudobids swap -g subject session run\n ")
+
+    parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser.add_argument('-g', '--grouping', help='A list of BIDS entities that make up a group between which file contents are swapped', nargs='+', default=['subject'], type=str)
+    parser.set_defaults(func=scrambler_swap)
+
+
 def main():
     """Console script entry point"""
 
@@ -114,7 +132,7 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=DefaultsFormatter, description=description,
                                      epilog='examples:\n'
                                             '  scrambler data/bids data/pseudobids stub -h\n'
-                                            "  scrambler data/bids data/pseudobids nii -h\n ")
+                                            '  scrambler data/bids data/pseudobids nii -h\n ')
     parser.add_argument('bidsfolder',   help='The BIDS (or BIDS-like) input directory with the original data')
     parser.add_argument('outputfolder', help='The output directory with the scrambled pseudo data')
 
@@ -124,6 +142,7 @@ def main():
     addparser_tsv(subparsers,  help='Saves scrambled tsv files in outputfolder')
     addparser_nii(subparsers,  help='Saves scrambled NIfTI files in outputfolder')
     addparser_json(subparsers, help='Saves scrambled json files in outputfolder')
+    addparser_swap(subparsers, help='Saves swapped file contents in outputfolder')
 
     # Execute the scrambler function
     args = parser.parse_args()

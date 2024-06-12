@@ -12,10 +12,8 @@ def scrambler_tsv(bidsfolder: str, outputfolder: str, select: str, method: str='
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
-
-        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))) or '.tsv' not in inputfile.suffixes:
-            continue
+    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.tsv' in fpath.suffixes]
+    for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
 
         # Load the (zipped) tsv data
         tsvdata = pd.read_csv(inputfile, sep='\t')

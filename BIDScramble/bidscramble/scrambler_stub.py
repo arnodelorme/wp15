@@ -24,10 +24,10 @@ def scrambler_stub(bidsfolder: str, outputfolder: str, select: str, dryrun: bool
         outputfile = outputdir/inputfile.relative_to(inputdir)
         tqdm.write(f"--> {outputfile}")
         if inputfile.is_dir() and not dryrun:
-            (outputfile).mkdir(parents=True, exist_ok=True)
+            outputfile.mkdir(parents=True, exist_ok=True)
         elif not dryrun:
-            (outputfile).parent.mkdir(parents=True, exist_ok=True)
-            (outputfile).touch()
+            outputfile.parent.mkdir(parents=True, exist_ok=True)
+            outputfile.touch()
 
     # Create a dataset description file
     dataset_file = inputdir/'dataset_description.json'

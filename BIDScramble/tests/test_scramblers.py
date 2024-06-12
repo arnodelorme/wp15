@@ -9,6 +9,7 @@ from bidscramble.scrambler_stub import scrambler_stub
 from bidscramble.scrambler_tsv import scrambler_tsv
 from bidscramble.scrambler_json import scrambler_json
 from bidscramble.scrambler_nii import scrambler_nii
+from bidscramble.scrambler_swap import scrambler_swap
 
 
 def test_scrambler_stub(tmp_path):
@@ -193,3 +194,53 @@ def test_scrambler_nii(tmp_path):
     assert outdata.sum() > 1000000
     assert outdata.sum() - indata.sum() < 1
     assert np.abs(outdata - indata).sum() > 1000
+
+
+def test_scrambler_swap(tmp_path):
+
+    # Create the input data
+    funcjsons = []
+    for sub in range(1,9):
+        (tmp_path/'input'/f"sub-0{sub}"/'func').mkdir(parents=True)
+        for run in range(1,5):
+            if not (sub == 8 and run == 4):
+                funcjsons.append(f"sub-0{sub}/func/sub-0{sub}_task-closed_run-0{run}_bold.json")
+                print('Downloading:', funcjsons[-1])
+                urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds005194/{funcjsons[-1]}", tmp_path/'input'/funcjsons[-1])
+    # Add 1 unique run-05 file
+    funcjsons.append('sub-01/func/sub-01_task-closed_run-05_bold.json')
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds005194/{funcjsons[-1]}", tmp_path/'input'/funcjsons[-1])
+
+    # Create the output data for swapping between subjects and runs
+    scrambler_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject', 'run'])
+    for funcjson in funcjsons:
+        assert (tmp_path/'output'/funcjson).is_file()
+
+    # Check if the run-05 json data is properly swapped
+    with (tmp_path/'input'/funcjsons[-1]).open('r') as fid:
+        inputdata = json.load(fid)
+    with (tmp_path/'output'/funcjsons[-1]).open('r') as fid:
+        outputdata = json.load(fid)
+    assert inputdata.keys() == outputdata.keys()
+    assert inputdata['AcquisitionTime'] != outputdata['AcquisitionTime']
+
+    # Create the output data for swapping between subjects, but not between runs
+    for funcjson in funcjsons:
+        (tmp_path/'output'/funcjson).unlink()
+    scrambler_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject'])
+    for funcjson in funcjsons:
+        assert (tmp_path/'output'/funcjson).is_file()
+
+    # Check if the run-01 json data is swapped
+    with (tmp_path/'input'/funcjsons[0]).open('r') as fid:
+        inputdata = json.load(fid)
+    with (tmp_path/'output'/funcjsons[0]).open('r') as fid:
+        outputdata = json.load(fid)
+    assert inputdata['AcquisitionTime'] != outputdata['AcquisitionTime']
+
+    # Check if the run-05 json data is not swapped
+    with (tmp_path/'input'/funcjsons[-1]).open('r') as fid:
+        inputdata = json.load(fid)
+    with (tmp_path/'output'/funcjsons[-1]).open('r') as fid:
+        outputdata = json.load(fid)
+    assert inputdata['AcquisitionTime'] == outputdata['AcquisitionTime']

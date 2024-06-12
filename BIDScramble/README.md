@@ -29,7 +29,7 @@ To scramble BIDS data you can run the command-line tool named ``scrambler``. At 
 ### scrambler
 
 ```
-usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json} ...
+usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json,swap} ...
 
 The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
 of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
@@ -37,18 +37,20 @@ and some basic files, and then run `scrambler` again to specifically add scrambl
 To combine different scrambling methods, simply re-run `scrambler` using the already scrambled data as input folder.
 
 positional arguments:
-  bidsfolder           The BIDS (or BIDS-like) input directory with the original data
-  outputfolder         The output directory with the scrambled pseudo data
+  bidsfolder            The BIDS (or BIDS-like) input directory with the original data
+  outputfolder          The output directory with the scrambled pseudo data
 
 options:
-  -h, --help           show this help message and exit
+  -h, --help            show this help message and exit
 
 Data type:
-  {stub,tsv,nii,json}  Add -h, --help for more information
-    stub               Saves a dummy bidsfolder skeleton in outputfolder
-    tsv                Saves scrambled tsv files in outputfolder
-    nii                Saves scrambled NIfTI files in outputfolder
-    json               Saves scrambled json files in outputfolder
+  {stub,tsv,nii,json,swap}
+                        Add -h, --help for more information
+    stub                Saves a dummy bidsfolder skeleton in outputfolder
+    tsv                 Saves scrambled tsv files in outputfolder
+    nii                 Saves scrambled NIfTI files in outputfolder
+    json                Saves scrambled json files in outputfolder
+    swap                Saves swapped file contents in outputfolder
 
 examples:
   scrambler data/bids data/pseudobids stub -h
@@ -165,6 +167,32 @@ examples:
   scrambler data/bids data/pseudobids json
   scrambler data/bids data/pseudobids json participants.json -p '.*'
   scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
+```
+
+#### Data type: swap
+
+```
+usage: scrambler bidsfolder outputfolder swap [-h] [-s SELECT] [-d] [-g GROUPING [GROUPING ...]]
+
+Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save them as output.
+
+options:
+  -h, --help            show this help message and exit
+  -s SELECT, --select SELECT
+                        A fullmatch regular expression pattern that is matched against the relative
+                        path of the input data. Files that match are scrambled and saved in
+                        outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
+                        (default: False)
+  -g GROUPING [GROUPING ...], --grouping GROUPING [GROUPING ...]
+                        A list of BIDS entities that make up a group between which file contents are
+                        swapped (default: ['subject'])
+
+examples:
+  scrambler data/bids data/pseudobids swap
+  scrambler data/bids data/pseudobids swap -s '.*\.(nii|json|tsv)'
+  scrambler data/bids data/pseudobids swap -s '.*(?<!derivatives)'
+  scrambler data/bids data/pseudobids swap -g subject session run
 ```
 
 ## Legal Aspects
