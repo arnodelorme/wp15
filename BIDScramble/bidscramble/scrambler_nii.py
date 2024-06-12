@@ -36,7 +36,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
 
         elif method == 'blur':
             sigma = list(abs(fwhm/voxdim/2.355)) + [0]*4         # No smoothing over any further dimensions such as time (Nifti supports up to 7 dimensions)
-            data  = sp.ndimage.gaussian_filter(data, sigma[0:data.ndim])
+            data  = sp.ndimage.gaussian_filter(data, sigma[0:data.ndim], mode='nearest')
 
         elif method == 'diffuse':
             window = abs(np.int16(2 * radius / voxdim))     # Size of the sliding window

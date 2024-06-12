@@ -24,17 +24,18 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-To scramble BIDS data you can run the command-line tool named ``scrambler``. At its base, this tool has an input and output argument, followed by a ``Data type`` subcommand. The meaning and usage of these arguments is explained in more detail in the following sections.
+To scramble BIDS data you can run the command-line tool named ``scrambler``. At its base, this tool has an input and output argument, followed by a ``Action`` subcommand. The meaning and usage of these arguments is explained in more detail in the following sections.
 
 ### scrambler
 
 ```
 usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json,swap} ...
 
-The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
-of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
-and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
-To combine different scrambling methods, simply re-run `scrambler` using the already scrambled data as input folder.
+The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for actions of
+your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with only
+the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add scrambled
+NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using the already
+scrambled data as input folder.
 
 positional arguments:
   bidsfolder            The BIDS (or BIDS-like) input directory with the original data
@@ -43,7 +44,7 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
 
-Data type:
+Action:
   {stub,tsv,nii,json,swap}
                         Add -h, --help for more information
     stub                Saves a dummy bidsfolder skeleton in outputfolder
@@ -57,7 +58,7 @@ examples:
   scrambler data/bids data/pseudobids nii -h
 ```
 
-#### Data type: stub
+#### Action: stub
 
 ```
 usage: scrambler bidsfolder outputfolder stub [-h] [-s SELECT] [-d]
@@ -82,7 +83,7 @@ examples:
   scrambler data/bids data/pseudobids stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
-#### Data type: tsv
+#### Action: tsv
 
 ```
 usage: scrambler bidsfolder outputfolder tsv [-h] [-s SELECT] [-d] {permute} ...
@@ -110,7 +111,7 @@ examples:
   scrambler data/bids data/pseudobids tsv permute -s participants.tsv -p (participant_id|SAS.*)
 ```
 
-#### Data type: nii
+#### Action: nii
 
 ```
 usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute,diffuse,wobble} ...
@@ -142,7 +143,7 @@ examples:
   scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
-#### Data type: json
+#### Action: json
 
 ```
 usage: scrambler bidsfolder outputfolder json [-h] [-s SELECT] [-d] [-p PRESERVE]
@@ -169,7 +170,7 @@ examples:
   scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
 ```
 
-#### Data type: swap
+#### Action: swap
 
 ```
 usage: scrambler bidsfolder outputfolder swap [-h] [-s SELECT] [-d] [-g GROUPING [GROUPING ...]]

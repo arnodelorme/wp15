@@ -123,10 +123,11 @@ def main():
     """Console script entry point"""
 
     description = textwrap.dedent("""
-    The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for the datatype(s)
-    of your choice. For instance, you could first run `scrambler` to create a dummy dataset with only the file structure
-    and some basic files, and then run `scrambler` again to specifically add scrambled NIfTI data (see examples below).
-    To combine different scrambling methods, simply re-run `scrambler` using the already scrambled data as input folder.""")
+    The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for actions of
+    your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with only
+    the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add scrambled
+    NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using the already
+    scrambled data as input folder.""")
 
     # Add the baseparser
     parser = argparse.ArgumentParser(formatter_class=DefaultsFormatter, description=description,
@@ -137,7 +138,7 @@ def main():
     parser.add_argument('outputfolder', help='The output directory with the scrambled pseudo data')
 
     # Add the subparsers
-    subparsers = parser.add_subparsers(dest='method', title='Data type', help='Add -h, --help for more information', required=True)
+    subparsers = parser.add_subparsers(dest='method', title='Action', help='Add -h, --help for more information', required=True)
     addparser_stub(subparsers, help='Saves a dummy bidsfolder skeleton in outputfolder')
     addparser_tsv(subparsers,  help='Saves scrambled tsv files in outputfolder')
     addparser_nii(subparsers,  help='Saves scrambled NIfTI files in outputfolder')
