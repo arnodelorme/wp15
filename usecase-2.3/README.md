@@ -1,17 +1,24 @@
 # SIESTA - work package 15 - use case 2.3
 
-This implements ...
+This implements an Event-Related Field (ERF) analysis on [Magnetoencephalography](https://en.wikipedia.org/wiki/Magnetoencephalography) (MEG) data.
+
+The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
 ## Input data
 
-The input data [[1]] is a multi-subject, multi-modal neuroimaging dataset that is described in detail in the accompanying data publication [[2]]. It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
+The [input dataset](https://doi.org/10.18112/openneuro.ds000117.v1.0.6) is a multi-subject, multi-modal neuroimaging dataset that is described in detail in the accompanying [data publication](https://doi.org/10.1038/sdata.2015.1). It includes structural and functional MRI, MEG, and EEG data that was recorded during an experimental task on face processing.
 
-The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using datalad [[3]].
+The input data consists of 1671 files with a combined size of 84.82GB and can be downloaded using [datalad](https://www.datalad.org). In order to be able to use datalad, a sufficiently recent version of git is required. The older CentOS nodes on the DCCN cluster, running git version 1.8.3.1 could not do the job. The newer AlmaLinux nodes run git version 2.39.3. This worked.
 
 ```console
 python -m venv venv
 source venv/bin/activate
 python -m pip install datalad
+python -m pip install datalad-installer
+
+datalad-installer git-annex -m datalad/git-annex:release --install-dir venv
+mv venv/usr/lib/* venv/lib/.
+mv venv/usr/bin/* venv/bin/.
 
 git clone https://github.com/OpenNeuroDatasets/ds000117.git input
 cd input
@@ -31,14 +38,6 @@ Wakeman, DG and Henson, RN (2024). Multisubject, multimodal face processing. Ope
 
 The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
 
-## Pseudo data
-
-The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
-
-```console
-scrambler input scrambled stub
-[WIP]
-```
 
 ## Output data
 
@@ -52,7 +51,7 @@ mkdir output
 
 ### Software installation
 
-The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later.
+The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later. (FIXME will update with fieldtrip download and installation instructions once the required code made it into a released version).
 
 ### Legal aspects of the software
 
@@ -64,6 +63,13 @@ FieldTrip is open source and released under the GPLv3 license.
 
 Executing the pipeline from the Linux command-line is done using the following:
 
+Executing the pipeline from the MATLAB command window is done like this:
+
+  restoredefaultpath;
+  addpath('fieldtrip');
+  analyze_all_subjects
+  analyze_group
+  
 ...
 
 ## Cleaning up
@@ -83,8 +89,13 @@ rm -rf input
 rm -rf output
 ```
 
-## References
+## Scrambled data
 
-[1]: https://doi.org/10.18112/openneuro.ds000117.v1.0.6
-[2]: https://doi.org/10.1038/sdata.2015.1
-[3]: https://www.datalad.org
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly.
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scrambler input scrambled stub
+[WIP]
+```

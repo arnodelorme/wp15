@@ -1,10 +1,12 @@
 # SIESTA - work package 15 - use case 2.2
 
-This implements the [MRIQC](https://mriqc.readthedocs.io/en/latest/) pipeline for obtaining standard QC measures from BIDS MRI datasets.
+This implements the [MRIQC](https://mriqc.readthedocs.io/en/latest/) pipeline for obtaining standard QC measures from an MRI dataset.
+
+The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
 ## Input data
 
-The input dataset [[1]] contains structural T1-weighted MRI brain scans from 136 young individuals (87 females; age range from 18 to 35 years old) along with questionnaire-assessed measurements of trait-like chronotype, sleep quality and daytime sleepiness. The data is organized according to the BIDS standard (combined size of 1.18GB) and mostly useful to scientists interested in circadian rhythmicity, structural brain correlates of chronotypes in humans and the effects of sleeping habits and latitude on brain anatomy. The dataset is described in more detail in an accompanying publication [[2]].
+The [input dataset](https://doi.org/10.18112/openneuro.ds003826.v3.0.1) contains structural T1-weighted MRI brain scans from 136 young individuals (87 females; age range from 18 to 35 years old) along with questionnaire-assessed measurements of trait-like chronotype, sleep quality and daytime sleepiness. The data is organized according to the BIDS standard (combined size of 1.18GB) and mostly useful to scientists interested in circadian rhythmicity, structural brain correlates of chronotypes in humans and the effects of sleeping habits and latitude on brain anatomy. The dataset is described in more detail in an [accompanying publication](https://doi.org/10.1080/09291016.2021.1990501).
 
 Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed. To install a specific (latest) version of Node.js you can [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation(s) from there:
 
@@ -31,16 +33,6 @@ Michal Rafal Zareba and Magdalena Fafrowicz and Tadeusz Marek and Ewa Beldzik an
 ### Legal aspects of the input data
 
 The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
-
-## Pseudo data
-
-The pseudo data consists of scrambled BIDS data that is organised according to the BIDS standard. The scrambled version of the data can be generated using:
-
-```console
-scrambler input scrambled stub
-scrambler input scrambled json -p '(?!AcquisitionTime).*'
-scrambler input scrambled nii permute y -i
-```
 
 ## Output data
 
@@ -82,7 +74,14 @@ Cleaning up the input and output data is done using:
 rm -rf input scrambled output
 ```
 
-## References
+## Scrambled data
 
-[1]: https://doi.org/10.18112/openneuro.ds003826.v3.0.1
-[2]: https://doi.org/10.1080/09291016.2021.1990501
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scrambler input scrambled stub
+scrambler input scrambled json -p '(?!AcquisitionTime).*'
+scrambler input scrambled nii permute y -i
+```

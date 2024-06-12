@@ -1,141 +1,131 @@
-output/ERN/AvgChanlocs.mat
-output/ERN/ERN/FCz_ERP_Trimmed_mean_of_mean.mat
-output/ERN/ERN/FCz_ERP_single_subjects_mean.mat
-output/ERN/ERN/H0/H0_one_sample_ttest_parameter_1.mat
-output/ERN/ERN/H0/boot_table.mat
-output/ERN/ERN/H0/tfce_H0_one_sample_ttest_parameter_1.mat
-output/ERN/ERN/LIMO.mat
-output/ERN/ERN/Yr.mat
-output/ERN/ERN/one_sample_ttest_parameter_1.mat
-output/ERN/ERN/one_sample_ttest_parameter_1_Cohensd.mat
-output/ERN/ERN/tfce/tfce_one_sample_ttest_parameter_1.mat
-output/ERN/CRN/FCz_ERP_Trimmed_mean_of_mean.mat
-output/ERN/CRN/FCz_ERP_single_subjects_mean.mat
-output/ERN/CRN/H0/H0_one_sample_ttest_parameter_1.mat
-output/ERN/CRN/H0/boot_table.mat
-output/ERN/CRN/H0/tfce_H0_one_sample_ttest_parameter_1.mat
-output/ERN/CRN/LIMO.mat
-output/ERN/CRN/Yr.mat
-output/ERN/CRN/one_sample_ttest_parameter_1.mat
-output/ERN/CRN/one_sample_ttest_parameter_1_Cohensd.mat
-output/ERN/CRN/tfce/tfce_one_sample_ttest_parameter_1.mat
-output/ERN/Difference_wave/ERP_diff.mat
-output/ERN/Difference_wave/ERPs_correct_Trimmed_mean_of_Weighted mean.mat
-output/ERN/Difference_wave/ERPs_correct_single_subjects_Weighted mean.mat
-output/ERN/Difference_wave/ERPs_errors_Trimmed_mean_of_Weighted mean.mat
-output/ERN/Difference_wave/ERPs_errors_single_subjects_Weighted mean.mat
-output/ERN/Difference_wave/H0/H0_paired_samples_ttest_parameter_1_2.mat
-output/ERN/Difference_wave/H0/boot_table.mat
-output/ERN/Difference_wave/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
-output/ERN/Difference_wave/LIMO.mat
-output/ERN/Difference_wave/Y1r.mat
-output/ERN/Difference_wave/Y2r.mat
-output/ERN/Difference_wave/paired_samples_ttest_parameter_1_2.mat
-output/ERN/Difference_wave/paired_samples_ttest_parameter_1_2_Cohensd.mat
-output/ERN/Difference_wave/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
-output/MMN/AvgChanlocs.mat
-output/MMN/MMN/ERP_MMN.mat
-output/MMN/MMN/ERPs_deviant_Trimmed_mean_of_Weighted mean.mat
-output/MMN/MMN/ERPs_deviant_single_subjects_Weighted mean.mat
-output/MMN/MMN/ERPs_standard_Trimmed_mean_of_Weighted mean.mat
-output/MMN/MMN/ERPs_standard_single_subjects_Weighted mean.mat
-output/MMN/MMN/H0/H0_paired_samples_ttest_parameter_1_2.mat
-output/MMN/MMN/H0/boot_table.mat
-output/MMN/MMN/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
-output/MMN/MMN/LIMO.mat
-output/MMN/MMN/Y1r.mat
-output/MMN/MMN/Y2r.mat
-output/MMN/MMN/paired_samples_ttest_parameter_1_2.mat
-output/MMN/MMN/paired_samples_ttest_parameter_1_2_Cohensd.mat
-output/MMN/MMN/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
-output/N2pc/AvgChanlocs.mat
-output/N2pc/Ipsi-Contra/H0/H0_paired_samples_ttest_parameter_1_2.mat
-output/N2pc/Ipsi-Contra/H0/boot_table.mat
-output/N2pc/Ipsi-Contra/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
-output/N2pc/Ipsi-Contra/LIMO.mat
-output/N2pc/Ipsi-Contra/PO7_PO8_difference.fig
-output/N2pc/Ipsi-Contra/contralateral.mat
-output/N2pc/Ipsi-Contra/ipsilateral.mat
-output/N2pc/Ipsi-Contra/paired_samples_ttest_parameter_1_2.mat
-output/N2pc/Ipsi-Contra/paired_samples_ttest_parameter_1_2_Cohensd.mat
-output/N2pc/Ipsi-Contra/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
-output/N170/AvgChanlocs.mat
-output/N170/Cars_vs_Faces/ERP_Difference.mat
-output/N170/Cars_vs_Faces/ERPs_Cars_Trimmed_mean_of_Weighted mean.mat
-output/N170/Cars_vs_Faces/ERPs_Cars_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces/ERPs_Faces_Trimmed_mean_of_Weighted mean.mat
-output/N170/Cars_vs_Faces/ERPs_Faces_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces/H0/H0_paired_samples_ttest_parameter_2_1.mat
-output/N170/Cars_vs_Faces/H0/boot_table.mat
-output/N170/Cars_vs_Faces/H0/tfce_H0_paired_samples_ttest_parameter_2_1.mat
-output/N170/Cars_vs_Faces/LIMO.mat
-output/N170/Cars_vs_Faces/Y1r.mat
-output/N170/Cars_vs_Faces/Y2r.mat
-output/N170/Cars_vs_Faces/paired_samples_ttest_parameter_2_1.mat
-output/N170/Cars_vs_Faces/paired_samples_ttest_parameter_2_1_Cohensd.mat
-output/N170/Cars_vs_Faces/tfce/tfce_paired_samples_ttest_parameter_2_1.mat
-output/N170/Cars_vs_Faces_controlled/Con_Cars_Trimmed_mean_of_mean.mat
-output/N170/Cars_vs_Faces_controlled/Con_Cars_single_subjects_mean.mat
-output/N170/Cars_vs_Faces_controlled/Con_Faces_Trimmed_mean_of_mean.mat
-output/N170/Cars_vs_Faces_controlled/Con_Faces_single_subjects_mean.mat
-output/N170/Cars_vs_Faces_controlled/Con_diff.mat
-output/N170/Cars_vs_Faces_controlled/ERP_Faces_Cars_Difference.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Cars_Trimmed_mean_of_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Cars_control_Trimmed_mean_of_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Cars_control_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Cars_diff_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Cars_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Faces_Trimmed_mean_of_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Faces_control_Trimmed_mean_of_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Faces_control_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Faces_diff_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/ERPs_Faces_single_subjects_Weighted mean.mat
-output/N170/Cars_vs_Faces_controlled/H0/H0_paired_samples_ttest_parameter_1_2.mat
-output/N170/Cars_vs_Faces_controlled/H0/boot_table.mat
-output/N170/Cars_vs_Faces_controlled/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
-output/N170/Cars_vs_Faces_controlled/LIMO.mat
-output/N170/Cars_vs_Faces_controlled/Y1r.mat
-output/N170/Cars_vs_Faces_controlled/Y2r.mat
-output/N170/Cars_vs_Faces_controlled/paired_samples_ttest_parameter_1_2.mat
-output/N170/Cars_vs_Faces_controlled/paired_samples_ttest_parameter_1_2_Cohensd.mat
-output/N170/Cars_vs_Faces_controlled/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
-output/N400/AvgChanlocs.mat
-output/N400/N400/Con_diff.mat
-output/N400/N400/Con_related_Trimmed_mean_of_mean.mat
-output/N400/N400/Con_related_single_subjects_mean.mat
-output/N400/N400/Con_unrelated_Trimmed_mean_of_mean.mat
-output/N400/N400/Con_unrelated_single_subjects_mean.mat
-output/N400/N400/ERP_diff.mat
-output/N400/N400/ERPs_related_Trimmed_mean_of_Weighted mean.mat
-output/N400/N400/ERPs_related_single_subjects_Weighted mean.mat
-output/N400/N400/ERPs_unrelated_Trimmed_mean_of_Weighted mean.mat
-output/N400/N400/ERPs_unrelated_single_subjects_Weighted mean.mat
-output/N400/N400/H0/H0_paired_samples_ttest_parameter_1_2.mat
-output/N400/N400/H0/boot_table.mat
-output/N400/N400/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
-output/N400/N400/LIMO.mat
-output/N400/N400/Y1r.mat
-output/N400/N400/Y2r.mat
-output/N400/N400/paired_samples_ttest_parameter_1_2.mat
-output/N400/N400/paired_samples_ttest_parameter_1_2_Cohensd.mat
-output/N400/N400/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
-output/P3/AvgChanlocs.mat
-output/P3/P3/Con_diff.mat
-output/P3/P3/Con_distractors_Trimmed_mean_of_mean.mat
-output/P3/P3/Con_distractors_single_subjects_mean.mat
-output/P3/P3/Con_targets_Trimmed_mean_of_mean.mat
-output/P3/P3/Con_targets_single_subjects_mean.mat
-output/P3/P3/ERP_diff.mat
-output/P3/P3/ERPs_distractors_Trimmed_mean_of_Weighted mean.mat
-output/P3/P3/ERPs_distractors_single_subjects_Weighted mean.mat
-output/P3/P3/ERPs_targets_Trimmed_mean_of_Weighted mean.mat
-output/P3/P3/ERPs_targets_single_subjects_Weighted mean.mat
-output/P3/P3/H0/H0_paired_samples_ttest_parameter_2_1.mat
-output/P3/P3/H0/boot_table.mat
-output/P3/P3/H0/tfce_H0_paired_samples_ttest_parameter_2_1.mat
-output/P3/P3/LIMO.mat
-output/P3/P3/Y1r.mat
-output/P3/P3/Y2r.mat
-output/P3/P3/paired_samples_ttest_parameter_2_1.mat
-output/P3/P3/paired_samples_ttest_parameter_2_1_Cohensd.mat
-output/P3/P3/tfce/tfce_paired_samples_ttest_parameter_2_1.mat
+output/task-ERN/AvgChanlocs.mat
+output/task-ERN/2nd_level/CRN/
+output/task-ERN/2nd_level/CRN/FCz_ERP_Trimmed_mean_of_mean.mat
+output/task-ERN/2nd_level/CRN/H0/
+output/task-ERN/2nd_level/CRN/H0/boot_table.mat
+output/task-ERN/2nd_level/CRN/H0/H0_one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/CRN/H0/tfce_H0_one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/CRN/LIMO.mat
+output/task-ERN/2nd_level/CRN/one_sample_ttest_parameter_1_Cohensd.mat
+output/task-ERN/2nd_level/CRN/one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/CRN/tfce/tfce_one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/CRN/Yr.mat
+output/task-ERN/2nd_level/Difference_wave/ERP_difference.mat
+output/task-ERN/2nd_level/Difference_wave/ERP_diff.mat
+output/task-ERN/2nd_level/Difference_wave/ERPs_correct_Trimmed_mean_of_Weighted mean.mat
+output/task-ERN/2nd_level/Difference_wave/ERPs_errors_Trimmed_mean_of_Weighted mean.mat
+output/task-ERN/2nd_level/Difference_wave/H0/boot_table.mat
+output/task-ERN/2nd_level/Difference_wave/H0/H0_paired_samples_ttest_parameter_1_2.mat
+output/task-ERN/2nd_level/Difference_wave/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
+output/task-ERN/2nd_level/Difference_wave/LIMO.mat
+output/task-ERN/2nd_level/Difference_wave/paired_samples_ttest_parameter_1_2_Cohensd.mat
+output/task-ERN/2nd_level/Difference_wave/paired_samples_ttest_parameter_1_2.mat
+output/task-ERN/2nd_level/Difference_wave/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
+output/task-ERN/2nd_level/Difference_wave/Y1r.mat
+output/task-ERN/2nd_level/Difference_wave/Y2r.mat
+output/task-ERN/2nd_level/ERN/FCz_ERP_Trimmed_mean_of_mean.mat
+output/task-ERN/2nd_level/ERN/H0/boot_table.mat
+output/task-ERN/2nd_level/ERN/H0/H0_one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/ERN/H0/tfce_H0_one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/ERN/LIMO.mat
+output/task-ERN/2nd_level/ERN/one_sample_ttest_parameter_1_Cohensd.mat
+output/task-ERN/2nd_level/ERN/one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/ERN/tfce/tfce_one_sample_ttest_parameter_1.mat
+output/task-ERN/2nd_level/ERN/Yr.mat
+output/task-MMN/AvgChanlocs.mat
+output/task-MMN/2nd_level/MMN/ERP_difference.mat
+output/task-MMN/2nd_level/MMN/ERP_MMN.mat
+output/task-MMN/2nd_level/MMN/ERPs_deviant_Trimmed_mean_of_Weighted mean.mat
+output/task-MMN/2nd_level/MMN/ERPs_standard_Trimmed_mean_of_Weighted mean.mat
+output/task-MMN/2nd_level/MMN/H0/boot_table.mat
+output/task-MMN/2nd_level/MMN/H0/H0_paired_samples_ttest_parameter_1_2.mat
+output/task-MMN/2nd_level/MMN/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
+output/task-MMN/2nd_level/MMN/LIMO.mat
+output/task-MMN/2nd_level/MMN/paired_samples_ttest_parameter_1_2_Cohensd.mat
+output/task-MMN/2nd_level/MMN/paired_samples_ttest_parameter_1_2.mat
+output/task-MMN/2nd_level/MMN/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
+output/task-MMN/2nd_level/MMN/Y1r.mat
+output/task-MMN/2nd_level/MMN/Y2r.mat
+output/task-N170/AvgChanlocs.mat
+output/task-N170/2nd_level/Cars_vs_Faces/ERP_difference.mat
+output/task-N170/2nd_level/Cars_vs_Faces/ERP_Difference.mat
+output/task-N170/2nd_level/Cars_vs_Faces/ERPs_Cars_Trimmed_mean_of_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces/ERPs_Faces_single_subjects_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces/ERPs_Faces_Trimmed_mean_of_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces/H0/boot_table.mat
+output/task-N170/2nd_level/Cars_vs_Faces/H0/H0_paired_samples_ttest_parameter_2_1.mat
+output/task-N170/2nd_level/Cars_vs_Faces/H0/tfce_H0_paired_samples_ttest_parameter_2_1.mat
+output/task-N170/2nd_level/Cars_vs_Faces/LIMO.mat
+output/task-N170/2nd_level/Cars_vs_Faces/paired_samples_ttest_parameter_2_1_Cohensd.mat
+output/task-N170/2nd_level/Cars_vs_Faces/paired_samples_ttest_parameter_2_1.mat
+output/task-N170/2nd_level/Cars_vs_Faces/tfce/tfce_paired_samples_ttest_parameter_2_1.mat
+output/task-N170/2nd_level/Cars_vs_Faces/Y1r.mat
+output/task-N170/2nd_level/Cars_vs_Faces/Y2r.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/Con_Cars_Trimmed_mean_of_mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/Con_diff.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/Con_Faces_Trimmed_mean_of_mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/ERP_difference.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/ERP_Faces_Cars_Difference.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/ERPs_Cars_control_Trimmed_mean_of_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/ERPs_Cars_Trimmed_mean_of_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/ERPs_Faces_control_Trimmed_mean_of_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/ERPs_Faces_Trimmed_mean_of_Weighted mean.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/H0/boot_table.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/H0/H0_paired_samples_ttest_parameter_1_2.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/LIMO.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/paired_samples_ttest_parameter_1_2_Cohensd.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/paired_samples_ttest_parameter_1_2.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/Parameter_difference.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/Y1r.mat
+output/task-N170/2nd_level/Cars_vs_Faces_controlled/Y2r.mat
+output/task-N2pc/AvgChanlocs.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/contralateral.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/ERP_difference.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/H0/boot_table.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/H0_paired_samples_ttest_parameter_1_2.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/tfce_H0_paired_samples_ttest_parameter_1_2.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/ipsilateral.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/LIMO.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/paired_samples_ttest_parameter_1_2_Cohensd.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/paired_samples_ttest_parameter_1_2.mat
+output/task-N2pc/2nd_level/Ipsi-Contra/PO7_PO8_difference.fig
+output/task-N2pc/2nd_level/Ipsi-Contra/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
+output/task-N400/AvgChanlocs.mat
+output/task-N400/2nd_level/N400/Con_diff.mat
+output/task-N400/2nd_level/N400/Con_related_Trimmed_mean_of_mean.mat
+output/task-N400/2nd_level/N400/Con_unrelated_Trimmed_mean_of_mean.mat
+output/task-N400/2nd_level/N400/ERP_difference.mat
+output/task-N400/2nd_level/N400/ERP_diff.mat
+output/task-N400/2nd_level/N400/ERPs_related_Trimmed_mean_of_Weighted mean.mat
+output/task-N400/2nd_level/N400/ERPs_unrelated_Trimmed_mean_of_Weighted mean.mat
+output/task-N400/2nd_level/N400/H0/boot_table.mat
+output/task-N400/2nd_level/N400/H0/H0_paired_samples_ttest_parameter_1_2.mat
+output/task-N400/2nd_level/N400/H0/tfce_H0_paired_samples_ttest_parameter_1_2.mat
+output/task-N400/2nd_level/N400/LIMO.mat
+output/task-N400/2nd_level/N400/paired_samples_ttest_parameter_1_2_Cohensd.mat
+output/task-N400/2nd_level/N400/paired_samples_ttest_parameter_1_2.mat
+output/task-N400/2nd_level/N400/Parameter_difference.mat
+output/task-N400/2nd_level/N400/tfce/tfce_paired_samples_ttest_parameter_1_2.mat
+output/task-N400/2nd_level/N400/Y1r.mat
+output/task-N400/2nd_level/N400/Y2r.mat
+output/task-P3/AvgChanlocs.mat
+output/task-P3/2nd_level/P3/Con_diff.mat
+output/task-P3/2nd_level/P3/Con_distractors_Trimmed_mean_of_mean.mat
+output/task-P3/2nd_level/P3/Con_targets_Trimmed_mean_of_mean.mat
+output/task-P3/2nd_level/P3/ERP_difference.mat
+output/task-P3/2nd_level/P3/ERP_diff.mat
+output/task-P3/2nd_level/P3/ERPs_distractors_Trimmed_mean_of_Weighted mean.mat
+output/task-P3/2nd_level/P3/ERPs_targets_Trimmed_mean_of_Weighted mean.mat
+output/task-P3/2nd_level/P3/H0/boot_table.mat
+output/task-P3/2nd_level/P3/H0/H0_paired_samples_ttest_parameter_2_1.mat
+output/task-P3/2nd_level/P3/H0/tfce_H0_paired_samples_ttest_parameter_2_1.mat
+output/task-P3/2nd_level/P3/LIMO.mat
+output/task-P3/2nd_level/P3/paired_samples_ttest_parameter_2_1_Cohensd.mat
+output/task-P3/2nd_level/P3/paired_samples_ttest_parameter_2_1.mat
+output/task-P3/2nd_level/P3/Parameter_difference.mat
+output/task-P3/2nd_level/P3/tfce/tfce_paired_samples_ttest_parameter_2_1.mat
+output/task-P3/2nd_level/P3/Y1r.mat
+output/task-P3/2nd_level/P3/Y2r.mat
+
