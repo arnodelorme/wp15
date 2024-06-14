@@ -18,7 +18,8 @@ dependencies      = ['pandas',
                      'nibabel',
                      'pybids',
                      'tqdm',
-                     'tomli >= 1.1.0 ; python_version < "3.11"']
+                     'tomli >= 1.1.0 ; python_version < "3.11"',
+                     'mne']
 
 [project.urls]
 homepage          = 'https://github.com/SIESTA-eu/wp15'
