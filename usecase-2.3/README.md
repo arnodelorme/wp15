@@ -51,7 +51,15 @@ mkdir output
 
 ### Software installation
 
-The analysis requires MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later. (FIXME will update with fieldtrip download and installation instructions once the required code made it into a released version).
+This requires the GitHub wp15 repository, MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later. This pertains to any version of the code under the release [tag 20240614](https://github.com/fieldtrip/fieldtrip/releases/tag/20240614) or younger.
+
+```console
+git clone https://github.com/SIESTA-eu/wp15.git
+wget https://github.com/fieldtrip/fieldtrip/archive/refs/tags/20240614.zip
+unzip 20240614.zip
+mv fieldtrip-20240614 fieldtrip
+rm 20240614.zip
+```
 
 ### Legal aspects of the software
 
@@ -65,11 +73,14 @@ Executing the pipeline from the Linux command-line is done using the following:
 
 Executing the pipeline from the MATLAB command window is done like this:
 
-  restoredefaultpath;
-  addpath('fieldtrip');
-  analyze_all_subjects
-  analyze_group
-  
+```console
+restoredefaultpath;
+addpath('fieldtrip');
+addpath('wp15/usecase-2.3');
+analyze_all_subjects
+analyze_group
+```
+
 ...
 
 ## Cleaning up
