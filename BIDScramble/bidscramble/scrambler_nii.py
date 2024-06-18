@@ -1,13 +1,17 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import scipy as sp
 import nibabel as nib
 import re
+import time
 from tqdm import tqdm
 from pathlib import Path
 from typing import List
 
 
-def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, dryrun: bool=False, **_):
+def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False,
+                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: bool=False, nativespec: str= '', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
@@ -15,6 +19,37 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
 
     # Create pseudo-random out data for all files of each included data type
     inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.nii' in fpath.suffixes]
+
+    # Submit scrambler jobs on the DRMAA-enabled HPC
+    if cluster:
+
+        # Lazy import to avoid import errors on non-HPC systems
+        from drmaa import Session as drmaasession
+        import os
+        import tempfile
+
+        with drmaasession() as pbatch:
+            jobids                 = []
+            jt                     = pbatch.createJobTemplate()
+            jt.jobEnvironment      = os.environ
+            jt.remoteCommand       = __file__
+            jt.nativeSpecification = nativespec
+            jt.joinFiles           = True
+
+            for inputfile in inputfiles:
+                subid         = inputfile.name.split('_')[0].split('-')[1]
+                sesid         = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
+                jt.args       = [bidsfolder, outputfolder, inputfile, method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
+                jt.jobName    = f"scrambler_nii_{subid}_{sesid}"
+                jt.outputPath = f"{tempfile.gettempdir()}/{jt.jobName}.out"
+                jobids.append(pbatch.runJob(jt))
+
+            synchronize(pbatch, jobids)
+            pbatch.deleteJobTemplate(jt)
+
+        return
+
+    # Scramble the included input files
     for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
 
         # Load the (zipped) nii data
@@ -88,3 +123,36 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             outputfile.parent.mkdir(parents=True, exist_ok=True)
             outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)
             nib.save(outputimg, outputfile)
+
+
+def synchronize(pbatch, jobids: list):
+    """
+    Shows tqdm progress bars for queued and running DRMAA jobs. Waits until all jobs have finished
+
+    :param pbatch: The DRMAA session
+    :param jobids: The job ids
+    :return:
+    """
+
+    qbar = tqdm(total=len(jobids), desc='Queued ', unit='job', leave=False, bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}]')
+    rbar = tqdm(total=len(jobids), desc='Running', unit='job', leave=False, bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}]', colour='green')
+    done = 0
+    while done < len(jobids):
+        jobs   = [pbatch.jobStatus(jobid) for jobid in jobids]
+        done   = sum([status in ('done', 'failed', 'undetermined') for status in jobs])
+        qbar.n = sum([status == 'queued_active'                    for status in jobs])
+        rbar.n = sum([status == 'running'                          for status in jobs])
+        qbar.refresh(), rbar.refresh()
+        time.sleep(2)
+    qbar.close(), rbar.close()
+
+    if any([pbatch.jobStatus(jobid)=='failed' for jobid in jobids]):
+        tqdm.write('ERROR: One or more HPC jobs failed to run')
+
+
+if __name__ == 'main':
+    """drmaa usage"""
+
+    import sys
+
+    scrambler_nii(*sys.argv[1:])

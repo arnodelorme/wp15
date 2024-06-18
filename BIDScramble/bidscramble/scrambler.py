@@ -8,10 +8,13 @@ from .scrambler_nii import scrambler_nii
 from .scrambler_json import scrambler_json
 from .scrambler_swap import scrambler_swap
 
-# Use a parent parser to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
+# Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
 parent.add_argument('-s','--select', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='.*')
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
+parent_nii = argparse.ArgumentParser(add_help=False)
+parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster', action='store_true')
+parent_nii.add_argument('-n','--nativespec', help='Opaque DRMAA argument with native specifications for submitting deface jobs to the HPC cluster (NB: Use quotes and include at least one space character to prevent premature parsing)', default='-l walltime=00:30:00,mem=2gb')
 
 
 class DefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter): pass
@@ -69,7 +72,7 @@ def addparser_nii(parsers, help: str):
               "  scrambler data/bids data/pseudobids nii diffuse 8 -s 'sub-.*_MP2RAGE.nii.gz'\n"
               "  scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'\n ")
 
-    parser = parsers.add_parser('nii', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('nii', parents=[parent,parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scrambler_nii)
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
