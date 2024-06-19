@@ -12,7 +12,7 @@ from .scrambler_swap import scrambler_swap
 parent = argparse.ArgumentParser(add_help=False)
 parent.add_argument('-s','--select', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='.*')
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
-parent_nii = argparse.ArgumentParser(add_help=False)
+parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
 parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster', action='store_true')
 parent_nii.add_argument('-n','--nativespec', help='Opaque DRMAA argument with native specifications for submitting deface jobs to the HPC cluster (NB: Use quotes and include at least one space character to prevent premature parsing)', default='-l walltime=00:30:00,mem=2gb')
 
@@ -72,18 +72,18 @@ def addparser_nii(parsers, help: str):
               "  scrambler data/bids data/pseudobids nii diffuse 8 -s 'sub-.*_MP2RAGE.nii.gz'\n"
               "  scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'\n ")
 
-    parser = parsers.add_parser('nii', parents=[parent,parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('nii', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scrambler_nii)
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
-    subparser = subparsers.add_parser('blur', parents=[parent], description=description, help='Apply a 3D Gaussian smoothing filter')
+    subparser = subparsers.add_parser('blur', parents=[parent_nii], description=description, help='Apply a 3D Gaussian smoothing filter')
     subparser.add_argument('fwhm', help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
-    subparser = subparsers.add_parser('permute', parents=[parent], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations along one or more image dimensions')
+    subparser = subparsers.add_parser('permute', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations along one or more image dimensions')
     subparser.add_argument('dims', help='The dimensions along which the images will be permuted', nargs='*', choices=['x','y','z','t','u','v','w'], default=['x','y'])
     subparser.add_argument('-i','--independent', help='Make all permutations along a dimension independent (instead of permuting slices as a whole)', action='store_true')
-    subparser = subparsers.add_parser('diffuse', parents=[parent], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations using a sliding 3D permutation kernel')
+    subparser = subparsers.add_parser('diffuse', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations using a sliding 3D permutation kernel')
     subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float, nargs='?', default=5)
-    subparser = subparsers.add_parser('wobble', parents=[parent], formatter_class=DefaultsFormatter, description=description, help='Deform the images using 3D random waveforms')
+    subparser = subparsers.add_parser('wobble', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Deform the images using 3D random waveforms')
     subparser.add_argument('-a','--amplitude', help='The amplitude of the random waveform', type=float, default=2)
     subparser.add_argument('-f','--freqrange', help='The highest and lowest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])
 
