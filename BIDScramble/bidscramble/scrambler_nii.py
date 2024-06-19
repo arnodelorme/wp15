@@ -158,7 +158,7 @@ if __name__ == '__main__':
     """drmaa usage"""
 
     import argparse
-    from .scrambler import addparser_nii
+    from bidscramble.scrambler import addparser_nii
 
     # Add the baseparser
     parser = argparse.ArgumentParser()
