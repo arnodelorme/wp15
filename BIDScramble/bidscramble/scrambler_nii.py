@@ -25,7 +25,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
         print(f"No files found in {inputdir} using '{select}'")
 
     # Submit scrambler jobs on the DRMAA-enabled HPC
-    if cluster is True:
+    if cluster:
 
         # Lazy import to avoid import errors on non-HPC systems
         from drmaa import Session as drmaasession
@@ -157,4 +157,19 @@ def watchjobs(pbatch, jobids: list):
 if __name__ == 'main':
     """drmaa usage"""
 
-    scrambler_nii(*sys.argv[1:])
+    import argparse
+    from .scrambler import addparser_nii
+
+    # Add the baseparser
+    parser = argparse.ArgumentParser()
+    parser.add_argument('bidsfolder')
+    parser.add_argument('outputfolder')
+
+    # Add the nii subparser
+    subparsers = parser.add_subparsers(dest='method')
+    addparser_nii(subparsers)
+
+    # Execute the scrambler function
+    args = parser.parse_args(*sys.argv[1:])
+
+    scrambler_nii(**vars(args))
