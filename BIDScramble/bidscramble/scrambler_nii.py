@@ -5,6 +5,8 @@ import scipy as sp
 import nibabel as nib
 import re
 import time
+import os
+import sys
 from tqdm import tqdm
 from pathlib import Path
 from typing import List
@@ -23,11 +25,10 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
         print(f"No files found in {inputdir} using '{select}'")
 
     # Submit scrambler jobs on the DRMAA-enabled HPC
-    if cluster:
+    if cluster is True:
 
         # Lazy import to avoid import errors on non-HPC systems
         from drmaa import Session as drmaasession
-        import os
 
         with drmaasession() as pbatch:
             jobids                 = []
@@ -155,7 +156,5 @@ def watchjobs(pbatch, jobids: list):
 
 if __name__ == 'main':
     """drmaa usage"""
-
-    import sys
 
     scrambler_nii(*sys.argv[1:])
