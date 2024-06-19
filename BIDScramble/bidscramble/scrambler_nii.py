@@ -39,7 +39,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             for inputfile in inputfiles:
                 subid         = inputfile.name.split('_')[0].split('-')[1]
                 sesid         = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                jt.args       = [bidsfolder, outputfolder, inputfile, method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
+                jt.args       = [bidsfolder, outputfolder, str(inputfile.relative_to(inputdir)), method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
                 jt.jobName    = f"scrambler_nii_{subid}_{sesid}"
                 jt.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/jt.jobName}.out"
                 jobids.append(pbatch.runJob(jt))
@@ -144,10 +144,11 @@ def watchjobs(pbatch, jobids: list):
         rbar.n = sum([status == 'running'                          for status in jobs])
         qbar.refresh(), rbar.refresh()
         time.sleep(2)
+    tqdm.write(f"Finished processing all {len(jobids)} jobs")
     qbar.close(), rbar.close()
 
     if any([pbatch.jobStatus(jobid)=='failed' for jobid in jobids]):
-        tqdm.write('ERROR: One or more HPC jobs failed to run')
+        tqdm.write('\nERROR: One or more HPC jobs failed to run')
 
 
 if __name__ == 'main':
