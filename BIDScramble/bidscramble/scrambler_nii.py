@@ -154,7 +154,7 @@ def watchjobs(pbatch, jobids: list):
         tqdm.write('\nERROR: One or more HPC jobs failed to run')
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     """drmaa usage"""
 
     import argparse
