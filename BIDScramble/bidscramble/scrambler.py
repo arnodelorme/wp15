@@ -82,7 +82,7 @@ def addparser_nii(parsers, help: str):
     subparser.add_argument('dims', help='The dimensions along which the images will be permuted', nargs='*', choices=['x','y','z','t','u','v','w'], default=['x','y'])
     subparser.add_argument('-i','--independent', help='Make all permutations along a dimension independent (instead of permuting slices as a whole)', action='store_true')
     subparser = subparsers.add_parser('diffuse', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations using a sliding 3D permutation kernel')
-    subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float, nargs='?', default=5)
+    subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float, nargs='?', default=3)
     subparser = subparsers.add_parser('wobble', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Deform the images using 3D random waveforms')
     subparser.add_argument('-a','--amplitude', help='The amplitude of the random waveform', type=float, default=2)
     subparser.add_argument('-f','--freqrange', help='The highest and lowest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])

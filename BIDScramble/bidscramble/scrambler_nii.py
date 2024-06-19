@@ -32,24 +32,24 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
         from drmaa import Session as drmaasession
 
         with drmaasession() as pbatch:
-            jobids                 = []
-            jt                     = pbatch.createJobTemplate()
-            jt.jobEnvironment      = os.environ
-            jt.remoteCommand       = __file__
-            jt.nativeSpecification = nativespec
-            jt.joinFiles           = True
+            jobids                  = []
+            job                     = pbatch.createJobTemplate()
+            job.jobEnvironment      = os.environ
+            job.remoteCommand       = __file__
+            job.nativeSpecification = nativespec
+            job.joinFiles           = True
             (outputdir/'logs').mkdir(exist_ok=True, parents=True)
 
             for inputfile in inputfiles:
-                subid         = inputfile.name.split('_')[0].split('-')[1]
-                sesid         = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                jt.args       = [bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
-                jt.jobName    = f"scrambler_nii_{subid}_{sesid}"
-                jt.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/jt.jobName}.out"
-                jobids.append(pbatch.runJob(jt))
+                subid          = inputfile.name.split('_')[0].split('-')[1]
+                sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
+                job.args       = [bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
+                job.jobName    = f"scrambler_nii_{subid}_{sesid}"
+                job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
+                jobids.append(pbatch.runJob(job))
 
             watchjobs(pbatch, jobids)
-            pbatch.deleteJobTemplate(jt)
+            pbatch.deleteJobTemplate(job)
 
         return
 
@@ -79,7 +79,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
 
         elif method == 'diffuse':
             window = abs(np.int16(2 * radius / voxdim))                     # Size of the sliding window
-            step   = [int(d/4) or 1 for d in window]                        # Sliding step (NB: int >= 1): e.g. 1/4 of the size of the sliding window (to speed up)
+            step   = [int(d/2) or 1 for d in window]                        # Sliding step (NB: int >= 1): e.g. 1/4 of the size of the sliding window (to speed up)
             tqdm.write(f"window: {window}\nstep: {step}")
             for x in range(0, data.shape[0] - window[0], step[0]):
                 for y in range(0, data.shape[1] - window[1], step[1]):
