@@ -34,12 +34,14 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             jt.remoteCommand       = __file__
             jt.nativeSpecification = nativespec
             jt.joinFiles           = True
+            (outputdir/'logs').mkdir(exist_ok=True, parents=True)
 
             for inputfile in inputfiles:
                 subid         = inputfile.name.split('_')[0].split('-')[1]
                 sesid         = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
                 jt.args       = [bidsfolder, outputfolder, inputfile, method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
                 jt.jobName    = f"scrambler_nii_{subid}_{sesid}"
+                jt.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/jt.jobName}.out"
                 jobids.append(pbatch.runJob(jt))
 
             watchjobs(pbatch, jobids)
