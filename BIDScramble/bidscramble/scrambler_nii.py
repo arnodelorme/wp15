@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
     # Add the nii subparser
     subparsers = parser.add_subparsers(dest='method')
-    addparser_nii(subparsers)
+    addparser_nii(subparsers, '')
 
     # Execute the scrambler function
     args = parser.parse_args(*sys.argv[1:])
