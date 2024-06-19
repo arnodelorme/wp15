@@ -7,13 +7,14 @@ import re
 import time
 import os
 import sys
+import ast
 from tqdm import tqdm
 from pathlib import Path
 from typing import List
 
 
 def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False,
-                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: bool=False, nativespec: str= '', dryrun: bool=False, **_):
+                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: bool=False, nativespec: str='', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
@@ -157,19 +158,18 @@ def watchjobs(pbatch, jobids: list):
 if __name__ == '__main__':
     """drmaa usage"""
 
-    import argparse
-    from bidscramble.scrambler import addparser_nii
+    args    = sys.argv[1:]
+    """ Non-str scrambler_nii arguments:
+    4  fwhm: float
+    5  dims: List[str]=()
+    6  independent: bool=False
+    7  radius: float=1
+    8  freqrange: List[float]=(0,0)
+    9  amplitude: float=1
+    10 cluster: bool=False
+    12 dryrun: bool=False
+    """
+    for n in list(range(4, 11)) + [12]:
+        args[n] = ast.literal_eval(args[n])
 
-    # Add the baseparser
-    parser = argparse.ArgumentParser()
-    parser.add_argument('bidsfolder')
-    parser.add_argument('outputfolder')
-
-    # Add the nii subparser
-    subparsers = parser.add_subparsers(dest='method')
-    addparser_nii(subparsers, '')
-
-    # Execute the scrambler function
-    args = parser.parse_args(*sys.argv[1:])
-
-    scrambler_nii(**vars(args))
+    scrambler_nii(*args)
