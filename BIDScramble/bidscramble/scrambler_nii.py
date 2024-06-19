@@ -19,6 +19,8 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
 
     # Create pseudo-random out data for all files of each included data type
     inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.nii' in fpath.suffixes]
+    if not inputfiles:
+        print(f"No files found in {inputdir} using '{select}'")
 
     # Submit scrambler jobs on the DRMAA-enabled HPC
     if cluster:
