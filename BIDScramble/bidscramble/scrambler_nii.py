@@ -43,7 +43,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             for inputfile in inputfiles:
                 subid         = inputfile.name.split('_')[0].split('-')[1]
                 sesid         = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                jt.args       = [bidsfolder, outputfolder, str(inputfile.relative_to(inputdir)), method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
+                jt.args       = [bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
                 jt.jobName    = f"scrambler_nii_{subid}_{sesid}"
                 jt.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/jt.jobName}.out"
                 jobids.append(pbatch.runJob(jt))
@@ -78,15 +78,16 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             data  = sp.ndimage.gaussian_filter(data, sigma[0:data.ndim], mode='nearest')
 
         elif method == 'diffuse':
-            window = abs(np.int16(2 * radius / voxdim))     # Size of the sliding window
-            step   = [int(d/4) or 1 for d in window]                            # Sliding step (NB: int >= 1): e.g. 1/4 of the size of the sliding window (to speed up)
+            window = abs(np.int16(2 * radius / voxdim))                     # Size of the sliding window
+            step   = [int(d/4) or 1 for d in window]                        # Sliding step (NB: int >= 1): e.g. 1/4 of the size of the sliding window (to speed up)
+            tqdm.write(f"window: {window}\nstep: {step}")
             for x in range(0, data.shape[0] - window[0], step[0]):
                 for y in range(0, data.shape[1] - window[1], step[1]):
                     for z in range(0, data.shape[2] - window[2], step[2]):
                         box = data[0+x:window[0]+x, 0+y:window[1]+y, 0+z:window[2]+z]
                         np.random.default_rng().permuted(box, out=box)
                         box = None
-                        if x == data.shape[0] - window[0] - 1:                  # We are at the edge, permute the remaining part
+                        if x == data.shape[0] - window[0] - 1:              # We are at the edge, permute the remaining part
                             box = data[-step[0]:, 0+y:window[1]+y, 0+z:window[2]+z]
                         if y == data.shape[1] - window[1] - 1:
                             box = data[0+x:window[0]+x, -step[1]:, 0+z:window[2]+z]
@@ -171,5 +172,6 @@ if __name__ == '__main__':
     """
     for n in list(range(4, 11)) + [12]:
         args[n] = ast.literal_eval(args[n])
+    print('Running scrambler_nii job with args:', args)
 
     scrambler_nii(*args)
