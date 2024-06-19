@@ -26,7 +26,6 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
         # Lazy import to avoid import errors on non-HPC systems
         from drmaa import Session as drmaasession
         import os
-        import tempfile
 
         with drmaasession() as pbatch:
             jobids                 = []
@@ -41,10 +40,10 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
                 sesid         = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
                 jt.args       = [bidsfolder, outputfolder, inputfile, method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
                 jt.jobName    = f"scrambler_nii_{subid}_{sesid}"
-                jt.outputPath = f"{tempfile.gettempdir()}/{jt.jobName}.out"
+                jt.outputPath = f"{jt.jobName}.out"
                 jobids.append(pbatch.runJob(jt))
 
-            synchronize(pbatch, jobids)
+            watchjobs(pbatch, jobids)
             pbatch.deleteJobTemplate(jt)
 
         return
@@ -125,7 +124,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             nib.save(outputimg, outputfile)
 
 
-def synchronize(pbatch, jobids: list):
+def watchjobs(pbatch, jobids: list):
     """
     Shows tqdm progress bars for queued and running DRMAA jobs. Waits until all jobs have finished
 
