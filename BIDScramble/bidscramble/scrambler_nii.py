@@ -38,7 +38,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             jobids                  = []
             job                     = pbatch.createJobTemplate()
             job.jobEnvironment      = os.environ
-            job.remoteCommand       = __file__      # Calling the scrambler parent instead of self would be much more complicated
+            job.remoteCommand       = 'python'      # --> __file__ is not executable (NB: calling the scrambler parent instead of self would be much more complicated)
             job.nativeSpecification = cluster
             job.joinFiles           = True
             (outputdir/'logs').mkdir(exist_ok=True, parents=True)
@@ -46,7 +46,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             for inputfile in inputfiles:
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                job.args       = [bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
+                job.args       = [__file__, bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
                 job.jobName    = f"scrambler_nii_{subid}_{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))
@@ -161,7 +161,7 @@ def watchjobs(pbatch, jobids: list):
 
 
 if __name__ == '__main__':
-    """drmaa usage"""
+    """drmaa usage: python __file__ args"""
 
     args = sys.argv[1:]
     """ Non-str scrambler_nii() arguments indices (zero-based) that are passed as strings:
