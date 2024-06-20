@@ -14,7 +14,7 @@ from typing import List
 
 
 def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False,
-                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: bool=False, nativespec: str='', dryrun: bool=False, **_):
+                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: str='', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
@@ -24,6 +24,9 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
     inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.nii' in fpath.suffixes]
     if not inputfiles:
         print(f"No files found in {inputdir} using '{select}'")
+        return
+    else:
+        print(f"Processing {len(inputfiles)} input files")
 
     # Submit scrambler jobs on the DRMAA-enabled HPC
     if cluster:
@@ -35,15 +38,15 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             jobids                  = []
             job                     = pbatch.createJobTemplate()
             job.jobEnvironment      = os.environ
-            job.remoteCommand       = __file__
-            job.nativeSpecification = nativespec
+            job.remoteCommand       = __file__      # Calling the scrambler parent instead of self would be much more complicated
+            job.nativeSpecification = cluster
             job.joinFiles           = True
             (outputdir/'logs').mkdir(exist_ok=True, parents=True)
 
             for inputfile in inputfiles:
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                job.args       = [bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, False, nativespec, dryrun]
+                job.args       = [bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
                 job.jobName    = f"scrambler_nii_{subid}_{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))
@@ -152,26 +155,26 @@ def watchjobs(pbatch, jobids: list):
     tqdm.write(f"Finished processing all {len(jobids)} jobs")
     qbar.close(), rbar.close()
 
-    if any([pbatch.jobStatus(jobid)=='failed' for jobid in jobids]):
-        tqdm.write('\nERROR: One or more HPC jobs failed to run')
+    failedjobs = [jobid for jobid in jobids if pbatch.jobStatus(jobid)=='failed']
+    if failedjobs:
+        tqdm.write(f"\nERROR: {len(failedjobs)} HPC jobs failed to run\n{failedjobs}")
 
 
 if __name__ == '__main__':
     """drmaa usage"""
 
-    args    = sys.argv[1:]
-    """ Non-str scrambler_nii arguments:
+    args = sys.argv[1:]
+    """ Non-str scrambler_nii() arguments indices (zero-based) that are passed as strings:
     4  fwhm: float
     5  dims: List[str]=()
     6  independent: bool=False
     7  radius: float=1
     8  freqrange: List[float]=(0,0)
     9  amplitude: float=1
-    10 cluster: bool=False
-    12 dryrun: bool=False
+    11 dryrun: bool=False
     """
-    for n in list(range(4, 11)) + [12]:
+    for n in list(range(4, 10)) + [11]:
         args[n] = ast.literal_eval(args[n])
-    print('Running scrambler_nii job with args:', args)
+    print('Running scrambler_nii with args:', args)
 
     scrambler_nii(*args)

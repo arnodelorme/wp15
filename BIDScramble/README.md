@@ -114,7 +114,8 @@ examples:
 #### Action: nii
 
 ```
-usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] {blur,permute,diffuse,wobble} ...
+usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] [-c [CLUSTER]]
+                                             {blur,permute,diffuse,wobble} ...
 
 Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no scrambling
 method is specified, the default behavior is to null all image values.
@@ -135,11 +136,17 @@ options:
                         outputfolder (default: .*)
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal
                         (default: False)
+  -c [CLUSTER], --cluster [CLUSTER]
+                        Use the DRMAA library to submit the scramble jobs to a high-performance
+                        compute (HPC) cluster. You can add an opaque DRMAA argument with native
+                        specifications for your HPC resource manager (NB: Use quotes and include at
+                        least one space character to prevent premature parsing -- see examples)
+                        (default: None)
 
 examples:
   scrambler data/bids data/pseudobids nii
   scrambler data/bids data/pseudobids nii diffuse -h
-  scrambler data/bids data/pseudobids nii diffuse 8 -s 'sub-.*_MP2RAGE.nii.gz'
+  scrambler data/bids data/pseudobids nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
   scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 

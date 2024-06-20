@@ -13,8 +13,8 @@ parent = argparse.ArgumentParser(add_help=False)
 parent.add_argument('-s','--select', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='.*')
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
 parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
-parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster', action='store_true')
-parent_nii.add_argument('-n','--nativespec', help='Opaque DRMAA argument with native specifications for submitting deface jobs to the HPC cluster (NB: Use quotes and include at least one space character to prevent premature parsing)', default='-l walltime=00:30:00,mem=2gb')
+parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster. You can add an opaque DRMAA argument with native specifications for your HPC resource manager (NB: Use quotes and include at least one space character to prevent premature parsing -- see examples)',
+                        nargs='?', const='--mem=4000 --time=0:15:00', type=str)
 
 
 class DefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter): pass
@@ -69,7 +69,7 @@ def addparser_nii(parsers, help: str):
     epilog = ('examples:\n'
               '  scrambler data/bids data/pseudobids nii\n'
               '  scrambler data/bids data/pseudobids nii diffuse -h\n'
-              "  scrambler data/bids data/pseudobids nii diffuse 8 -s 'sub-.*_MP2RAGE.nii.gz'\n"
+              "  scrambler data/bids data/pseudobids nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'\n"
               "  scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'\n ")
 
     parser = parsers.add_parser('nii', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
