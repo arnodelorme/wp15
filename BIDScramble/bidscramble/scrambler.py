@@ -10,11 +10,11 @@ from .scrambler_swap import scrambler_swap
 
 # Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
-parent.add_argument('-s','--select', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='.*')
+parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='.*')
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
 parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
 parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster. You can add an opaque DRMAA argument with native specifications for your HPC resource manager (NB: Use quotes and include at least one space character to prevent premature parsing -- see examples)',
-                        nargs='?', const='--mem=4000 --time=0:15:00', type=str)
+                        metavar='SPECS', nargs='?', const='--mem=4000 --time=0:15:00', type=str)
 
 
 class DefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter): pass
@@ -56,7 +56,7 @@ def addparser_tsv(parsers, help: str):
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
     subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
-    subparser.add_argument('-p', '--preserve', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
+    subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
 
 def addparser_nii(parsers, help: str):
@@ -84,8 +84,8 @@ def addparser_nii(parsers, help: str):
     subparser = subparsers.add_parser('diffuse', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations using a sliding 3D permutation kernel')
     subparser.add_argument('radius', help='The radius (in mm) of the 3D/cubic permutation kernel', type=float, nargs='?', default=3)
     subparser = subparsers.add_parser('wobble', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Deform the images using 3D random waveforms')
-    subparser.add_argument('-a','--amplitude', help='The amplitude of the random waveform', type=float, default=2)
-    subparser.add_argument('-f','--freqrange', help='The highest and lowest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])
+    subparser.add_argument('-a','--amplitude', metavar='GAIN', help='The amplitude of the random waveform', type=float, default=2)
+    subparser.add_argument('-f','--freqrange', metavar='FREQ', help='The lowest and highest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])
 
 
 def addparser_json(parsers, help: str):
@@ -101,7 +101,7 @@ def addparser_json(parsers, help: str):
               "  scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'\n ")
 
     parser = parsers.add_parser('json', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    parser.add_argument('-p', '--preserve', help='A fullmatch regular expression pattern that is matched against all keys in the json files. The json values are copied over when a key matches positively')
+    parser.add_argument('-p','--preserve', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against all keys in the json files. The json values are copied over when a key matches positively')
     parser.set_defaults(func=scrambler_json)
 
 
@@ -118,7 +118,7 @@ def addparser_swap(parsers, help: str):
               "  scrambler data/bids data/pseudobids swap -g subject session run\n ")
 
     parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    parser.add_argument('-g', '--grouping', help='A list of BIDS entities that make up a group between which file contents are swapped', nargs='+', default=['subject'], type=str)
+    parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
     parser.set_defaults(func=scrambler_swap)
 
 
