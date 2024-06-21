@@ -32,10 +32,10 @@ To scramble BIDS data you can run the command-line tool named ``scrambler``. At 
 usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json,swap} ...
 
 The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for actions of
-your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with only
-the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add scrambled
-NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using the already
-scrambled data as input folder.
+your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with
+only the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add
+scrambled NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using
+the already scrambled data as input folder.
 
 positional arguments:
   bidsfolder            The BIDS (or BIDS-like) input directory with the original data
@@ -61,20 +61,18 @@ examples:
 #### Action: stub
 
 ```
-usage: scrambler bidsfolder outputfolder stub [-h] [-s SELECT] [-d]
+usage: scrambler bidsfolder outputfolder stub [-h] [-s PATTERN] [-d]
 
 Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
-'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over
-and updated if possible.
+'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over and
+updated if possible.
 
 options:
   -h, --help            show this help message and exit
-  -s SELECT, --select SELECT
-                        A fullmatch regular expression pattern that is matched against the relative
-                        path of the input data. Files that match are scrambled and saved in
-                        outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
-                        (default: False)
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
   scrambler data/bids data/pseudobids stub
@@ -86,7 +84,7 @@ examples:
 #### Action: tsv
 
 ```
-usage: scrambler bidsfolder outputfolder tsv [-h] [-s SELECT] [-d] {permute} ...
+usage: scrambler bidsfolder outputfolder tsv [-h] [-s PATTERN] [-d] {permute} ...
 
 Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory. If no scrambling
 method is specified, the default behavior is to null all values.
@@ -97,12 +95,10 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -s SELECT, --select SELECT
-                        A fullmatch regular expression pattern that is matched against the relative
-                        path of the input data. Files that match are scrambled and saved in
-                        outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
-                        (default: False)
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
   scrambler data/bids data/pseudobids tsv
@@ -114,11 +110,11 @@ examples:
 #### Action: nii
 
 ```
-usage: scrambler bidsfolder outputfolder nii [-h] [-s SELECT] [-d] [-c [CLUSTER]]
+usage: scrambler bidsfolder outputfolder nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
                                              {blur,permute,diffuse,wobble} ...
 
-Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no scrambling
-method is specified, the default behavior is to null all image values.
+Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no
+scrambling method is specified, the default behavior is to null all image values.
 
 positional arguments:
   {blur,permute,diffuse,wobble}
@@ -130,18 +126,15 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -s SELECT, --select SELECT
-                        A fullmatch regular expression pattern that is matched against the relative
-                        path of the input data. Files that match are scrambled and saved in
-                        outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
-                        (default: False)
-  -c [CLUSTER], --cluster [CLUSTER]
-                        Use the DRMAA library to submit the scramble jobs to a high-performance
-                        compute (HPC) cluster. You can add an opaque DRMAA argument with native
-                        specifications for your HPC resource manager (NB: Use quotes and include at
-                        least one space character to prevent premature parsing -- see examples)
-                        (default: None)
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -c [SPECS], --cluster [SPECS]
+                        Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC)
+                        cluster. You can add an opaque DRMAA argument with native specifications for your HPC
+                        resource manager (NB: Use quotes and include at least one space character to prevent
+                        premature parsing -- see examples) (default: None)
 
 examples:
   scrambler data/bids data/pseudobids nii
@@ -153,23 +146,20 @@ examples:
 #### Action: json
 
 ```
-usage: scrambler bidsfolder outputfolder json [-h] [-s SELECT] [-d] [-p PRESERVE]
+usage: scrambler bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
 
-Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no preserve
-expression is specified, the default behavior is to null all values.
+Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no
+preserve expression is specified, the default behavior is to null all values.
 
 options:
   -h, --help            show this help message and exit
-  -s SELECT, --select SELECT
-                        A fullmatch regular expression pattern that is matched against the relative
-                        path of the input data. Files that match are scrambled and saved in
-                        outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
-                        (default: False)
-  -p PRESERVE, --preserve PRESERVE
-                        A fullmatch regular expression pattern that is matched against all keys in
-                        the json files. The json values are copied over when a key matches positively
-                        (default: None)
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -p PATTERN, --preserve PATTERN
+                        A fullmatch regular expression pattern that is matched against all keys in the json
+                        files. The json values are copied over when a key matches positively (default: None)
 
 examples:
   scrambler data/bids data/pseudobids json
@@ -180,21 +170,21 @@ examples:
 #### Action: swap
 
 ```
-usage: scrambler bidsfolder outputfolder swap [-h] [-s SELECT] [-d] [-g GROUPING [GROUPING ...]]
+usage: scrambler bidsfolder outputfolder swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
 
-Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save them as output.
+Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save
+them as output.
 
 options:
   -h, --help            show this help message and exit
-  -s SELECT, --select SELECT
-                        A fullmatch regular expression pattern that is matched against the relative
-                        path of the input data. Files that match are scrambled and saved in
-                        outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal
-                        (default: False)
-  -g GROUPING [GROUPING ...], --grouping GROUPING [GROUPING ...]
-                        A list of BIDS entities that make up a group between which file contents are
-                        swapped (default: ['subject'])
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -g ENTITY [ENTITY ...], --grouping ENTITY [ENTITY ...]
+                        A list of (full-name) BIDS entities that make up a group between which file contents are
+                        swapped. See: https://bids-
+                        specification.readthedocs.io/en/stable/appendices/entities.html (default: ['subject'])
 
 examples:
   scrambler data/bids data/pseudobids swap

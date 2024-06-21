@@ -24,8 +24,8 @@ def addparser_stub(parsers, help: str):
 
     description = textwrap.dedent("""
     Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
-    'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over
-    and updated if possible.
+    'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over and
+    updated if possible.
     """)
 
     epilog = ('examples:\n'
@@ -62,8 +62,8 @@ def addparser_tsv(parsers, help: str):
 def addparser_nii(parsers, help: str):
 
     description = textwrap.dedent("""
-    Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no scrambling
-    method is specified, the default behavior is to null all image values.
+    Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no
+    scrambling method is specified, the default behavior is to null all image values.
     """)
 
     epilog = ('examples:\n'
@@ -91,8 +91,8 @@ def addparser_nii(parsers, help: str):
 def addparser_json(parsers, help: str):
 
     description = textwrap.dedent("""
-    Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no preserve
-    expression is specified, the default behavior is to null all values.
+    Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no
+    preserve expression is specified, the default behavior is to null all values.
     """)
 
     epilog = ('examples:\n'
@@ -108,7 +108,8 @@ def addparser_json(parsers, help: str):
 def addparser_swap(parsers, help: str):
 
     description = textwrap.dedent("""
-    Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save them as output.
+    Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save
+    them as output.
     """)
 
     epilog = ('examples:\n'
@@ -127,10 +128,10 @@ def main():
 
     description = textwrap.dedent("""
     The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for actions of
-    your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with only
-    the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add scrambled
-    NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using the already
-    scrambled data as input folder.""")
+    your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with
+    only the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add
+    scrambled NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using
+    the already scrambled data as input folder.""")
 
     # Add the baseparser
     parser = argparse.ArgumentParser(formatter_class=DefaultsFormatter, description=description,
