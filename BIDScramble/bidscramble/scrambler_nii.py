@@ -39,7 +39,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             job                     = pbatch.createJobTemplate()
             job.jobEnvironment      = os.environ
             job.remoteCommand       = 'python'      # Call `python -m __name__` because `__file__` is not executable (NB: calling the scrambler parent instead of self would be much more complicated)
-            job.nativeSpecification = cluster
+            job.nativeSpecification = drmaa_nativespec(cluster, pbatch)
             job.joinFiles           = True
             (outputdir/'logs').mkdir(exist_ok=True, parents=True)
 
@@ -131,6 +131,32 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             outputfile.parent.mkdir(parents=True, exist_ok=True)
             outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)
             nib.save(outputimg, outputfile)
+
+
+def drmaa_nativespec(specs: str, session) -> str:
+    """
+    Converts (CLI default) native Torque walltime and memory specifications to the DRMAA implementation (currently only Slurm is supported)
+
+    :param specs:   Native Torque walltime and memory specifications, e.g. '-l walltime=00:10:00,mem=2gb' from argparse CLI
+    :param session: The DRMAA session
+    :return:        The converted native specifications
+    """
+
+    jobmanager: str = session.drmaaImplementation
+
+    if '-l ' in specs and 'pbs' not in jobmanager.lower():
+
+        if 'slurm' in jobmanager.lower():
+            specs = (specs.replace('-l ', '')
+                          .replace(',', ' ')
+                          .replace('walltime', '--time')
+                          .replace('mem', '--mem')
+                          .replace('gb','000'))
+        else:
+            print(f"WARNING: Default `--cluster` native specifications are not (yet) provided for {jobmanager}. Please add them to your command if you get DRMAA errors")
+            specs = ''
+
+    return specs.strip()
 
 
 def watchjobs(pbatch, jobids: list):

@@ -14,7 +14,7 @@ parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regula
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
 parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
 parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster. You can add an opaque DRMAA argument with native specifications for your HPC resource manager (NB: Use quotes and include at least one space character to prevent premature parsing -- see examples)',
-                        metavar='SPECS', nargs='?', const='--mem=4000 --time=0:15:00', type=str)
+                        metavar='SPECS', nargs='?', const='-l mem=4gb,walltime=0:15:00', type=str)
 
 
 class DefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter): pass
