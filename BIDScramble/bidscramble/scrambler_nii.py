@@ -178,12 +178,12 @@ def watchjobs(pbatch, jobids: list):
         rbar.n = sum([status == 'running'                          for status in jobs])
         qbar.refresh(), rbar.refresh()
         time.sleep(2)
-    tqdm.write(f"Finished processing all {len(jobids)} jobs")
     qbar.close(), rbar.close()
+    print(f"Finished processing all {len(jobids)} jobs")
 
     failedjobs = [jobid for jobid in jobids if pbatch.jobStatus(jobid)=='failed']
     if failedjobs:
-        tqdm.write(f"\nERROR: {len(failedjobs)} HPC jobs failed to run\n{failedjobs}")
+        print(f"ERROR: {len(failedjobs)} HPC jobs failed to run:\n{failedjobs}\nThis may well be due to an underspecified `--cluster` input option (e.g. not enough memory)")
 
 
 if __name__ == '__main__':
