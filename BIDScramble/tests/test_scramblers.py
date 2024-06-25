@@ -9,7 +9,6 @@ from bidscramble.scramble_stub import scramble_stub
 from bidscramble.scramble_tsv import scramble_tsv
 from bidscramble.scramble_json import scramble_json
 from bidscramble.scramble_nii import scramble_nii
-from bidscramble.scramble_nii import drmaa_nativespec
 from bidscramble.scramble_swap import scramble_swap
 
 
@@ -247,22 +246,3 @@ def test_scramble_swap(tmp_path):
     # Check that the run-05 json data is not swapped
     inputdata, outputdata = load_data(funcjsons[-1])
     assert inputdata['AcquisitionTime'] == outputdata['AcquisitionTime']
-
-
-def test_drmaa_nativespec():
-
-    class DrmaaSession:
-        def __init__(self, drmaaImplementation):
-            self.drmaaImplementation = drmaaImplementation
-
-    specs = drmaa_nativespec('-l walltime=00:10:00,mem=2gb', DrmaaSession('PBS Pro'))
-    assert specs == '-l walltime=00:10:00,mem=2gb'
-
-    specs = drmaa_nativespec('-l walltime=00:10:00,mem=2gb', DrmaaSession('Slurm'))
-    assert specs == '--time=00:10:00 --mem=2000'
-
-    specs = drmaa_nativespec('-l mem=200,walltime=00:10:00', DrmaaSession('Slurm'))
-    assert specs == '--mem=200 --time=00:10:00'
-
-    specs = drmaa_nativespec('-l walltime=00:10:00,mem=2gb', DrmaaSession('Unsupported'))
-    assert specs == ''
