@@ -29,7 +29,7 @@ def test_scramble_stub(tmp_path):
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    scramble_stub(tmp_path / 'input', tmp_path / 'output', '.*(?<!derivatives)')
+    scramble_stub(tmp_path/'input', tmp_path/'output', '.*(?<!derivatives)')
 
     # Check that all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()
@@ -61,7 +61,7 @@ def test_scramble_tsv(tmp_path):
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
 
     # Create nulled output data
-    scramble_tsv(tmp_path / 'input', tmp_path / 'output', 'partici.*\\.tsv', '', '')
+    scramble_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', '', '')
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 
@@ -75,7 +75,7 @@ def test_scramble_tsv(tmp_path):
 
     # Create permuted output data
     (tmp_path/'output'/'participants.tsv').unlink()
-    scramble_tsv(tmp_path / 'input', tmp_path / 'output', 'partici.*\\.tsv', 'permute', '(Height|Weig.*)')
+    scramble_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', 'permute', '(Height|Weig.*)')
 
     # Check that the participants.tsv data is properly permuted
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
@@ -101,7 +101,7 @@ def test_scramble_json(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004148/{eegjson}", tmp_path/'input'/eegjson)
 
     # Create the output data
-    scramble_json(tmp_path / 'input', tmp_path / 'output', '.*/sub-.*\.json', '(?!RecordingDuration|Channel).*')
+    scramble_json(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', '(?!RecordingDuration|Channel).*')
     assert (tmp_path/'output'/eegjson).is_file()
     assert not (tmp_path/'output'/'participants.json').is_file()
 
@@ -125,7 +125,7 @@ def test_scramble_nii(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{niifile}", tmp_path/'input'/niifile)
 
     # Create nulled output data
-    scramble_nii(tmp_path / 'input', tmp_path / 'output', 'sub.*\\.nii.gz', '')
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', '')
     assert (tmp_path/'output'/niifile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
@@ -136,7 +136,7 @@ def test_scramble_nii(tmp_path):
 
     # Create blurred output data
     (tmp_path/'output'/niifile).unlink()
-    scramble_nii(tmp_path / 'input', tmp_path / 'output', 'sub.*\\.nii.gz', 'blur', fwhm=12)
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'blur', fwhm=12)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check that the NIfTI data is properly blurred
@@ -149,7 +149,7 @@ def test_scramble_nii(tmp_path):
 
     # Create permuted output data
     (tmp_path/'output'/niifile).unlink()
-    scramble_nii(tmp_path / 'input', tmp_path / 'output', 'sub.*\\.nii.gz', 'permute', dims=['x', 'z'], independent=False)
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'permute', dims=['x', 'z'], independent=False)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check that the NIfTI data is properly permuted
@@ -161,7 +161,7 @@ def test_scramble_nii(tmp_path):
 
     # Create independently permuted output data
     (tmp_path/'output'/niifile).unlink()
-    scramble_nii(tmp_path / 'input', tmp_path / 'output', 'sub.*\\.nii.gz', 'permute', dims=['x'], independent=True)
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'permute', dims=['x'], independent=True)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check that the NIfTI data is properly permuted
@@ -173,7 +173,7 @@ def test_scramble_nii(tmp_path):
 
     # Create diffused output data
     (tmp_path/'output'/niifile).unlink()
-    scramble_nii(tmp_path / 'input', tmp_path / 'output', 'sub.*\\.nii.gz', 'diffuse', radius=25)
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'diffuse', radius=25)
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check that the NIfTI data is properly diffused
@@ -185,7 +185,7 @@ def test_scramble_nii(tmp_path):
 
     # Create wobbled output data
     (tmp_path/'output'/niifile).unlink()
-    scramble_nii(tmp_path / 'input', tmp_path / 'output', 'sub.*\\.nii.gz', 'wobble', amplitude=25, freqrange=[0.05, 0.5])
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', 'wobble', amplitude=25, freqrange=[0.05, 0.5])
     assert (tmp_path/'output'/niifile).is_file()
 
     # Check that the NIfTI data is properly diffused
@@ -220,7 +220,7 @@ def test_scramble_swap(tmp_path):
 
     # Create the output data for swapping between subjects and runs. N.B: Run-05 swapping will sometimes fail due to random sampling, so try it multiple times
     for n in range(3):
-        scramble_swap(tmp_path / 'input', tmp_path / 'output', '.*/sub-.*\.json', ['subject', 'run'])
+        scramble_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject', 'run'])
         for funcjson in funcjsons:
             assert (tmp_path/'output'/funcjson).is_file()
         inputdata, outputdata = load_data(funcjsons[-1])        # Get the unique run-05 data
@@ -233,7 +233,7 @@ def test_scramble_swap(tmp_path):
     # Create the output data for swapping between subjects, but not between runs
     for funcjson in funcjsons:
         (tmp_path/'output'/funcjson).unlink()
-    scramble_swap(tmp_path / 'input', tmp_path / 'output', '.*/sub-.*\.json', ['subject'])
+    scramble_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject'])
     for funcjson in funcjsons:
         assert (tmp_path/'output'/funcjson).is_file()
 
