@@ -144,6 +144,6 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scrambler input scrambled stub
+scramble input scrambled stub
 [WIP]
 ```

@@ -13,8 +13,8 @@ from pathlib import Path
 from typing import List
 
 
-def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False,
-                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: str='', dryrun: bool=False, **_):
+def scramble_nii(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False,
+                 radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: str='', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
@@ -28,7 +28,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
     else:
         print(f"Processing {len(inputfiles)} input files")
 
-    # Submit scrambler jobs on the DRMAA-enabled HPC
+    # Submit scramble jobs on the DRMAA-enabled HPC
     if cluster:
 
         # Lazy import to avoid import errors on non-HPC systems
@@ -38,7 +38,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
             jobids                  = []
             job                     = pbatch.createJobTemplate()
             job.jobEnvironment      = os.environ
-            job.remoteCommand       = 'python'      # Call `python -m __name__` because `__file__` is not executable (NB: calling the scrambler parent instead of self would be much more complicated)
+            job.remoteCommand       = 'python'      # Call `python -m __name__` because `__file__` is not executable (NB: calling the scramble parent instead of self would be much more complicated)
             job.nativeSpecification = drmaa_nativespec(cluster, pbatch)
             job.joinFiles           = True
             (outputdir/'logs').mkdir(exist_ok=True, parents=True)
@@ -47,7 +47,7 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
                 job.args       = ['-m', __name__, bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
-                job.jobName    = f"scrambler_nii_{subid}_{sesid}"
+                job.jobName    = f"scramble_nii_{subid}_{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))
 
@@ -190,7 +190,7 @@ if __name__ == '__main__':
     """drmaa usage: python -m __name__ args"""
 
     args = sys.argv[1:]
-    """ Non-str scrambler_nii() arguments indices (zero-based) that are passed as strings:
+    """ Non-str scramble_nii() arguments indices (zero-based) that are passed as strings:
     4  fwhm: float
     5  dims: List[str]=()
     6  independent: bool=False
@@ -201,6 +201,6 @@ if __name__ == '__main__':
     """
     for n in list(range(4, 10)) + [11]:
         args[n] = ast.literal_eval(args[n])
-    print('Running scrambler_nii with args:', args)
+    print('Running scramble_nii with args:', args)
 
-    scrambler_nii(*args)
+    scramble_nii(*args)

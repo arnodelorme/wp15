@@ -24,17 +24,17 @@ pip install wp15/BIDScramble                        # Or use an alternative inst
 
 ## Usage
 
-To scramble BIDS data you can run the command-line tool named ``scrambler``. At its base, this tool has an input and output argument, followed by a ``Action`` subcommand. The meaning and usage of these arguments is explained in more detail in the following sections.
+To scramble BIDS data you can run the command-line tool named ``scramble``. At its base, this tool has an input and output argument, followed by a ``Action`` subcommand. The meaning and usage of these arguments is explained in more detail in the following sections.
 
-### scrambler
+### scramble
 
 ```
-usage: scrambler [-h] bidsfolder outputfolder {stub,tsv,nii,json,swap} ...
+usage: scramble [-h] bidsfolder outputfolder {stub,tsv,nii,json,swap} ...
 
-The general workflow to build up a scrambled BIDS dataset is by consecutively running `scrambler` for actions of
-your choice. For instance, you could first run `scrambler` with the `stub` action to create a dummy dataset with
-only the file structure and some basic files, and then run `scrambler` with the `nii` action  to specifically add
-scrambled NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scrambler` using
+The general workflow to build up a scrambled BIDS dataset is by consecutively running `scramble` for actions of
+your choice. For instance, you could first run `scramble` with the `stub` action to create a dummy dataset with
+only the file structure and some basic files, and then run `scramble` with the `nii` action  to specifically add
+scrambled NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scramble` using
 the already scrambled data as input folder.
 
 positional arguments:
@@ -54,14 +54,14 @@ Action:
     swap                Saves swapped file contents in outputfolder
 
 examples:
-  scrambler data/bids data/pseudobids stub -h
-  scrambler data/bids data/pseudobids nii -h
+  scramble data/bids data/pseudobids stub -h
+  scramble data/bids data/pseudobids nii -h
 ```
 
 #### Action: stub
 
 ```
-usage: scrambler bidsfolder outputfolder stub [-h] [-s PATTERN] [-d]
+usage: scramble bidsfolder outputfolder stub [-h] [-s PATTERN] [-d]
 
 Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over and
@@ -75,16 +75,16 @@ options:
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
-  scrambler data/bids data/pseudobids stub
-  scrambler data/bids data/pseudobids stub -s '.*\.(nii|json|tsv)'
-  scrambler data/bids data/pseudobids stub -s '.*(?<!derivatives)'
-  scrambler data/bids data/pseudobids stub -s '(?!sub.*scans.tsv|/func/).*'
+  scramble data/bids data/pseudobids stub
+  scramble data/bids data/pseudobids stub -s '.*\.(nii|json|tsv)'
+  scramble data/bids data/pseudobids stub -s '.*(?<!derivatives)'
+  scramble data/bids data/pseudobids stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
 #### Action: tsv
 
 ```
-usage: scrambler bidsfolder outputfolder tsv [-h] [-s PATTERN] [-d] {permute} ...
+usage: scramble bidsfolder outputfolder tsv [-h] [-s PATTERN] [-d] {permute} ...
 
 Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory. If no scrambling
 method is specified, the default behavior is to null all values.
@@ -101,16 +101,16 @@ options:
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
-  scrambler data/bids data/pseudobids tsv
-  scrambler data/bids data/pseudobids tsv permute
-  scrambler data/bids data/pseudobids tsv permute -s '.*_events.tsv' -p '.*'
-  scrambler data/bids data/pseudobids tsv permute -s participants.tsv -p (participant_id|SAS.*)
+  scramble data/bids data/pseudobids tsv
+  scramble data/bids data/pseudobids tsv permute
+  scramble data/bids data/pseudobids tsv permute -s '.*_events.tsv' -p '.*'
+  scramble data/bids data/pseudobids tsv permute -s participants.tsv -p (participant_id|SAS.*)
 ```
 
 #### Action: nii
 
 ```
-usage: scrambler bidsfolder outputfolder nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
+usage: scramble bidsfolder outputfolder nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
                                              {blur,permute,diffuse,wobble} ...
 
 Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no
@@ -137,16 +137,16 @@ options:
                         premature parsing -- see examples) (default: None)
 
 examples:
-  scrambler data/bids data/pseudobids nii
-  scrambler data/bids data/pseudobids nii diffuse -h
-  scrambler data/bids data/pseudobids nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
-  scrambler data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
+  scramble data/bids data/pseudobids nii
+  scramble data/bids data/pseudobids nii diffuse -h
+  scramble data/bids data/pseudobids nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
+  scramble data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
 #### Action: json
 
 ```
-usage: scrambler bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
+usage: scramble bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
 
 Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no
 preserve expression is specified, the default behavior is to null all values.
@@ -162,15 +162,15 @@ options:
                         files. The json values are copied over when a key matches positively (default: None)
 
 examples:
-  scrambler data/bids data/pseudobids json
-  scrambler data/bids data/pseudobids json participants.json -p '.*'
-  scrambler data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
+  scramble data/bids data/pseudobids json
+  scramble data/bids data/pseudobids json participants.json -p '.*'
+  scramble data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
 ```
 
 #### Action: swap
 
 ```
-usage: scrambler bidsfolder outputfolder swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
+usage: scramble bidsfolder outputfolder swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
 
 Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save
 them as output.
@@ -187,10 +187,10 @@ options:
                         specification.readthedocs.io/en/stable/appendices/entities.html (default: ['subject'])
 
 examples:
-  scrambler data/bids data/pseudobids swap
-  scrambler data/bids data/pseudobids swap -s '.*\.(nii|json|tsv)'
-  scrambler data/bids data/pseudobids swap -s '.*(?<!derivatives)'
-  scrambler data/bids data/pseudobids swap -g subject session run
+  scramble data/bids data/pseudobids swap
+  scramble data/bids data/pseudobids swap -s '.*\.(nii|json|tsv)'
+  scramble data/bids data/pseudobids swap -s '.*(?<!derivatives)'
+  scramble data/bids data/pseudobids swap -g subject session run
 ```
 
 ## Legal Aspects

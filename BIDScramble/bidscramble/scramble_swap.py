@@ -6,7 +6,7 @@ from pathlib import Path
 from bids import BIDSLayout
 
 
-def scrambler_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, dryrun: bool=False, **_):
+def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()

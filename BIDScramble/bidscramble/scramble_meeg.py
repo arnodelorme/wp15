@@ -1,7 +1,9 @@
 import numpy as np
 import mne
+import tqdm
+from pathlib import Path
 
-def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, dryrun: bool=False, **_):
+def scramble_meg(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0, 0), amplitude: float=1, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
@@ -27,9 +29,9 @@ def scrambler_nii(bidsfolder: str, outputfolder: str, select: str, method: str='
         #
         #elif method == 'blur':
         # etc
-        def scrambler(data)
-            return.np.random.permutation(data)
-        raw.apply_function(scrambler)
+        def scramble(data):
+            return np.random.permutation(data)
+        raw.apply_function(scramble)
 
         # Save the output data
         outputfile = outputdir/inputfile.relative_to(inputdir)
