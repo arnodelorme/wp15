@@ -1,6 +1,6 @@
 # SIESTA - work package 15 - use case 2.1
 
-This implements an analysis of univariate tabular data. Specifically, it computes the mean age over a group of participants.
+This implements an analysis of tabular data. Specifically, it computes the mean age, height and weight over a group of participants.
 
 The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
@@ -8,7 +8,7 @@ The pipeline is expected to be executed on a Linux computer, although it might a
 
 The [input dataset](https://doi.org/10.18112/openneuro.ds004148.v1.0.1) contains resting (eyes closed, eyes open) and cognitive (subtraction, music, memory) state EEG recordings with 60 participants during three experimental sessions together with sleep, emotion, mental health, and mind-wandering related measures. The data is described in more detail in an [accompanying paper](https://doi.org/10.1038/s41597-022-01607-9).
 
-The analysis pipeline demonstrated here only uses the tabular data that is included in the dataset. The tabular data contains biometric information, i.e. indirect personal identifiers (age and height). The pipeline should also work with many other BIDS datasets from [OpenNeuro](https://openneuro.org).
+The analysis pipeline demonstrated here only uses the tabular data that is included in the BIDS dataset. The tabular data contains biometric information, i.e. indirect personal identifiers (age, height and weight, as well as outcomes from various questionaires). The pipeline should also work with many other BIDS datasets from [OpenNeuro](https://openneuro.org).
 
 The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
@@ -33,7 +33,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Output data
 
-The output data will consist of a stub BIDS repository with a tsv file that contains the scrambled age of the participants.
+The output data will consist of a `results.tsv` file that contains the averaged age, height and weight of the participants.
 
 ```console
 mkdir output
@@ -54,17 +54,13 @@ The R-package and the optparse package are licensed under GPL-2 or GPL-3.
 Executing the pipeline from the Linux command-line is done with the real input data like this:
 
 ```console
-DATASET=./input/participants.tsv
-OUTFILE=./output/results.tsv
-Rscript pipeline.R -f $DATASET -o $OUTFILE
+Rscript pipeline.R --inputdir input --outputdir output  
 ```
 
 or with the scrambled version of the data like this:
 
 ```console
-DATASET=./scrambled/participants.tsv
-OUTFILE=./output/results.tsv
-Rscript pipeline.R -f $DATASET -o $OUTFILE
+Rscript pipeline.R  --inputdir scrambled --outputdir output  
 ```
 
 ## Cleaning up
