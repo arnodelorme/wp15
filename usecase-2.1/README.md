@@ -56,7 +56,7 @@ Executing the pipeline from the Linux command-line is done with the real input d
 ```console
 DATASET=./input/participants.tsv
 OUTFILE=./output/results.tsv
-Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
+Rscript pipeline.R -f $DATASET -o $OUTFILE
 ```
 
 or with the scrambled version of the data like this:
@@ -64,7 +64,7 @@ or with the scrambled version of the data like this:
 ```console
 DATASET=./scrambled/participants.tsv
 OUTFILE=./output/results.tsv
-Rscript pipeline_20240328.R -f $DATASET -o $OUTFILE
+Rscript pipeline.R -f $DATASET -o $OUTFILE
 ```
 
 ## Cleaning up
