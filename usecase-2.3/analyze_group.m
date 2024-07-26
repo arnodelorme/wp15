@@ -3,6 +3,13 @@ mkdir(fullfile(outputprefix, 'group'));
 
 warning off
 
+d  = dir(fullfile(inputprefix, 'sub*'));
+
+% be sure that the emptyroom is not there
+subjnames = {d.name}';
+subjnames = subjnames(~contains(subjnames, 'emptyroom'));
+nsubj = numel(subjnames);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% load the single subject averages
 timelock_famous     = {};
@@ -10,8 +17,10 @@ timelock_unfamiliar = {};
 timelock_scrambled  = {};
 timelock_faces      = {};
 
-for subject=1:16
-  subjectpath = fullfile(outputprefix, sprintf('sub-%02d', subject));
+for subject=1:nsubj
+  subjname = subjnames{subject};
+
+  subjectpath = fullfile(outputprefix, sprintf('%s', subjname));
   
   tmp = load(fullfile(subjectpath, 'timelock_famous'));
   timelock_famous{subject} = tmp.timelock;
@@ -34,7 +43,7 @@ timelock_unfamiliar_cmb = {};
 timelock_scrambled_cmb  = {};
 timelock_faces_cmb      = {};
 
-for i=1:16
+for i=1:nsubj
   disp(i)
   cfg = [];
   timelock_famous_cmb{i}     = ft_combineplanar(cfg, timelock_famous{i});
@@ -74,8 +83,8 @@ cfg.method = 'analytic';
 cfg.statistic = 'depsamplesT';
 cfg.correctm = 'fdr';
 cfg.design = [
-  1:16          1:16
-  1*ones(1,16)  2*ones(1,16)
+  1:16          1:nsubj
+  1*ones(1,16)  2*ones(1,nsubj)
   ];
 cfg.uvar = 1; % unit of observation, i.e. subject
 cfg.ivar = 2; % independent variable, i.e. stimulus

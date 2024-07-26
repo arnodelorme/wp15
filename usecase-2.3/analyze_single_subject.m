@@ -159,12 +159,12 @@ if do_timelock
 
   %% Visualization
 
-  cfg = [];
-  cfg.layout = 'neuromag306planar';
-  ft_multiplotER(cfg, timelock_faces, timelock_scrambled);
-  print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled.png'));
-  ft_multiplotER(cfg, timelock_famous, timelock_unfamiliar);
-  print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar.png'));
+  % cfg = [];
+  % cfg.layout = 'neuromag306planar';
+  % ft_multiplotER(cfg, timelock_faces, timelock_scrambled);
+  % print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled.png'));
+  % ft_multiplotER(cfg, timelock_famous, timelock_unfamiliar);
+  % print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar.png'));
 
   % remove the elec field, otherwise it is not detected as neuromag306
   timelock_famous     = removefields(timelock_famous, 'elec');
@@ -172,38 +172,39 @@ if do_timelock
   timelock_scrambled  = removefields(timelock_scrambled, 'elec');
   timelock_faces      = removefields(timelock_faces, 'elec');
 
+  cfg = [];
   timelock_famous_cmb      = ft_combineplanar(cfg, timelock_famous);
   timelock_unfamiliar_cmb  = ft_combineplanar(cfg, timelock_unfamiliar);
   timelock_scrambled_cmb   = ft_combineplanar(cfg, timelock_scrambled);
   timelock_faces_cmb       = ft_combineplanar(cfg, timelock_faces);
 
-  cfg = [];
-  cfg.layout = 'neuromag306cmb';
-  ft_multiplotER(cfg, timelock_famous_cmb, timelock_unfamiliar_cmb, timelock_scrambled_cmb);
-  print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar_scrambled_cmb.png'));
+  % cfg = [];
+  % cfg.layout = 'neuromag306cmb';
+  % ft_multiplotER(cfg, timelock_famous_cmb, timelock_unfamiliar_cmb, timelock_scrambled_cmb);
+  % print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar_scrambled_cmb.png'));
 
   %% Look at contrasts
 
-  cfg = [];
-  cfg.parameter = 'avg';
-  cfg.operation = 'x1-x2';
-  faces_vs_scrambled   = ft_math(cfg, timelock_faces, timelock_scrambled);
-  famous_vs_unfamiliar = ft_math(cfg, timelock_famous, timelock_unfamiliar);
-
-  faces_vs_scrambled_cmb   = ft_combineplanar(cfg, faces_vs_scrambled);
-  famous_vs_unfamiliar_cmb = ft_combineplanar(cfg, famous_vs_unfamiliar);
-
+  % cfg = [];
+  % cfg.parameter = 'avg';
+  % cfg.operation = 'x1-x2';
+  % faces_vs_scrambled   = ft_math(cfg, timelock_faces, timelock_scrambled);
+  % famous_vs_unfamiliar = ft_math(cfg, timelock_famous, timelock_unfamiliar);
+  % 
+  % faces_vs_scrambled_cmb   = ft_combineplanar(cfg, faces_vs_scrambled);
+  % famous_vs_unfamiliar_cmb = ft_combineplanar(cfg, famous_vs_unfamiliar);
+  % 
   % note that there is a confound due to the number of trials!!
 
-  cfg = [];
-  cfg.layout = 'neuromag306cmb';
-  figure
-  ft_multiplotER(cfg, faces_vs_scrambled_cmb);
-  print('-dpng', fullfile(outputpath, 'faces_vs_scrambled_cmb.png'));
-
-  figure
-  ft_multiplotER(cfg, famous_vs_unfamiliar_cmb);
-  print('-dpng', fullfile(outputpath, 'famous_vs_unfamiliar_cmb.png'));
+  % cfg = [];
+  % cfg.layout = 'neuromag306cmb';
+  % figure
+  % ft_multiplotER(cfg, faces_vs_scrambled_cmb);
+  % print('-dpng', fullfile(outputpath, 'faces_vs_scrambled_cmb.png'));
+  % 
+  % figure
+  % ft_multiplotER(cfg, famous_vs_unfamiliar_cmb);
+  % print('-dpng', fullfile(outputpath, 'famous_vs_unfamiliar_cmb.png'));
 
 end % do timelock
 
@@ -263,24 +264,24 @@ if do_frequency
   cfg.outputfile = fullfile(outputpath, 'freq_faces_cmb.mat');
   freq_faces_cmb = ft_combineplanar(cfg);
 
-  cfg = [];
-  cfg.layout = 'neuromag306cmb';
-  cfg.baseline = [-inf 0];
-  cfg.baselinetype = 'relchange';
-  figure
-  ft_multiplotTFR(cfg, freq_famous_cmb);
-  print('-dpng', fullfile(outputpath, 'freq_famous_cmb.png'));
-
-  figure
-  ft_multiplotTFR(cfg, freq_unfamiliar_cmb);
-  print('-dpng', fullfile(outputpath, 'freq_unfamiliar_cmb.png'));
-
-  figure
-  ft_multiplotTFR(cfg, freq_scrambled_cmb);
-  print('-dpng', fullfile(outputpath, 'freq_scrambled_cmb.png'));
-
-  figure
-  ft_multiplotTFR(cfg, freq_faces_cmb);
-  print('-dpng', fullfile(outputpath, 'freq_faces_cmb.png'));
+  % cfg = [];
+  % cfg.layout = 'neuromag306cmb';
+  % cfg.baseline = [-inf 0];
+  % cfg.baselinetype = 'relchange';
+  % figure
+  % ft_multiplotTFR(cfg, freq_famous_cmb);
+  % print('-dpng', fullfile(outputpath, 'freq_famous_cmb.png'));
+  % 
+  % figure
+  % ft_multiplotTFR(cfg, freq_unfamiliar_cmb);
+  % print('-dpng', fullfile(outputpath, 'freq_unfamiliar_cmb.png'));
+  % 
+  % figure
+  % ft_multiplotTFR(cfg, freq_scrambled_cmb);
+  % print('-dpng', fullfile(outputpath, 'freq_scrambled_cmb.png'));
+  % 
+  % figure
+  % ft_multiplotTFR(cfg, freq_faces_cmb);
+  % print('-dpng', fullfile(outputpath, 'freq_faces_cmb.png'));
 
 end % do frequency
