@@ -33,7 +33,9 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Output data
 
-The output data will consist of a `results.tsv` file that contains the averaged age, height and weight of the participants.
+The output data consist of a `results.tsv` file that contains the averaged age, height and weight of the participants.
+
+The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
 mkdir output

@@ -1,0 +1,27 @@
+BootStrap: docker
+From: ubuntu:24.04
+
+%files
+  pipeline.R /siesta/pipeline.R
+
+%post
+  chmod +x /siesta/pipeline.R
+  apt update -y
+  echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
+  echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
+  DEBIAN_FRONTEND="noninteractive" apt install -y tzdata
+  apt install -y wget git vim r-base
+  R -e 'install.packages("getopt", dependencies=FALSE, repos="https://cloud.r-project.org")'
+  R -e 'install.packages("optparse", dependencies=FALSE, repos="https://cloud.r-project.org")'
+  R -e 'install.packages("dplyr", dependencies=TRUE, repos="https://cloud.r-project.org")'
+
+%environment
+  export LC_ALL=C
+
+%runscript
+  Rscript /siesta/pipeline.R --inputdir $1 --outputdir $2
+
+%labels
+  Author Robert Oostenveld
+  Version 1.0.0
+

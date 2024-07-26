@@ -38,6 +38,8 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 The output data consists of MRI QC parameters of each participant
 
+The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
+
 ```console
 mkdir output
 ```

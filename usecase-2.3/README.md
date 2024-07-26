@@ -41,7 +41,9 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Output data
 
-The output data consists of single-subject data that might be considered personal, and group-averaged aggregated data.
+The output data that is to be shared consists of folders and files that represent group-level aggregated data. Many more individual-subject files are generated but these should not be shared with the researcher.
+
+The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
 mkdir output

@@ -38,7 +38,13 @@ The input dataset has been released under the [CC-BY-4.0](https://spdx.org/licen
 
 ## Output data
 
-The output that is to be shared consists of only files and folders for group-level aggregated data. Many more individual-subject files are generated but should not be given as output. The output files corresponding to the aggregated data are listed in the `whitelist.txt` file.
+The output data that is to be shared consists of folders and files that represent group-level aggregated data. Many more individual-subject files are generated but these should not be shared with the researcher.
+
+The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
+
+```console
+mkdir output
+```
 
 ## Analysis pipeline
 
