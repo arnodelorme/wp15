@@ -1,6 +1,7 @@
 ._*
 *.swp
 *.bak
+*.sif
 
 BIDScramble/venv/*
 BIDScramble/build/*
