@@ -14,10 +14,10 @@ nsubj = size(participants,1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% load the single subject averages
+timelock_faces      = cell(1,nsubj);
+timelock_scrambled  = cell(1,nsubj);
 timelock_famous     = cell(1,nsubj);
 timelock_unfamiliar = cell(1,nsubj);
-timelock_scrambled  = cell(1,nsubj);
-timelock_faces      = cell(1,nsubj);
 
 for subject=1:nsubj
   % use the identifier from the participants file
@@ -25,51 +25,51 @@ for subject=1:nsubj
 
   subjectpath = fullfile(outputprefix, sprintf('%s', subjname));
 
+  tmp = load(fullfile(subjectpath, 'timelock_faces'));
+  timelock_faces{subject} = tmp.timelock;
+
+  tmp = load(fullfile(subjectpath, 'timelock_scrambled'));
+  timelock_scrambled{subject} = tmp.timelock;
+
   tmp = load(fullfile(subjectpath, 'timelock_famous'));
   timelock_famous{subject} = tmp.timelock;
 
   tmp = load(fullfile(subjectpath, 'timelock_unfamiliar'));
   timelock_unfamiliar{subject} = tmp.timelock;
-
-  tmp = load(fullfile(subjectpath, 'timelock_scrambled'));
-  timelock_scrambled{subject} = tmp.timelock;
-
-  tmp = load(fullfile(subjectpath, 'timelock_faces'));
-  timelock_faces{subject} = tmp.timelock;
 end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% compute planar gradients
 
+timelock_faces_cmb      = cell(1,nsubj);
+timelock_scrambled_cmb  = cell(1,nsubj);
 timelock_famous_cmb     = cell(1,nsubj);
 timelock_unfamiliar_cmb = cell(1,nsubj);
-timelock_scrambled_cmb  = cell(1,nsubj);
-timelock_faces_cmb      = cell(1,nsubj);
 
 for i=1:nsubj
   disp(i)
   cfg = [];
+  timelock_faces_cmb{i}      = ft_combineplanar(cfg, timelock_faces{i});
+  timelock_scrambled_cmb{i}  = ft_combineplanar(cfg, timelock_scrambled{i});
   timelock_famous_cmb{i}     = ft_combineplanar(cfg, timelock_famous{i});
   timelock_unfamiliar_cmb{i} = ft_combineplanar(cfg, timelock_unfamiliar{i});
-  timelock_scrambled_cmb{i}  = ft_combineplanar(cfg, timelock_scrambled{i});
-  timelock_faces_cmb{i}      = ft_combineplanar(cfg, timelock_faces{i});
 end
 
 % this is a bit of a lengthy step, hence save the intermediate results
+save(fullfile(grouppath, 'timelock_faces_cmb'), 'timelock_faces_cmb');
+save(fullfile(grouppath, 'timelock_scrambled_cmb'), 'timelock_scrambled_cmb');
 save(fullfile(grouppath, 'timelock_famous_cmb'), 'timelock_famous_cmb');
 save(fullfile(grouppath, 'timelock_unfamiliar_cmb'), 'timelock_unfamiliar_cmb');
-save(fullfile(grouppath, 'timelock_scrambled_cmb'), 'timelock_scrambled_cmb');
-save(fullfile(grouppath, 'timelock_faces_cmb'), 'timelock_faces_cmb');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% compute grand averages
 
+timelock_faces_cmb_ga      = ft_timelockgrandaverage(cfg, timelock_faces_cmb{:});
+timelock_scrambled_cmb_ga  = ft_timelockgrandaverage(cfg, timelock_scrambled_cmb{:});
 timelock_famous_cmb_ga     = ft_timelockgrandaverage(cfg, timelock_famous_cmb{:});
 timelock_unfamiliar_cmb_ga = ft_timelockgrandaverage(cfg, timelock_unfamiliar_cmb{:});
-timelock_scrambled_cmb_ga  = ft_timelockgrandaverage(cfg, timelock_scrambled_cmb{:});
-timelock_faces_cmb_ga      = ft_timelockgrandaverage(cfg, timelock_faces_cmb{:});
 
 %% visualise the grand-averages
 
@@ -77,6 +77,7 @@ cfg = [];
 cfg.layout = 'neuromag306cmb';
 figure
 ft_multiplotER(cfg, timelock_faces_cmb_ga, timelock_scrambled_cmb_ga);
+
 figure
 ft_multiplotER(cfg, timelock_famous_cmb_ga, timelock_unfamiliar_cmb_ga);
 
@@ -103,7 +104,8 @@ save(fullfile(grouppath, 'stat_cmb_faces_vs_scrambled'), 'stat_cmb_faces_vs_scra
 save(fullfile(grouppath, 'stat_cmb_famous_vs_unfamiliar'), 'stat_cmb_famous_vs_unfamiliar');
 
 %% quick and dirty visualisation
-figure;
+
+figure
 subplot(2,1,1)
 h = imagesc(-log10(stat_cmb_faces_vs_scrambled.prob)); colorbar
 subplot(2,1,2)
@@ -112,6 +114,10 @@ set(h, 'AlphaData', stat_cmb_faces_vs_scrambled.mask);
 print('-dpng', fullfile(grouppath, 'stat_cmb_faces_vs_scrambled.png'));
 
 %% compute the condition difference
+
+% note that these are the differences of the combined planar gradient representations
+% not the combined planar gradient representations of the difference
+
 cfg = [];
 cfg.parameter = 'avg';
 cfg.operation = 'x1-x2';
@@ -185,7 +191,8 @@ save(fullfile(grouppath, 'cluster_cmb_faces_vs_scrambled'), 'cluster_cmb_faces_v
 save(fullfile(grouppath, 'cluster_cmb_famous_vs_unfamiliar'), 'cluster_cmb_famous_vs_unfamiliar');
 
 %% quick and dirty visualisation
-figure;
+
+figure
 subplot(2,1,1)
 h = imagesc(-log10(cluster_cmb_faces_vs_scrambled.prob)); colorbar
 subplot(2,1,2)

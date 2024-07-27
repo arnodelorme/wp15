@@ -113,25 +113,10 @@ cfg = [];
 
 % in the selection of trials for averaging we prune the timelocked data to an equal number of trials for each of the conditions that is compared
 % this is needed to prevent a bias the the combined planar gradient average and invalid statistical results
-select_famous     = find(strcmp(raw_clean.trialinfo.stim_type, 'Famous'));
-select_unfamiliar = find(strcmp(raw_clean.trialinfo.stim_type, 'Unfamiliar'));
 select_faces      = find(strcmp(raw_clean.trialinfo.stim_type, 'Famous') | strcmp(raw_clean.trialinfo.stim_type, 'Unfamiliar'));
 select_scrambled  = find(strcmp(raw_clean.trialinfo.stim_type, 'Scrambled'));
-
-% equate the number of trials for the famous versus unfamiliar comparison
-ntrials = min(length(select_famous), length(select_unfamiliar));
-select_random = randperm(length(select_famous));
-select_famous = select_famous(select_random(1:ntrials));
-select_random = randperm(length(select_unfamiliar));
-select_unfamiliar = select_unfamiliar(select_random(1:ntrials));
-
-cfg.trials = select_famous;
-cfg.outputfile = fullfile(outputpath, 'timelock_famous.mat');
-timelock_famous = ft_timelockanalysis(cfg, raw_clean);
-
-cfg.trials = select_unfamiliar;
-cfg.outputfile = fullfile(outputpath, 'timelock_unfamiliar.mat');
-timelock_unfamiliar = ft_timelockanalysis(cfg, raw_clean);
+select_famous     = find(strcmp(raw_clean.trialinfo.stim_type, 'Famous'));
+select_unfamiliar = find(strcmp(raw_clean.trialinfo.stim_type, 'Unfamiliar'));
 
 % equate the number of trials for the faces versus scrambled comparison
 ntrials = min(length(select_faces), length(select_scrambled));
@@ -148,29 +133,44 @@ cfg.trials = select_scrambled;
 cfg.outputfile = fullfile(outputpath, 'timelock_scrambled.mat');
 timelock_scrambled = ft_timelockanalysis(cfg, raw_clean);
 
+% equate the number of trials for the famous versus unfamiliar comparison
+ntrials = min(length(select_famous), length(select_unfamiliar));
+select_random = randperm(length(select_famous));
+select_famous = select_famous(select_random(1:ntrials));
+select_random = randperm(length(select_unfamiliar));
+select_unfamiliar = select_unfamiliar(select_random(1:ntrials));
+
+cfg.trials = select_famous;
+cfg.outputfile = fullfile(outputpath, 'timelock_famous.mat');
+timelock_famous = ft_timelockanalysis(cfg, raw_clean);
+
+cfg.trials = select_unfamiliar;
+cfg.outputfile = fullfile(outputpath, 'timelock_unfamiliar.mat');
+timelock_unfamiliar = ft_timelockanalysis(cfg, raw_clean);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Visualization
 
 cfg = [];
 cfg.layout = 'neuromag306planar';
-ft_multiplotER(cfg, timelock_famous, timelock_unfamiliar);
-print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar.png'));
 ft_multiplotER(cfg, timelock_faces, timelock_scrambled);
 print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled.png'));
+ft_multiplotER(cfg, timelock_famous, timelock_unfamiliar);
+print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar.png'));
 
 cfg = [];
-timelock_famous_cmb      = ft_combineplanar(cfg, timelock_famous);
-timelock_unfamiliar_cmb  = ft_combineplanar(cfg, timelock_unfamiliar);
 timelock_faces_cmb       = ft_combineplanar(cfg, timelock_faces);
 timelock_scrambled_cmb   = ft_combineplanar(cfg, timelock_scrambled);
+timelock_famous_cmb      = ft_combineplanar(cfg, timelock_famous);
+timelock_unfamiliar_cmb  = ft_combineplanar(cfg, timelock_unfamiliar);
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
-ft_multiplotER(cfg, timelock_famous_cmb, timelock_unfamiliar_cmb);
-print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar_cmb.png'));
 ft_multiplotER(cfg, timelock_faces_cmb, timelock_scrambled_cmb);
 print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled_cmb.png'));
+ft_multiplotER(cfg, timelock_famous_cmb, timelock_unfamiliar_cmb);
+print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar_cmb.png'));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -179,23 +179,22 @@ print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled_cmb.png'));
 cfg = [];
 cfg.parameter = 'avg';
 cfg.operation = 'x1-x2';
-famous_vs_unfamiliar = ft_math(cfg, timelock_famous, timelock_unfamiliar);
 faces_vs_scrambled   = ft_math(cfg, timelock_faces, timelock_scrambled);
+famous_vs_unfamiliar = ft_math(cfg, timelock_famous, timelock_unfamiliar);
 
 % note that these are the combined planar gradient representations of the difference
-% not the the difference of the combined planar gradient representations
+% not the differences of the combined planar gradient representations
 cfg = [];
-famous_vs_unfamiliar_cmb = ft_combineplanar(cfg, famous_vs_unfamiliar);
 faces_vs_scrambled_cmb   = ft_combineplanar(cfg, faces_vs_scrambled);
+famous_vs_unfamiliar_cmb = ft_combineplanar(cfg, famous_vs_unfamiliar);
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
 
 figure
-ft_multiplotER(cfg, famous_vs_unfamiliar_cmb);
-print('-dpng', fullfile(outputpath, 'famous_vs_unfamiliar_cmb.png'));
-
-figure
 ft_multiplotER(cfg, faces_vs_scrambled_cmb);
 print('-dpng', fullfile(outputpath, 'faces_vs_scrambled_cmb.png'));
 
+figure
+ft_multiplotER(cfg, famous_vs_unfamiliar_cmb);
+print('-dpng', fullfile(outputpath, 'famous_vs_unfamiliar_cmb.png'));
