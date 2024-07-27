@@ -40,7 +40,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% compute planar gradients
+%% compute single-subject planar gradients
 
 timelock_faces_cmb      = cell(1,nsubj);
 timelock_scrambled_cmb  = cell(1,nsubj);
@@ -56,30 +56,57 @@ for i=1:nsubj
   timelock_unfamiliar_cmb{i} = ft_combineplanar(cfg, timelock_unfamiliar{i});
 end
 
-% this is a bit of a lengthy step, hence save the intermediate results
-save(fullfile(grouppath, 'timelock_faces_cmb'), 'timelock_faces_cmb');
-save(fullfile(grouppath, 'timelock_scrambled_cmb'), 'timelock_scrambled_cmb');
-save(fullfile(grouppath, 'timelock_famous_cmb'), 'timelock_famous_cmb');
-save(fullfile(grouppath, 'timelock_unfamiliar_cmb'), 'timelock_unfamiliar_cmb');
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% compute grand averages
+%% compute and visualise the grand-averages
 
+cfg = [];
 timelock_faces_cmb_ga      = ft_timelockgrandaverage(cfg, timelock_faces_cmb{:});
 timelock_scrambled_cmb_ga  = ft_timelockgrandaverage(cfg, timelock_scrambled_cmb{:});
 timelock_famous_cmb_ga     = ft_timelockgrandaverage(cfg, timelock_famous_cmb{:});
 timelock_unfamiliar_cmb_ga = ft_timelockgrandaverage(cfg, timelock_unfamiliar_cmb{:});
 
-%% visualise the grand-averages
+save(fullfile(grouppath, 'timelock_faces_cmb_ga'), 'timelock_faces_cmb_ga');
+save(fullfile(grouppath, 'timelock_scrambled_cmb_ga'), 'timelock_scrambled_cmb_ga');
+save(fullfile(grouppath, 'timelock_famous_cmb_ga'), 'timelock_famous_cmb_ga');
+save(fullfile(grouppath, 'timelock_unfamiliar_cmb_ga'), 'timelock_unfamiliar_cmb_ga');
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
+cfg.ylim = 'zeromax';
 figure
 ft_multiplotER(cfg, timelock_faces_cmb_ga, timelock_scrambled_cmb_ga);
+print('-dpng', fullfile(grouppath, 'faces_cmb_and_scrambled_cmb.png'));
 
 figure
 ft_multiplotER(cfg, timelock_famous_cmb_ga, timelock_unfamiliar_cmb_ga);
+print('-dpng', fullfile(grouppath, 'famous_cmb_and_unfamiliar_cmb.png'));
+
+%% compute and visualise the grand-average condition differences
+
+% note that these are the differences of the combined planar gradient representations
+% not the combined planar gradient representations of the difference
+
+cfg = [];
+cfg.parameter = 'avg';
+cfg.operation = 'x1-x2';
+faces_cmb_vs_scrambled_cmb_diff = ft_math(cfg, timelock_faces_cmb_ga, timelock_scrambled_cmb_ga);
+famous_cmb_vs_unfamiliar_cmb_diff = ft_math(cfg, timelock_famous_cmb_ga, timelock_unfamiliar_cmb_ga);
+
+% save the condition differences
+save(fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff'), 'faces_cmb_vs_scrambled_cmb_diff');
+save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff'), 'famous_cmb_vs_unfamiliar_cmb_diff');
+
+cfg = [];
+cfg.layout = 'neuromag306cmb';
+cfg.ylim = 'zeromax';
+figure
+ft_multiplotER(cfg, faces_cmb_vs_scrambled_cmb_diff);
+print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff.png'));
+
+figure
+ft_multiplotER(cfg, famous_cmb_vs_unfamiliar_cmb_diff);
+print('-dpng', fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff.png'));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,24 +140,10 @@ h = imagesc(-log10(faces_cmb_vs_scrambled_cmb_fdrstat.prob)); colorbar
 set(h, 'AlphaData', faces_cmb_vs_scrambled_cmb_fdrstat.mask);
 print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_fdrstat.png'));
 
-%% compute the condition difference
-
-% note that these are the differences of the combined planar gradient representations
-% not the combined planar gradient representations of the difference
-
-cfg = [];
-cfg.parameter = 'avg';
-cfg.operation = 'x1-x2';
-faces_cmb_vs_scrambled_cmb_diff = ft_math(cfg, timelock_faces_cmb_ga, timelock_scrambled_cmb_ga);
-famous_cmb_vs_unfamiliar_cmb_diff = ft_math(cfg, timelock_famous_cmb_ga, timelock_unfamiliar_cmb_ga);
-
-% save the results
-save(fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff'), 'faces_cmb_vs_scrambled_cmb_diff');
-save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff'), 'famous_cmb_vs_unfamiliar_cmb_diff');
 
 %% more detailed visualisation
 
-% add the statistical mask to the data
+% add the statistical mask to the grand-average difference ERF
 faces_cmb_vs_scrambled_cmb_diff.mask = faces_cmb_vs_scrambled_cmb_fdrstat.mask;
 famous_cmb_vs_unfamiliar_cmb_diff.mask = famous_cmb_vs_unfamiliar_cmb_fdrstat.mask;
 
@@ -202,7 +215,7 @@ print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_clusterstat.png')
 
 %% more detailed visualisation
 
-% add the statistical mask to the data
+% add the statistical mask to the grand-average difference ERF
 faces_cmb_vs_scrambled_cmb_diff.mask   = faces_cmb_vs_scrambled_cmb_clusterstat.mask;
 famous_cmb_vs_unfamiliar_cmb_diff.mask = famous_cmb_vs_unfamiliar_cmb_clusterstat.mask;
 
