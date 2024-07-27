@@ -5,7 +5,7 @@
 % the data set consists of MEG and EEG
 % furthermore there is anatomical and functional MRI, but that is not considered here
 
-nruns = lengt(megfile);
+nruns = length(megfile);
 block = cell(1, nruns);
 
 % We want to create three categories of events, based on their numerical codes:
