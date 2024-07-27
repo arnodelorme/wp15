@@ -26,6 +26,9 @@ cd input
 # get the MEG data for all subjects
 datalad get sub-*/ses-meg/meg/*
 
+# get the MaxFiltered MEG data for all subjects
+datalad get derivatives/meg_derivatives/sub-*/ses-meg/meg/*
+
 # get the anatomical MRI data for all subjects
 datalad get sub-*/ses-mri/anat/*mprage_T1w.nii.gz
 ```
