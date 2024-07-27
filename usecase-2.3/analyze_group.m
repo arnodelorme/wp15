@@ -96,22 +96,22 @@ cfg.design = [
 cfg.uvar = 1; % unit of observation, i.e. subject
 cfg.ivar = 2; % independent variable, i.e. stimulus
 
-stat_cmb_faces_vs_scrambled   = ft_timelockstatistics(cfg, timelock_faces_cmb{:},  timelock_scrambled_cmb{:});
-stat_cmb_famous_vs_unfamiliar = ft_timelockstatistics(cfg, timelock_famous_cmb{:}, timelock_unfamiliar_cmb{:});
+faces_cmb_vs_scrambled_cmb_fdrstat   = ft_timelockstatistics(cfg, timelock_faces_cmb{:},  timelock_scrambled_cmb{:});
+famous_cmb_vs_unfamiliar_cmb_fdrstat = ft_timelockstatistics(cfg, timelock_famous_cmb{:}, timelock_unfamiliar_cmb{:});
 
 % this is a bit of a lengthy step, hence save the results
-save(fullfile(grouppath, 'stat_cmb_faces_vs_scrambled'), 'stat_cmb_faces_vs_scrambled');
-save(fullfile(grouppath, 'stat_cmb_famous_vs_unfamiliar'), 'stat_cmb_famous_vs_unfamiliar');
+save(fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_fdrstat'), 'faces_cmb_vs_scrambled_cmb_fdrstat');
+save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_fdrstat'), 'famous_cmb_vs_unfamiliar_cmb_fdrstat');
 
 %% quick and dirty visualisation
 
 figure
 subplot(2,1,1)
-h = imagesc(-log10(stat_cmb_faces_vs_scrambled.prob)); colorbar
+h = imagesc(-log10(faces_cmb_vs_scrambled_cmb_fdrstat.prob)); colorbar
 subplot(2,1,2)
-h = imagesc(-log10(stat_cmb_faces_vs_scrambled.prob)); colorbar
-set(h, 'AlphaData', stat_cmb_faces_vs_scrambled.mask);
-print('-dpng', fullfile(grouppath, 'stat_cmb_faces_vs_scrambled.png'));
+h = imagesc(-log10(faces_cmb_vs_scrambled_cmb_fdrstat.prob)); colorbar
+set(h, 'AlphaData', faces_cmb_vs_scrambled_cmb_fdrstat.mask);
+print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_fdrstat.png'));
 
 %% compute the condition difference
 
@@ -121,30 +121,30 @@ print('-dpng', fullfile(grouppath, 'stat_cmb_faces_vs_scrambled.png'));
 cfg = [];
 cfg.parameter = 'avg';
 cfg.operation = 'x1-x2';
-diff_cmb_faces_vs_scrambled = ft_math(cfg, timelock_faces_cmb_ga, timelock_scrambled_cmb_ga);
-diff_cmb_famous_vs_unfamiliar = ft_math(cfg, timelock_famous_cmb_ga, timelock_unfamiliar_cmb_ga);
+faces_cmb_vs_scrambled_cmb_diff = ft_math(cfg, timelock_faces_cmb_ga, timelock_scrambled_cmb_ga);
+famous_cmb_vs_unfamiliar_cmb_diff = ft_math(cfg, timelock_famous_cmb_ga, timelock_unfamiliar_cmb_ga);
 
 % save the results
-save(fullfile(grouppath, 'diff_cmb_faces_vs_scrambled'), 'diff_cmb_faces_vs_scrambled');
-save(fullfile(grouppath, 'diff_cmb_famous_vs_unfamiliar'), 'diff_cmb_famous_vs_unfamiliar');
+save(fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff'), 'faces_cmb_vs_scrambled_cmb_diff');
+save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff'), 'famous_cmb_vs_unfamiliar_cmb_diff');
 
 %% more detailed visualisation
 
 % add the statistical mask to the data
-diff_cmb_faces_vs_scrambled.mask = stat_cmb_faces_vs_scrambled.mask;
-diff_cmb_famous_vs_unfamiliar.mask = stat_cmb_famous_vs_unfamiliar.mask;
+faces_cmb_vs_scrambled_cmb_diff.mask = faces_cmb_vs_scrambled_cmb_fdrstat.mask;
+famous_cmb_vs_unfamiliar_cmb_diff.mask = famous_cmb_vs_unfamiliar_cmb_fdrstat.mask;
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
 cfg.parameter = 'avg';
 cfg.maskparameter = 'mask';
 figure
-ft_multiplotER(cfg, diff_cmb_faces_vs_scrambled);
-print('-dpng', fullfile(grouppath, 'diff_cmb_faces_vs_scrambled_stat.png'));
+ft_multiplotER(cfg, faces_cmb_vs_scrambled_cmb_diff);
+print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff.png'));
 
 figure
-ft_multiplotER(cfg, diff_cmb_famous_vs_unfamiliar);
-print('-dpng', fullfile(grouppath, 'diff_cmb_famous_vs_unfamiliar_stat.png'));
+ft_multiplotER(cfg, famous_cmb_vs_unfamiliar_cmb_diff);
+print('-dpng', fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff.png'));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,16 +155,16 @@ cfg.layout = 'neuromag306cmb';
 cfg.method = 'distance';
 cfg.neighbourdist = 0.15;
 cfg.feedback = 'yes';
-neighbours_cmb = ft_prepare_neighbours(cfg); % this is an example of a poor neighbourhood definition
+neighbours_distance = ft_prepare_neighbours(cfg); % this is an example of a poor neighbourhood definition
 
-print('-dpng', fullfile(grouppath, 'neighbours_cmb_distance.png'));
+print('-dpng', fullfile(grouppath, 'neighbours_distance.png'));
 
 cfg.layout = 'neuromag306cmb';
 cfg.method = 'triangulation';
 cfg.feedback = 'yes';
-neighbours_cmb = ft_prepare_neighbours(cfg); % this one is better, but could use some manual adjustments
+neighbours_triangulation = ft_prepare_neighbours(cfg); % this one is better, but could use some manual adjustments
 
-print('-dpng', fullfile(grouppath, 'neighbours_cmb_triangulation.png'));
+print('-dpng', fullfile(grouppath, 'neighbours_triangulation.png'));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -175,7 +175,7 @@ cfg.method = 'montecarlo';
 cfg.numrandomization = 500;
 cfg.statistic = 'depsamplesT';
 cfg.correctm = 'cluster';
-cfg.neighbours = neighbours_cmb;
+cfg.neighbours = neighbours_triangulation;
 cfg.design = [
   1:nsubj          1:nsubj
   1*ones(1,nsubj)  2*ones(1,nsubj)
@@ -183,40 +183,40 @@ cfg.design = [
 cfg.uvar = 1; % unit of observation, i.e. subject
 cfg.ivar = 2; % independent variable, i.e. stimulus
 
-cluster_cmb_faces_vs_scrambled   = ft_timelockstatistics(cfg, timelock_faces_cmb{:},  timelock_scrambled_cmb{:});
-cluster_cmb_famous_vs_unfamiliar = ft_timelockstatistics(cfg, timelock_famous_cmb{:}, timelock_unfamiliar_cmb{:});
+faces_cmb_vs_scrambled_cmb_clusterstat   = ft_timelockstatistics(cfg, timelock_faces_cmb{:},  timelock_scrambled_cmb{:});
+famous_cmb_vs_unfamiliar_cmb_clusterstat = ft_timelockstatistics(cfg, timelock_famous_cmb{:}, timelock_unfamiliar_cmb{:});
 
 % this is a very lengthy step, hence save the results
-save(fullfile(grouppath, 'cluster_cmb_faces_vs_scrambled'), 'cluster_cmb_faces_vs_scrambled');
-save(fullfile(grouppath, 'cluster_cmb_famous_vs_unfamiliar'), 'cluster_cmb_famous_vs_unfamiliar');
+save(fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_clusterstat'), 'faces_cmb_vs_scrambled_cmb_clusterstat');
+save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_clusterstat'), 'famous_cmb_vs_unfamiliar_cmb_clusterstat');
 
 %% quick and dirty visualisation
 
 figure
 subplot(2,1,1)
-h = imagesc(-log10(cluster_cmb_faces_vs_scrambled.prob)); colorbar
+h = imagesc(-log10(faces_cmb_vs_scrambled_cmb_clusterstat.prob)); colorbar
 subplot(2,1,2)
-h = imagesc(-log10(cluster_cmb_faces_vs_scrambled.prob)); colorbar
-set(h, 'AlphaData', cluster_cmb_faces_vs_scrambled.mask);
-print('-dpng', fullfile(grouppath, 'cluster_cmb_faces_vs_scrambled.png'));
+h = imagesc(-log10(faces_cmb_vs_scrambled_cmb_clusterstat.prob)); colorbar
+set(h, 'AlphaData', faces_cmb_vs_scrambled_cmb_clusterstat.mask);
+print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_clusterstat.png'));
 
 %% more detailed visualisation
 
 % add the statistical mask to the data
-diff_cmb_faces_vs_scrambled.mask = cluster_cmb_faces_vs_scrambled.mask;
-diff_cmb_famous_vs_unfamiliar.mask = cluster_cmb_famous_vs_unfamiliar.mask;
+faces_cmb_vs_scrambled_cmb_diff.mask   = faces_cmb_vs_scrambled_cmb_clusterstat.mask;
+famous_cmb_vs_unfamiliar_cmb_diff.mask = famous_cmb_vs_unfamiliar_cmb_clusterstat.mask;
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
 cfg.parameter = 'avg';
 cfg.maskparameter = 'mask';
 figure
-ft_multiplotER(cfg, diff_cmb_faces_vs_scrambled);
-print('-dpng', fullfile(grouppath, 'diff_cmb_faces_vs_scrambled_cluster.png'));
+ft_multiplotER(cfg, faces_cmb_vs_scrambled_cmb_diff);
+print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff.png'));
 
 figure
-ft_multiplotER(cfg, diff_cmb_famous_vs_unfamiliar);
-print('-dpng', fullfile(grouppath, 'diff_cmb_famous_vs_unfamiliar_cluster.png'));
+ft_multiplotER(cfg, famous_cmb_vs_unfamiliar_cmb_diff);
+print('-dpng', fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff.png'));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -224,5 +224,5 @@ print('-dpng', fullfile(grouppath, 'diff_cmb_famous_vs_unfamiliar_cluster.png'))
 
 cfg = [];
 cfg.filetype = 'html';
-cfg.filename = fullfile(grouppath, 'cluster_cmb_faces_vs_scrambled');
-ft_analysispipeline(cfg, cluster_cmb_faces_vs_scrambled);
+cfg.filename = fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_clusterstat');
+ft_analysispipeline(cfg, faces_cmb_vs_scrambled_cmb_clusterstat);

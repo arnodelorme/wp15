@@ -155,9 +155,9 @@ timelock_unfamiliar = ft_timelockanalysis(cfg, raw_clean);
 cfg = [];
 cfg.layout = 'neuromag306planar';
 ft_multiplotER(cfg, timelock_faces, timelock_scrambled);
-print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled.png'));
+print('-dpng', fullfile(outputpath, 'faces_and_scrambled.png'));
 ft_multiplotER(cfg, timelock_famous, timelock_unfamiliar);
-print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar.png'));
+print('-dpng', fullfile(outputpath, 'famous_and_unfamiliar.png'));
 
 cfg = [];
 timelock_faces_cmb       = ft_combineplanar(cfg, timelock_faces);
@@ -168,9 +168,9 @@ timelock_unfamiliar_cmb  = ft_combineplanar(cfg, timelock_unfamiliar);
 cfg = [];
 cfg.layout = 'neuromag306cmb';
 ft_multiplotER(cfg, timelock_faces_cmb, timelock_scrambled_cmb);
-print('-dpng', fullfile(outputpath, 'timelock_faces_scrambled_cmb.png'));
+print('-dpng', fullfile(outputpath, 'faces_cmb_and_scrambled_cmb.png'));
 ft_multiplotER(cfg, timelock_famous_cmb, timelock_unfamiliar_cmb);
-print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar_cmb.png'));
+print('-dpng', fullfile(outputpath, 'famous_cmb_and_unfamiliar_cmb.png'));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -179,22 +179,22 @@ print('-dpng', fullfile(outputpath, 'timelock_famous_unfamiliar_cmb.png'));
 cfg = [];
 cfg.parameter = 'avg';
 cfg.operation = 'x1-x2';
-faces_vs_scrambled   = ft_math(cfg, timelock_faces, timelock_scrambled);
-famous_vs_unfamiliar = ft_math(cfg, timelock_famous, timelock_unfamiliar);
+faces_vs_scrambled_diff   = ft_math(cfg, timelock_faces, timelock_scrambled);
+famous_vs_unfamiliar_diff = ft_math(cfg, timelock_famous, timelock_unfamiliar);
 
 % note that these are the combined planar gradient representations of the difference
 % not the differences of the combined planar gradient representations
 cfg = [];
-faces_vs_scrambled_cmb   = ft_combineplanar(cfg, faces_vs_scrambled);
-famous_vs_unfamiliar_cmb = ft_combineplanar(cfg, famous_vs_unfamiliar);
+faces_vs_scrambled_diff_cmb   = ft_combineplanar(cfg, faces_vs_scrambled_diff);
+famous_vs_unfamiliar_diff_cmb = ft_combineplanar(cfg, famous_vs_unfamiliar_diff);
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
 
 figure
-ft_multiplotER(cfg, faces_vs_scrambled_cmb);
-print('-dpng', fullfile(outputpath, 'faces_vs_scrambled_cmb.png'));
+ft_multiplotER(cfg, faces_vs_scrambled_diff_cmb);
+print('-dpng', fullfile(outputpath, 'faces_vs_scrambled_diff_cmb.png'));
 
 figure
-ft_multiplotER(cfg, famous_vs_unfamiliar_cmb);
-print('-dpng', fullfile(outputpath, 'famous_vs_unfamiliar_cmb.png'));
+ft_multiplotER(cfg, famous_vs_unfamiliar_diff_cmb);
+print('-dpng', fullfile(outputpath, 'famous_vs_unfamiliar_diff_cmb.png'));
