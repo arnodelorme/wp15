@@ -99,7 +99,6 @@ save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_diff'), 'famous_cmb_vs_un
 
 cfg = [];
 cfg.layout = 'neuromag306cmb';
-cfg.ylim = 'zeromax';
 figure
 ft_multiplotER(cfg, faces_cmb_vs_scrambled_cmb_diff);
 print('-dpng', fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_diff.png'));
@@ -126,7 +125,6 @@ cfg.ivar = 2; % independent variable, i.e. stimulus
 faces_cmb_vs_scrambled_cmb_fdrstat   = ft_timelockstatistics(cfg, timelock_faces_cmb{:},  timelock_scrambled_cmb{:});
 famous_cmb_vs_unfamiliar_cmb_fdrstat = ft_timelockstatistics(cfg, timelock_famous_cmb{:}, timelock_unfamiliar_cmb{:});
 
-% this is a bit of a lengthy step, hence save the results
 save(fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_fdrstat'), 'faces_cmb_vs_scrambled_cmb_fdrstat');
 save(fullfile(grouppath, 'famous_cmb_vs_unfamiliar_cmb_fdrstat'), 'famous_cmb_vs_unfamiliar_cmb_fdrstat');
 
