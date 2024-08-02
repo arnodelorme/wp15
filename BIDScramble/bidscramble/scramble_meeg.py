@@ -42,4 +42,4 @@ def scramble_meeg(bidsfolder: str, outputfolder: str, select: str, method: str= 
         tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
-            raw.save(outputfile)
+            raw.save(outputfile, overwrite=True)

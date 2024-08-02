@@ -130,8 +130,8 @@ def addparser_meeg(parsers, help: str):
     some description here.
     """)
 
-    epilog = ("examples:\n"
-              "  scramble data/bids data/pseudobids meeg\n")
+    epilog = ('examples:\n'
+              '  scramble data/bids data/pseudobids meeg\n')
 
     parser = parsers.add_parser('meeg', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     #parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
