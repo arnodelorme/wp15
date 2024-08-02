@@ -1,16 +1,20 @@
-import numpy as np
-import mne
-import tqdm
-from pathlib import Path
+#!/usr/bin/env python3
 
-def scramble_meg(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0, 0), amplitude: float=1, dryrun: bool=False, **_):
+import numpy as np
+import re
+import mne
+from tqdm import tqdm
+from pathlib import Path
+from typing import List
+
+def scramble_meeg(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0, 0), amplitude: float=1, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.nii' in fpath.suffixes]
+    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.fif' in fpath.suffixes]
     for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
 
         # Currently only works for fif files
@@ -38,4 +42,4 @@ def scramble_meg(bidsfolder: str, outputfolder: str, select: str, method: str= '
         tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
-            raw.save(fnameout)
+            raw.save(outputfile)
