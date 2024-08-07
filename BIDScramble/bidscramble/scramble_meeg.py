@@ -17,8 +17,21 @@ def scramble_meeg(bidsfolder: str, outputfolder: str, select: str, method: str= 
     inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.fif' in fpath.suffixes]
     for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
 
+        # Figure out which reader function to use, fif-files with time-series data come in 3 flavours
+        fiffstuff = mne.io.show_fiff(inputfile)
+        isevoked  = re.search('FIFFB_EVOKED', fiffstuff) != None
+        isepoched = re.search('FIFFB_MNE_EPOCHS', fiffstuff) != None
+        israw     = not isepoched and not isevoked
+
         # Currently only works for fif files
-        raw = mne.io.read_raw_fif(inputfile, preload=True)
+        if israw:
+            obj = mne.io.read_raw_fif(inputfile, preload=True)
+        elif isevoked:
+            obj = mne.Evoked(inputfile)
+        elif isepoched:
+            # DON'T know what to do yet, so do nothing for now, will throw an error below I guess
+            print('not good')
+
 
         # Apply the scrambling method
         # NOTE to self -> read about np.random.default_rng().
@@ -35,11 +48,12 @@ def scramble_meeg(bidsfolder: str, outputfolder: str, select: str, method: str= 
         # etc
         def scramble(data):
             return np.random.permutation(data)
-        raw.apply_function(scramble)
+
+        obj.apply_function(scramble)
 
         # Save the output data
         outputfile = outputdir/inputfile.relative_to(inputdir)
         tqdm.write(f"Saving: {outputfile}")
         if not dryrun:
             outputfile.parent.mkdir(parents=True, exist_ok=True)
-            raw.save(outputfile, overwrite=True)
+            obj.save(outputfile, overwrite=True)
