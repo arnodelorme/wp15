@@ -34,16 +34,15 @@ Permission for accessing data is defined by the role of the user. In this work p
 
 This can be conceived to be graphically depicted in a flowchart.
 
-1. data rights holder -> sends input data to the platform
-2. data user -> requests the product owner for access to the platform
-3. data user -> installs software and dependencies
-4. data user -> requests the product owner for scrambled data to be disclosed (using tools developed in this WP)
-5. (optional) product owner -> scrambles the data and requests the data rights holder for a review and permission to disclose the scrambled data to the data user
-6. (optional) data rights holder -> grants permission
-7. data user -> interactively implements and tests analysis pipeline on scrambled data
-8. data user -> requests the product owner for the pipeline to be executed on the input data, output data is not yet disclosed
-9. product owner -> requests the data rights holder for a review and permission to disclose the output data to the data user
-10. data rights holder -> grants permission
-11. data user -> uses output data to answer research question and publishes research outcomes
+1. data rights holder -> uploads input data to the platform
+2. data user -> initiates project, installs software and dependencies
+3. data user -> requests access to the scrambled data
+4. product owner -> scrambles the original data
+5. data rights holder (optional) -> grants permission for scrambled data to be disclosed
+6. data user -> interactively implements and tests analysis pipeline on scrambled data
+7. data user -> requests the analysis pipeline to be executed on the input data
+8. product owner -> executes the analysis pipelines
+9. data user -> requests access to the output data
+10. data rights holder (optional) -> grants permission for output data to be disclosed
 
-Step 5 and 6 are optional, depending on the trust that the data rights holder puts in the process for generating the scrambled data. There might be different levels of randomness implemented in the BIDScramble tool (and requested by the data user), resulting in the in-between scrambled data being somewhere along the scale of "anonymous" to "personal". On one side of the scale, a review is not needed, whereas on the other side of the scale it is.
+The review by the data rights holder prior to data disclosure are optional, depending on the trust that the data rights holder puts in the process for generating the scrambled and the oputput data. There might be different levels of randomness implemented in the BIDScramble tool (and requested by the data user), resulting in the in-between scrambled data being somewhere along the scale of "anonymous" to "personal".
