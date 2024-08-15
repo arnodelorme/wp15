@@ -6,11 +6,11 @@ from pathlib import Path
 from bids import BIDSLayout
 
 
-def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, dryrun: bool=False, **_):
+def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, validate: bool=False, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
-    layout    = BIDSLayout(inputdir, validate=False)
+    layout    = BIDSLayout(inputdir, validate=validate)
     outputdir = Path(outputfolder).resolve()
 
     # Use a tempdir to catch inplace editing
@@ -35,14 +35,14 @@ def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: lis
         outputset = random.sample(inputset, len(inputset))
 
         # Save the swapped output files
-        for n, inputfile in enumerate(inputset):
+        for n, inputfile_ in enumerate(inputset):
 
             outputfile = outputdir/outputset[n].relative_to(inputdir)
             if not dryrun:
                 outputfile.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(inputfile, outputfile)
+                shutil.copyfile(inputfile_, outputfile)
 
-            swapped.append(inputfile)
+            swapped.append(inputfile_)
 
     # Move the tempdir files to the outputdir
     if outputdir.name == 'tmpdir_swap':

@@ -116,11 +116,12 @@ def addparser_swap(parsers, help: str):
     epilog = ('examples:\n'
               '  scramble data/bids data/pseudobids swap\n'
               "  scramble data/bids data/pseudobids swap -s '.*\.(nii|json|tsv)'\n"
-              "  scramble data/bids data/pseudobids swap -s '.*(?<!derivatives)'\n"
+              "  scramble data/bids data/pseudobids swap -s '.*(?<!derivatives) -b'\n"
               "  scramble data/bids data/pseudobids swap -g subject session run\n ")
 
     parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
+    parser.add_argument('-b','--bidsvalidate', help='If given, all files are checked for BIDS compliance when first indexed, and non-compliant files are ignored (as in pybids.BIDSLayout)', action='store_true')
     parser.set_defaults(func=scramble_swap)
 
 
