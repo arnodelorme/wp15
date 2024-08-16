@@ -7,7 +7,7 @@ from tqdm import tqdm
 from pathlib import Path
 from typing import List
 
-def scramble_meeg(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0, 0), amplitude: float=1, dryrun: bool=False, **_):
+def scramble_fif(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False, radius: float=1, freqrange: List[float]=(0, 0), amplitude: float=1, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()

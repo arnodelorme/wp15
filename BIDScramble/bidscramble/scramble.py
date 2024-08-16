@@ -7,7 +7,7 @@ from .scramble_tsv import scramble_tsv
 from .scramble_nii import scramble_nii
 from .scramble_json import scramble_json
 from .scramble_swap import scramble_swap
-from .scramble_meeg import scramble_meeg
+from .scramble_fif import scramble_fif
 
 # Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
@@ -124,18 +124,18 @@ def addparser_swap(parsers, help: str):
     parser.set_defaults(func=scramble_swap)
 
 
-def addparser_meeg(parsers, help: str):
+def addparser_fif(parsers, help: str):
 
     description = textwrap.dedent("""
     some description here.
     """)
 
     epilog = ('examples:\n'
-              '  scramble data/bids data/pseudobids meeg\n')
+              '  scramble data/bids data/pseudobids fif\n')
 
-    parser = parsers.add_parser('meeg', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     #parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
-    parser.set_defaults(func=scramble_meeg)
+    parser.set_defaults(func=scramble_fif)
 
     #subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
     #subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
@@ -166,7 +166,7 @@ def main():
     addparser_nii(subparsers,  help='Saves scrambled NIfTI files in outputfolder')
     addparser_json(subparsers, help='Saves scrambled json files in outputfolder')
     addparser_swap(subparsers, help='Saves swapped file contents in outputfolder')
-    addparser_meeg(subparsers, help='Saves scrambled MEEG fif-files in outputfolder')
+    addparser_fif(subparsers, help='Saves scrambled FIF files in outputfolder')
 
     # Execute the scramble function
     args = parser.parse_args()

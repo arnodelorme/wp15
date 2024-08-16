@@ -113,5 +113,6 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
 
 ```console
 scramble input scrambled stub
-[WIP]
+scramble input scrambled json -p '.*'
+scramble input scrambled fif
 ```
