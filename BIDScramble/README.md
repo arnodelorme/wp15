@@ -49,8 +49,9 @@ Action:
                         Add -h, --help for more information
     stub                Saves a dummy bidsfolder skeleton in outputfolder
     tsv                 Saves scrambled tsv files in outputfolder
-    nii                 Saves scrambled NIfTI files in outputfolder
     json                Saves scrambled json files in outputfolder
+    nii                 Saves scrambled NIfTI files in outputfolder
+    fif                 Saves scrambled FIF files in outputfolder
     swap                Saves swapped file contents in outputfolder
 
 examples:
