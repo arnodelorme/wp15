@@ -127,19 +127,19 @@ def addparser_swap(parsers, help: str):
 def addparser_fif(parsers, help: str):
 
     description = textwrap.dedent("""
-    some description here.
+    Adds scrambled versions of the FIF files in the BIDS input directory to the BIDS output directory. If no
+    scrambling method is specified, the default behavior is to null all MEG data.
     """)
 
     epilog = ('examples:\n'
-              '  scramble data/bids data/pseudobids fif\n')
+              '  scramble data/bids data/pseudobids fif\n'
+              '  scramble data/bids data/pseudobids fif permute\n')
 
     parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    #parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
+    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the MEG samples in each channel')
     parser.set_defaults(func=scramble_fif)
 
-    #subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
-    #subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
-    #subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
 def main():
     """Console script entry point"""

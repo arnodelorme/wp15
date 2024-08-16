@@ -2,14 +2,49 @@ import json
 import numpy as np
 import pandas as pd
 import math
+import mne
 import nibabel as nib
+import re
 import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
 from bidscramble.scramble_stub import scramble_stub
 from bidscramble.scramble_tsv import scramble_tsv
 from bidscramble.scramble_json import scramble_json
 from bidscramble.scramble_nii import scramble_nii
+from bidscramble.scramble_fif import scramble_fif
 from bidscramble.scramble_swap import scramble_swap
+
+
+def test_scramble_fif(tmp_path):
+
+    # Create the input data
+    fiffile = 'sub-01/ses-meg/meg/sub-01_ses-meg_task-facerecognition_run-01_meg.fif'
+    (tmp_path/'input'/'sub-01'/'ses-meg'/'meg').mkdir(parents=True)
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/participants.tsv', tmp_path/'input'/'participants.tsv')
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{fiffile}", tmp_path/'input'/fiffile)
+
+    # Create nulled output data
+    scramble_fif(tmp_path/'input', tmp_path/'output', 'sub.*\\.fif', '')
+    assert (tmp_path/'output'/fiffile).is_file()
+    assert not (tmp_path/'output'/'participants.tsv').is_file()
+
+    # Figure out which reader function to use, fif-files with time-series data come in 3 flavours
+    fiffstuff = mne.io.show_fiff(tmp_path/'output'/fiffile)
+    isevoked  = re.search('FIFFB_EVOKED', fiffstuff) != None
+    isepoched = re.search('FIFFB_MNE_EPOCHS', fiffstuff) != None
+    israw     = not isepoched and not isevoked
+
+    if israw:
+        obj = mne.io.read_raw_fif(tmp_path/'output'/fiffile, preload=True)
+    elif isevoked:
+        obj = mne.Evoked(tmp_path/'output'/fiffile)
+    elif isepoched:
+        raise Exception('cannot read epoched FIF file')
+
+    # Check that the FIF data is properly nulled
+    dat = obj.get_data()
+    assert dat.shape == (395, 540100)
+    assert np.sum(dat[99]) == 0  # check one channel in the middle of the array
 
 
 def test_scramble_stub(tmp_path):
