@@ -3,7 +3,6 @@
 import numpy as np
 import scipy as sp
 import nibabel as nib
-import re
 import time
 import os
 import sys
@@ -11,9 +10,10 @@ import ast
 from tqdm import tqdm
 from pathlib import Path
 from typing import List
+from . import get_inputfiles
 
 
-def scramble_nii(bidsfolder: str, outputfolder: str, select: str, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False,
+def scramble_nii(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False,
                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: str='', dryrun: bool=False, **_):
 
     # Defaults
@@ -21,12 +21,9 @@ def scramble_nii(bidsfolder: str, outputfolder: str, select: str, method: str= '
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.nii' in fpath.suffixes]
+    inputfiles = get_inputfiles(inputdir, select, '*.nii*', bidsvalidate)
     if not inputfiles:
-        print(f"No files found in {inputdir} using '{select}'")
         return
-    else:
-        print(f"Processing {len(inputfiles)} input files")
 
     # Submit scramble jobs on the DRMAA-enabled HPC
     if cluster:
@@ -57,7 +54,7 @@ def scramble_nii(bidsfolder: str, outputfolder: str, select: str, method: str= '
         return
 
     # Scramble the included input files
-    for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
+    for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         # Load the (zipped) nii data
         inputimg: nib.ni1.Nifti1Image = nib.load(inputfile)

@@ -1,16 +1,15 @@
-import re
 import shutil
 import random
 from tqdm import tqdm
 from pathlib import Path
 from bids import BIDSLayout
+from . import get_inputfiles
 
-
-def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, validate: bool=False, dryrun: bool=False, **_):
+def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, bidsvalidate: bool=False, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
-    layout    = BIDSLayout(inputdir, validate=validate)
+    layout    = BIDSLayout(inputdir, validate=bidsvalidate)
     outputdir = Path(outputfolder).resolve()
 
     # Use a tempdir to catch inplace editing
@@ -21,8 +20,8 @@ def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: lis
 
     # Swap all sets of inputfiles
     swapped    = []                 # Already swapped input files
-    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and fpath.is_file()]
-    for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
+    inputfiles = get_inputfiles(inputdir, select, '*', bidsvalidate)
+    for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         if inputfile in swapped:
             continue

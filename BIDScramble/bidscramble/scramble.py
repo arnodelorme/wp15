@@ -11,7 +11,8 @@ from .scramble_meeg import scramble_meeg
 
 # Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
-parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='.*')
+parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputfolder', default='!^\..*')
+parent.add_argument('-b','--bidsvalidate', help='If given, all input files are checked for BIDS compliance when first indexed, and non-compliant files are ignored (as in pybids.BIDSLayout)', action='store_true')
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
 parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
 parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster. You can add an opaque DRMAA argument with native specifications for your HPC resource manager (NB: Use quotes and include at least one space character to prevent premature parsing -- see examples)',
@@ -121,7 +122,6 @@ def addparser_swap(parsers, help: str):
 
     parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
-    parser.add_argument('-b','--bidsvalidate', help='If given, all files are checked for BIDS compliance when first indexed, and non-compliant files are ignored (as in pybids.BIDSLayout)', action='store_true')
     parser.set_defaults(func=scramble_swap)
 
 

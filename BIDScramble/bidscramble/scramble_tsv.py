@@ -3,17 +3,18 @@ import numpy as np
 import re
 from tqdm import tqdm
 from pathlib import Path
+from . import get_inputfiles
 
 
-def scramble_tsv(bidsfolder: str, outputfolder: str, select: str, method: str= '', preserve: str= '^$', dryrun: bool=False, **_):
+def scramble_tsv(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str= '', preserve: str= '^$', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and '.tsv' in fpath.suffixes]
-    for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
+    inputfiles = get_inputfiles(inputdir, select, '*.tsv', bidsvalidate)
+    for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         # Load the (zipped) tsv data
         tsvdata = pd.read_csv(inputfile, sep='\t')

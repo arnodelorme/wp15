@@ -1,13 +1,13 @@
-import re
 import shutil
 import json
+import re
 from tqdm import tqdm
 from urllib.request import urlopen
 from pathlib import Path
-from . import __version__, __description__, __url__
+from . import get_inputfiles, __version__, __description__, __url__
 
 
-def scramble_stub(bidsfolder: str, outputfolder: str, select: str, dryrun: bool=False, **_):
+def scramble_stub(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
@@ -16,18 +16,15 @@ def scramble_stub(bidsfolder: str, outputfolder: str, select: str, dryrun: bool=
 
     # Create placeholder output files for selected input files
     print(f"Creating BIDS stub data in: {outputdir}")
-    for inputfile in tqdm(sorted(inputdir.rglob('*')), unit='file', colour='green', leave=False):
-
-        if not re.fullmatch(select, str(inputfile.relative_to(inputdir))):
-            continue
-
-        outputfile = outputdir/inputfile.relative_to(inputdir)
-        tqdm.write(f"--> {outputfile}")
-        if inputfile.is_dir() and not dryrun:
-            outputfile.mkdir(parents=True, exist_ok=True)
+    inputfiles = get_inputfiles(inputdir, select, '*', bidsvalidate)        # NB: this skips empty directories
+    inputdirs  = [folder for folder in inputdir.rglob('*') if re.fullmatch(select, str(folder.relative_to(inputdir))) and folder.is_dir()]
+    for inputitem in tqdm(inputdirs + inputfiles, unit='file', colour='green', leave=False):
+        outputitem = outputdir/inputitem.relative_to(inputdir)
+        tqdm.write(f"--> {outputitem}")
+        if inputitem.is_dir() and not dryrun:
+            outputitem.mkdir(parents=True, exist_ok=True)
         elif not dryrun:
-            outputfile.parent.mkdir(parents=True, exist_ok=True)
-            outputfile.touch()
+            outputitem.touch()
 
     # Create a dataset description file
     dataset_file = inputdir/'dataset_description.json'

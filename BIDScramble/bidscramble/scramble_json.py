@@ -2,6 +2,7 @@ import json
 import re
 from tqdm import tqdm
 from pathlib import Path
+from . import get_inputfiles
 
 
 def clearvalues(data: dict, preserve: str):
@@ -15,15 +16,15 @@ def clearvalues(data: dict, preserve: str):
             data[key] = type(value)()
 
 
-def scramble_json(bidsfolder: str, outputfolder: str, select: str, preserve: str= '^$', dryrun: bool=False, **_):
+def scramble_json(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, preserve: str= '^$', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all selected json files
-    inputfiles = [fpath for fpath in inputdir.rglob('*') if re.fullmatch(select, str(fpath.relative_to(inputdir))) and fpath.suffix == '.json']
-    for inputfile in tqdm(sorted(inputfiles), unit='file', colour='green', leave=False):
+    inputfiles = get_inputfiles(inputdir, select, '*.json', bidsvalidate)
+    for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         # Load the json data
         with open(inputfile, 'r') as f:
