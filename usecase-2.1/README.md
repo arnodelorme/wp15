@@ -82,4 +82,5 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
 ```console
 scramble input scrambled stub
 scramble input scrambled tsv permute -s participants.tsv
+scramble input scrambled json -p '.*'
 ```
