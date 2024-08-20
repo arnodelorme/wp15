@@ -35,12 +35,10 @@ def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: lis
 
         # Save the swapped output files
         for n, inputfile_ in enumerate(inputset):
-
             outputfile = outputdir/outputset[n].relative_to(inputdir)
             if not dryrun:
                 outputfile.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(inputfile_, outputfile)
-
             swapped.append(inputfile_)
 
     # Move the tempdir files to the outputdir

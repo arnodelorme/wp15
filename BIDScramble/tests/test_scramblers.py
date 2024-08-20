@@ -4,7 +4,6 @@ import pandas as pd
 import math
 import mne
 import nibabel as nib
-import re
 import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
 from bidscramble.scramble_stub import scramble_stub
@@ -28,11 +27,10 @@ def test_scramble_fif(tmp_path):
     assert (tmp_path/'output'/fiffile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
-    # Figure out which reader function to use, fif-files with time-series data come in 3 flavours
+    # Fif-files with time-series data come in 3 flavours that use different reader functions
     isevoked  = False
     isepoched = False
     israw     = True
-
     if israw:
         obj = mne.io.read_raw_fif(tmp_path/'output'/fiffile, preload=True)
     elif isevoked:
@@ -41,9 +39,9 @@ def test_scramble_fif(tmp_path):
         raise Exception('cannot read epoched FIF file')
 
     # Check that the FIF data is properly nulled
-    dat = obj.get_data()
-    assert dat.shape       == (395, 540100)
-    assert np.sum(dat[99]) == 0     # check one channel in the middle of the array
+    data = obj.get_data()
+    assert data.shape       == (395, 540100)
+    assert np.sum(data[99]) == 0        # check one channel in the middle of the array
 
 
 def test_scramble_stub(tmp_path):

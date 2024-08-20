@@ -23,6 +23,7 @@ def scramble_fif(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: 
         isepoched = re.search('FIFFB_MNE_EPOCHS', fiffstuff) != None
         israw     = not isepoched and not isevoked
 
+        # Read the data
         if israw:
             obj = mne.io.read_raw_fif(inputfile, preload=True)
         elif isevoked:
@@ -31,13 +32,12 @@ def scramble_fif(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: 
             raise Exception('cannot read epoched FIF file')
 
         def do_permute(data):
-            data = np.random.permutation(data)
-            return data
+            return np.random.permutation(data)
 
         def do_null(data):
-            data = data * 0
-            return data
+            return data * 0
 
+        # Apply the scrambling method
         if method == 'permute':
             obj.apply_function(do_permute)
         else:

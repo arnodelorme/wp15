@@ -16,7 +16,7 @@ def clearvalues(data: dict, preserve: str):
             data[key] = type(value)()
 
 
-def scramble_json(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, preserve: str= '^$', dryrun: bool=False, **_):
+def scramble_json(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, preserve: str='^$', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
