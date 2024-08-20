@@ -1,0 +1,52 @@
+BootStrap: docker
+From: ubuntu:24.04
+
+%environment
+  MLM_LICENSE_FILE="" # should point to the license server as port@server
+
+%files
+  analyze_participant.m /work/analyze_participant.m
+  analyze_group.m       /work/analyze_group.m
+
+%post
+  ################################################################################
+  # general updates to the base image
+  ################################################################################
+  apt update
+  echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
+  echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
+  DEBIAN_FRONTEND=noninteractive apt install -y tzdata
+  DEBIAN_FRONTEND=noninteractive apt install -y keyboard-configuration
+  apt install -y ca-certificates
+  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim
+
+  ################################################################################
+  # install MATLAB
+  # see https://github.com/mathworks-ref-arch/matlab-dockerfile 
+  ################################################################################
+  mkdir /opt/matlab
+  wget https://www.mathworks.com/mpm/glnxa64/mpm -O /opt/matlab/mpm
+  chmod +x /opt/matlab/mpm
+  /opt/matlab/mpm install --release R2024a --destination /opt/matlab --products MATLAB
+  ln -s /opt/matlab/bin/matlab /usr/local/bin
+
+%environment
+  export LC_ALL=C
+
+%runscript
+  # parse command line arguments
+  # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
+  if [ -z ${1} ] ; then echo INPUTDIR must be specified && exit 1 ; fi
+  if [ -z ${2} ] ; then echo OUTPUTDIR must be specified && exit 1 ; fi
+  if [ -z ${3} ] ; then echo analysis level must be specified as participant or group && exit 1 ; fi
+  export INPUTDIR=${1}
+  export OUTPUTDIR=${2}
+  export LEVEL=${3}
+
+  if [ ${LEVEL}="participant" ] ; then
+    /opt/matlab/bin/matlab -sd /work -batch analyze_participant
+  elif [ ${LEVEL}="group" ] ; then
+    /opt/matlab/bin/matlab -sd /work -batch analyze_group
+  else
+    echo analysis level must be specified as participant or group && exit 1
+  fi 
