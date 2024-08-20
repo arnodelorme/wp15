@@ -29,10 +29,9 @@ def test_scramble_fif(tmp_path):
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
     # Figure out which reader function to use, fif-files with time-series data come in 3 flavours
-    fiffstuff = mne.io.show_fiff(tmp_path/'output'/fiffile)
-    isevoked  = re.search('FIFFB_EVOKED', fiffstuff) != None
-    isepoched = re.search('FIFFB_MNE_EPOCHS', fiffstuff) != None
-    israw     = not isepoched and not isevoked
+    isevoked  = False
+    isepoched = False
+    israw     = True
 
     if israw:
         obj = mne.io.read_raw_fif(tmp_path/'output'/fiffile, preload=True)
@@ -43,8 +42,8 @@ def test_scramble_fif(tmp_path):
 
     # Check that the FIF data is properly nulled
     dat = obj.get_data()
-    assert dat.shape == (395, 540100)
-    assert np.sum(dat[99]) == 0  # check one channel in the middle of the array
+    assert dat.shape       == (395, 540100)
+    assert np.sum(dat[99]) == 0     # check one channel in the middle of the array
 
 
 def test_scramble_stub(tmp_path):
