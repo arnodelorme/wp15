@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import List
 from . import get_inputfiles
 
-def scramble_fif(bidsfolder: str, outputfolder: str, select: str, method: str= '', dryrun: bool=False, **_):
+def scramble_fif(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str= '', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(bidsfolder).resolve()
