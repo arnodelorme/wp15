@@ -74,19 +74,22 @@ FieldTrip is open source and released under the GPLv3 license.
 
 ### Executing the pipeline
 
-Executing the pipeline from the Linux command-line is done using the following:
-
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```console
 restoredefaultpath;
 addpath('fieldtrip');
 addpath('wp15/usecase-2.3');
-analyze_all_subjects
+analyze_participant
 analyze_group
 ```
 
-...
+Executing the pipeline from the Apptainer image is done like this:
+
+```
+apptainer run --no-mount $PWD --bind $INPUT:/work/input --bind $OUTPUT:/work/output --env MLM_LICENSE_FILE=port@server pipeline.sif /work/input /work/output participant
+apptainer run --no-mount $PWD --bind $INPUT:/work/input --bind $OUTPUT:/work/output --env MLM_LICENSE_FILE=port@server pipeline.sif /work/input /work/output group
+```
 
 ## Cleaning up
 
