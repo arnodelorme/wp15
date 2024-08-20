@@ -3,15 +3,16 @@
 *.bak
 *.asv
 *.sif
+**/__pycache__/**
 
 BIDScramble/venv/*
 BIDScramble/build/*
 BIDScramble/*.egg-info/*
 /BIDScramble/.tox/
 
-usecase-*/input
-usecase-*/scrambled
-usecase-*/output
+usecase-*/input*
+usecase-*/scrambled*
+usecase-*/output*
 usecase-*/venv
 
 usecase-2.4/eeglab2024.0
