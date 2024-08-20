@@ -24,7 +24,7 @@ def test_scramble_fif(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{fiffile}", tmp_path/'input'/fiffile)
 
     # Create nulled output data
-    scramble_fif(tmp_path/'input', tmp_path/'output', 'sub.*\\.fif', '')
+    scramble_fif(tmp_path/'input', tmp_path/'output', 'sub.*\\.fif', False, '')
     assert (tmp_path/'output'/fiffile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
