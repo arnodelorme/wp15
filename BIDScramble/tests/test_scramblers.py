@@ -12,6 +12,7 @@ from bidscramble.scramble_json import scramble_json
 from bidscramble.scramble_nii import scramble_nii
 from bidscramble.scramble_fif import scramble_fif
 from bidscramble.scramble_swap import scramble_swap
+from bidscramble.scramble_pseudo import scramble_pseudo
 
 
 def test_scramble_fif(tmp_path):
@@ -85,12 +86,12 @@ def test_scramble_tsv(tmp_path):
     # Create the input data
     (tmp_path/'input').mkdir()
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv',  tmp_path/'input'/'participants.tsv')
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv',  tmp_path/'input'/'partici_test.tsv')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'test.tsv')
 
-    # Fix the "n/a " values
-    tsvdata = (tmp_path/'input'/'participants.tsv').read_text().replace('n/a ', 'n/a')
+    # Fix the space and "n/a " values
+    tsvdata = (tmp_path/'input'/'participants.tsv').read_text().replace('\tn/a ', '\tn/a').replace('\t ', '\tn/a')
     (tmp_path/'input'/'participants.tsv').write_text(tsvdata)
+    (tmp_path/'input'/'partici_test.tsv').write_text(tsvdata)
 
     # Create nulled output data
     scramble_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', False, '', '')
@@ -110,7 +111,6 @@ def test_scramble_tsv(tmp_path):
     scramble_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', False, 'permute', '(Height|Weig.*)')
 
     # Check that the participants.tsv data is properly permuted
-    inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t')
     outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t')
     assert inputdata.shape == outputdata.shape
     assert not inputdata['participant_id'].equals(outputdata['participant_id'])
@@ -278,3 +278,35 @@ def test_scramble_swap(tmp_path):
     # Check that the run-05 json data is not swapped
     inputdata, outputdata = load_data(funcjsons[-1])
     assert inputdata['AcquisitionTime'] == outputdata['AcquisitionTime']
+
+
+def test_scramble_pseudo(tmp_path):
+
+    # Create the input data
+    for sub in list(range(2,11)) + [12]:
+        print('Downloading:', f"sub-{sub:02}/eeg/..")
+        tsvpath  = f"sub-{sub:02}/eeg/sub-{sub:02}_task-MIvsRest_run-0_channels.tsv"
+        edfpath  = f"sub-{sub:02}/eeg/sub-{sub:02}_task-MIvsRest_run-0_eeg.edf"
+        jsonpath = f"sub-{sub:02}/eeg/sub-{sub:02}_task-MIvsRest_run-0_eeg.json"
+        (tmp_path/'input'/f"sub-{sub:02}"/'eeg').mkdir(parents=True)
+        urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds003810/{tsvpath}", tmp_path/'input'/tsvpath)
+        urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds003810/{edfpath}", tmp_path/'input'/edfpath)
+        urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds003810/{jsonpath}", tmp_path/'input'/jsonpath)
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds003810/participants.tsv', tmp_path/'input'/'participants.tsv')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds003810/participants.tsv', tmp_path/'input'/'participants.json')
+
+    # Pseudonymize the data
+    scramble_pseudo(tmp_path/'input', tmp_path/'output', r'^(?!\.).*', True, 'permute', '^sub-(.*?)/.*', 'yes')
+    assert (tmp_path/'output'/'participants.json').is_file()
+
+    # Check the participants.tsv file
+    inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t', index_col='participant_id')
+    outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t', index_col='participant_id')
+    assert inputdata.shape == outputdata.shape
+    for column, values in outputdata.items():
+        assert column in inputdata.columns
+    assert not inputdata.index.equals(outputdata.index)
+    for index in inputdata.index:
+        assert index in outputdata.index
+
+    assert (tmp_path/'output'/edfpath).is_file()
