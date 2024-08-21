@@ -18,10 +18,10 @@ From: ubuntu:24.04
   DEBIAN_FRONTEND=noninteractive apt install -y tzdata
   DEBIAN_FRONTEND=noninteractive apt install -y keyboard-configuration
   apt install -y ca-certificates
-  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim
+  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim git
 
   ################################################################################
-  # install MATLAB
+  # install MATLAB and toolboxes
   # see https://github.com/mathworks-ref-arch/matlab-dockerfile 
   ################################################################################
   mkdir /opt/matlab
@@ -29,6 +29,7 @@ From: ubuntu:24.04
   chmod +x /opt/matlab/mpm
   /opt/matlab/mpm install --release R2024a --destination /opt/matlab --products MATLAB
   ln -s /opt/matlab/bin/matlab /usr/local/bin
+  git clone --depth 1 https://github.com/fieldtrip/fieldtrip.git --branch 20240731 --single-branch /work/fieldtrip
 
 %environment
   export LC_ALL=C
@@ -44,9 +45,9 @@ From: ubuntu:24.04
   export LEVEL=${3}
 
   if [ ${LEVEL}="participant" ] ; then
-    /opt/matlab/bin/matlab -sd /work -batch analyze_participant
+    /opt/matlab/bin/matlab -sd /work -batch "addpath /work/fieldtrip; ft_defaults; analyze_participant"
   elif [ ${LEVEL}="group" ] ; then
-    /opt/matlab/bin/matlab -sd /work -batch analyze_group
+    /opt/matlab/bin/matlab -sd /work -batch "addpath /work/fieldtrip; ft_defaults; analyze_group"
   else
     echo analysis level must be specified as participant or group && exit 1
   fi 

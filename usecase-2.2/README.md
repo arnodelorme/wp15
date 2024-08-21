@@ -48,15 +48,17 @@ mkdir output
 
 ### Software installation
 
-Running the analysis pipeline requires a working [Apptainer installation](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux) (version >= 2.5). Next the MRIQC container needs to be build (NB: this requires root permission):
+Running the analysis pipeline requires a working [Apptainer installation](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux) (version >= 2.5). Next the [MRIQC](https://mriqc.readthedocs.io/en/latest/) container needs to be downloaded:
 
 ```console
-sudo apptainer build mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
+apptainer pull mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 ```
 
 ### Legal aspects of the software
 
-The apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html) and mriqc under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
+The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
+
+The MRIQC software is licensed under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
 
 ### Executing the pipeline
 
@@ -73,7 +75,7 @@ apptainer run --cleanenv mriqc-24.0.0.sif input output group
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input scrambled output
+rm -rf input output
 ```
 
 ## Scrambled data
