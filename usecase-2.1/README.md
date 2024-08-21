@@ -45,11 +45,13 @@ mkdir output
 
 ### Software installation
 
-The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory.
+The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory. Alternatively, it is possible to make an [Apptainer](https://apptainer.org) container with all analysis software and dependencies.
 
 ### Legal aspects of the software
 
 The R-package and the optparse package are licensed under GPL-2 or GPL-3.
+
+The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
 
 ### Executing the pipeline
 
@@ -65,6 +67,22 @@ or with the scrambled version of the data like this:
 Rscript pipeline.R  --inputdir scrambled --outputdir output  
 ```
 
+### Building the container
+
+```console
+apptainer build pipeline.sif pipeline.dev
+```
+
+### Executing the container
+
+```console
+mkdir output
+apptainer run pipeline.sif input output participant
+apptainer run pipeline.sif input output group
+```
+
+Note that this analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
+
 ## Cleaning up
 
 Cleaning up the input and output data can be done using:
@@ -77,7 +95,7 @@ rm -rf input scrambled output
 
 As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
 
-A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
 scramble input scrambled stub
