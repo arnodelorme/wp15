@@ -56,14 +56,14 @@ mkdir output
 
 ### Software installation
 
-This requires the GitHub wp15 repository, MATLAB and FieldTrip at commit [a0bd813](https://github.com/fieldtrip/fieldtrip/pull/2416/commits/a0bd8132fef7929264393b8c13f87a3b68cf6255) as part of PR [2461](https://github.com/fieldtrip/fieldtrip/pull/2416) or later. This pertains to any version of the code under the release [tag 20240614](https://github.com/fieldtrip/fieldtrip/releases/tag/20240614) or younger.
+This requires the GitHub wp15 repository, MATLAB, and FieldTrip version [20240731](https://github.com/fieldtrip/fieldtrip/releases/tag/20240731) or more recent.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
-wget https://github.com/fieldtrip/fieldtrip/archive/refs/tags/20240614.zip
-unzip 20240614.zip
-mv fieldtrip-20240614 fieldtrip
-rm 20240614.zip
+wget https://github.com/fieldtrip/fieldtrip/archive/refs/tags/20240731.zip
+unzip 20240731.zip
+mv fieldtrip-20240731 fieldtrip
+rm 20240731.zip
 ```
 
 ### Legal aspects of the software
@@ -86,10 +86,12 @@ analyze_group
 
 Executing the pipeline from the Apptainer image is done like this:
 
+```console
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
 ```
-apptainer run --no-mount $PWD --bind $INPUT:/work/input --bind $OUTPUT:/work/output --env MLM_LICENSE_FILE=port@server pipeline.sif /work/input /work/output participant
-apptainer run --no-mount $PWD --bind $INPUT:/work/input --bind $OUTPUT:/work/output --env MLM_LICENSE_FILE=port@server pipeline.sif /work/input /work/output group
-```
+
+It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
 
 ## Cleaning up
 

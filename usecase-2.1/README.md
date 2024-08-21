@@ -77,11 +77,13 @@ apptainer build pipeline.sif pipeline.dev
 
 ```console
 mkdir output
-apptainer run pipeline.sif input output participant
-apptainer run pipeline.sif input output group
+apptainer run --no-home pipeline.sif input output participant
+apptainer run --no-home pipeline.sif input output group
 ```
 
-Note that this analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
+It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
+
+Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
 
 ## Cleaning up
 

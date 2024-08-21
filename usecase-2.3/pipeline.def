@@ -18,7 +18,7 @@ From: ubuntu:24.04
   DEBIAN_FRONTEND=noninteractive apt install -y tzdata
   DEBIAN_FRONTEND=noninteractive apt install -y keyboard-configuration
   apt install -y ca-certificates
-  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim git
+  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim
 
   ################################################################################
   # install MATLAB and toolboxes
@@ -29,7 +29,11 @@ From: ubuntu:24.04
   chmod +x /opt/matlab/mpm
   /opt/matlab/mpm install --release R2024a --destination /opt/matlab --products MATLAB
   ln -s /opt/matlab/bin/matlab /usr/local/bin
-  git clone --depth 1 https://github.com/fieldtrip/fieldtrip.git --branch 20240731 --single-branch /work/fieldtrip
+  cd /work
+  wget https://github.com/fieldtrip/fieldtrip/archive/refs/tags/20240731.zip
+  unzip 20240731.zip
+  mv fieldtrip-20240731 fieldtrip
+  rm 20240731.zip
 
 %environment
   export LC_ALL=C
@@ -37,9 +41,9 @@ From: ubuntu:24.04
 %runscript
   # parse command line arguments
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  if [ -z ${1} ] ; then echo INPUTDIR must be specified && exit 1 ; fi
-  if [ -z ${2} ] ; then echo OUTPUTDIR must be specified && exit 1 ; fi
-  if [ -z ${3} ] ; then echo analysis level must be specified as participant or group && exit 1 ; fi
+  if [ -z ${1} ] ; then echo Error: input directory must be specified && exit 1 ; fi
+  if [ -z ${2} ] ; then echo Error: output directory must be specified && exit 1 ; fi
+  if [ -z ${3} ] ; then echo Error: analysis level must be specified as participant or group && exit 1 ; fi
   export INPUTDIR=${1}
   export OUTPUTDIR=${2}
   export LEVEL=${3}
@@ -49,5 +53,5 @@ From: ubuntu:24.04
   elif [ ${LEVEL} = "group" ] ; then
     /opt/matlab/bin/matlab -sd /work -batch "restoredefaultpath; addpath /work/fieldtrip; ft_defaults; analyze_group"
   else
-    echo analysis level must be specified as participant or group && exit 1
+    echo Error: analysis level must be specified as participant or group && exit 1
   fi 
