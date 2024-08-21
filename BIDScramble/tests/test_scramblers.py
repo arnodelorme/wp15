@@ -23,7 +23,7 @@ def test_scramble_fif(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{fiffile}", tmp_path/'input'/fiffile)
 
     # Create nulled output data
-    scramble_fif(tmp_path/'input', tmp_path/'output', 'sub.*\\.fif', False, '')
+    scramble_fif(tmp_path/'input', tmp_path/'output', r'sub.*\.fif', False, '')
     assert (tmp_path/'output'/fiffile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
@@ -133,7 +133,7 @@ def test_scramble_json(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004148/{eegjson}", tmp_path/'input'/eegjson)
 
     # Create the output data
-    scramble_json(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', False, '(?!RecordingDuration|Channel).*')
+    scramble_json(tmp_path/'input', tmp_path/'output', r'.*/sub-.*\.json', False, '(?!RecordingDuration|Channel).*')
     assert (tmp_path/'output'/eegjson).is_file()
     assert not (tmp_path/'output'/'participants.json').is_file()
 
@@ -252,7 +252,7 @@ def test_scramble_swap(tmp_path):
 
     # Create the output data for swapping between subjects and runs. N.B: Run-05 swapping will sometimes fail due to random sampling, so try it multiple times
     for n in range(3):
-        scramble_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject', 'run'], False)
+        scramble_swap(tmp_path/'input', tmp_path/'output', r'.*/sub-.*\.json', ['subject', 'run'], False)
         for funcjson in funcjsons:
             assert (tmp_path/'output'/funcjson).is_file()
         inputdata, outputdata = load_data(funcjsons[-1])        # Get the unique run-05 data
@@ -265,7 +265,7 @@ def test_scramble_swap(tmp_path):
     # Create the output data for swapping between subjects, but not between runs
     for funcjson in funcjsons:
         (tmp_path/'output'/funcjson).unlink()
-    scramble_swap(tmp_path/'input', tmp_path/'output', '.*/sub-.*\.json', ['subject'], False)
+    scramble_swap(tmp_path/'input', tmp_path/'output', r'.*/sub-.*\.json', ['subject'], False)
     for funcjson in funcjsons:
         assert (tmp_path/'output'/funcjson).is_file()
 
