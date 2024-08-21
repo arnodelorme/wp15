@@ -44,10 +44,10 @@ From: ubuntu:24.04
   export OUTPUTDIR=${2}
   export LEVEL=${3}
 
-  if [ ${LEVEL}="participant" ] ; then
-    /opt/matlab/bin/matlab -sd /work -batch "addpath /work/fieldtrip; ft_defaults; analyze_participant"
-  elif [ ${LEVEL}="group" ] ; then
-    /opt/matlab/bin/matlab -sd /work -batch "addpath /work/fieldtrip; ft_defaults; analyze_group"
+  if [ ${LEVEL} = "participant" ] ; then
+    /opt/matlab/bin/matlab -sd /work -batch "restoredefaultpath; addpath /work/fieldtrip; ft_defaults; analyze_participant"
+  elif [ ${LEVEL} = "group" ] ; then
+    /opt/matlab/bin/matlab -sd /work -batch "restoredefaultpath; addpath /work/fieldtrip; ft_defaults; analyze_group"
   else
     echo analysis level must be specified as participant or group && exit 1
   fi 

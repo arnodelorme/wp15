@@ -21,19 +21,19 @@ From: ubuntu:24.04
 %runscript
   # parse command line arguments
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  if [ -z ${1} ] ; then echo INPUTDIR must be specified && exit 1 ; fi
-  if [ -z ${2} ] ; then echo OUTPUTDIR must be specified && exit 1 ; fi
-  if [ -z ${3} ] ; then echo analysis level must be specified as participant or group && exit 1 ; fi
+  if [ -z ${1} ] ; then echo Error: input directory must be specified && exit 1 ; fi
+  if [ -z ${2} ] ; then echo Error: output directory must be specified && exit 1 ; fi
+  if [ -z ${3} ] ; then echo Error: analysis level must be specified as participant or group && exit 1 ; fi
   export INPUTDIR=${1}
   export OUTPUTDIR=${2}
   export LEVEL=${3}
 
-  if [ ${LEVEL}="participant" ] ; then
+  if [ ${LEVEL} = "participant" ] ; then
     echo Nothing to be done
-  elif [ ${LEVEL}="group" ] ; then
+  elif [ ${LEVEL} = "group" ] ; then
     Rscript /work/pipeline.R --inputdir ${INPUTDIR} --outputdir ${OUTPUTDIR}
   else
-    echo analysis level must be specified as participant or group && exit 1
+    echo Error: analysis level must be specified as participant or group && exit 1
   fi
 
 %labels
