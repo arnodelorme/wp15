@@ -16,7 +16,6 @@ def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: lis
     print(f"Swapping BIDS data in: {outputdir}")
     if outputdir == inputdir:
         outputdir = outputdir/'tmpdir_swap'
-    outputdir.mkdir(parents=True, exist_ok=True)
 
     # Swap all sets of inputfiles
     swapped    = []                 # Already swapped input files
@@ -42,7 +41,7 @@ def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: lis
             swapped.append(inputfile_)
 
     # Move the tempdir files to the outputdir
-    if outputdir.name == 'tmpdir_swap':
+    if outputdir.name == 'tmpdir_swap' and not dryrun:
         for outputfile in [tmpfile for tmpfile in outputdir.rglob('*') if tmpfile.is_file()]:
             outputfile.replace(outputdir.parent/outputfile.relative_to(outputdir))
         shutil.rmtree(outputdir)
