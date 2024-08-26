@@ -65,11 +65,12 @@ def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidat
                             outputfile.rename(pseudofile)
 
                 # Pseudonymize the file content
-                newtext = newtext.replace(f"sub-{subjectid}", f"sub-#{pseudonym}")      # Add a temporary non-BIDS character to avoid recursive replacements
+                newtext = newtext.replace(f"sub-{subjectid}", f"sub-^#^{pseudonym}")    # Add temporary `^#^` characters to avoid recursive replacements
 
+            # Write the non-binary pseudonymized file content
             if newtext:
                 print(f"\t-> {pseudofile}")
                 if not dryrun:
-                    pseudofile.write_text(newtext.replace('#',''))                      # Remove the temporary non-BIDS character
+                    pseudofile.write_text(newtext.replace('sub-^#^','sub-'))            # Remove the temporary characters
 
         shutil.rmtree(outputdir_)

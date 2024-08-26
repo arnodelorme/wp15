@@ -29,11 +29,11 @@ To scramble BIDS data you can run the command-line tool named ``scramble``. At i
 ### scramble
 
 ```
-usage: scramble [-h] bidsfolder outputfolder {stub,tsv,nii,json,swap} ...
+usage: scramble [-h] bidsfolder outputfolder {stub,tsv,json,nii,fif,swap,pseudo} ...
 
-The general workflow to build up a scrambled BIDS dataset is by consecutively running `scramble` for actions of
-your choice. For instance, you could first run `scramble` with the `stub` action to create a dummy dataset with
-only the file structure and some basic files, and then run `scramble` with the `nii` action  to specifically add
+The general workflow to build up a scrambled dataset is by consecutively running `scramble` for actions of your
+choice. For instance, you could first run `scramble` with the `stub` action to create a dummy dataset with only
+the file structure and some basic files, and then run `scramble` with the `nii` action  to specifically add
 scrambled NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scramble` using
 the already scrambled data as input folder.
 
@@ -45,7 +45,7 @@ options:
   -h, --help            show this help message and exit
 
 Action:
-  {stub,tsv,nii,json,swap}
+  {stub,tsv,json,nii,fif,swap,pseudo}
                         Add -h, --help for more information
     stub                Saves a dummy bidsfolder skeleton in outputfolder
     tsv                 Saves scrambled tsv files in outputfolder
@@ -53,10 +53,11 @@ Action:
     nii                 Saves scrambled NIfTI files in outputfolder
     fif                 Saves scrambled FIF files in outputfolder
     swap                Saves swapped file contents in outputfolder
+    pseudo              Saves pseudonymized file names and contents in outputfolder
 
 examples:
-  scramble data/bids data/pseudobids stub -h
-  scramble data/bids data/pseudobids nii -h
+  scramble data/bids data/synthetic stub -h
+  scramble data/bids data/synthetic nii -h
 ```
 
 #### Action: stub
@@ -64,7 +65,7 @@ examples:
 ```
 usage: scramble bidsfolder outputfolder stub [-h] [-s PATTERN] [-d]
 
-Creates a copy of the BIDS input directory in which all files are empty stubs. Exceptions to this are the
+Creates a copy of the input directory in which all files are empty stubs. Exceptions to this are the
 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over and
 updated if possible.
 
@@ -76,10 +77,10 @@ options:
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
-  scramble data/bids data/pseudobids stub
-  scramble data/bids data/pseudobids stub -s '.*\.(nii|json|tsv)'
-  scramble data/bids data/pseudobids stub -s '.*(?<!derivatives)'
-  scramble data/bids data/pseudobids stub -s '(?!sub.*scans.tsv|/func/).*'
+  scramble data/bids data/synthetic stub
+  scramble data/bids data/synthetic stub -s '.*\.(nii|json|tsv)'
+  scramble data/bids data/synthetic stub -s '.*(?<!derivatives)'
+  scramble data/bids data/synthetic stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
 #### Action: tsv
@@ -87,8 +88,8 @@ examples:
 ```
 usage: scramble bidsfolder outputfolder tsv [-h] [-s PATTERN] [-d] {permute} ...
 
-Adds scrambled versions of the tsv files in the BIDS input directory to the BIDS output directory. If no scrambling
-method is specified, the default behavior is to null all values.
+Adds scrambled versions of the tsv files in the input directory to the output directory. If no scrambling method
+is specified, the default behavior is to null all values.
 
 positional arguments:
   {permute}             Scrambling method. Add -h, --help for more information
@@ -102,10 +103,10 @@ options:
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
-  scramble data/bids data/pseudobids tsv
-  scramble data/bids data/pseudobids tsv permute
-  scramble data/bids data/pseudobids tsv permute -s '.*_events.tsv' -p '.*'
-  scramble data/bids data/pseudobids tsv permute -s participants.tsv -p (participant_id|SAS.*)
+  scramble data/bids data/synthetic tsv
+  scramble data/bids data/synthetic tsv permute
+  scramble data/bids data/synthetic tsv permute -s '.*_events.tsv' -p '.*'
+  scramble data/bids data/synthetic tsv permute -s participants.tsv -p (participant_id|SAS.*)
 ```
 
 #### Action: nii
@@ -114,8 +115,8 @@ examples:
 usage: scramble bidsfolder outputfolder nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
                                              {blur,permute,diffuse,wobble} ...
 
-Adds scrambled versions of the NIfTI files in the BIDS input directory to the BIDS output directory. If no
-scrambling method is specified, the default behavior is to null all image values.
+Adds scrambled versions of the NIfTI files in the input directory to the output directory. If no scrambling
+method is specified, the default behavior is to null all image values.
 
 positional arguments:
   {blur,permute,diffuse,wobble}
@@ -138,10 +139,10 @@ options:
                         premature parsing -- see examples) (default: None)
 
 examples:
-  scramble data/bids data/pseudobids nii
-  scramble data/bids data/pseudobids nii diffuse -h
-  scramble data/bids data/pseudobids nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
-  scramble data/bids data/pseudobids nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
+  scramble data/bids data/synthetic nii
+  scramble data/bids data/synthetic nii diffuse -h
+  scramble data/bids data/synthetic nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
+  scramble data/bids data/synthetic nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
 #### Action: json
@@ -149,7 +150,7 @@ examples:
 ```
 usage: scramble bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
 
-Adds scrambled key-value versions of the json files in the BIDS input directory to the BIDS output directory. If no
+Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
 preserve expression is specified, the default behavior is to null all values.
 
 options:
@@ -163,9 +164,9 @@ options:
                         files. The json values are copied over when a key matches positively (default: None)
 
 examples:
-  scramble data/bids data/pseudobids json
-  scramble data/bids data/pseudobids json participants.json -p '.*'
-  scramble data/bids data/pseudobids json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
+  scramble data/bids data/synthetic json
+  scramble data/bids data/synthetic json participants.json -p '.*'
+  scramble data/bids data/synthetic json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
 ```
 
 #### Action: swap
@@ -173,8 +174,8 @@ examples:
 ```
 usage: scramble bidsfolder outputfolder swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
 
-Randomly swappes the content of data files between a group of similar files in the BIDS input directory and save
-them as output.
+Randomly swappes the content of data files between a group of similar files in the input directory and save them
+as output.
 
 options:
   -h, --help            show this help message and exit
@@ -188,10 +189,45 @@ options:
                         specification.readthedocs.io/en/stable/appendices/entities.html (default: ['subject'])
 
 examples:
-  scramble data/bids data/pseudobids swap
-  scramble data/bids data/pseudobids swap -s '.*\.(nii|json|tsv)'
-  scramble data/bids data/pseudobids swap -s '.*(?<!derivatives)'
-  scramble data/bids data/pseudobids swap -g subject session run
+  scramble data/bids data/synthetic swap
+  scramble data/bids data/synthetic swap -s '.*\.(nii|json|tsv)'
+  scramble data/bids data/synthetic swap -s '.*(?<!derivatives)'
+  scramble data/bids data/synthetic swap -g subject session run
+```
+
+#### Action: pseudo
+
+```
+usage: scramble bidsfolder outputfolder pseudo [-h] [-s PATTERN] [-b] [-d] [-p PATTERN] [-r {yes,no}]
+                                               {random,permute,original}
+
+Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
+anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+
+positional arguments:
+  {random,permute,original}
+                        The method to generate the pseudonyms
+
+options:
+  -h, --help            show this help message and exit
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default:
+                        ^(?!\.).*)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and non-
+                        compliant files are ignored (as in pybids.BIDSLayout) (default: False)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -p PATTERN, --pattern PATTERN
+                        The fullmatch regular expression pattern that is used to extract the subject label from
+                        the relative filepath (default: ^sub-(.*?)/.*)
+  -r {yes,no}, --rootfiles {yes,no}
+                        In addition to the selected files (see `--select`), include all files in the root of the
+                        input directory (such as participants.tsv, etc) (default: yes)
+
+examples:
+  scramble data/bids data/synthetic pseudo
+  scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003)/.*' 
+  scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
 ```
 
 ## Legal Aspects

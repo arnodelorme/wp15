@@ -135,8 +135,8 @@ def addparser_pseudo(parsers, help: str):
 
     epilog = ('examples:\n'
               '  scramble data/bids data/synthetic pseudo\n'
-              "  scramble data/bids data/synthetic_remove1 pseudo random  -s '!.*/sub-003/.*' \n"
-              "  scramble data/bids data/synthetic_keep1 pseudo original -s '.*/sub-003/.*' -p '/S_(.*?)/'\n ")
+              "  scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003)/.*' \n"
+              "  scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'\n ")
 
     parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.add_argument('method', help='The method to generate the pseudonyms', choices=['random','permute','original'], default='permute')
