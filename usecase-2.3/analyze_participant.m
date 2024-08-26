@@ -126,12 +126,16 @@ for subject=1:nsubj
   cfg.outputfile = fullfile(outputpath, 'comp.mat');
   comp = ft_componentanalysis(cfg, raw);
 
+  clear raw
+
   cfg = [];
   cfg.updatesens = 'no';
   cfg.component = comp.label(51:end);
   % cfg.inputfile = fullfile(outputpath, 'comp.mat');
   cfg.outputfile = fullfile(outputpath, 'raw_subspace.mat');
   raw_subspace = ft_rejectcomponent(cfg, comp);
+
+  clear comp
 
   cfg = [];
   cfg.baselinewindow = [-inf 0];
@@ -140,6 +144,8 @@ for subject=1:nsubj
   % cfg.inputfile = fullfile(outputpath, 'raw_subspace.mat');
   cfg.outputfile = fullfile(outputpath, 'raw_subspace_demean.mat');
   raw_subspace_demean = ft_preprocessing(cfg, raw_subspace);
+
+  clear raw_subspace
 
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,6 +157,8 @@ for subject=1:nsubj
   % cfg.inputfile = fullfile(outputpath, 'raw_subspace_demean.mat');
   cfg.outputfile = fullfile(outputpath, 'raw_clean.mat');
   raw_clean = ft_baddata(cfg, raw_subspace_demean);
+
+  clear raw_subspace_demean
 
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,6 +204,7 @@ for subject=1:nsubj
   cfg.outputfile = fullfile(outputpath, 'timelock_unfamiliar.mat');
   timelock_unfamiliar = ft_timelockanalysis(cfg, raw_clean);
 
+  clear raw_clean
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %% Visualization

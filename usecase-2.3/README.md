@@ -56,14 +56,14 @@ mkdir output
 
 ### Software installation
 
-This requires the GitHub wp15 repository, MATLAB, and FieldTrip version [20240731](https://github.com/fieldtrip/fieldtrip/releases/tag/20240731) or more recent.
+This requires the GitHub wp15 repository, MATLAB, and a recent FieldTrip version.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
-wget https://github.com/fieldtrip/fieldtrip/archive/refs/tags/20240731.zip
-unzip 20240731.zip
-mv fieldtrip-20240731 fieldtrip
-rm 20240731.zip
+wget wget https://github.com/fieldtrip/fieldtrip/archive/refs/heads/master.zip
+unzip master.zip
+mv fieldtrip-master fieldtrip
+rm master.zip
 ```
 
 ### Legal aspects of the software
