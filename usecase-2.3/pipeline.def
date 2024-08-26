@@ -18,7 +18,7 @@ From: ubuntu:24.04
   DEBIAN_FRONTEND=noninteractive apt install -y tzdata
   DEBIAN_FRONTEND=noninteractive apt install -y keyboard-configuration
   apt install -y ca-certificates
-  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim
+  apt install -y wget xvfb xorg libgtk2.0-dev python3 python3-venv vim unzip
 
   ################################################################################
   # install MATLAB and toolboxes
@@ -30,10 +30,10 @@ From: ubuntu:24.04
   /opt/matlab/mpm install --release R2024a --destination /opt/matlab --products MATLAB
   ln -s /opt/matlab/bin/matlab /usr/local/bin
   cd /work
-  wget https://github.com/fieldtrip/fieldtrip/archive/refs/tags/20240731.zip
-  unzip 20240731.zip
-  mv fieldtrip-20240731 fieldtrip
-  rm 20240731.zip
+  wget https://github.com/fieldtrip/fieldtrip/archive/refs/heads/master.zip
+  unzip master.zip
+  mv fieldtrip-master fieldtrip
+  rm master.zip
 
 %environment
   export LC_ALL=C
