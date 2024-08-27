@@ -46,8 +46,10 @@ def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidat
         for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
             # Read the non-binary file content
+            outputfile = outputdir_/inputfile.relative_to(inputdir)
+            pseudofile = outputdir/inputfile.relative_to(inputdir)
             try:
-                newtext = inputfile.read_text()
+                newtext = outputfile.read_text()
             except UnicodeDecodeError:
                 newtext = ''
 
@@ -55,21 +57,19 @@ def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidat
             for subjectid, pseudonym in zip(subjectids, pseudonyms):
 
                 # Pseudonymize the filepath
-                if subjectid in re.findall(pattern, str(inputfile.relative_to(inputdir))) or inputfile.parent==inputdir:  # NB: This does not support the inheritance principle (sub-* files in root)
-                    outputfile = outputdir_/inputfile.relative_to(inputdir)
-                    if outputfile.is_file():
-                        pseudofile = outputdir/str(inputfile.relative_to(inputdir)).replace(f"sub-{subjectid}", f"sub-{pseudonym}")
-                        print(f"\tPseudonymizing {inputfile}: {subjectid} -> {pseudonym}")
-                        if not dryrun:
-                            pseudofile.parent.mkdir(parents=True, exist_ok=True)
-                            outputfile.rename(pseudofile)
+                if (subjectid in re.findall(pattern, str(inputfile.relative_to(inputdir))) or inputfile.parent==inputdir) and outputfile.is_file():  # NB: This does not support the inheritance principle (sub-* files in root)
+                    pseudofile = outputdir/str(inputfile.relative_to(inputdir)).replace(f"sub-{subjectid}", f"sub-{pseudonym}")
+                    print(f"\tRenaming sub-{subjectid} -> {pseudofile}")
+                    if not dryrun:
+                        pseudofile.parent.mkdir(parents=True, exist_ok=True)
+                        outputfile.rename(pseudofile)
 
                 # Pseudonymize the file content
                 newtext = newtext.replace(f"sub-{subjectid}", f"sub-^#^{pseudonym}")    # Add temporary `^#^` characters to avoid recursive replacements
 
             # Write the non-binary pseudonymized file content
             if newtext:
-                print(f"\t-> {pseudofile}")
+                print(f"\tRewriting -> {pseudofile}")
                 if not dryrun:
                     pseudofile.write_text(newtext.replace('sub-^#^','sub-'))            # Remove the temporary characters
 

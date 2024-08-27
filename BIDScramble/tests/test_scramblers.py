@@ -1,4 +1,6 @@
 import json
+import shutil
+
 import numpy as np
 import pandas as pd
 import math
@@ -295,18 +297,47 @@ def test_scramble_pseudo(tmp_path):
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds003810/participants.tsv', tmp_path/'input'/'participants.tsv')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds003810/participants.tsv', tmp_path/'input'/'participants.json')
 
-    # Pseudonymize the data
+    # Pseudonymize the data using permuted subject identifiers
     scramble_pseudo(tmp_path/'input', tmp_path/'output', r'^(?!\.).*', True, 'permute', '^sub-(.*?)/.*', 'yes')
     assert (tmp_path/'output'/'participants.json').is_file()
+    assert (tmp_path/'output'/edfpath).is_file()
 
     # Check the participants.tsv file
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t', index_col='participant_id')
     outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t', index_col='participant_id')
-    assert inputdata.shape == outputdata.shape
+    assert outputdata.shape == inputdata.shape
     for column, values in outputdata.items():
         assert column in inputdata.columns
     assert not inputdata.index.equals(outputdata.index)
     for index in inputdata.index:
         assert index in outputdata.index
 
-    assert (tmp_path/'output'/edfpath).is_file()
+    # Pseudonymize the n=1 data using random subject identifiers
+    shutil.rmtree(tmp_path/'output')
+    scramble_pseudo(tmp_path/'input', tmp_path/'output', r'sub-03/.*', True, 'random', '^sub-(.*?)/.*', 'yes')
+    assert (tmp_path/'output'/'participants.json').is_file()
+    assert not (tmp_path/'output'/edfpath).is_file()
+
+    # Check the participants.tsv file
+    outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t', index_col='participant_id')
+    assert outputdata.shape == (1, inputdata.shape[1])
+    for column, values in outputdata.items():
+        assert column in inputdata.columns
+    assert not inputdata.index.equals(outputdata.index)
+    for index in inputdata.index:
+        assert index not in outputdata.index
+
+    # Pseudonymize the n-1 data using random subject identifiers
+    shutil.rmtree(tmp_path/'output')
+    scramble_pseudo(tmp_path/'input', tmp_path/'output', r'(?!sub-03/).*', True, 'random', '^sub-(.*?)/.*', 'yes')
+    assert (tmp_path/'output'/'participants.json').is_file()
+    assert not (tmp_path/'output'/edfpath).is_file()
+
+    # Check the participants.tsv file
+    outputdata = pd.read_csv(tmp_path/'output'/'participants.tsv', sep='\t', index_col='participant_id')
+    assert outputdata.shape == (inputdata.shape[0] - 1, inputdata.shape[1])
+    for column, values in outputdata.items():
+        assert column in inputdata.columns
+    assert not inputdata.index.equals(outputdata.index)
+    for index in inputdata.index:
+        assert index not in outputdata.index
