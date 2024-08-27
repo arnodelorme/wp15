@@ -148,8 +148,8 @@ def addparser_pseudo(parsers, help: str):
 def addparser_fif(parsers, help: str):
 
     description = textwrap.dedent("""
-    Adds scrambled versions of the FIF files in the input directory to the output directory. If no
-    scrambling method is specified, the default behavior is to null all MEG data.
+    Adds scrambled versions of the FIF files in the input directory to the output directory. If no scrambling method
+    is specified, the default behavior is to null all MEG data.
     """)
 
     epilog = ('examples:\n'

@@ -19,7 +19,7 @@ def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidat
     inputfiles += [rootfile for rootfile in rootfiles if rootfile not in inputfiles]
     subjectids = sorted(set(subid for inputfile in inputfiles for subid in re.findall(pattern, str(inputfile.relative_to(inputdir)))))
     if method == 'random':
-        pseudonyms = [next(tempfile._get_candidate_names()) for _ in subjectids]
+        pseudonyms = [next(tempfile._get_candidate_names()).replace('_','x') for _ in subjectids]
     elif method == 'permute':
         pseudonyms = random.sample(subjectids, len(subjectids))
     elif method == 'original':

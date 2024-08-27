@@ -226,7 +226,7 @@ options:
 
 examples:
   scramble data/bids data/synthetic pseudo
-  scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003)/.*' 
+  scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003/).*' 
   scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
 ```
 

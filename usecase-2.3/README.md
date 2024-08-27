@@ -66,6 +66,14 @@ mv fieldtrip-master fieldtrip
 rm master.zip
 ```
 
+Alternatively, you can install the software in an Apptainer container image.
+
+```console
+cd wp15/usecase-2.3
+sudo apptainer build ../../pipeline.sif pipeline.def
+cd ../..
+```
+
 ### Legal aspects of the software
 
 MATLAB is commercial software and requires a license.
@@ -106,8 +114,7 @@ datalad drop *
 cd ..
 
 # remove the input and output directory
-rm -rf input
-rm -rf output
+rm -rf input output
 ```
 
 ## Scrambled data

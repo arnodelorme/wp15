@@ -50,14 +50,13 @@ def test_scramble_fif(tmp_path):
 def test_scramble_stub(tmp_path):
 
     # Create the input data
-    (tmp_path/'input').mkdir()
+    (tmp_path/'input'/'code').mkdir(parents=True)
+    (tmp_path/'input'/'derivatives').mkdir()
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv', tmp_path/'input'/'participants.tsv')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'participants.json')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json', tmp_path/'input'/'dataset_description.json')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/README', tmp_path/'input'/'README')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES', tmp_path/'input'/'CHANGES')
-    (tmp_path/'input'/'code').mkdir()
-    (tmp_path/'input'/'derivatives').mkdir()
 
     # Fix the spdx identifier
     description = (tmp_path/'input'/'dataset_description.json').read_text().replace('CC0', 'CC0-1.0')
@@ -68,9 +67,9 @@ def test_scramble_stub(tmp_path):
 
     # Check that all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()
-    assert len(list((tmp_path/'input').rglob('*'))) == len(list((tmp_path/'output').rglob('*')))
     assert (tmp_path/'output'/'code').is_dir()
     assert not (tmp_path/'output'/'derivatives').is_dir()
+    assert len(list((tmp_path/'input').rglob('*'))) == len(list((tmp_path/'output').rglob('*')))
 
     # Check that the 'GeneratedBy' and 'DatasetType' have been written
     with (tmp_path/'output'/'dataset_description.json').open('r') as fid:
@@ -296,11 +295,15 @@ def test_scramble_pseudo(tmp_path):
         urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds003810/{jsonpath}", tmp_path/'input'/jsonpath)
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds003810/participants.tsv', tmp_path/'input'/'participants.tsv')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds003810/participants.tsv', tmp_path/'input'/'participants.json')
+    (tmp_path/'input'/'.bidsignore').touch()
+    (tmp_path/'input'/'.git').mkdir()
 
     # Pseudonymize the data using permuted subject identifiers
     scramble_pseudo(tmp_path/'input', tmp_path/'output', r'^(?!\.).*', True, 'permute', '^sub-(.*?)/.*', 'yes')
     assert (tmp_path/'output'/'participants.json').is_file()
     assert (tmp_path/'output'/edfpath).is_file()
+    assert (tmp_path/'output'/'.bidsignore').is_file()
+    assert not (tmp_path/'output'/'.git').is_dir()
 
     # Check the participants.tsv file
     inputdata  = pd.read_csv(tmp_path/'input'/'participants.tsv', sep='\t', index_col='participant_id')
