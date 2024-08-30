@@ -1,10 +1,10 @@
 % the input and output directories can be specified via environment variables
-if isempty(getenv('INPUTDIR'))
+if ~isempty(getenv('INPUTDIR'))
   inputprefix = getenv('INPUTDIR');
 else
   inputprefix = fullfile(pwd, 'input');
 end
-if isempty(getenv('OUTPUTDIR'))
+if ~isempty(getenv('OUTPUTDIR'))
   outputprefix = getenv('OUTPUTDIR');
 else
   outputprefix = fullfile(pwd, 'output');
