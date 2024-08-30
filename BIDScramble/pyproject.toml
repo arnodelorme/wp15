@@ -1,5 +1,5 @@
 [build-system]
-requires        = ['setuptools >= 62.2.0', 'wheel', 'tomli >= 1.1.0 ; python_version < "3.11"']
+requires        = ['setuptools >= 62.2.0', 'wheel']
 build-backend   = 'setuptools.build_meta'
 
 [project]
@@ -19,7 +19,6 @@ dependencies    = ['pandas',
                    'pybids',
                    'bids-validator',
                    'tqdm',
-                   'tomli >= 1.1.0 ; python_version < "3.11"',
                    'drmaa',
                    'mne',
                    'mne_bids']
