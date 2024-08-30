@@ -44,14 +44,14 @@ From: ubuntu:24.04    # Alternatively use a ready-made Matlab base image: https:
   if [ -z ${1} ] ; then echo Error: input directory must be specified && exit 1 ; fi
   if [ -z ${2} ] ; then echo Error: output directory must be specified && exit 1 ; fi
   if [ -z ${3} ] ; then echo Error: analysis level must be specified as participant or group && exit 1 ; fi
-  export INPUTDIR=${1}
-  export OUTPUTDIR=${2}
-  export LEVEL=${3}
+  INPUTDIR=${1}
+  OUTPUTDIR=${2}
+  LEVEL=${3}
 
   if [ ${LEVEL} = "participant" ] ; then
-    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_participant"
+    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_participant ${INPUTDIR} ${OUTPUTDIR}"
   elif [ ${LEVEL} = "group" ] ; then
-    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_group"
+    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_group ${INPUTDIR} ${OUTPUTDIR}"
   else
     echo Error: analysis level must be specified as participant or group && exit 1
   fi 

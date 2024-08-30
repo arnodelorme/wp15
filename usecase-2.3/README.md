@@ -88,8 +88,8 @@ Executing the pipeline from the MATLAB command window is done like this:
 restoredefaultpath;
 addpath('fieldtrip');
 addpath('wp15/usecase-2.3');
-analyze_participant
-analyze_group
+analyze_participant input output
+analyze_group input output
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
