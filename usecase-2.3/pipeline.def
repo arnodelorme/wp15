@@ -41,17 +41,17 @@ From: ubuntu:24.04    # Alternatively use a ready-made Matlab base image: https:
 %runscript
   # parse command line arguments
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  if [ -z ${1} ] ; then echo Error: input directory must be specified && exit 1 ; fi
-  if [ -z ${2} ] ; then echo Error: output directory must be specified && exit 1 ; fi
-  if [ -z ${3} ] ; then echo Error: analysis level must be specified as participant or group && exit 1 ; fi
-  INPUTDIR=${1}
-  OUTPUTDIR=${2}
-  LEVEL=${3}
+  if [ -z "${1}" ] ; then echo Error: input directory must be specified && exit 1 ; fi
+  if [ -z "${2}" ] ; then echo Error: output directory must be specified && exit 1 ; fi
+  if [ -z "${3}" ] ; then echo Error: analysis level must be specified as participant or group && exit 1 ; fi
+  INPUTDIR="'${1}'"
+  OUTPUTDIR="'${2}'"
+  LEVEL="${3}"
 
   if [ ${LEVEL} = "participant" ] ; then
-    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_participant ${INPUTDIR} ${OUTPUTDIR}"
+    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_participant(${INPUTDIR}, ${OUTPUTDIR})"
   elif [ ${LEVEL} = "group" ] ; then
-    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_group ${INPUTDIR} ${OUTPUTDIR}"
+    /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; analyze_group(${INPUTDIR}, ${OUTPUTDIR})"
   else
     echo Error: analysis level must be specified as participant or group && exit 1
   fi 
