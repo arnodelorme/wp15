@@ -21,7 +21,8 @@ dependencies    = ['pandas',
                    'tqdm',
                    'drmaa',
                    'mne',
-                   'mne_bids']
+                   'mne_bids',
+                   'brainvision']
 
 [project.urls]
 homepage        = 'https://github.com/SIESTA-eu/wp15'

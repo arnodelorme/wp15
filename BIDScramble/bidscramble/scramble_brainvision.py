@@ -2,7 +2,7 @@
 
 import numpy as np
 import re
-import brainvsion
+import brainvision
 from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles
