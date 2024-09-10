@@ -15,7 +15,7 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-You can then install the BIDScramble tools using git (with authentication for wp15) and pip.
+You can then install the BIDScramble tools using git and pip.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git     # Or download the code yourself
@@ -28,8 +28,8 @@ To scramble BIDS data you can run the command-line tool named ``scramble``. At i
 
 ### scramble
 
-```
-usage: scramble [-h] bidsfolder outputfolder {stub,tsv,json,nii,fif,swap,pseudo} ...
+```console
+usage: scramble [-h] bidsfolder outputfolder {stub,tsv,json,nii,fif,brainvision,swap,pseudo} ...
 
 The general workflow to build up a scrambled dataset is by consecutively running `scramble` for actions of your
 choice. For instance, you could first run `scramble` with the `stub` action to create a dummy dataset with only
@@ -52,6 +52,7 @@ Action:
     json                Saves scrambled json files in outputfolder
     nii                 Saves scrambled NIfTI files in outputfolder
     fif                 Saves scrambled FIF files in outputfolder
+    brainvision         Saves scrambled BrainVision files in outputfolder
     swap                Saves swapped file contents in outputfolder
     pseudo              Saves pseudonymized file names and contents in outputfolder
 
@@ -62,7 +63,7 @@ examples:
 
 #### Action: stub
 
-```
+```console
 usage: scramble bidsfolder outputfolder stub [-h] [-s PATTERN] [-d]
 
 Creates a copy of the input directory in which all files are empty stubs. Exceptions to this are the
@@ -85,7 +86,7 @@ examples:
 
 #### Action: tsv
 
-```
+```console
 usage: scramble bidsfolder outputfolder tsv [-h] [-s PATTERN] [-d] {permute} ...
 
 Adds scrambled versions of the tsv files in the input directory to the output directory. If no scrambling method
@@ -109,9 +110,33 @@ examples:
   scramble data/bids data/synthetic tsv permute -s participants.tsv -p (participant_id|SAS.*)
 ```
 
+#### Action: json
+
+```console
+usage: scramble bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
+
+Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
+preserve expression is specified, the default behavior is to null all values.
+
+options:
+  -h, --help            show this help message and exit
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -p PATTERN, --preserve PATTERN
+                        A fullmatch regular expression pattern that is matched against all keys in the json
+                        files. The json values are copied over when a key matches positively (default: None)
+
+examples:
+  scramble data/bids data/synthetic json
+  scramble data/bids data/synthetic json participants.json -p '.*'
+  scramble data/bids data/synthetic json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
+```
+
 #### Action: nii
 
-```
+```console
 usage: scramble bidsfolder outputfolder nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
                                              {blur,permute,diffuse,wobble} ...
 
@@ -145,33 +170,9 @@ examples:
   scramble data/bids data/synthetic nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
-#### Action: json
-
-```
-usage: scramble bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
-
-Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
-preserve expression is specified, the default behavior is to null all values.
-
-options:
-  -h, --help            show this help message and exit
-  -s PATTERN, --select PATTERN
-                        A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
-  -p PATTERN, --preserve PATTERN
-                        A fullmatch regular expression pattern that is matched against all keys in the json
-                        files. The json values are copied over when a key matches positively (default: None)
-
-examples:
-  scramble data/bids data/synthetic json
-  scramble data/bids data/synthetic json participants.json -p '.*'
-  scramble data/bids data/synthetic json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
-```
-
 #### Action: swap
 
-```
+```console
 usage: scramble bidsfolder outputfolder swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
 
 Randomly swappes the content of data files between a group of similar files in the input directory and save them
@@ -197,12 +198,11 @@ examples:
 
 #### Action: pseudo
 
-```
+```console
 usage: scramble bidsfolder outputfolder pseudo [-h] [-s PATTERN] [-b] [-d] [-p PATTERN] [-r {yes,no}]
                                                {random,permute,original}
 
-Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
-anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym anywhere in the filepath as well as inside all text files (such as json and tsv-files).
 
 positional arguments:
   {random,permute,original}
@@ -237,5 +237,5 @@ This code is released under the GPLv3 license.
 ## Related tools
 
 - https://github.com/PennLINC/CuBIDS
-- https://peerherholz.github.io/BIDSonym/
+- https://peerherholz.github.io/BIDSonym
 - https://arx.deidentifier.org
