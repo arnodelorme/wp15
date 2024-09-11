@@ -14,13 +14,17 @@ def scramble_brainvision(bidsfolder: str, outputfolder: str, select: str, bidsva
     outputdir = Path(outputfolder).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = get_inputfiles(inputdir, select, '*.fif', bidsvalidate)
+    inputfiles = get_inputfiles(inputdir, select, '*.vhdr', bidsvalidate)
     for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         (vhdr, vmrk, data) = brainvision.read(inputfile)
 
         def do_permute(data):
-            return np.random.permutation(data)
+            # scramble the samples in each channel
+            rng = np.random.default_rng()
+            for channel in range(data.shape[0]):
+                data[channel] = rng.permutation(data[channel])
+            return data
 
         def do_null(data):
             return data * 0

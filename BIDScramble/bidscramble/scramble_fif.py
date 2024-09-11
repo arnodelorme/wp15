@@ -32,7 +32,11 @@ def scramble_fif(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: 
             raise Exception('cannot read epoched FIF file')
 
         def do_permute(data):
-            return np.random.permutation(data)
+            # scramble the samples in each channel
+            rng = np.random.default_rng()
+            for channel in range(data.shape[0]):
+                data[channel] = rng.permutation(data[channel])
+            return data
 
         def do_null(data):
             return data * 0
