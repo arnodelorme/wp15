@@ -4,12 +4,12 @@ import argparse
 import textwrap
 from .scramble_stub import scramble_stub
 from .scramble_tsv import scramble_tsv
-from .scramble_nii import scramble_nii
 from .scramble_json import scramble_json
-from .scramble_swap import scramble_swap
-from .scramble_pseudo import scramble_pseudo
+from .scramble_nii import scramble_nii
 from .scramble_fif import scramble_fif
 from .scramble_brainvision import scramble_brainvision
+from .scramble_swap import scramble_swap
+from .scramble_pseudo import scramble_pseudo
 
 # Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
