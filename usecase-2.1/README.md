@@ -70,7 +70,7 @@ Rscript pipeline.R  --inputdir scrambled --outputdir output
 ### Building the container
 
 ```console
-apptainer build pipeline.sif pipeline.dev
+apptainer build pipeline.sif pipeline.def
 ```
 
 ### Executing the container
