@@ -13,6 +13,10 @@ def scramble_stub(bidsfolder: str, outputfolder: str, select: str, bidsvalidate:
     inputdir  = Path(bidsfolder).resolve()
     outputdir = Path(outputfolder).resolve()
 
+    # Ensure that the output directory exists
+    if not outputdir.is_dir():
+      outputdir.mkdir(parents=True, exist_ok=True)
+
     # Create placeholder output files for selected input files
     print(f"Creating BIDS stub data in: {outputdir}")
     inputfiles = get_inputfiles(inputdir, select, '*', bidsvalidate)        # NB: this skips empty directories
