@@ -4,11 +4,12 @@ import argparse
 import textwrap
 from .scramble_stub import scramble_stub
 from .scramble_tsv import scramble_tsv
-from .scramble_nii import scramble_nii
 from .scramble_json import scramble_json
+from .scramble_nii import scramble_nii
+from .scramble_fif import scramble_fif
+from .scramble_brainvision import scramble_brainvision
 from .scramble_swap import scramble_swap
 from .scramble_pseudo import scramble_pseudo
-from .scramble_fif import scramble_fif
 
 # Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
@@ -62,6 +63,23 @@ def addparser_tsv(parsers, help: str):
     subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
 
+def addparser_json(parsers, help: str):
+
+    description = textwrap.dedent("""
+    Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
+    preserve expression is specified, the default behavior is to null all values.
+    """)
+
+    epilog = ('examples:\n'
+              '  scramble data/bids data/synthetic json\n'
+              "  scramble data/bids data/synthetic json participants.json -p '.*'\n"
+              "  scramble data/bids data/synthetic json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'\n ")
+
+    parser = parsers.add_parser('json', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser.add_argument('-p','--preserve', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against all keys in the json files. The json values are copied over when a key matches positively')
+    parser.set_defaults(func=scramble_json)
+
+
 def addparser_nii(parsers, help: str):
 
     description = textwrap.dedent("""
@@ -91,22 +109,38 @@ def addparser_nii(parsers, help: str):
     subparser.add_argument('-f','--freqrange', metavar='FREQ', help='The lowest and highest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])
 
 
-def addparser_json(parsers, help: str):
+def addparser_fif(parsers, help: str):
 
     description = textwrap.dedent("""
-    Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
-    preserve expression is specified, the default behavior is to null all values.
+    Adds scrambled versions of the FIF files in the input directory to the output directory. If no scrambling method
+    is specified, the default behavior is to null the data.
     """)
 
     epilog = ('examples:\n'
-              '  scramble data/bids data/synthetic json\n'
-              "  scramble data/bids data/synthetic json participants.json -p '.*'\n"
-              "  scramble data/bids data/synthetic json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'\n ")
+              '  scramble data/bids data/synthetic fif\n'
+              '  scramble data/bids data/synthetic fif permute\n')
 
-    parser = parsers.add_parser('json', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    parser.add_argument('-p','--preserve', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against all keys in the json files. The json values are copied over when a key matches positively')
-    parser.set_defaults(func=scramble_json)
+    parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
+    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the MEG samples in each channel')
+    parser.set_defaults(func=scramble_fif)
 
+def addparser_brainvision(parsers, help: str):
+
+    description = textwrap.dedent("""
+    Adds scrambled versions of the BrainVision EEG files in the input directory to the output directory. If no scrambling method
+    is specified, the default behavior is to null the data.
+    """)
+
+    epilog = ('examples:\n'
+              '  scramble data/bids data/synthetic brainvision\n'
+              '  scramble data/bids data/synthetic brainvision permute\n')
+
+    parser = parsers.add_parser('brainvision', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
+    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the EEG samples in each channel')
+    parser.set_defaults(func=scramble_brainvision)
+    
 
 def addparser_swap(parsers, help: str):
 
@@ -145,23 +179,6 @@ def addparser_pseudo(parsers, help: str):
     parser.set_defaults(func=scramble_pseudo)
 
 
-def addparser_fif(parsers, help: str):
-
-    description = textwrap.dedent("""
-    Adds scrambled versions of the FIF files in the input directory to the output directory. If no scrambling method
-    is specified, the default behavior is to null all MEG data.
-    """)
-
-    epilog = ('examples:\n'
-              '  scramble data/bids data/synthetic fif\n'
-              '  scramble data/bids data/synthetic fif permute\n')
-
-    parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
-    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the MEG samples in each channel')
-    parser.set_defaults(func=scramble_fif)
-
-
 def main():
     """Console script entry point"""
 
@@ -182,13 +199,14 @@ def main():
 
     # Add the subparsers
     subparsers = parser.add_subparsers(title='Action', help='Add -h, --help for more information', required=True)
-    addparser_stub(subparsers,   help='Saves a dummy bidsfolder skeleton in outputfolder')
-    addparser_tsv(subparsers,    help='Saves scrambled tsv files in outputfolder')
-    addparser_json(subparsers,   help='Saves scrambled json files in outputfolder')
-    addparser_nii(subparsers,    help='Saves scrambled NIfTI files in outputfolder')
-    addparser_fif(subparsers,    help='Saves scrambled FIF files in outputfolder')
-    addparser_swap(subparsers,   help='Saves swapped file contents in outputfolder')
-    addparser_pseudo(subparsers, help='Saves pseudonymized file names and contents in outputfolder')
+    addparser_stub(subparsers,          help='Saves a dummy bidsfolder skeleton in outputfolder')
+    addparser_tsv(subparsers,           help='Saves scrambled tsv files in outputfolder')
+    addparser_json(subparsers,          help='Saves scrambled json files in outputfolder')
+    addparser_nii(subparsers,           help='Saves scrambled NIfTI files in outputfolder')
+    addparser_fif(subparsers,           help='Saves scrambled FIF files in outputfolder')
+    addparser_brainvision(subparsers,   help='Saves scrambled BrainVision files in outputfolder')
+    addparser_swap(subparsers,          help='Saves swapped file contents in outputfolder')
+    addparser_pseudo(subparsers,        help='Saves pseudonymized file names and contents in outputfolder')
 
     # Execute the scramble function
     args = parser.parse_args()
