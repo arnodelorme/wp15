@@ -6,11 +6,11 @@ from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles, prune_participants_tsv
 
-def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
+def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
 
     # Defaults
-    inputdir   = Path(bidsfolder).resolve()
-    outputdir  = Path(outputfolder).resolve()
+    inputdir   = Path(inputdir).resolve()
+    outputdir  = Path(outputdir).resolve()
     outputdir_ = outputdir/'tmpdir_swap' if method != 'original' else outputdir
 
     # Create pseudonyms for all selected subject identifiers

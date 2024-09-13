@@ -12,7 +12,7 @@ __url__         = metadata.metadata('bidscramble')['Project-URL']
 
 def get_inputfiles(inputdir: pathlib.Path, select: str, pattern: str='*', bidsvalidate: bool=False) -> List[pathlib.Path]:
     """
-    :param inputdir:     The input folder from which files are retrieved using rglob
+    :param inputdir:     The input directory from which files are retrieved using rglob
     :param select:       The regular expression pattern to select the files of interest
     :param pattern:      The rglob search pattern (e.g. useful for additional filtering on file extension)
     :param bidsvalidate: Filters out BIDS files if True
@@ -31,22 +31,22 @@ def get_inputfiles(inputdir: pathlib.Path, select: str, pattern: str='*', bidsva
     return sorted(inputfiles)       # TODO: create a class and return input objects?
 
 
-def prune_participants_tsv(bidsfolder: pathlib.Path):
+def prune_participants_tsv(inputdir: pathlib.Path):
     """
-    Removes rows from the participants tsv file if their subject folders do not exist
+    Removes rows from the participants tsv file if their subject directories do not exist
 
-    :param bidsfolder: The BIDS (or BIDS-like) input directory with the participants.tsv file
+    :param inputdir: The BIDS (or BIDS-like) input directory with the participants.tsv file
     :return:
     """
 
-    participants_tsv = bidsfolder/'participants.tsv'
+    participants_tsv = inputdir/'participants.tsv'
     if participants_tsv.is_file():
 
         table = pd.read_csv(participants_tsv, sep='\t', dtype=str, index_col='participant_id')
         for subid in table.index:
             if not isinstance(subid, str):  # Can happen with anonymized data
                 return
-            if not (bidsfolder/subid).is_dir():
+            if not (inputdir/subid).is_dir():
                 print(f"Pruning {subid} record from {participants_tsv}")
                 table.drop(subid, inplace=True)
 

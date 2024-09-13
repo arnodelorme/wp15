@@ -5,12 +5,13 @@ from pathlib import Path
 from bids import BIDSLayout
 from . import get_inputfiles
 
-def scramble_swap(bidsfolder: str, outputfolder: str, select: str, grouping: list, bidsvalidate: bool=False, dryrun: bool=False, **_):
+
+def scramble_swap(inputdir: str, outputdir: str, select: str, grouping: list, bidsvalidate: bool=False, dryrun: bool=False, **_):
 
     # Defaults
-    inputdir  = Path(bidsfolder).resolve()
+    inputdir  = Path(inputdir).resolve()
     layout    = BIDSLayout(inputdir, validate=bidsvalidate)
-    outputdir = Path(outputfolder).resolve()
+    outputdir = Path(outputdir).resolve()
 
     # Use a tempdir to catch inplace editing
     print(f"Swapping BIDS data in: {outputdir}")

@@ -7,11 +7,11 @@ from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles
 
-def scramble_fif(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str='', dryrun: bool=False, **_):
+def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='', dryrun: bool=False, **_):
 
     # Defaults
-    inputdir  = Path(bidsfolder).resolve()
-    outputdir = Path(outputfolder).resolve()
+    inputdir  = Path(inputdir).resolve()
+    outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
     inputfiles = get_inputfiles(inputdir, select, '*.fif', bidsvalidate)
