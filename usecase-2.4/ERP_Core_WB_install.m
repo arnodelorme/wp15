@@ -1,3 +1,7 @@
+% This code is shared under the CC0 license
+%
+% Copyright (C) 2024, SIESTA workpackage 15 team
+
 % add EEGLAB -- edit path as needed
 addpath('eeglab2024.0');
 

@@ -80,6 +80,8 @@ MATLAB is commercial software and requires a license.
 
 FieldTrip is open source and released under the GPLv3 license.
 
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Executing the pipeline
 
 Executing the pipeline from the MATLAB command window is done like this:

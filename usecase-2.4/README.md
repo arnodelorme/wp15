@@ -115,6 +115,8 @@ LIMO MEEG is open-source software released under the MIT License.
 
 FieldTrip is open source software and released under the GPLv3 license.
 
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Executing the pipeline
 
 Executing the pipeline from the Linux command-line is done like this:

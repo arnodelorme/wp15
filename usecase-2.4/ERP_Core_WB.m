@@ -26,6 +26,11 @@ function ERP_Core_WB(source, destination, varargin)
 %
 % Cyril Pernet, during the spring of 2024 
 % + various updates by Marcel and Jan-Mathijs
+%
+% This code is shared under the CC0 license
+%
+% Copyright (C) 2024, SIESTA workpackage 15 team
+
 
 % arguments that could be made optional epoch_window, baseline_window, analysis_window, ICAname
 

@@ -53,6 +53,8 @@ The R-package and the optparse package are licensed under GPL-2 or GPL-3.
 
 The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
 
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Executing the pipeline
 
 Executing the pipeline from the Linux command-line is done with the real input data like this:
