@@ -17,7 +17,7 @@ source siesta/bin/activate
 python -m pip install datalad
 python -m pip install datalad-installer
 datalad-installer git-annex -m datalad/git-annex:release --install-dir siesta
-#move lib and lib files in the same directory
+#move lib and bin in the same directory
 mv siesta/usr/lib/* siesta/lib/.
 mv siesta/usr/bin/* siesta/bin/.
 #get subjects using datalad
