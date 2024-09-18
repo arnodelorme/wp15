@@ -23,6 +23,7 @@ datalad get sub-*
 ````
 
 ### Data citation
+
 [Tang, J., LeBel, A., Jain, S. et al. Semantic reconstruction of continuous language from non-invasive brain recordings. Nat Neurosci 26, 858–866 (2023).](https://doi.org/10.1038/s41593-023-01304-9)
 
 ### Legal aspects of the input data
@@ -39,7 +40,7 @@ The `whitelist.txt` file contains a complete list of the output data that is to 
 
 ### Software installation
 
-This requires ...
+This requires the Github wp15 repository, MATLAB and the Github spm12.zip file. 
 
 ### Legal aspects of the software
 
