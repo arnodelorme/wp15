@@ -8,7 +8,7 @@ The pipeline is expected to be executed on a Linux computer.
 
 The input data is a freely available online resource named "OpenNeuro". More specifically, the suject database has ds003020 as Openneuro Accession Number.
 
-The input data consists of about 992 files with a combined size of 123.01GB. The data can be downloaded using datalab. In order to be able to use datalad, a recent version of git is required.
+The input data consists of about 992 files with a combined size of 123.01GB. The data can be downloaded using [datalab](https://www.datalad.org/). In order to be able to use datalad, a recent version of [git]( https://git-scm.com/downloads) is required.
 
 
 ### Data citation
