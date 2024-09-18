@@ -13,7 +13,7 @@ The input data is a freely available online resource named "OpenNeuro". More spe
 
 ### Legal aspects of the input data
 
-The input dataset has been released under the ... license.
+The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
 
 ## Output data
 
