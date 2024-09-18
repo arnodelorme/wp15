@@ -12,8 +12,8 @@ The input data is a freely available online resource named "OpenNeuro". More spe
 [Tang, J., LeBel, A., Jain, S. et al. Semantic reconstruction of continuous language from non-invasive brain recordings. Nat Neurosci 26, 858–866 (2023).](https://doi.org/10.1038/s41593-023-01304-9)
 
 A(n incomplete) list of papers using this dataset from our group are listed below:
-[LeBel, A., Wagner, L., Jain, S. et al. A natural language fMRI dataset for voxelwise encoding models. Sci Data 10, 555 (2023).](https://doi.org/10.1038/s41597-023-02437-z)
-[LeBel, A., Jain, S., & Huth, A. G. (2021). Voxelwise encoding models show that cerebellar language representations are highly conceptual. Journal of Neuroscience, 41(50), 10341–10355.](https://doi.org/10.1523/JNEUROSCI.0118-21.2021 )
+[LeBel, A., Wagner, L., Jain, S. et al. A natural language fMRI dataset for voxelwise encoding models. Sci Data 10, 555 (2023).](https://doi.org/10.1038/s41597-023-02437-z) \\
+[LeBel, A., Jain, S., & Huth, A. G. (2021). Voxelwise encoding models show that cerebellar language representations are highly conceptual. Journal of Neuroscience, 41(50), 10341–10355.](https://doi.org/10.1523/JNEUROSCI.0118-21.2021)
 [Tang, J., LeBel, A., & Huth, A. G. (2021). Cortical representations of concrete and abstract concepts in language combine visual and linguistic representations. BioRxiv, 2021–05.](https://doi.org/10.1101/2021.05.19.444701)
 
 ### Legal aspects of the input data
