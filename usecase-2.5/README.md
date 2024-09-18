@@ -11,6 +11,7 @@ The input data is a freely available online resource named "OpenNeuro". More spe
 ````
 #create siesta python environment
 python -m venv siesta
+#activate siesta python environment
 source siesta/bin/activate
 #install datalab 
 python -m pip install datalad
