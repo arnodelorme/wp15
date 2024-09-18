@@ -1,16 +1,15 @@
-# SIESTA - work package 15 - use case 2.4
+# SIESTA - work package 15 - use case 2.5
 
 This implements ...
 
-The pipeline is expected to be executed on ... (_specify the operating system_).
+The pipeline is expected to be executed on a Linux computer.
 
 ## Input data
 
-The input data is ...
+The input data is a freely available online resource named "OpenNeuro". More specifically, the suject database has ds003020 as Openneuro Accession Number.
 
-The input data consists of about ... files with a combined size of ...
+The input data consists of about 992 files with a combined size of 123.01GB. The data can be downloaded using datalab. In order to be able to use datalad, a recent version of git is required.
 
-The data can be downloaded from ...
 
 ### Data citation
 
