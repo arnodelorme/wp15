@@ -40,7 +40,7 @@ The `whitelist.txt` file contains a complete list of the output data that is to 
 
 ### Software installation
 
-This requires the Github wp15 repository, MATLAB and the Github spm12.zip file. 
+This requires the Github wp15 repository and MATLAB. 
 
 ### Legal aspects of the software
 
