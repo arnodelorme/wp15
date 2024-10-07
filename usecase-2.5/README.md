@@ -75,7 +75,7 @@ Executing the pipeline from the Linux command-line is done like this:
 #go to wp15 repository
 cd
 cd wp15
-#unzip nifti files uncluded in subjects database
+#unzip nifti files included in subjects database
 python unzipDatabase.py
 #change permissions
 python changePermissions.py
