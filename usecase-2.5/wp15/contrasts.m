@@ -1,4 +1,4 @@
-% appply some contrasts to SPM.mat file  
+% apply some contrasts to SPM.mat file  
 function contrasts(path_output, names, weights)
 
     contrasts = struct;    
