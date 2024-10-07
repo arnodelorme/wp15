@@ -23,7 +23,7 @@ function onePatient(path_username, path_patient, path_output, cellOnset, cellDur
 	contrast_names = ["ME_0Back" "ME_2Back" "ME_0Back" "0Back_gt_R" "2Back_gt_R"];
     weights = [0 1 0 0; 0 0 1 0; 0 0 0 1; -1 1 0 0; -1 0 1 0; -1 0 0 1];
 	
-	% estimate model and apply contrasts on files producted by the previous steps 
+	% estimate model and apply contrasts on files produced by the previous steps 
 	 for s = 3:szSessions(1)
 		path_session = fullfile(path_output, list_sessions(s).name);
 		path_func = fullfile(path_session, 'func');
