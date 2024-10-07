@@ -25,10 +25,6 @@ git clone https://github.com/OpenNeuroDatasets/ds003020.git input
 cd input 
 datalad get sub-*
 ````
-After downloading the subject database, a modified SPM version (no user interactive sections) is installed.
-````
-git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm
-````
 ### Data citation
 
 [Tang, J., LeBel, A., Jain, S. et al. Semantic reconstruction of continuous language from non-invasive brain recordings. Nat Neurosci 26, 858–866 (2023).](https://doi.org/10.1038/s41593-023-01304-9)
@@ -44,6 +40,18 @@ The output data that is to be shared consists of folders and files that represen
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ## Analysis pipeline
+
+After downloading the subject database:
+- a modified SPM version (no user interactive sections)
+````
+cd
+git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm
+````
+- the wp15 repository
+````
+cd
+git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm
+````
 
 ### Software installation
 
