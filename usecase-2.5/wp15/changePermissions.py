@@ -8,8 +8,6 @@ path_home = '/' + list_strings[1];
 path_username = os.path.join(path_home, list_strings[2]);
 path_input = os.path.join(path_username, 'input');
 list_subjects = os.listdir(path_input);
-print(list_subjects);
-sys.exit()
 
 for sub in list_subjects:
     if sub[:3] == "sub":
