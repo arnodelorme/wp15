@@ -41,7 +41,7 @@ function onePatient(path_username, path_patient, path_output, cellOnset, cellDur
 		end 
 	end
 	
-	% apply the second level analysis to files producted by the previous steps 
+	% apply the second level analysis to files produced by the previous steps 
 	for s = 3:szSessions(1)
 		path_session = fullfile(path_output, list_sessions(s).name);
 		path_func = fullfile(path_session, 'func');
