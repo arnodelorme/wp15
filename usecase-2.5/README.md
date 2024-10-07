@@ -50,7 +50,7 @@ git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://githu
 - the wp15 repository
 ````
 cd
-git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm
+git clone wp15
 ````
 
 ### Software installation
