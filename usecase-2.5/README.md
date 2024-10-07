@@ -67,4 +67,9 @@ matlab -nodesktop -r "workPackageCerCo; exit"
 
 ## Cleaning up
 
-Cleaning up the input and output data is done using
+Cleaning up the input and output data is done using:
+````
+cd
+sudo rm -r input
+sudo rm -r output
+````
