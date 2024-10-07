@@ -25,7 +25,10 @@ git clone https://github.com/OpenNeuroDatasets/ds003020.git input
 cd input 
 datalad get sub-*
 ````
-
+After downloading the subject database, a modified SPM version (no user interactive sections) is installed.
+````
+git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm
+````
 ### Data citation
 
 [Tang, J., LeBel, A., Jain, S. et al. Semantic reconstruction of continuous language from non-invasive brain recordings. Nat Neurosci 26, 858–866 (2023).](https://doi.org/10.1038/s41593-023-01304-9)
@@ -56,8 +59,11 @@ _Licenses for other software that is used are to be specified here._
 
 ### Executing the pipeline
 
-Executing the pipeline is done by ...
+Executing the pipeline is done by:
+````
+cd wp15
+matlab -nodesktop -r "workPackageCerCo; exit"
 
 ## Cleaning up
 
-Cleaning up the input and output data is done using ...
+Cleaning up the input and output data is done using
