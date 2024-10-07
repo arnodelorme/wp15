@@ -1,4 +1,4 @@
-% apply first level function based on nifti files (rsub*) and their associated text files (producted by the spm_preprocess function)
+% apply first level function based on nifti files (rsub*) and their associated text files (produced by the spm_preprocess function)
 function firstLevel(path_username, path_input, path_output, struct_level1, struct_level2)
     
     path_workpackage = fullfile(path_username, 'wp15');
