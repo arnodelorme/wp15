@@ -47,7 +47,7 @@ The `whitelist.txt` file contains a complete list of the output data that is to 
 
 ### Software installation
 
-This requires the Github wp15 repository and MATLAB. 
+This requires the Github wp15 repository, SPM and MATLAB softwares. 
 
 ### Legal aspects of the software
 
@@ -59,10 +59,11 @@ _Licenses for other software that is used are to be specified here._
 
 ### Executing the pipeline
 
-Executing the pipeline is done by:
+Executing the pipeline from the Linux command-line is done like this:
 ````
 cd wp15
 matlab -nodesktop -r "workPackageCerCo; exit"
+````
 
 ## Cleaning up
 
