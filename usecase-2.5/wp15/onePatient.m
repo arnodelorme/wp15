@@ -9,7 +9,7 @@ function onePatient(path_username, path_patient, path_output, cellOnset, cellDur
 	list_files = dir(path_input);
 	szFiles = size(list_files);
 		
-	% apply first level parameters to files producted by spm_preprocess function
+	% apply first level parameters to files produced by spm_preprocess function
     firstLevelParameters = struct('timing_units', '', 'timing_RT', '', 'conditionName', '', 'conditionOnset', '', 'conditionDuration', '');
     firstLevelParameters = create_levelParameters(2, 'intact', [25 75 125 175 225 275], 25);
     secondLevelParameters = struct('timing_units', '', 'timing_RT', '', 'conditionName', '', 'conditionOnset', '', 'conditionDuration', '');
