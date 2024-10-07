@@ -56,7 +56,7 @@ git clone wp15
 
 ### Software installation
 
-This requires the Github wp15 repository, SPM and MATLAB softwares. 
+This requires the Github wp15 repository, SPM and MATLAB software. 
 
 ### Legal aspects of the software
 
