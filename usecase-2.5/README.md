@@ -61,6 +61,8 @@ This requires the Github wp15 repository, SPM and MATLAB softwares.
 
 MATLAB is commercial software.
 
+Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
+
 SPM is open source software and released under the GPLv2 license.
 
 _Licenses for other software that is used are to be specified here._
@@ -69,7 +71,14 @@ _Licenses for other software that is used are to be specified here._
 
 Executing the pipeline from the Linux command-line is done like this:
 ````
+#go to wp15 repository
+cd
 cd wp15
+#unzip nifti files uncluded in subjects database
+python unzipDatabase.py
+#change permissions
+python changePermissions.py
+#execute matlab code
 matlab -nodesktop -r "workPackageCerCo; exit"
 ````
 
