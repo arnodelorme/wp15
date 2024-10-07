@@ -2,7 +2,7 @@
 
 This implements ...
 
-The pipeline is expected to be executed on a Linux computer.
+The pipeline is expected to be executed on a Linux computer and Matlab R2020b.
 
 ## Input data
 
@@ -35,7 +35,8 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Output data
 
-The output data that is to be shared consists of folders and files that represent group-level aggregated data. 
+The output data has the following architecture:
+- 
 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
