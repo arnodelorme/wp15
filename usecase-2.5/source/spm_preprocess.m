@@ -13,10 +13,6 @@ function structPreProcess = spm_preprocess(path_input)
 		list_files = dir(path_anat);
 		szFiles = size(list_files);
 
-		%disp('Step 2 -- Segmentation and Normalization');
-		%segmentation(path_anat);
-		%disp('Step 2 - done!');	
-
         for fm = 3:szFmris(1)
             path_fmri = fullfile(path_session, list_fmris(fm).name);
             check_fmri = isfolder(path_fmri);			
