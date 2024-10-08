@@ -23,7 +23,7 @@ mv siesta/usr/bin/* siesta/bin/.
 #get subjects using datalad
 git clone https://github.com/OpenNeuroDatasets/ds003020.git input
 cd input 
-datalad get sub-*
+datalad unlock get sub-*
 ````
 ### Data citation
 
@@ -48,7 +48,7 @@ After downloading the subject database, a modified SPM version and wp15 reposito
 cd
 git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm
 ````
-- the wp15 repository
+- the source repository
 ````
 cd
 git clone source
@@ -72,13 +72,6 @@ _Licenses for other software that is used are to be specified here._
 
 Executing the pipeline from the Linux command-line is done like this:
 ````
-#go to source repository
-cd
-cd source
-#unzip nifti files included in subjects database
-python unzipDatabase.py
-#change permissions
-python changePermissions.py
 #execute matlab code
 matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; exit"
 ````
