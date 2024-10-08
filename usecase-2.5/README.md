@@ -51,7 +51,7 @@ git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://githu
 - the wp15 repository
 ````
 cd
-git clone wp15
+git clone source
 ````
 
 ### Software installation
@@ -72,15 +72,15 @@ _Licenses for other software that is used are to be specified here._
 
 Executing the pipeline from the Linux command-line is done like this:
 ````
-#go to wp15 repository
+#go to source repository
 cd
-cd wp15
+cd source
 #unzip nifti files included in subjects database
 python unzipDatabase.py
 #change permissions
 python changePermissions.py
 #execute matlab code
-matlab -nodesktop -r "workPackageCerCo; exit"
+matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; exit"
 ````
 
 ## Cleaning up
