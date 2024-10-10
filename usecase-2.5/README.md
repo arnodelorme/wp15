@@ -56,13 +56,11 @@ git clone source
 
 ### Software installation
 
-This requires the Github wp15 repository, SPM and MATLAB software. 
+This requires the Github source repository, SPM and MATLAB software. 
 
 ### Legal aspects of the software
 
 MATLAB is commercial software.
-
-Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
 
 SPM is open source software and released under the GPLv2 license.
 
@@ -81,6 +79,6 @@ matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; ex
 Cleaning up the input and output data is done using:
 ````
 cd
-sudo rm -rf input
-sudo rm -rf output
+sudo rm -r input
+sudo rm -r output
 ````
