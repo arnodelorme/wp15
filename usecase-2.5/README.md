@@ -46,7 +46,7 @@ After downloading the subject database, a modified SPM version and wp15 reposito
 - a modified SPM version (no user interactive sections)
 ````
 cd
-git clone https://github.com/OpenNeuroDatasets/ds003020.git input](https://github.com/Marque-CerCo/spm.git spm)
+git clone (https://github.com/Marque-CerCo/spm.git spm)
 ````
 - the source repository
 ````
