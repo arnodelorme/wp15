@@ -6,7 +6,7 @@ The pipeline is expected to be executed on a Linux computer and Matlab R2020b.
 
 ## Input data
 
-The input data is a freely available online resource named "OpenNeuro". More specifically, the suject database has [ds003020](https://openneuro.org/datasets/ds003020/versions/2.2.0) as Openneuro Accession Number. The input data consists of about 992 files with a combined size of 123.01GB. More specifically, the subject database includes 8 subjects. Each patient undergoes 16 sessions, each involving bold fMRI. The data can be downloaded using [datalab](https://www.datalad.org/). In order to be able to use [datalab](https://www.datalad.org/), a recent version of [git]( https://git-scm.com/downloads) is required.
+The input data is a freely available online resource named "OpenNeuro". More specifically, the suject database has [ds004934](https://openneuro.org/datasets/ds004934/versions/2.2.0) as Openneuro Accession Number. The input data consists of about 1548 files with a combined size of 18.63G. More specifically, the subject database includes 44 subjects. These subjects are divided into two experiments: 17 subjects undergo fMRIs dedicated to experiment 1 whereas 29 subjects undergo fMRIs dedicated to experiment 2. The data can be downloaded using [datalab](https://www.datalad.org/). In order to be able to use [datalab](https://www.datalad.org/), a recent version of [git]( https://git-scm.com/downloads) is required.
 
 ````
 #create siesta python environment
@@ -23,14 +23,14 @@ mv siesta/usr/bin/* siesta/bin/.
 #get subjects using datalad
 git clone https://github.com/OpenNeuroDatasets/ds003020.git input
 cd input 
-datalad unlock get sub-*
+datalad get sub-*
+datalad unlock sub-*
 ````
 ### Data citation
 
-[Tang, J., LeBel, A., Jain, S. et al. Semantic reconstruction of continuous language from non-invasive brain recordings. Nat Neurosci 26, 858–866 (2023).](https://doi.org/10.1038/s41593-023-01304-9)
+[Liu, S., Lydic, K., Mei, L., & Saxe, R. (in press). Violations of physical and psychological expectations in the human adult brain. Imaging Neuroscience.](https://doi.org/10.1162/imag_a_00068)
 
 ### Legal aspects of the input data
-
 The input dataset has been released under the [CC0](https://spdx.org/licenses/CC0-1.0.html) license.
 
 ## Output data
