@@ -6,7 +6,7 @@ The pipeline is expected to be executed on a Linux computer and Matlab R2020b.
 
 ## Input data
 
-The input data is a freely available online resource named "OpenNeuro". More specifically, the suject database has [ds004934](https://openneuro.org/datasets/ds004934/versions/2.2.0) as Openneuro Accession Number. The input data consists of about 1548 files with a combined size of 18.63G. More specifically, the subject database includes 44 subjects. These subjects are divided into two experiments: 17 subjects undergo fMRIs dedicated to experiment 1 whereas 29 subjects undergo fMRIs dedicated to experiment 2. The data can be downloaded using [datalab](https://www.datalad.org/). In order to be able to use [datalab](https://www.datalad.org/), a recent version of [git]( https://git-scm.com/downloads) is required.
+The input data is a freely available online resource named "OpenNeuro". More specifically, the suject database has [ds004934](doi:10.18112/openneuro.ds004934.v1.0.0) as Openneuro Accession Number. The input data consists of about 1548 files with a combined size of 18.63G. More specifically, the subject database includes 44 subjects. These subjects are divided into two experiments: 17 subjects undergo fMRIs dedicated to experiment 1 whereas 29 subjects undergo fMRIs dedicated to experiment 2. The data can be downloaded using [datalab](https://www.datalad.org/). In order to be able to use [datalab](https://www.datalad.org/), a recent version of [git]( https://git-scm.com/downloads) is required.
 
 ````
 #create siesta python environment
