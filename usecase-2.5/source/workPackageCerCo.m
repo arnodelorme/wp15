@@ -29,6 +29,16 @@ addpath(path_config);
 addpath(path_matlabbatch);
 addpath(path_workpackage);
 
+% unzip nifti files
+cd(path_input)
+subs = dir('sub-*/*/*.gz');
+for k = 1:numel(subs)
+    path_file = fullfile(subs(k).folder, subs(k).name);
+    disp(path_file);
+    gunzip(fullfile(subs(k).folder, subs(k).name));
+end
+
+
 % initialize spm12 via matlab
 spm('defaults','fmri');
 spm_jobman('initcfg');
