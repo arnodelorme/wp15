@@ -21,7 +21,7 @@ datalad-installer git-annex -m datalad/git-annex:release --install-dir siesta
 mv siesta/usr/lib/* siesta/lib/.
 mv siesta/usr/bin/* siesta/bin/.
 #get subjects using datalad
-git clone https://github.com/OpenNeuroDatasets/ds003020.git input
+git clone https://github.com/OpenNeuroDatasets/ds004934.git input
 cd input 
 datalad get sub-*
 datalad unlock sub-*
