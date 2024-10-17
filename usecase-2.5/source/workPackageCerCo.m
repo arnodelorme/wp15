@@ -33,7 +33,7 @@ spm_get_defaults('cmdline',true);
 
 % remove the subject 006
 pathSubject_delete = '/home/adrienm/ds004934/sub-SAXNES2s006';
-%removeSubject(pathSubject_delete);
+removeSubject(pathSubject_delete);
 
 % convert tsv files to txt files located at path_input 
 convert_tsv_to_txt(path_input);
