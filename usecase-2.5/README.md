@@ -14,8 +14,8 @@ python -m venv siesta
 #activate siesta python environment
 source siesta/bin/activate
 #install datalad 
-python -m pip install datalad
-python -m pip install datalad-installer
+pip install datalad
+pip install datalad-installer
 datalad-installer git-annex -m datalad/git-annex:release --install-dir siesta
 #move lib and bin in the same directory
 mv siesta/usr/lib/* siesta/lib/.
