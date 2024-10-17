@@ -36,6 +36,7 @@ for k = 1:numel(subs)
     path_file = fullfile(subs(k).folder, subs(k).name);
     disp(path_file);
     gunzip(fullfile(subs(k).folder, subs(k).name));
+    delete(fullfile(subs(k).folder, subs(k).name));
 end
 
 
