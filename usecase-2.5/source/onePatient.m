@@ -2,15 +2,15 @@
 function onePatient(path_username, path_subject, path_output)
 
 	% apply list of transformations to fMRIs
-    spm_preprocess(path_subject);
-    disp('preProcess is done !');
+    	spm_preprocess(path_subject);
+    	disp('preProcess is done !');
 		
 	path_input = fullfile(path_username, 'input');
 	list_subjects = dir(path_input);
 	szSubjects = size(list_subjects);
 
 	contrast_names = "contrast";
-    convec = [1 -1];
+    	convec = [1 -1];
 
 	for sub = 3:szSubjects(1)
 		path_subject = fullfile(path_input, list_subjects(sub).name);
