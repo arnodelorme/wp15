@@ -1,26 +1,5 @@
 time_start = tic;
 
-%%
-% FIXME the below section is very dangerous because it has strong
-% expectations with respect to the user's current working directory
-
-% % retrieve the path username from path_input
-% current_folder = pwd;
-% split_folder = split(current_folder, '/');
-% 
-% % build some paths
-% path_username = strcat('/', split_folder{2}, '/', split_folder{3}, '/');
-% path_spm = fullfile(path_username, 'spm');
-% path_spm12 = fullfile(path_spm, 'spm12');
-% path_fieldtrip = fullfile(path_spm12, 'fieldtrip');
-% path_fileio = fullfile(path_fieldtrip, 'fileio');
-% path_freesurfer = fullfile(path_fieldtrip, 'external/freesurfer');
-% path_config = fullfile(path_spm12, 'config');
-% path_matlabbatch = fullfile(path_spm12, 'matlabbatch');
-% path_input = fullfile(path_username, 'input');
-% path_output = fullfile(path_username, 'output');
-% path_workpackage = fullfile(path_username, 'source');
-
 m = mfilename('fullpath');
 [p,f,e] = fileparts(m);
 s = split(p, filesep);
