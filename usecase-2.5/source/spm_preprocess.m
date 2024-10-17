@@ -11,9 +11,9 @@ function structPreProcess = spm_preprocess(path_input)
 		
 		if check_nifti == true
 			path_source = path_file;
-			disp('Step 1 -- Segmentation and Normalization');
-			segmentation(path_anat);
-			disp('Step 1 - done!');	
+			%disp('Step 1 -- Segmentation and Normalization');
+			%segmentation(path_anat);
+			%disp('Step 1 - done!');	
 		end
 	end
 
