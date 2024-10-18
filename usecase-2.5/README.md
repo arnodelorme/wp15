@@ -51,7 +51,7 @@ git clone https://github.com/Marque-CerCo/spm.git spm
 - the source repository
 ````
 cd
-git clone source
+git clone https://github.com/SIESTA-eu/wp15.git
 ````
 
 ### Software installation
