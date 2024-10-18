@@ -71,6 +71,8 @@ _Licenses for other software that is used are to be specified here._
 Executing the pipeline from the Linux command-line is done like this:
 ````
 #execute matlab code
+cd
+cd wp15/usecase-2.5/source/
 matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; exit"
 ````
 
