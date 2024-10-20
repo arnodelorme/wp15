@@ -1,14 +1,14 @@
-% apply a list of transformations on niftii files and written results to the correct output directory
-function patientsDatabase(path_username, path_input, path_output)
-	list_subjects = dir(path_input);
-	szSubjects = size(list_subjects);
+% apply a list of transformations on nifti files and write results to the correct output directory
+function patientsDatabase(path_input, path_output, run_list)
 
-	for p = 3:szSubjects(1)
-		check_sub = startsWith(list_subjects(p).name, 'sub');
-		if check_sub == true
-			path_patient = fullfile(path_input, list_subjects(p).name);
-			pathOutput_patient = fullfile(path_output, list_subjects(p).name);
-			onePatient(path_username, path_patient, pathOutput_patient);
-		end
+  if nargin<4 || isempty(run_list)
+    list_subjects = dir(fullfile(path_input, 'sub*'));
+    run_list = {list_subjects}';    
+  end
+
+	for p = 1:numel(run_list)
+		path_patient = fullfile(path_input, run_list{p});
+		pathOutput_patient = fullfile(path_output, run_list{p});
+		onePatient(path_patient, pathOutput_patient);
 	end
 end
