@@ -1,7 +1,15 @@
-function workPackageCerCo(run_list)
+function workPackageCerCo(sub_list, task_list, run_list)
 
-if nargin<1
-  run_list = {};
+if nargin<1 || isempty(sub_list)
+  sub_list = 'all';
+end
+
+if nargin<2 || isempty(task_list)
+  task_list = 'all';
+end
+
+if nargin<3 || isempty(run_list)
+  run_list = 'all';
 end
 
 time_start = tic;
@@ -47,13 +55,13 @@ if exist(pathSubject_delete, 'dir')
 end
 
 % convert tsv files to txt files located at path_input 
-convert_tsv_to_txt(path_input);
+%convert_tsv_to_txt(path_input);
 	
 % create output architecture directory based on input directory
 createDataStructure(path_input, path_output);
 
 % apply a list of transformations to nifti files (anat + func)
-patientsDatabase(path_input, path_output, run_list);
+patientsDatabase(path_input, path_output, sub_list, task_list, run_list);
 
 % clean useless files
 cleanDatabase(path_input);

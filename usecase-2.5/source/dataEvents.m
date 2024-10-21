@@ -6,7 +6,7 @@ function output = dataEvents(path_file, info)
 	arrayOnset = zeros(1,1);
 	arrayDuration = zeros(1,1);
 					
-	T = readtable(path_file);
+	T = readtable(path_file, 'filetype', 'text', 'delimiter', '\t');
 	onset = T.onset;
 	duration = T.duration;
 	trial = T.trial_type;
