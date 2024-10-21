@@ -8,7 +8,7 @@ list_files = dir(fullfile(path_func, 'r*nii'));
 if isempty(funcfiles)
   funcfiles  = {list_files.name}';
 else
-  % the funcfiles are to be preprended with 'mean'
+  % the funcfiles are to be prepended with 'mean'
   for f = 1:numel(funcfiles)
     funcfiles{f} = sprintf('r%s', funcfiles{f});
   end
