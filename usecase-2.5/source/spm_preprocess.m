@@ -28,7 +28,7 @@ function spm_preprocess(path_input, path_output)
 
 		if check_fmri == true	
 			disp('Step 2 -- Realign all volumes to first functional volume');
-			realign(path_fmri, path_output);
+			realign(path_fmri);
 			disp('Step 2 - Done!');
         	end
    	end
