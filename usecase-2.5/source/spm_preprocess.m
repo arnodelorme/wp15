@@ -3,10 +3,12 @@ function spm_preprocess(path_input, path_output)
 	path_source = '';
 	path_anat = fullfile(path_input, 'anat');
  	unzipMRIs(path_anat);
+  
  	path_func = fullfile(path_input, 'func');
+   	unzipMRIs(path_func);
+
 	list_files = dir(path_anat);
 	szFiles = size(list_files);
- 	unzipMRIs(path_func);
   
 	for f = 3:szFiles(1)
 		path_file = fullfile(path_anat, list_files(f).name);
