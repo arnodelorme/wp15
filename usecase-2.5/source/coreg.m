@@ -8,9 +8,7 @@ function coreg(path_source, path_func, path_output)
 				
 		if check_mean == true 
 			path_ref = fullfile(path_func, listFunc_files(f).name);
-					
-			matlabbatch = {};
-								
+													
 			% Ref
 			matlabbatch{1}.spm.spatial.coreg.estimate.ref = cellstr(path_ref);
         
