@@ -52,6 +52,13 @@ end
 deleteVOE(path_input);
 	
 % create output architecture directory based on input directory
+try
+  % running createDataStructure for a second time while output folder
+  % already exists leads to problems in my case. I don't want to spend time
+  % on debugging/diagnosing this, so I will throw away the output folder
+  % and start from scratch
+  rmdir(path_output, 's');
+end
 createDataStructure(path_input, path_output);
 
 % apply a list of transformations to nifti files (anat + func)
