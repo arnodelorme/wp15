@@ -25,8 +25,8 @@ function spm_preprocess(path_input, path_output)
 			disp('Step 2 -- Realign all volumes to first functional volume');
 			realign(path_fmri, path_output);
 			disp('Step 2 - Done!');
-        end
-    end
+        	end
+   	end
 												
 	path_func = fullfile(path_input, 'func');
 		
