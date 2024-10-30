@@ -2,9 +2,12 @@ function spm_preprocess(path_input, path_output)
 	
 	path_source = '';
 	path_anat = fullfile(path_input, 'anat');
+ 	unzipMRIs(path_anat);
+ 	path_func = fullfile(path_input, 'func');
 	list_files = dir(path_anat);
 	szFiles = size(list_files);
-
+ 	unzipMRIs(path_func);
+  
 	for f = 3:szFiles(1)
 		path_file = fullfile(path_anat, list_files(f).name);
 		check_nifti = endsWith(list_files(f).name, '.nii');
@@ -27,9 +30,7 @@ function spm_preprocess(path_input, path_output)
 			disp('Step 2 - Done!');
         	end
    	end
-												
-	path_func = fullfile(path_input, 'func');
-		
+													
 	disp('Step 3 -- Coregister structural image to first dynamic image');
 	coreg(path_source, path_func, path_output);
 	disp('Step 3 - Done!'); 
