@@ -1,9 +1,6 @@
 function segmentation(path_input)
-    
-    segmentation = struct;
-
-    matlabbatch = {};
-    list_files = dir(path_input);
+	
+ 	list_files = dir(path_input);
 	szFiles = size(list_files);
 	
 	path_file = '';
@@ -20,20 +17,19 @@ function segmentation(path_input)
 			disp(V);
 			
 			% Channel
-			segmentation.matlabbatch{1}.spm.spatial.preproc.channel.biasreg = 0.001;
-			segmentation.matlabbatch{1}.spm.spatial.preproc.channel.biasfwhm = 60;
-			segmentation.matlabbatch{1}.spm.spatial.preproc.channel.write = [0 1];
-			segmentation.matlabbatch{1}.spm.spatial.preproc.channel.vols = cellstr(path_file);  
+			matlabbatch{1}.spm.spatial.preproc.channel.biasreg = 0.001;
+			matlabbatch{1}.spm.spatial.preproc.channel.biasfwhm = 60;
+			matlabbatch{1}.spm.spatial.preproc.channel.write = [0 1];
+			matlabbatch{1}.spm.spatial.preproc.channel.vols = cellstr(path_file);  
 
 			% Warp
-			segmentation.matlabbatch{1}.spm.spatial.preproc.warp.reg = [0 0.001 0.5 0.05 0.2];
-			segmentation.matlabbatch{1}.spm.spatial.preproc.warp.affreg = 'mni';
-			segmentation.matlabbatch{1}.spm.spatial.preproc.warp.fwhm = 0;
-			segmentation.matlabbatch{1}.spm.spatial.preproc.warp.samp = 3;  
+			matlabbatch{1}.spm.spatial.preproc.warp.reg = [0 0.001 0.5 0.05 0.2];
+			matlabbatch{1}.spm.spatial.preproc.warp.affreg = 'mni';
+			matlabbatch{1}.spm.spatial.preproc.warp.fwhm = 0;
+			matlabbatch{1}.spm.spatial.preproc.warp.samp = 3;  
     
 			% Run
-			spm_jobman('run',segmentation.matlabbatch); 
-        
+			spm_jobman('run',matlabbatch); 
 			clear matlabbatch;
 			
 		end 
