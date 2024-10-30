@@ -4,8 +4,6 @@ if nargin<2
   funcfiles = {};
 end
 
-realign_estimate_reslice = struct;
-
 if isempty(funcfiles)
   list_files = dir(fullfile(path_input, 'sub*nii'));
   funcfiles  = {list_files.name}';
@@ -28,31 +26,32 @@ for f = 1:numel(funcfiles)
     end
 
     %Data
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.data={fnms'};
-    realign_estimate_reslice.matlabbatch{1}.spm.temporal.st.nslices = 38;
-    realign_estimate_reslice.matlabbatch{1}.spm.temporal.st.tr = 2;
-    realign_estimate_reslice.matlabbatch{1}.spm.temporal.st.ta = 1.94736842105263;
-    realign_estimate_reslice.matlabbatch{1}.spm.temporal.st.refslice = 19;
-    realign_estimate_reslice.matlabbatch{1}.spm.temporal.st.prefix = 'a';
+    matlabbatch{1}.spm.spatial.realign.estwrite.data={fnms'};
+    matlabbatch{1}.spm.temporal.st.nslices = 38;
+    matlabbatch{1}.spm.temporal.st.tr = 2;
+    matlabbatch{1}.spm.temporal.st.ta = 1.94736842105263;
+    matlabbatch{1}.spm.temporal.st.refslice = 19;
+    matlabbatch{1}.spm.temporal.st.prefix = 'a';
 
     % Eoptions
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.quality = 0.9;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.sep = 4;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.interp = 2;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.weight = '';
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.quality = 0.9;
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.sep = 4;
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.fwhm = 5;
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.rtm = 1;
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.interp = 2;
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.wrap = [0 0 0];
+    matlabbatch{1}.spm.spatial.realign.estwrite.eoptions.weight = '';
 
     %Roptions
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.roptions.which = [2 1];
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.roptions.interp = 4;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.roptions.mask = 1;
-    realign_estimate_reslice.matlabbatch{1}.spm.spatial.realign.estwrite.roptions.prefix = 'r';
+    matlabbatch{1}.spm.spatial.realign.estwrite.roptions.which = [2 1];
+    matlabbatch{1}.spm.spatial.realign.estwrite.roptions.interp = 4;
+    matlabbatch{1}.spm.spatial.realign.estwrite.roptions.wrap = [0 0 0];
+    matlabbatch{1}.spm.spatial.realign.estwrite.roptions.mask = 1;
+    matlabbatch{1}.spm.spatial.realign.estwrite.roptions.prefix = 'r';
 
     % Run
-    spm_jobman('run', realign_estimate_reslice.matlabbatch);
+    spm_jobman('run', matlabbatch);
+    clear matlabbatch;
   end
 end
 end
