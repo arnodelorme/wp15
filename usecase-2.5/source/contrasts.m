@@ -1,25 +1,34 @@
 % apply some contrasts to SPM.mat file  
-function contrasts(path_output, names, convec)
+function contrasts(path_output)
 
-    contrasts = struct;    
-    szNames = size(names);
-	            
+	split_output = split(path_output, '/');
+	szSplit = size(split_output);
+	directory_name = split_output{szSplit(1)};
+	disp(directory_name);
+	check_dots = startsWith(directory_name, 'DOTS');
+	check_motion = startsWith(directory_name, 'Motion');
+	check_spwm = startsWith(directory_name, 'spWM');
+
 	list_runs = dir(path_output);
 	szRuns = size(list_runs);
 	
-	for s = 1:szNames(2)
+	path_spmmat = fullfile(path_output, 'SPM.mat');
 
-		for r = 3:szRuns(1)
-			path_run = fullfile(path_output, list_runs(r).name);
-			path_spmmat = fullfile(path_run, 'SPM.mat');
+	matlabbatch{1}.spm.stats.con.spmmat = cellstr(path_spmmat);
+	%Reproduce across sessions: 'none' dont replicate; 'sess' create per session; 'repl' replicate; 'both' replicate and create
+			
+	% dots et Motion
+	if check_dots == true || check_motion == true
+		matlabbatch{1}.spm.stats.con.consess{1}.tcon.name = 'contrast';         % t Contrast
+		matlabbatch{1}.spm.stats.con.consess{1}.tcon.weights = [-1 0 0 1]; %[0 0 0 1]
+		matlabbatch{1}.spm.stats.con.consess{1}.tcon.sessrep = 'none'; 
+	end 
 
-			contrasts.matlabbatch{1}.spm.stats.con.spmmat = cellstr(path_spmmat);
+	if check_spwm == true 
+		matlabbatch{1}.spm.stats.con.consess{1}.tcon.name = 'contrast';         % t Contrast
+		matlabbatch{1}.spm.stats.con.consess{1}.tcon.weights = [1 0 0 0]; %[0 0 0 1]
+		matlabbatch{1}.spm.stats.con.consess{1}.tcon.sessrep = 'none'; 
+	end 
 
-			% What contrasts to put in
-			matlabbatch{1}.spm.stats.con.consess{1}.tcon.convec = convec;
-			matlabbatch{1}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
-                        
-			spm_jobman('run', contrasts.matlabbatch);
-		end
-	end
+	spm_jobman('run', matlabbatch);
 end
