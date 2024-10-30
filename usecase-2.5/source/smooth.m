@@ -17,7 +17,6 @@ function smooth(path_input)
          
 			% Run
 			spm_jobman('run', matlabbatch);
-		
 			clear matlabbatch;
 		
 		end
