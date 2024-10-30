@@ -1,32 +1,63 @@
-% apply a list of transformations on nifti files and write results to the correct output directory
-function onePatient(path_subject, path_output, task_list, run_list)
+% apply a list of transformations on niftii files and written results to the correct output directory
+function onePatient(path_username, path_subject, path_output)
 
-% apply list of transformations to fMRIs, preceded by unzipping if needed: realignment, coregistration, smoothing
-[s, funcfiles] = spm_preprocess(path_subject, task_list, run_list);
-disp('preProcess is done !');
+	% apply list of transformations to fMRIs
+  spm_preprocess(path_subject, task_list, run_list);
+  disp('preProcess is done !');
+		
+	path_input = fullfile(path_username, 'input');
+	path_output = fullfile(path_username, 'output');
+	list_subjects = dir(path_input);
+	szSubjects = size(list_subjects);
 
-contrast_names = 'contrast';
-convec = [1 -1];
+	for sub = 3:szSubjects(1)
+		path_subject = fullfile(path_input, list_subjects(sub).name);
+		pathSubject_output = fullfile(path_output, list_subjects(sub).name);
+		path_func = fullfile(path_subject, 'func');
+		list_files = dir(path_func);
+		szFiles = size(list_files);
 
-path_func = fullfile(path_subject, 'func');
-szFiles = numel(funcfiles);
-for f = 1:szFiles
-  %path_txt = fullfile(path_func, list_files(f+2).name); % FIXME this is dangerous, because it assumes a fixed order (and number) of files
-  path_txt = fullfile(path_func, strrep(funcfiles{f}, 'bold.nii', 'events.tsv'));
-  events = dataEvents(path_txt, 'event'); %FIXME consider adjusting dataEvents so that it can operate on the *tsv files directly, which takes away the need to convert the tsv files to txt first
-  onset =  dataEvents(path_txt, 'onset');
-  duration =  dataEvents(path_txt, 'duration');
+		for f = 3:szFiles(1)
+			path_file = fullfile(path_func, list_files(f).name);
+			check_sub = startsWith(list_files(f).name, 'sub');
+			check_nifti = endsWith(list_files(f).name, '.nii');
 
-  levels = create_levelParameters(2, 'intact', events, onset, duration);
-  disp('specify first level is done !');
+			if check_sub == true && check_nifti == true
+				path_tsv = fullfile(path_func, list_files(f+1).name);
+				run_event = extractEvents(list_files(f+1).name);
+				events = dataEvents(path_txt, 'event');
+				onset =  dataEvents(path_txt, 'onset');
+				duration =  dataEvents(path_txt, 'duration');
 
-  firstLevel(path_subject, path_output, levels);
-  disp('firstLevel is done !');
+				levels = create_levelParameters(2, 'intact', events, onset, duration);
+				disp('specify first level is done !');
 
-  estimateModel(path_output, false);
-  disp('estimateModel is done !');
+				path_run = fullfile(pathSubject_output, run_event);
+		
+				firstLevel(path_run, levels);
+				disp('firstLevel is done !');
 
-  contrasts(path_output, contrast_names, convec);
-  disp('contrasts is done !');
-end
+				estimateModel(path_run);
+				disp('estimateModel is done !');
+
+				contrasts(path_run);
+				disp('contrasts is done !');
+			end
+    end
+  end
+
+  path_anat = fullfile(path_subject, 'anat');
+  list_files = dir(path_anat);
+  szFiles = size(list_files);
+
+  for f = 3:szFiles(1)
+      check_sub = startsWith(list_files(f).name, 'sub');
+      if check_sub == false
+          path_file = fullfile(path_anat, list_files(f).name);
+          delete(path_file);
+      end
+  end 
+	
+	secondLevel(path_output, list_runs, "contrast");
+	disp('secondLevel is done !');
 end
