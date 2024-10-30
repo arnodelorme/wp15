@@ -45,7 +45,7 @@ The `whitelist.txt` file contains a complete list of the output data that is to 
 After downloading the subject database, a modified SPM version and wp15 repository are installed.
 - a modified SPM version (no user interactive sections)
 ````
-cd
+cd ../
 git clone https://github.com/spm/spm12.git
 ````
 - the source repository
