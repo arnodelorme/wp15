@@ -47,6 +47,9 @@ pathSubject_delete = fullfile(path_input, 'sub-SAXNES2s006');
 if exist(pathSubject_delete, 'dir')
   removeSubject(pathSubject_delete);
 end
+
+% delete VOE files
+deleteVOE(path_input);
 	
 % create output architecture directory based on input directory
 createDataStructure(path_input, path_output);
