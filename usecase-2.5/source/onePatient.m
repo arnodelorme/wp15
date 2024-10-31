@@ -26,16 +26,17 @@ sub = 1;
       path_tsv = fullfile(path_func, list_files(f+1).name);
       %path_txt = fullfile(path_func, list_files(f+1).name);
       run_event = extractEvents(list_files(f+1).name);
-      events = dataEvents(path_tsv, 'event');
-      onset =  dataEvents(path_tsv, 'onset');
-      duration =  dataEvents(path_tsv, 'duration');
+      %events = dataEvents(path_tsv, 'event');
+      %onset =  dataEvents(path_tsv, 'onset');
+      %duration =  dataEvents(path_tsv, 'duration');
+      T = readtable(path_tsv, 'filetype', 'text', 'delimiter', '\t');
 
-      levels = create_levelParameters(2, 'intact', events, onset, duration);
+      levels = create_levelParameters(2, 'intact', T.trial_type, T.onset, T.duration);
       disp('specify first level is done !');
 
       path_run = fullfile(path_output, run_event);
 
-      firstLevel(path_run, levels);
+      firstLevel_works(path_run, levels);
       disp('firstLevel is done !');
 
       estimateModel(path_run);
@@ -60,9 +61,9 @@ sub = 1;
   end
 %end
 
-path_ref = fullfile(path_output, 'sub-SAXNES2s001');
-list_runs = dir(path_ref);
-
-secondLevel(path_output, list_runs, "contrast");
-disp('secondLevel is done !');
+% path_ref = path_output;
+% list_runs = dir(path_ref);
+% 
+% secondLevel(path_output, list_runs, "contrast");
+% disp('secondLevel is done !');
 end
