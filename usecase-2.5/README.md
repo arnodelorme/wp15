@@ -35,7 +35,20 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 
 ## Output data
 
-The output data has the following architecture:
+The to-be-shared data in the output folder has the following architecture:
+
+.
+|-- groupresults
+|   |-- DOTS_run-001
+|   |-- DOTS_run-002
+|   |-- Motion_run-001
+|   |-- Motion_run-002
+|   |-- spWM_run-001
+|   `-- spWM_run-002
+
+Besides this, the output folder contains the per-subject intermediate (first-level) results.
+Those results are not to be shared, and should not be on the whitelist
+
 - 
 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
