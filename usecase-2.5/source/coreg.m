@@ -40,6 +40,9 @@ function coreg(path_source, path_func, path_output)
 			path_mat = fullfile(path_func, list_files(f).name);
 			event = extractEvents(list_files(f).name);
 			path_event = fullfile(path_output, event);
+      if ~exist(path_event, 'dir')
+        mkdir(path_event);
+      end
 			copyfile(path_mat, path_event);
 			delete(path_mat);
 		end 
@@ -48,6 +51,9 @@ function coreg(path_source, path_func, path_output)
 			path_rp = fullfile(path_func, list_files(f).name);
 			event = extractEvents(list_files(f).name);
 			path_event = fullfile(path_output, event);
+      if ~exist(path_event, 'dir')
+        mkdir(path_event);
+      end
 			copyfile(path_rp, path_event);
 			delete(path_rp);
 		end 
@@ -56,6 +62,9 @@ function coreg(path_source, path_func, path_output)
 			path_mean = fullfile(path_func, list_files(f).name);
 			event = extractEvents(list_files(f).name);
 			path_event = fullfile(path_output, event);
+      if ~exist(path_event, 'dir')
+        mkdir(path_event);
+      end
 			copyfile(path_mean, path_event);
 			delete(path_mean);
 		end
@@ -64,6 +73,9 @@ function coreg(path_source, path_func, path_output)
 			path_rfile = fullfile(path_func, list_files(f).name);
 			event = extractEvents(list_files(f).name);
 			path_event = fullfile(path_output, event);
+      if ~exist(path_event, 'dir')
+        mkdir(path_event);
+      end
 			copyfile(path_rfile, path_event);
 			delete(path_rfile);
 		end

@@ -4,17 +4,10 @@ function firstLevel_works(path_run, struct_levels)
 names = struct_levels.conditionName;
 split_names = split(names, '_');
 szSplit = size(split_names);
-sz_split = szSplit(1) - 1;
-
-index_onset = 1;
-index_duration = 1;
-
-save_onset = 1;
-save_duration = 1;
 
 % retrieve nifti files (rsub*) and their associated text files for each subject
 struct_rsub = dir(fullfile(path_run, 'rsub*'));
-struct_txt = dir(fullfile(path_run, '*.txt'));
+struct_txt = dir(fullfile(path_run, '*_rsub*.txt'));
 
 path_rsub = fullfile(struct_rsub.folder, struct_rsub.name);
 path_txt = fullfile(struct_txt.folder, struct_txt.name);
