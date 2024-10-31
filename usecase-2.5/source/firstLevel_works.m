@@ -7,7 +7,7 @@ szSplit = size(split_names);
 
 % retrieve nifti files (rsub*) and their associated text files for each subject
 struct_rsub = dir(fullfile(path_run, 'rsub*'));
-struct_txt = dir(fullfile(path_run, '*_rsub*.txt'));
+struct_txt = dir(fullfile(path_run, '*_sub*.txt'));
 
 path_rsub = fullfile(struct_rsub.folder, struct_rsub.name);
 path_txt = fullfile(struct_txt.folder, struct_txt.name);

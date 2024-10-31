@@ -2,7 +2,7 @@
 function onePatient(path_subject, path_output)
 
 % apply list of transformations to fMRIs
-spm_preprocess(path_subject, path_output);
+%spm_preprocess(path_subject, path_output);
 disp('preProcess is done !');
 
 path_func = fullfile(path_subject, 'func');
