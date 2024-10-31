@@ -57,7 +57,7 @@ if ~exist(path_output)
 end
 
 % apply a list of transformations to nifti files (anat + func)
-patientsDatabase(path_input, path_output, sub_list, task_list, run_list);
+patientsDatabase(path_input, path_output, sub_list, task_list);
 
 time_end = toc(time_start);
 disp(time_end);
