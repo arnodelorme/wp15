@@ -11,8 +11,7 @@ function segmentation(path_input)
 		
 		if check_sub == true && check_nifti == true
 			path_file = fullfile(path_input, list_files(f).name);
-			V = spm_vol(path_file);
-   
+			
 			% Channel
 			matlabbatch{1}.spm.spatial.preproc.channel.biasreg = 0.001;
 			matlabbatch{1}.spm.spatial.preproc.channel.biasfwhm = 60;
@@ -24,6 +23,7 @@ function segmentation(path_input)
 			matlabbatch{1}.spm.spatial.preproc.warp.affreg = 'mni';
 			matlabbatch{1}.spm.spatial.preproc.warp.fwhm = 0;
 			matlabbatch{1}.spm.spatial.preproc.warp.samp = 3;  
+      matlabbatch{1}.spm.spatial.preproc.warp.write = [1 1];
     
 			% Run
 			spm_jobman('run',matlabbatch); 

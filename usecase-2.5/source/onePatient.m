@@ -2,7 +2,7 @@
 function onePatient(path_subject, path_output)
 
 % apply list of transformations to fMRIs
-%spm_preprocess(path_subject, path_output);
+spm_preprocess(path_subject, path_output);
 disp('preProcess is done !');
 
 path_func = fullfile(path_subject, 'func');
@@ -37,7 +37,7 @@ list_files = dir(path_anat);
 szFiles = size(list_files);
 
 for f = 3:szFiles(1)
-  check_sub = startsWith(list_files(f).name, 'sub');
+  check_sub = startsWith(list_files(f).name, 'sub')|startsWith(list_files(f).name, 'y_sub')|startsWith(list_files(f).name, 'iy_sub');
 
   if check_sub == false
     path_file = fullfile(path_anat, list_files(f).name);

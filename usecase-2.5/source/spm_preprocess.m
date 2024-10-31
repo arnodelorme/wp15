@@ -38,6 +38,7 @@ coreg(path_source, path_func, path_output);
 disp('Step 3 - Done!');
 
 disp('Step 4 -- Gaussian kernel smoothing of realigned data');
-smooth(path_anat);
+%smooth(path_anat);
+segmentation(path_anat);
 disp('Step 4 is done !');
 end
