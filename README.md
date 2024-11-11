@@ -12,7 +12,7 @@ The use cases serve to get a broad and representative sample of neuroimaging dat
 | 2.2 | anatomical MRI, OpenNeuro, openneuro/cli | container, linux | Nijmegen |
 | 2.3 | MEG, OpenNeuro, datalad | MATLAB, windows/linux/macos | Nijmegen |
 | 2.4 | EEG, OSF, osfclient | MATLAB, windows/linux/macos | Kopenhagen |
-| 2.5 | functional MRI, TBD, TBD | MATLAB, windows/linux/macos | Toulouse |
+| 2.5 | functional MRI, OpenNeuro, datalad | MATLAB, windows/linux/macos | Toulouse |
 
 ## Data
 
