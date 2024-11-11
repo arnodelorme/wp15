@@ -68,24 +68,26 @@ mv limo_tools eeglab2024.0/plugins/
 
 You should now have something like:
 
-    README.md (this file)
-    ERP_Core_WB.m
-    input
-    ├── CHANGES
-    ├── LICENSE
-    ├── [..]
-    ├── sub-001
-    ├── sub-002
-    ├── sub-003
-    └── [..]
-    eeglab2024.0
-    ├── [..]
-    ├── eeglab.m
-    ├── eeglab.prj
-    ├── functions
-    ├── plugins
-    │   └── limo_tools
-    └── [..]
+```console
+README.md (this file)
+ERP_Core_WB.m
+input
+├── CHANGES
+├── LICENSE
+├── [..]
+├── sub-001
+├── sub-002
+├── sub-003
+└── [..]
+eeglab2024.0
+├── [..]
+├── eeglab.m
+├── eeglab.prj
+├── functions
+├── plugins
+│   └── limo_tools
+└── [..]
+```
 
 There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. This is best to install those directly from within the matlab environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/ERP_Core_WB_install.m)
 
