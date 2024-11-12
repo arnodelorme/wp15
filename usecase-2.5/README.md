@@ -6,29 +6,14 @@ The pipeline is expected to be executed on a Linux computer and MATLAB R2020b.
 
 ## Input data
 
-The input data is freely available from "OpenNeuro" with the Accession Number [ds004934](https://doi.org/10.18112/openneuro.ds004934.v1.0.0). The input data consists of about 1548 files with a combined size of 18.63G. More specifically, the dataset includes 44 subjects. These subjects are divided into two experiments: 17 subjects undergo fMRIs dedicated to experiment 1 whereas 29 subjects undergo fMRIs dedicated to experiment 2. The data can be downloaded using [datalad](https://www.datalad.org/). In order to be able to use [datalad](https://www.datalad.org/), a recent version of [git]( https://git-scm.com/downloads) is required.
+The input data is freely available from "OpenNeuro" with the Accession Number [ds004934](https://doi.org/10.18112/openneuro.ds004934.v1.0.0). The dataset includes 44 subjects who are divided into two experiments: 17 subjects undergo fMRIs dedicated to experiment 1, whereas 29 subjects undergo fMRIs dedicated to experiment 2.
+
+The input data consists of about 1548 files with a combined size of 18.63G. The data can be downloaded using the Amazon [AWS command-line interface](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) or using [datalad](https://www.datalad.org/).
 
 ```console
-# create siesta python environment
-python -m venv siesta
-
-# activate siesta python environment
-source siesta/bin/activate
-
-# install datalad 
-pip install datalad
-pip install datalad-installer
-datalad-installer git-annex -m datalad/git-annex:release --install-dir siesta
-
-# move lib and bin in the same directory
-mv siesta/usr/lib/* siesta/lib/.
-mv siesta/usr/bin/* siesta/bin/.
-
-# get subjects using datalad
-git clone https://github.com/OpenNeuroDatasets/ds004934.git input
-cd input 
-datalad get sub-*
-datalad unlock sub-*
+mkdir input
+cd input
+aws s3 cp --recursive --no-sign-request s3://openneuro.org/ds004934/ .
 ```
 
 ### Data citation
