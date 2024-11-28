@@ -29,8 +29,10 @@ From: ubuntu:24.04
   export LEVEL=${3}
 
   if [ ${LEVEL} = "participant" ] ; then
+    mkdir -p ${OUTPUTDIR}
     echo Nothing to be done
   elif [ ${LEVEL} = "group" ] ; then
+    mkdir -p ${OUTPUTDIR}
     Rscript /work/pipeline.R --inputdir ${INPUTDIR} --outputdir ${OUTPUTDIR}
   else
     echo Error: analysis level must be specified as participant or group && exit 1
