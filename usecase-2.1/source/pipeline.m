@@ -26,6 +26,11 @@ if options.verbose
   disp(options);
 end
 
+if strcmp(options.level, 'participant')
+  % there is nothing to do at the participant level
+  return
+end
+
 inputfile  = fullfile(options.inputdir, 'participants.tsv');
 outputfile = fullfile(options.outputdir, 'results.tsv');
 
