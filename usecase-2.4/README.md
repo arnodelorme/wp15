@@ -50,11 +50,7 @@ mkdir output
 
 ### Software installation
 
-This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox.
-Once EEGLAB is installed, 
-and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. 
-
-The LIMO tools must be placed inside the EEGLAB plugin folder as shown below.
+This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox. Once EEGLAB is installed, the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin needs to be installed inside the EEGLAB plugin folder as shown below.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
@@ -89,7 +85,7 @@ eeglab2024.0
 └── [..]
 ```
 
-There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. This is best to install those directly from within the matlab environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/ERP_Core_WB_install.m)
+There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. It is best to install those directly from within the MATLAB environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/source/ERP_Core_WB_install.m)
 
 Once all is installed, the EEGLAB plugins directory should look like this
 
@@ -106,6 +102,14 @@ Once all is installed, the EEGLAB plugins directory should look like this
     │   └── limo_tools
     │   └── PICARD1.0
     │   └── zapline-plus1.2.1
+
+Alternatively, you can install the software in an Apptainer container image.
+
+```console
+cd wp15/usecase-2.4
+apptainer build usecase-2.4.sif container.def
+cd ../..
+```
 
 ### Legal aspects of the software
 
@@ -139,12 +143,21 @@ where `input` is the input folder and `output` the output folder. The absolute p
 
 > **Note**: The MATLAB functions `ERP_Core_WB_install.m` and `ERP_Core_WB.m` must be in the MATLAB path or in the present working directory.
 
+Executing the pipeline from the Apptainer image is done like this:
+
+```console
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.4.sif input output participant
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.4.sif input output group
+```
+
+It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
+
 ## Cleaning up
 
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input scrambled output
+rm -rf input output
 ```
 
 ## Scrambled data

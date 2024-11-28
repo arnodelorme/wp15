@@ -95,6 +95,13 @@ cd wp15/usecase-2.5/source/
 matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; exit"
 ```
 
+Executing the pipeline from the Apptainer image is done like this:
+
+```console 
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
+```
+
 ## Cleaning up
 
 Cleaning up the input and output data is done using:
@@ -103,3 +110,4 @@ Cleaning up the input and output data is done using:
 rm -rf input
 rm -rf output
 ```
+

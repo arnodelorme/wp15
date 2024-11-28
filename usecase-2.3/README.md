@@ -70,7 +70,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.3
-sudo apptainer build ../../pipeline.sif pipeline.def
+apptainer build usecase-2.3.sif container.def
 cd ../..
 ```
 

@@ -43,44 +43,60 @@ mkdir output
 
 ## Analysis pipeline
 
-### Software installation
+### Installation of the R version
 
 The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory. Alternatively, it is possible to make an [Apptainer](https://apptainer.org) container with all analysis software and dependencies.
+
+### Installation of the MATLAB version
+
+The MATLAB version of the pipeline only requires a recent MATLAB version.
 
 ### Legal aspects of the software
 
 The R-package and the optparse package are licensed under GPL-2 or GPL-3.
 
+MATLAB is commercial software and requires a license.
+
 The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
 
 The code that is specific to the analysis pipeline is shared under the CC0 license.
 
-### Executing the pipeline
+### Executing the R version of the pipeline
 
-Executing the pipeline from the Linux command-line is done with the real input data like this:
+Executing the pipeline from the Linux command-line is done like this:
 
 ```console
 Rscript pipeline.R --inputdir input --outputdir output  
 ```
 
-or with the scrambled version of the data like this:
+### Executing the MATLAB version of the pipeline
+
+Executing the pipeline from the Linux command-line is done like this:
 
 ```console
-Rscript pipeline.R  --inputdir scrambled --outputdir output  
+matlab -batch "restoredefaultpath; addpath wp15/usecase2.1/source; bidsapp <inputdir> <outputdir> group"
 ```
 
 ### Building the container
 
 ```console
-apptainer build pipeline.sif pipeline.def
+cd wp15/usecase-2.1
+apptainer build usecase-2.1.sif container-r.def
+```
+
+or
+
+```console
+cd wp15/usecase-2.1
+apptainer build usecase-2.1.sif container-matlab.def
 ```
 
 ### Executing the container
 
 ```console
 mkdir output
-apptainer run --no-home pipeline.sif input output participant
-apptainer run --no-home pipeline.sif input output group
+apptainer run --no-home usecase-2.1.sif input output participant
+apptainer run --no-home usecase-2.1.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
@@ -92,7 +108,7 @@ Note that this specific analysis pipeline does not have any computations at the 
 Cleaning up the input and output data can be done using:
 
 ```console
-rm -rf input scrambled output
+rm -rf input output
 ```
 
 ## Scrambled data
