@@ -19,8 +19,6 @@ function bidsapp(varargin)
 %   -h,--help         show this help and exit
 %   -v,--verbose      show more verbose information for debugging
 %   --version         show the version and exit
-%   --start-idx <num> index of the first participant to include, one-offset
-%   --stop-idx <num>  index of the last participant to include, one-offset
 %
 % See also INPUTPARSER, ARGUMENTS, FT_GETOPT
 
@@ -80,8 +78,7 @@ options.version    = false;
 options.help       = false;
 options.verbose    = false;
 % other options each have their own value, either a string or a number
-options.start_idx  = [];
-options.stop_idx   = [];
+% ...
 
 % deal with the flags
 isflag = false(size(varargin));
@@ -99,28 +96,11 @@ for i=1:numel(varargin)
   end % switch
 end % for
 
-% deal with the remaining optional arguments
 varargin = varargin(~isflag);
 clear isflag
 
-isoption = false(size(varargin));
-for i=1:2:numel(varargin)
-  switch varargin{i}
-    case {'--start-idx'}
-      options.start_idx = str2double(varargin{i+1});
-      isoption(i) = true;
-    case {'--stop-idx'}
-      options.stop_idx = str2double(varargin{i+1});
-      isoption(i) = true;
-  end % switch
-end % for
-
-isoption(2:2:end) = true;
-if ~all(isoption)
-  % find and show the first incorrect option
-  incorrect = find(isoption==false, 1, 'first');
-  error('unsupported option ''%s''', varargin{incorrect});
-end
+% deal with the remaining optional arguments
+% ...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % call the actual code to execute the pipeline
@@ -133,7 +113,8 @@ if options.help
 end
 
 % Here you have to call the analysis pipeline specific MATLAB code, using the options
-% structure that was parsed above.
+% structure that was parsed above. You can either pass the structure, or only pass the
+% inputdir and outputdir strings.
 
 error('this still needs to be implemented');
 
