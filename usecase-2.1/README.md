@@ -66,7 +66,8 @@ The code that is specific to the analysis pipeline is shared under the CC0 licen
 Executing the pipeline from the Linux command-line is done like this:
 
 ```console
-Rscript pipeline.R --inputdir input --outputdir output  
+cd wp15/usecase-2.1
+Rscript source/pipeline.R --inputdir input --outputdir output  
 ```
 
 ### Executing the MATLAB version of the pipeline
@@ -74,7 +75,8 @@ Rscript pipeline.R --inputdir input --outputdir output
 Executing the pipeline from the Linux command-line is done like this:
 
 ```console
-matlab -batch "restoredefaultpath; addpath wp15/usecase2.1/source; bidsapp <inputdir> <outputdir> group"
+cd wp15/usecase-2.1
+matlab -batch "restoredefaultpath; addpath source; bidsapp <inputdir> <outputdir> group"
 ```
 
 ### Building the container
