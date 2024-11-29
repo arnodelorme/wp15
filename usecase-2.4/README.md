@@ -89,19 +89,21 @@ There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapl
 
 Once all is installed, the EEGLAB plugins directory should look like this
 
-    eeglab2024.0
-    ├── [..]
-    ├── eeglab.m
-    ├── eeglab.prj
-    ├── functions
-    ├── plugins
-    │   └── bids-matlab-tools8.0
-    │   └── clean_rawdata2.91
-    │   └── Fieldtrip-lite20240111
-    │   └── ICLabel1.6
-    │   └── limo_tools
-    │   └── PICARD1.0
-    │   └── zapline-plus1.2.1
+```console
+eeglab2024.0
+├── [..]
+├── eeglab.m
+├── eeglab.prj
+├── functions
+├── plugins
+│   └── bids-matlab-tools8.0
+│   └── clean_rawdata2.91
+│   └── Fieldtrip-lite20240111
+│   └── ICLabel1.6
+│   └── limo_tools
+│   └── PICARD1.0
+│   └── zapline-plus1.2.1
+```
 
 Alternatively, you can install the software in an Apptainer container image.
 

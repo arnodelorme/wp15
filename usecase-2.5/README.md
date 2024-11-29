@@ -68,6 +68,14 @@ mv spm12-r7771 spm12
 rm r7771.zip 
 ```
 
+Alternatively, you can install the software in an Apptainer container image.
+
+```console
+cd wp15/usecase-2.4
+apptainer build usecase-2.4.sif container.def
+cd ../..
+```
+
 ### Legal aspects of the software
 
 MATLAB is commercial software.
@@ -81,7 +89,6 @@ The code that is specific to the analysis pipeline is shared under the CC0 licen
 The directory structure is expected to look like this
 
 ```
-.
 ├── input
 ├── output
 ├── spm12
@@ -98,8 +105,8 @@ matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; ex
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console 
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
 ```
 
 ## Cleaning up

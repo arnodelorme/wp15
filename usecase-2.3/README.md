@@ -97,8 +97,8 @@ analyze_group input output
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output participant
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.

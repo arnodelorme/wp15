@@ -84,7 +84,7 @@ cd wp15/usecase-2.1
 apptainer build usecase-2.1.sif container-r.def
 ```
 
-or
+or for the MATLAB-based container
 
 ```console
 cd wp15/usecase-2.1
@@ -97,6 +97,14 @@ apptainer build usecase-2.1.sif container-matlab.def
 mkdir output
 apptainer run --no-home usecase-2.1.sif input output participant
 apptainer run --no-home usecase-2.1.sif input output group
+```
+
+or for the MATLAB-based container
+
+```console
+mkdir output
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output participant
+apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
