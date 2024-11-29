@@ -54,35 +54,44 @@ This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) wi
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
-cd wp15
-wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
-unzip eeglab_current.zip
-rm eeglab_current.zip
+cd wp15/usecase2.4
+
+wget https://github.com/sccn/eeglab/archive/refs/tags/2024.2.1.zip
+unzip 2024.2.1.zip
+mv eeglab-2024.2.1 eeglab
+rm 2024.2.1.zip
+
 git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
-mv limo_tools eeglab2024.0/plugins/
+mkdir -p eeglab/plugins
+mv limo_tools eeglab/plugins/
 ```
 
 You should now have something like:
 
 ```console
-README.md (this file)
-ERP_Core_WB.m
-input
-├── CHANGES
-├── LICENSE
-├── [..]
-├── sub-001
-├── sub-002
-├── sub-003
-└── [..]
-eeglab2024.0
-├── [..]
-├── eeglab.m
-├── eeglab.prj
-├── functions
-├── plugins
-│   └── limo_tools
-└── [..]
+├── README.md (this file)
+├── source
+│   ├── bidsapp.m
+│   ├── ERP_Core_WB.m
+│   ├── ERP_Core_WB_install.m
+│   └── ERP_Core_eeglab2brainvision.m
+├── eeglab
+│   ├── [..]
+│   ├── eeglab.m
+│   ├── eeglab.prj
+│   ├── functions
+│   ├── plugins
+│   │   └── limo_tools
+│   └── [..]
+├── input
+│   ├── CHANGES
+│   ├── LICENSE
+│   ├── [..]
+│   ├── sub-001
+│   ├── sub-002
+│   ├── sub-003
+│   └── [..]
+└── output
 ```
 
 There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. It is best to install those directly from within the MATLAB environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/source/ERP_Core_WB_install.m)
@@ -90,19 +99,19 @@ There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapl
 Once all is installed, the EEGLAB plugins directory should look like this
 
 ```console
-eeglab2024.0
+eeglab
 ├── [..]
 ├── eeglab.m
 ├── eeglab.prj
 ├── functions
-├── plugins
-│   └── bids-matlab-tools8.0
-│   └── clean_rawdata2.91
-│   └── Fieldtrip-lite20240111
-│   └── ICLabel1.6
-│   └── limo_tools
-│   └── PICARD1.0
-│   └── zapline-plus1.2.1
+└── plugins
+    └── bids-matlab-tools8.0
+    └── clean_rawdata2.91
+    └── Fieldtrip-lite20240111
+    └── ICLabel1.6
+    └── limo_tools
+    └── PICARD1.0
+    └── zapline-plus1.2.1
 ```
 
 Alternatively, you can install the software in an Apptainer container image.
@@ -127,23 +136,20 @@ The code that is specific to the analysis pipeline is shared under the CC0 licen
 
 ### Executing the pipeline
 
-Executing the pipeline from the Linux command-line is done like this:
-
-```console
-matlab -nojvm -nodisplay -nosplash -r "restoredefaultpath; ERP_Core_WB_install; ERP_Core_WB('input', 'output'); exit"
-```
-
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```matlab
-restoredefaultpath;
-ERP_Core_WB_install;
+restoredefaultpath
+addpath source eeglab
+ERP_Core_WB_install
 ERP_Core_WB(fullfile(pwd, 'input'), fullfile(pwd, 'output'))
 ```
 
-where `input` is the input folder and `output` the output folder. The absolute paths need to be provided for the pipeline to run smoothly.
+Executing the pipeline from the Linux command-line is done like this:
 
-> **Note**: The MATLAB functions `ERP_Core_WB_install.m` and `ERP_Core_WB.m` must be in the MATLAB path or in the present working directory.
+```console
+matlab -nojvm -nodisplay -nosplash -r "restoredefaultpath; addpath source eeglab; ERP_Core_WB_install; ERP_Core_WB('input', 'output'); exit"
+```
 
 Executing the pipeline from the Apptainer image is done like this:
 
