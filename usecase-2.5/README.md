@@ -55,6 +55,14 @@ The `whitelist.txt` file contains a complete list of the output data that is to 
 
 ## Analysis pipeline
 
+### Legal aspects of the software
+
+MATLAB is commercial software.
+
+SPM is open source software that is released under the GPLv2 license.
+
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Software installation
 
 This requires the Github source repository, SPM and MATLAB software.
@@ -76,35 +84,37 @@ apptainer build usecase-2.4.sif container.def
 cd ../..
 ```
 
-### Legal aspects of the software
-
-MATLAB is commercial software.
-
-SPM is open source software that is released under the GPLv2 license.
-
-The code that is specific to the analysis pipeline is shared under the CC0 license.
-
 ### Executing the pipeline
 
 The directory structure is expected to look like this
 
-```
+```console
 ├── input
 ├── output
 ├── spm12
 └── wp15
 ```
 
-Executing the pipeline from the Linux command-line is done using:
+Executing the pipeline from the MATLAB command window is done like this:
+
+```matlab
+restoredefaultpath
+addpath spm12
+addpath wp15/usecase-2.5/source
+workPackageCerCo
+```
+
+Executing the pipeline from the Linux terminal is done using:
 
 ```console
 cd wp15/usecase-2.5/source/
-matlab -nodesktop -nodisplay -nosplash -noFigureWindows -r "workPackageCerCo; exit"
+matlab -batch "restoredefaultpath; addpath spm12 wp15/usecase-2.5/source; bidsapp input output participant"
+matlab -batch "restoredefaultpath; addpath spm12 wp15/usecase-2.5/source; bidsapp input output group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
 
-```console 
+```console
 apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
 apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
 ```

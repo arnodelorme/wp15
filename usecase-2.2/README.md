@@ -46,6 +46,12 @@ mkdir output
 
 ## Analysis pipeline
 
+### Legal aspects of the software
+
+The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
+
+The MRIQC software is licensed under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
+
 ### Software installation
 
 Running the analysis pipeline requires a working [Apptainer installation](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux) (version >= 2.5). Next the [MRIQC](https://mriqc.readthedocs.io/en/latest/) container needs to be downloaded:
@@ -54,15 +60,9 @@ Running the analysis pipeline requires a working [Apptainer installation](https:
 apptainer pull mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 ```
 
-### Legal aspects of the software
-
-The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
-
-The MRIQC software is licensed under [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
-
 ### Executing the pipeline
 
-Executing the pipeline from the Linux command-line to generate the output data is done using the following:
+Executing the pipeline from the Apptainer image is done like this:
 
 ```console
 mkdir output

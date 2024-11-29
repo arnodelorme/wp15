@@ -48,6 +48,18 @@ mkdir output
 
 ## Analysis pipeline
 
+### Legal aspects of the software
+
+MATLAB is commercial software.
+
+EEGLAB is open source and released under the 2-clause BSD license.
+
+LIMO MEEG is open-source software released under the MIT License.
+
+FieldTrip is open source software and released under the GPLv3 license.
+
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Software installation
 
 This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox. Once EEGLAB is installed, the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin needs to be installed inside the EEGLAB plugin folder as shown below.
@@ -122,33 +134,24 @@ apptainer build usecase-2.4.sif container.def
 cd ../..
 ```
 
-### Legal aspects of the software
-
-MATLAB is commercial software.
-
-EEGLAB is open source and released under the 2-clause BSD license.
-
-LIMO MEEG is open-source software released under the MIT License.
-
-FieldTrip is open source software and released under the GPLv3 license.
-
-The code that is specific to the analysis pipeline is shared under the CC0 license.
-
 ### Executing the pipeline
 
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```matlab
+cd wp15/usecase-2.4
 restoredefaultpath
-addpath source eeglab
+addpath eeglab
+addpath source 
 ERP_Core_WB_install
 ERP_Core_WB(fullfile(pwd, 'input'), fullfile(pwd, 'output'))
 ```
 
-Executing the pipeline from the Linux command-line is done like this:
+Executing the pipeline from the Linux terminal is done like this:
 
 ```console
-matlab -nojvm -nodisplay -nosplash -r "restoredefaultpath; addpath source eeglab; ERP_Core_WB_install; ERP_Core_WB('input', 'output'); exit"
+matlab -batch "restoredefaultpath; addpath eeglab source; bidsapp input output participant"
+matlab -batch "restoredefaultpath; addpath eeglab source; bidsapp input output group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:

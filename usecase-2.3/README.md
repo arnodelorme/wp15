@@ -54,6 +54,14 @@ mkdir output
 
 ## Analysis pipeline
 
+### Legal aspects of the software
+
+MATLAB is commercial software and requires a license.
+
+FieldTrip is open source and released under the GPLv3 license.
+
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Software installation
 
 This requires the GitHub wp15 repository, MATLAB, and a recent FieldTrip version.
@@ -74,24 +82,25 @@ apptainer build usecase-2.3.sif container.def
 cd ../..
 ```
 
-### Legal aspects of the software
-
-MATLAB is commercial software and requires a license.
-
-FieldTrip is open source and released under the GPLv3 license.
-
-The code that is specific to the analysis pipeline is shared under the CC0 license.
-
 ### Executing the pipeline
 
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```console
-restoredefaultpath;
-addpath('fieldtrip');
-addpath('wp15/usecase-2.3/source');
-analyze_participant input output
-analyze_group input output
+cd wp15/usecase-2.3
+restoredefaultpath
+addpath fieldtrip
+addpath source
+analyze_participant('input', 'output')
+analyze_group('input', 'output')
+```
+
+Executing the pipeline from the Linux terminal is done like this:
+
+```console
+cd wp15/usecase-2.3
+matlab -batch "restoredefaultpath; addpath fieldtrip source; bidsapp input output participant
+matlab -batch "restoredefaultpath; addpath fieldtrip source; bidsapp input output group
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
