@@ -106,8 +106,8 @@ matlab -batch "restoredefaultpath; addpath fieldtrip source; bidsapp input outpu
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output participant
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
