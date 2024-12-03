@@ -1,2 +1,12 @@
-con_001.nii
-SPM.mat
+groupresults/DOTS_run-001/SPM.mat
+groupresults/DOTS_run-001/con_0001.nii
+groupresults/DOTS_run-002/SPM.mat
+groupresults/DOTS_run-002/con_0001.nii
+groupresults/Motion_run-001/SPM.mat
+groupresults/Motion_run-001/con_0001.nii
+groupresults/Motion_run-002/SPM.mat
+groupresults/Motion_run-002/con_0001.nii
+groupresults/spWM_run-001/SPM.mat
+groupresults/spWM_run-001/con_0001.nii
+groupresults/spWM_run-002/SPM.mat
+groupresults/spWM_run-002/con_0001.nii

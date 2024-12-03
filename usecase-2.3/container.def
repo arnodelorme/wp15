@@ -1,6 +1,9 @@
 BootStrap: docker
 From: ubuntu:24.04    # Alternatively use a ready-made MATLAB base image: https://hub.docker.com/r/mathworks/matlab
 
+%labels
+  Author Robert Oostenveld
+
 %environment
   MLM_LICENSE_FILE="" # should point to the license server as port@server
 
@@ -42,5 +45,5 @@ From: ubuntu:24.04    # Alternatively use a ready-made MATLAB base image: https:
 %runscript
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
   # pass all the input options, the bidsapp wrapper parses them
-  /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; bidsapp $@"
+  /opt/matlab/bin/matlab -batch "restoredefaultpath; addpath /work /work/fieldtrip; ft_defaults; bidsapp $*"
 

@@ -1,7 +1,7 @@
 function deleteVOE(path_input)
 
     list_subjects = dir(path_input);
-    szSubjects = size(list_subjects);
+    szSubjects = numel(list_subjects);
 
     for sub = 3:szSubjects
         check_sub = startsWith(list_subjects(sub).name, 'sub');

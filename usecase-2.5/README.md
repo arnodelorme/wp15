@@ -111,8 +111,8 @@ matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/conf
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
 ```
 
 ## Cleaning up
