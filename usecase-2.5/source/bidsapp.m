@@ -112,9 +112,18 @@ if options.help
   return
 end
 
-% Here you have to call the analysis pipeline specific MATLAB code, using the options
-% structure that was parsed above. You can either pass the structure, or only pass the
-% inputdir and outputdir strings.
+% Here the analysis pipeline specific MATLAB code is called, using the options
+% structure that was parsed above. The purpose of this "bidsapp" function and the
+% "workPackageCerCo" function is very similar and in principle they could be merged.
 
-error('this still needs to be implemented');
+workPackageCerCo(options.inputdir, options.outputdir, options.level);
 
+% prior to starting any analysis the following functions are called
+% - deleteVOE
+% - createDataStructure
+
+% for the participant level analysis the call sequence is
+% workPackageCerCo -> patientsDatabase -> onePatient
+
+% for the group level analysis the call sequence is
+% workPackageCerCo -> patientsDatabase -> secondLevel_works
