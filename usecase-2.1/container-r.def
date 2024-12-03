@@ -1,6 +1,9 @@
 BootStrap: docker
 From: ubuntu:24.04
 
+%labels
+  Author Robert Oostenveld
+
 %files
   pipeline.R /work/pipeline.R
 
@@ -37,7 +40,4 @@ From: ubuntu:24.04
   else
     echo Error: analysis level must be specified as participant or group && exit 1
   fi
-
-%labels
-  Author Robert Oostenveld
 
