@@ -142,16 +142,17 @@ Executing the pipeline from the MATLAB command window is done like this:
 cd wp15/usecase-2.4
 restoredefaultpath
 addpath eeglab
-addpath source 
-ERP_Core_WB_install
-ERP_Core_WB(fullfile(pwd, 'input'), fullfile(pwd, 'output'))
+addpath source
+
+bidsapp input output participant
+bidsapp input output group
 ```
 
 Executing the pipeline from the Linux terminal is done like this:
 
 ```console
-matlab -batch "restoredefaultpath; addpath eeglab source; bidsapp input output participant"
-matlab -batch "restoredefaultpath; addpath eeglab source; bidsapp input output group"
+matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp input output participant"
+matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp input output group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:

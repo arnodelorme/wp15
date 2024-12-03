@@ -70,6 +70,7 @@ This requires the Github source repository, SPM and MATLAB software.
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
 
+cd wp15/usecase-2.5
 wget https://github.com/spm/spm12/archive/refs/tags/r7771.zip
 unzip r7771.zip
 mv spm12-r7771 spm12
@@ -79,37 +80,32 @@ rm r7771.zip
 Alternatively, you can install the software in an Apptainer container image.
 
 ```console
-cd wp15/usecase-2.4
-apptainer build usecase-2.4.sif container.def
-cd ../..
+cd wp15/usecase-2.5
+apptainer build usecase-2.5.sif container.def
 ```
 
 ### Executing the pipeline
 
-The directory structure is expected to look like this
-
-```console
-├── input
-├── output
-├── spm12
-└── wp15
-```
-
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```matlab
+cd wp15/usecase-2.5
 restoredefaultpath
 addpath spm12
-addpath wp15/usecase-2.5/source
-workPackageCerCo
+addpath spm12/config
+addpath spm12/matlabbatch
+addpath source
+
+bidsapp input output participant
+bidsapp input output group
 ```
 
 Executing the pipeline from the Linux terminal is done using:
 
 ```console
-cd wp15/usecase-2.5/source/
-matlab -batch "restoredefaultpath; addpath spm12 wp15/usecase-2.5/source; bidsapp input output participant"
-matlab -batch "restoredefaultpath; addpath spm12 wp15/usecase-2.5/source; bidsapp input output group"
+cd wp15/usecase-2.5
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp input output participant"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp input output group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
@@ -127,4 +123,3 @@ Cleaning up the input and output data is done using:
 rm -rf input
 rm -rf output
 ```
-
