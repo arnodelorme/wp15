@@ -132,8 +132,35 @@ if options.help
   return
 end
 
-% Here you have to call the analysis pipeline specific MATLAB code, using the options
-% structure that was parsed above.
+participants_tsv = fullfile(options.inputdir, 'participants.tsv');
+participants = readtable(participants_tsv, 'FileType','text', 'Delimiter', '\t');
 
-error('this still needs to be implemented');
+if ~isfield(options, 'start_idx') || isempty(options.start_idx)
+  options.start_idx = 1;
+end
+if ~isfield(options, 'stop_idx') || isempty(options.stop_idx)
+  options.stop_idx = size(participants,1);
+end
 
+if options.start_idx<1 || options.start_idx>size(participants, 1)
+  error('invalid start_idx');
+end
+if options.stop_idx<1 || options.stop_idx>size(participants, 1)
+  error('invalid stop_idx');
+end
+if options.stop_idx<options.start_idx
+  error('invalid start_idx or stop_idx');
+end
+
+% select the desired participants
+fprintf('selected %d out of the %d participants\n', options.stop_idx-options.start_idx+1, size(participants, 1));
+participants = participants(options.start_idx:options.stop_idx,:);
+
+% FIXME, the ERP_Core_WB should be updated to allow for only participant/group level analysis
+warning('ignoring the level "%s" and running all analyses', options.level);
+
+% ensure that dependencies are installed
+ERP_Core_WB_install;
+
+% call the analysis pipeline specific MATLAB code, using the options structure that was parsed above.
+ERP_Core_WB(options.inputdir, options.outputdir, 'sublist', participants.participant_id);
