@@ -106,7 +106,7 @@ You should now have something like:
 └── output
 ```
 
-There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. It is best to install those directly from within the MATLAB environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/source/ERP_Core_WB_install.m)
+There are also a number of additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, bva-io, clean_rawdata, Firfilt, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. It is best to install those directly from within the MATLAB environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/source/ERP_Core_WB_install.m)
 
 Once all is installed, the EEGLAB plugins directory should look like this
 
@@ -118,8 +118,10 @@ eeglab
 ├── functions
 └── plugins
     └── bids-matlab-tools8.0
+    └── bva-io1.73
     └── clean_rawdata2.91
     └── Fieldtrip-lite20240111
+    └── firfilt2.8
     └── ICLabel1.6
     └── limo_tools
     └── PICARD1.0
