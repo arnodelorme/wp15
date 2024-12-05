@@ -60,7 +60,7 @@ if ~exist('picard','file')
     plugin_askinstall('PICARD', 'picard', true);
 end
 if ~exist('pop_iclabel','file')
-    pplugin_askinstall('IClabel', 'eegplugin_iclabel', true);
+    plugin_askinstall('IClabel', 'eegplugin_iclabel', true);
 end
 if ~exist('ft_prepare_neighbours','file')
     plugin_askinstall('Fieldtrip-lite', 'ft_defaults', true);
