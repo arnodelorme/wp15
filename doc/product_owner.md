@@ -10,13 +10,13 @@ The data rights holder should specify how large the dataset is that they want to
 
 Since large amounts of data are expected to be transferred (many GB, over many files), the transfer may take a considerable time.
 
-There should be a possibility to check the completeness and integrety of the transferred files, for example using the [md5sum](https://en.wikipedia.org/wiki/Md5sum) application.
+There should be a possibility to check the completeness and integrity of the transferred files, for example using the [md5sum](https://en.wikipedia.org/wiki/Md5sum) application.
 
 The product owner should get information from the data rights holder on:
 
 - the total amount of data that is to be transferred (in GB or TB)
 - the number of files and directories that the data comprises of
-- a manifest file to check completeness and integrety after data transfer
+- a manifest file to check completeness and integrity after data transfer
 - the retention period of the data on the SIESTA storage system
 
 ## Uploading the data by the data rights holder
@@ -48,7 +48,7 @@ A regular analysis on the dataset often involves two phases: computations at the
 
 ## Computational requirements
 
-The "participant" level computations can in principle be paralellized over subjects. The "group" level computations usually do not involve or allow for parallel computation.
+The "participant" level computations can in principle be parallelized over subjects. The "group" level computations usually do not involve or allow for parallel computation.
 
 The data user decides on the analysis that is to be executed on the data. Hence the the data user must specify the computational requirements, or at least provide an estimate of the computational requirements. Some computations will scale linearly in time with the dataset size (for example 2x as many subjects in the dataset means 2x longer computations) but other computations will have a non-linear relationship to the dataset size.
 
@@ -64,4 +64,4 @@ The product owner should get information from the data user on:
 
 SInce the data user cannot have direct access to the sensitive data, the computation is to be initiated by the product owner. Following the computations, the results are potentially reviewd by the data rights holder and shared with the data user.
 
-The analysis is to be implemented by the data user as a containerized [BIDS application](https://doi.org/10.1371/journal.pcbi.1005209). To allow development, testing , and deployment on the compute environment of the data user, we have settled on [Apptainer](https://apptainer.org). If needed, the platform owner shoudl be able to convert the apptainer image into a docker image.
+The analysis is to be implemented by the data user as a containerized [BIDS application](https://doi.org/10.1371/journal.pcbi.1005209). To allow development, testing , and deployment on the compute environment of the data user, we have settled on [Apptainer](https://apptainer.org). If needed, the platform owner should be able to convert the apptainer image into a docker image.
