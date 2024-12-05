@@ -156,11 +156,10 @@ end
 fprintf('selected %d out of the %d participants\n', options.stop_idx-options.start_idx+1, size(participants, 1));
 participants = participants(options.start_idx:options.stop_idx,:);
 
-% FIXME, the ERP_Core_WB should be updated to allow for only participant/group level analysis
-warning('ignoring the level "%s" and running all analyses', options.level);
-
-% ensure that dependencies are installed
-ERP_Core_WB_install;
-
-% call the analysis pipeline specific MATLAB code, using the options structure that was parsed above.
-ERP_Core_WB(options.inputdir, options.outputdir, 'sublist', participants.participant_id);
+if strcmp(options.level, 'participant')
+  % FIXME, the ERP_Core_WB should be updated to allow for only participant/group level analysis
+  warning('ERP_Core_WB does not yet implement participant-level processing, please specify "group"');
+else
+  % call the analysis pipeline specific MATLAB code, using the options structure that was parsed above.
+  ERP_Core_WB(options.inputdir, options.outputdir, 'sublist', participants.participant_id);
+end

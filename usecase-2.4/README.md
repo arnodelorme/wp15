@@ -64,6 +64,8 @@ The code that is specific to the analysis pipeline is shared under the CC0 licen
 
 This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox. Once EEGLAB is installed, the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin needs to be installed inside the EEGLAB plugin folder as shown below.
 
+There are also a number of additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, bva-io, clean_rawdata, Firfilt, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there.
+
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
 cd wp15/usecase2.4
@@ -73,12 +75,40 @@ unzip 2024.2.1.zip
 mv eeglab-2024.2.1 eeglab
 rm 2024.2.1.zip
 
-git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
-mkdir -p eeglab/plugins
-mv limo_tools eeglab/plugins/
+git clone -b v4.0 --depth 1 https://github.com/LIMO-EEG-Toolbox/limo_tools.git
+mv limo_tools           eeglab/plugins/limo_tools
+
+wget https://sccn.ucsd.edu/eeglab/plugins/fieldtrip-lite-20240111.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/bva-io1.73.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/firfilt2.8.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/ICLabel1.6.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/clean_rawdata2.91.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/zapline-plus1.2.1.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/picard-matlab.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/bids-matlab-tools8.0.zip
+
+unzip fieldtrip-lite-20240111.zip 
+unzip bva-io1.73.zip 
+unzip firfilt2.8.zip 
+unzip ICLabel1.6.zip 
+unzip clean_rawdata2.91.zip 
+unzip zapline-plus1.2.1.zip 
+unzip picard-matlab.zip 
+unzip bids-matlab-tools8.0.zip 
+
+rm *.zip
+
+mv fieldtrip-20240111   eeglab/plugins/Fieldtrip-lite20240111
+mv bva-io               eeglab/plugins/bva-io1.73
+mv firfilt              eeglab/plugins/firfilt2.8
+mv ICLabel              eeglab/plugins/ICLabel1.6
+mv clean_rawdata        eeglab/plugins/clean_rawdata2.91
+mv zapline-plus-1.2.1   eeglab/plugins/apline-plus1.2.1
+mv picard-matlab        eeglab/plugins/PICARD1.0
+mv bids-matlab-tools    eeglab/plugins/bids-matlab-tools8.0
 ```
 
-You should now have something like:
+Once all is installed, it should look like this
 
 ```console
 ├── README.md (this file)
@@ -93,8 +123,16 @@ You should now have something like:
 │   ├── eeglab.prj
 │   ├── functions
 │   ├── plugins
-│   │   └── limo_tools
-│   └── [..]
+│   |   └── bids-matlab-tools8.0
+│   |   └── bva-io1.73
+│   |   └── clean_rawdata2.91
+│   |   └── Fieldtrip-lite20240111
+│   |   └── firfilt2.8
+│   |   └── ICLabel1.6
+│   |   └── limo_tools
+│   |   └── PICARD1.0
+│   |   └── zapline-plus1.2.1
+│   │   └── [..]
 ├── input
 │   ├── CHANGES
 │   ├── LICENSE
@@ -104,28 +142,6 @@ You should now have something like:
 │   ├── sub-003
 │   └── [..]
 └── output
-```
-
-There are also a number of additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, bva-io, clean_rawdata, Firfilt, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. It is best to install those directly from within the MATLAB environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/source/ERP_Core_WB_install.m)
-
-Once all is installed, the EEGLAB plugins directory should look like this
-
-```console
-eeglab
-├── [..]
-├── eeglab.m
-├── eeglab.prj
-├── functions
-└── plugins
-    └── bids-matlab-tools8.0
-    └── bva-io1.73
-    └── clean_rawdata2.91
-    └── Fieldtrip-lite20240111
-    └── firfilt2.8
-    └── ICLabel1.6
-    └── limo_tools
-    └── PICARD1.0
-    └── zapline-plus1.2.1
 ```
 
 Alternatively, you can install the software in an Apptainer container image.
