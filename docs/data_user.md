@@ -10,13 +10,13 @@ The data analysis can be implemented on basis of any analysis tool and/or analys
 
 Install all software and all dependencies from the command line, as that will facilitate the implementation of the container.
 
-Once the contaner is built, it is read only. Installing additional software dependencies from within the analysis environment (for example downloading and installing "plug-ins" on the fly) will not work. If software dependencies need to be installed from within the analysis environment, this must be done in the container definition file, not in the analysis pipeline. See for an example the usecase-2.1 container with `r-base` and the the call to `install.packages` for the dependencies.
+Once the container is built, it is read only. Installing additional software dependencies from within the analysis environment (for example downloading and installing "plug-ins" on the fly) will not work. If software dependencies need to be installed from within the analysis environment, this must be done in the container definition file, not in the analysis pipeline. See for an example the usecase-2.1 container with `r-base` and the the call to `install.packages` for the dependencies.
 
 The only two directories that are shared with the analysis pipeline are directory with the input and the output data. The input directory is to be assumed to be read-only. The output directory can be used in any way you like, but only the files in the `whitelist.txt` with group level aggregate data will be shared with the data user.
 
 During development and testing, the data user has access to an anonymous and scrambled version of the original dataset. This scrambled dataset has all the technical features of the original data, but the results of the analysis on this data should be assumed to be meaningless.
 
-To facilitate debugging, the data user's analysis scripts shoudl give explicit error messages. Rather than a try-except statement that prints "something went wrong", the analysis script should show _where_ in the analysis it went wrong (i.e., in which step, and on which subject) and _what_ went wrong. When possible, show a full stack trace of the error.
+To facilitate debugging, the data user's analysis scripts should give explicit error messages. Rather than a try-except statement that prints "something went wrong", the analysis script should show _where_ in the analysis it went wrong (i.e., in which step, and on which subject) and _what_ went wrong. When possible, show a full stack trace of the error.
 
 ### Participant level
 
