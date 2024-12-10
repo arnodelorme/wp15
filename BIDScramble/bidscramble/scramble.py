@@ -14,7 +14,7 @@ from .scramble_pseudo import scramble_pseudo
 # Use parent parsers to inherit optional arguments (https://macgregor.gitbooks.io/developer-notes/content/python/argparse-basics.html#inheriting-arguments)
 parent = argparse.ArgumentParser(add_help=False)
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
-parent.add_argument('-b','--bidsvalidate', help='If given, all input files are checked for BIDS compliance when first indexed, and non-compliant files are ignored (as in pybids.BIDSLayout)', action='store_true')
+parent.add_argument('-b','--bidsvalidate', help='If given, all input files are checked for BIDS compliance when first indexed, and excluded when non-compliant (as in pybids.BIDSLayout)', action='store_true')
 parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputdir', default=r'^(?!\.).*')
 parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
 parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster. You can add an opaque DRMAA argument with native specifications for your HPC resource manager (NB: Use quotes and include at least one space character to prevent premature parsing -- see examples)',
@@ -61,7 +61,7 @@ def addparser_tsv(parsers, help: str):
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
     subparser  = subparsers.add_parser('null', parents=[parent], description=description, help='Replaces all values with "n/a"')
     subparser  = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
-    subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
+    subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship (row order) between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
 
 def addparser_json(parsers, help: str):
@@ -182,7 +182,7 @@ def addparser_pseudo(parsers, help: str):
     parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.add_argument('method', help='The method to generate the pseudonyms', choices=['random','permute','original'], default='permute')
     parser.add_argument('-p','--pattern', help='The fullmatch regular expression pattern that is used to extract the subject label from the relative filepath', default='^sub-(.*?)/.*')
-    parser.add_argument('-r','--rootfiles', help='In addition to the selected files (see `--select`), include all files in the root of the input directory (such as participants.tsv, etc)', choices=['yes','no'], default='yes')
+    parser.add_argument('-r','--rootfiles', help='In addition to the included files (see `--select` for usage), include all files in the root of the input directory (such as participants.tsv, etc)', choices=['yes','no'], default='yes')
     parser.set_defaults(func=scramble_pseudo)
 
 

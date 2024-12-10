@@ -64,7 +64,7 @@ examples:
 #### Action: stub
 
 ```console
-usage: scramble inputdir outputdir stub [-h] [-s PATTERN] [-d]
+usage: scramble inputdir outputdir stub [-h] [-d] [-b] [-s PATTERN]
 
 Creates a copy of the input directory in which all files are empty stubs. Exceptions to this are the
 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over and
@@ -72,10 +72,12 @@ updated if possible.
 
 options:
   -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
 
 examples:
   scramble inputdir outputdir stub
@@ -87,21 +89,24 @@ examples:
 #### Action: tsv
 
 ```console
-usage: scramble inputdir outputdir tsv [-h] [-s PATTERN] [-d] {permute} ...
+usage: scramble inputdir outputdir tsv [-h] [-d] [-b] [-s PATTERN] {null,permute} ...
 
-Adds scrambled versions of the tsv files in the input directory to the output directory. If no scrambling method
-is specified, the default behavior is to null all values.
+Adds scrambled versions of the tsv files in the input directory to the output directory. If no scrambling
+method is specified, the default behavior is to null all values.
 
 positional arguments:
-  {permute}             Scrambling method. Add -h, --help for more information
+  {null,permute}        Scrambling method (default: null). Add -h, --help for more information
+    null                Replaces all values with "n/a"
     permute             Randomly permute the column values of the tsv files
 
 options:
   -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
 
 examples:
   scramble inputdir outputdir tsv
@@ -113,17 +118,19 @@ examples:
 #### Action: json
 
 ```console
-usage: scramble inputdir outputdir json [-h] [-s PATTERN] [-d] [-p PATTERN]
+usage: scramble inputdir outputdir json [-h] [-d] [-b] [-s PATTERN] [-p PATTERN]
 
 Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
 preserve expression is specified, the default behavior is to null all values.
 
 options:
   -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
   -p PATTERN, --preserve PATTERN
                         A fullmatch regular expression pattern that is matched against all keys in the json
                         files. The json values are copied over when a key matches positively (default: None)
@@ -137,15 +144,16 @@ examples:
 #### Action: nii
 
 ```console
-usage: scramble inputdir outputdir nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
-                                             {blur,permute,diffuse,wobble} ...
+usage: scramble inputdir outputdir nii [-h] [-d] [-b] [-s PATTERN] [-c [SPECS]]
+                                       {null,blur,permute,diffuse,wobble} ...
 
-Adds scrambled versions of the NIfTI files in the input directory to the output directory. If no scrambling
-method is specified, the default behavior is to null all image values.
+Adds scrambled versions of the NIfTI files in the input directory to the output directory. If no
+scrambling method is specified, the default behavior is to null all image values.
 
 positional arguments:
-  {blur,permute,diffuse,wobble}
-                        Scrambling method. Add -h, --help for more information
+  {null,blur,permute,diffuse,wobble}
+                        Scrambling method (default: null). Add -h, --help for more information
+    null                Replaces all values with zeros
     blur                Apply a 3D Gaussian smoothing filter
     permute             Perform random permutations along one or more image dimensions
     diffuse             Perform random permutations using a sliding 3D permutation kernel
@@ -153,10 +161,12 @@ positional arguments:
 
 options:
   -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
   -c [SPECS], --cluster [SPECS]
                         Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC)
                         cluster. You can add an opaque DRMAA argument with native specifications for your HPC
@@ -170,20 +180,76 @@ examples:
   scramble inputdir outputdir nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
-#### Action: swap
+#### Action: fif
 
 ```console
-usage: scramble inputdir outputdir swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
+usage: scramble inputdir outputdir fif [-h] [-d] [-b] [-s PATTERN] {null,permute} ...
 
-Randomly swappes the content of data files between a group of similar files in the input directory and save them
-as output.
+Adds scrambled versions of the FIF files in the input directory to the output directory. If no scrambling method
+is specified, the default behavior is to null the data.
+
+positional arguments:
+  {null,permute}        Scrambling method (default: null). Add -h, --help for more information
+    null                Replaces all values with zeros
+    permute             Randomly permute the MEG samples in each channel
 
 options:
   -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: .*)
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+
+examples:
+  scramble inputdir outputdir fif
+  scramble inputdir outputdir fif permute
+```
+
+#### Action brainvision
+
+```console
+usage: scramble inputdir outputdir brainvision [-h] [-d] [-b] [-s PATTERN] {null,permute} ...
+
+Adds scrambled versions of the BrainVision EEG files in the input directory to the output directory. If no scrambling method
+is specified, the default behavior is to null the data.
+
+positional arguments:
+  {null,permute}        Scrambling method (default: null). Add -h, --help for more information
+    null                Replaces all values with zeros
+    permute             Randomly permute the EEG samples in each channel
+
+options:
+  -h, --help            Show this help message and exit
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+
+examples:
+  scramble inputdir outputdir brainvision
+  scramble inputdir outputdir brainvision permute
+```
+
+#### Action: swap
+
+```console
+usage: scramble inputdir outputdir swap [-h] [-d] [-b] [-s PATTERN] [-g ENTITY [ENTITY ...]]
+
+Randomly swaps the content of data files between a group of similar files in the input directory and save
+them as output.
+
+options:
+  -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
   -g ENTITY [ENTITY ...], --grouping ENTITY [ENTITY ...]
                         A list of (full-name) BIDS entities that make up a group between which file contents are
                         swapped. See: https://bids-
@@ -192,17 +258,18 @@ options:
 examples:
   scramble inputdir outputdir swap
   scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir swap -s '.*(?<!derivatives)'
+  scramble inputdir outputdir swap -s '.*(?<!derivatives) -b'
   scramble inputdir outputdir swap -g subject session run
 ```
 
 #### Action: pseudo
 
 ```console
-usage: scramble inputdir outputdir pseudo [-h] [-s PATTERN] [-b] [-d] [-p PATTERN] [-r {yes,no}]
-                                               {random,permute,original}
+usage: scramble inputdir outputdir pseudo [-h] [-d] [-b] [-s PATTERN] [-p PATTERN] [-r {yes,no}]
+                                          {random,permute,original}
 
-Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
+anywhere in the filepath as well as inside all text files (such as json and tsv-files).
 
 positional arguments:
   {random,permute,original}
@@ -210,24 +277,23 @@ positional arguments:
 
 options:
   -h, --help            Show this help message and exit
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and
+                        excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default:
-                        ^(?!\.).*)
-  -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and non-
-                        compliant files are ignored (as in pybids.BIDSLayout) (default: False)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
   -p PATTERN, --pattern PATTERN
                         The fullmatch regular expression pattern that is used to extract the subject label from
                         the relative filepath (default: ^sub-(.*?)/.*)
   -r {yes,no}, --rootfiles {yes,no}
-                        In addition to the selected files (see `--select`), include all files in the root of the
-                        input directory (such as participants.tsv, etc) (default: yes)
+                        In addition to the included files (see `--select` for usage), include all files in the
+                        root of the input directory (such as participants.tsv, etc) (default: yes)
 
 examples:
-  scramble inputdir outputdir         pseudo
+  scramble inputdir outputdir pseudo
   scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003/).*' 
-  scramble inputdir outputdir_keep1   pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
+  scramble inputdir outputdir_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
 ```
 
 ## Legal Aspects
