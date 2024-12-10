@@ -7,7 +7,7 @@ from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles
 
-def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='', dryrun: bool=False, **_):
+def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -29,7 +29,7 @@ def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
         elif isevoked:
             obj = mne.Evoked(inputfile)
         elif isepoched:
-            raise Exception('cannot read epoched FIF file')
+            raise Exception(f"cannot read epoched FIF file: {inputfile}")
 
         def do_permute(data):
             # scramble the samples in each channel
@@ -44,8 +44,10 @@ def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
         # Apply the scrambling method
         if method == 'permute':
             obj.apply_function(do_permute)
-        else:
+        elif method == 'null':
             obj.apply_function(do_null)
+        else:
+            raise ValueError(f"Unknown fif-scramble method: {method}")
 
         # Save the output data
         outputfile = outputdir/inputfile.relative_to(inputdir)

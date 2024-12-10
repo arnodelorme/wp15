@@ -67,7 +67,7 @@ def test_scramble_tsv(tmp_path):
     (tmp_path/'input'/'partici_test.tsv').write_text(tsvdata)
 
     # Create nulled output data
-    scramble_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', False, '', '')
+    scramble_tsv(tmp_path/'input', tmp_path/'output', 'partici.*\\.tsv', False, 'null', '')
     assert (tmp_path/'output'/'partici_test.tsv').is_file()
     assert not (tmp_path/'output'/'test.tsv').is_file()
 
@@ -130,7 +130,7 @@ def test_scramble_nii(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{niifile}", tmp_path/'input'/niifile)
 
     # Create nulled output data
-    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', False, '')
+    scramble_nii(tmp_path/'input', tmp_path/'output', 'sub.*\\.nii.gz', False, 'null')
     assert (tmp_path/'output'/niifile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
@@ -213,7 +213,7 @@ def test_scramble_fif(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{megfile}", tmp_path/'input'/megfile)
 
     # Create nulled output data
-    scramble_fif(tmp_path/'input', tmp_path/'output', r'sub.*\.fif', False, '')
+    scramble_fif(tmp_path/'input', tmp_path/'output', r'sub.*\.fif', False, 'null')
     assert (tmp_path/'output'/megfile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 
@@ -226,7 +226,7 @@ def test_scramble_fif(tmp_path):
     elif isevoked:
         obj = mne.Evoked(tmp_path/'output'/megfile)
     elif isepoched:
-        raise Exception('cannot read epoched FIF file')
+        raise Exception(f"cannot read epoched FIF file: {megfile}")
 
     # Check that the output data is properly nulled
     data = obj.get_data()
@@ -249,7 +249,7 @@ def test_scramble_brainvision(tmp_path):
     urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
 
     # Create nulled output data
-    scramble_brainvision(tmp_path/'input', tmp_path/'output', r'sub.*\.vhdr', False, '')
+    scramble_brainvision(tmp_path/'input', tmp_path/'output', r'sub.*\.vhdr', False, 'null')
     assert (tmp_path/'output'/eegfile).is_file()
     assert not (tmp_path/'output'/'participants.tsv').is_file()
 

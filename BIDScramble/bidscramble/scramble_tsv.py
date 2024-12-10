@@ -6,7 +6,7 @@ from pathlib import Path
 from . import get_inputfiles
 
 
-def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str= '', preserve: str= '^$', dryrun: bool=False, **_):
+def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', preserve: str= '^$', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -24,8 +24,10 @@ def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
             for column in tsvdata.columns:
                 if not re.fullmatch(preserve or '^$', column):
                     tsvdata[column] = np.random.permutation(tsvdata[column])
-        else:
+        elif method == 'null':
             tsvdata = pd.DataFrame(columns=tsvdata.columns, index=tsvdata.index)
+        else:
+            raise ValueError(f"Unknown tsv-scramble method: {method}")
 
         # Permute the rows
         tsvdata = tsvdata.sample(frac=1).reset_index(drop=True)

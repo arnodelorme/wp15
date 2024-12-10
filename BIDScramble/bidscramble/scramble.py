@@ -58,8 +58,9 @@ def addparser_tsv(parsers, help: str):
     parser = parsers.add_parser('tsv', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scramble_tsv)
 
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
-    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
+    subparser  = subparsers.add_parser('null', parents=[parent], description=description, help='Replaces all values with "n/a"')
+    subparser  = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the column values of the tsv files')
     subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
 
@@ -96,7 +97,8 @@ def addparser_nii(parsers, help: str):
     parser = parsers.add_parser('nii', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
     parser.set_defaults(func=scramble_nii)
 
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
+    subparser = subparsers.add_parser('null', parents=[parent_nii], description=description, help='Replaces all values with zeros')
     subparser = subparsers.add_parser('blur', parents=[parent_nii], description=description, help='Apply a 3D Gaussian smoothing filter')
     subparser.add_argument('fwhm', help='The FWHM (in mm) of the isotropic 3D Gaussian smoothing kernel', type=float)
     subparser = subparsers.add_parser('permute', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, help='Perform random permutations along one or more image dimensions')
@@ -121,9 +123,11 @@ def addparser_fif(parsers, help: str):
               '  scramble inputdir outputdir fif permute\n')
 
     parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
-    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the MEG samples in each channel')
     parser.set_defaults(func=scramble_fif)
+
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
+    subparser  = subparsers.add_parser('null', parents=[parent], description=description, help='Replaces all values with zeros')
+    subparser  = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the MEG samples in each channel')
 
 
 def addparser_brainvision(parsers, help: str):
@@ -138,10 +142,12 @@ def addparser_brainvision(parsers, help: str):
               '  scramble inputdir outputdir brainvision permute\n')
 
     parser = parsers.add_parser('brainvision', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
-    subparsers = parser.add_subparsers(dest='method', help='Scrambling method. Add -h, --help for more information')
-    subparser = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the EEG samples in each channel')
     parser.set_defaults(func=scramble_brainvision)
-    
+
+    subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
+    subparser  = subparsers.add_parser('null', parents=[parent], description=description, help='Replaces all values with zeros')
+    subparser  = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the EEG samples in each channel')
+
 
 def addparser_swap(parsers, help: str):
 

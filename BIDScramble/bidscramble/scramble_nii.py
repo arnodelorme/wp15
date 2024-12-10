@@ -13,7 +13,7 @@ from typing import List
 from . import get_inputfiles
 
 
-def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False,
+def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', fwhm: float=0, dims: List[str]=(), independent: bool=False,
                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: str='', dryrun: bool=False, **_):
 
     # Defaults
@@ -118,8 +118,11 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
                         slab = (slice(None),) * dim + (i,)   # https://stackoverflow.com/questions/42817508/get-the-i-th-slice-of-the-k-th-dimension-in-a-numpy-array
                         data[slab] = np.roll(data[slab], round(amplitude * wobble[i]), axis=axis if axis < dim else axis - 1)
 
-        else:
+        elif method == 'null':
             data = data * 0
+
+        else:
+            raise ValueError(f"Unknown nii-scramble method: {method}")
 
         # Save the output data
         outputfile = outputdir/inputfile.relative_to(inputdir)

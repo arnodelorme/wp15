@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
 import numpy as np
-import re
 import brainvision
 from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles
 
-def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='', dryrun: bool=False, **_):
+def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', dryrun: bool=False, **_):
 
     # Defaults
     inputdir  = Path(inputdir).resolve()
@@ -32,8 +31,10 @@ def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidat
         # Apply the scrambling method
         if method == 'permute':
             data = do_permute(data)
-        else:
+        elif method == 'null':
             data = do_null(data)
+        else:
+            raise ValueError(f"Unknown brainvision-scramble method: {method}")
 
         # Save the output data
         outputfile = outputdir/inputfile.relative_to(inputdir)
