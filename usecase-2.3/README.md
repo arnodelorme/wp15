@@ -54,6 +54,14 @@ mkdir output
 
 ## Analysis pipeline
 
+### Legal aspects of the software
+
+MATLAB is commercial software and requires a license.
+
+FieldTrip is open source and released under the GPLv3 license.
+
+The code that is specific to the analysis pipeline is shared under the CC0 license.
+
 ### Software installation
 
 This requires the GitHub wp15 repository, MATLAB, and a recent FieldTrip version.
@@ -70,33 +78,36 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.3
-sudo apptainer build ../../pipeline.sif pipeline.def
+apptainer build usecase-2.3.sif container.def
 cd ../..
 ```
-
-### Legal aspects of the software
-
-MATLAB is commercial software and requires a license.
-
-FieldTrip is open source and released under the GPLv3 license.
 
 ### Executing the pipeline
 
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```console
-restoredefaultpath;
-addpath('fieldtrip');
-addpath('wp15/usecase-2.3');
-analyze_participant input output
-analyze_group input output
+cd wp15/usecase-2.3
+restoredefaultpath
+addpath fieldtrip
+addpath source
+analyze_participant('input', 'output')
+analyze_group('input', 'output')
+```
+
+Executing the pipeline from the Linux terminal is done like this:
+
+```console
+cd wp15/usecase-2.3
+matlab -batch "restoredefaultpath; addpath fieldtrip source; bidsapp input output participant
+matlab -batch "restoredefaultpath; addpath fieldtrip source; bidsapp input output group
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
-apptainer run --no-home --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
@@ -126,5 +137,5 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
 ```console
 scramble input scrambled stub
 scramble input scrambled json -p '.*'
-scramble input scrambled fif
+scramble input scrambled fif -s 'sub-../.*_meg\.fif'
 ```

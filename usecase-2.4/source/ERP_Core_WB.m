@@ -26,6 +26,14 @@ function ERP_Core_WB(source, destination, varargin)
 %
 % Cyril Pernet, during the spring of 2024 
 % + various updates by Marcel and Jan-Mathijs
+%
+% This code is shared under the CC0 license
+%
+% Copyright (C) 2024, SIESTA workpackage 15 team
+
+if nargin<2
+  error('required arguments are missing')
+end
 
 % arguments that could be made optional epoch_window, baseline_window, analysis_window, ICAname
 
@@ -39,6 +47,12 @@ end
 if ~exist('pop_zapline_plus','file')
     plugin_askinstall('zapline-plus','pop_zapline_plus',true);
 end
+if ~exist('pop_loadbv','file')
+    plugin_askinstall('bva-io','pop_loadbv',true);
+end
+if ~exist('eegplugin_firfilt','file')
+    plugin_askinstall('Firfilt', 'firfilt', true);
+end
 if ~exist('pop_clean_rawdata','file')
     plugin_askinstall('clean_rawdata', 'eegplugin_clean_rawdata', true);
 end
@@ -46,7 +60,7 @@ if ~exist('picard','file')
     plugin_askinstall('PICARD', 'picard', true);
 end
 if ~exist('pop_iclabel','file')
-    pplugin_askinstall('IClabel', 'eegplugin_iclabel', true);
+    plugin_askinstall('IClabel', 'eegplugin_iclabel', true);
 end
 if ~exist('ft_prepare_neighbours','file')
     plugin_askinstall('Fieldtrip-lite', 'ft_defaults', true);
@@ -54,6 +68,8 @@ end
 
 if ~exist('pop_importbids.m','file') || ...
         ~exist('pop_zapline_plus.m','file') || ...
+        ~exist('pop_loadbv.m','file') || ...
+        ~exist('eegplugin_firfilt.m','file') || ...
         ~exist('pop_clean_rawdata.m','file') || ...
         ~exist('picard.m','file') || ...
         ~exist('pop_iclabel.m','file') || ...
@@ -61,6 +77,10 @@ if ~exist('pop_importbids.m','file') || ...
         ~exist('limo_eeg.m','file')
     error('1 or more of the necessary plugins is not found');
 end
+
+% prevent Unrecognized function or variable 'eeglab2fieldtrip'
+ftpath = fileparts(which('ft_defaults'));
+addpath(fullfile(ftpath, 'external', 'eeglab'))
 
 % check options
 if nargin == 1
@@ -468,7 +488,7 @@ for t = 1:length(task)
    
     elseif strcmpi(task{t},'N2pc')
        % "111": "Stimulus - target blue, target left, gap at top",
- 	   % "112": "Stimulus - target blue, target left, gap at bottom",
+ 	     % "112": "Stimulus - target blue, target left, gap at bottom",
        % "121": "Stimulus - target blue, target right, gap at top",
        % "122": "Stimulus - target blue, target right, gap at bottom",
        % "211": "Stimulus - target pink, target left, gap at top",
@@ -543,7 +563,7 @@ for t = 1:length(task)
        saveas(gcf, 'PO7_PO8_difference.fig','fig'); close(gcf)
        
     elseif strcmpi(task{t},'N400')
-       % 111 prime word, related word pair, list 1
+     % 111 prime word, related word pair, list 1
 	   % 112 prime word, related word pair, list 2
 	   % 121 prime word, unrelated word pair, list 1
 	   % 122 prime word, unrelated word pair, list 2
@@ -604,9 +624,9 @@ for t = 1:length(task)
     elseif strcmpi(task{t},'P3')
    
      % 11: Stimulus - block target A, trial stimulus A,
-	 % 22: Stimulus - block target B, trial stimulus B,
-	 % 33: Stimulus - block target C, trial stimulus C,
-	 % 44: Stimulus - block target D, trial stimulus D,
+	   % 22: Stimulus - block target B, trial stimulus B,
+	   % 33: Stimulus - block target C, trial stimulus C,
+	   % 44: Stimulus - block target D, trial stimulus D,
      % 55: Stimulus - block target E, trial stimulus E,
      % 12, 13, 14, 15 
      % 21, 23, 24, 25

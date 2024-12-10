@@ -43,45 +43,74 @@ mkdir output
 
 ## Analysis pipeline
 
-### Software installation
-
-The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory. Alternatively, it is possible to make an [Apptainer](https://apptainer.org) container with all analysis software and dependencies.
-
 ### Legal aspects of the software
 
 The R-package and the optparse package are licensed under GPL-2 or GPL-3.
 
+MATLAB is commercial software and requires a license.
+
 The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
 
-### Executing the pipeline
+The code that is specific to the analysis pipeline is shared under the CC0 license.
 
-Executing the pipeline from the Linux command-line is done with the real input data like this:
+### Installation of the R version
 
-```console
-Rscript pipeline.R --inputdir input --outputdir output  
-```
+The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory. Alternatively, it is possible to make an [Apptainer](https://apptainer.org) container with all analysis software and dependencies.
 
-or with the scrambled version of the data like this:
+Alternatively, you can install the software in an Apptainer container image.
 
 ```console
-Rscript pipeline.R  --inputdir scrambled --outputdir output  
+cd wp15/usecase-2.1
+apptainer build usecase-2.1.sif container-r.def
 ```
 
-### Building the container
+### Executing the R version of the pipeline
+
+Executing the pipeline from the Linux terminal is done like this:
 
 ```console
-apptainer build pipeline.sif pipeline.dev
+cd wp15/usecase-2.1
+Rscript source/pipeline.R --inputdir input --outputdir output  
 ```
 
-### Executing the container
+Executing the pipeline from the R-based Apptainer image is done like this:
 
 ```console
 mkdir output
-apptainer run --no-home pipeline.sif input output participant
-apptainer run --no-home pipeline.sif input output group
+apptainer run usecase-2.1.sif input output participant
+apptainer run usecase-2.1.sif input output group
 ```
 
-It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
+Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
+
+### Installation of the MATLAB version
+
+The MATLAB version of the pipeline only requires a recent MATLAB version and the source directory to be on the MATLAB path.
+
+Alternatively, you can install the software in an Apptainer container image.
+
+```console
+cd wp15/usecase-2.1
+apptainer build usecase-2.1.sif container-matlab.def
+```
+
+### Executing the MATLAB version of the pipeline
+
+Executing the pipeline from the Linux terminal is done like this:
+
+```console
+cd wp15/usecase-2.1
+matlab -batch "restoredefaultpath; addpath source; bidsapp input output participant"
+matlab -batch "restoredefaultpath; addpath source; bidsapp input output group"
+```
+
+Executing the pipeline from the MATLAB-based Apptainer image is done like this:
+
+```console
+mkdir output
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output group
+```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
 
@@ -90,7 +119,7 @@ Note that this specific analysis pipeline does not have any computations at the 
 Cleaning up the input and output data can be done using:
 
 ```console
-rm -rf input scrambled output
+rm -rf input output
 ```
 
 ## Scrambled data

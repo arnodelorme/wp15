@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import math
 import mne
+import brainvision
 import nibabel as nib
 import urllib.request, urllib.error
 from bidscramble import __version__, __description__, __url__
@@ -13,38 +14,9 @@ from bidscramble.scramble_tsv import scramble_tsv
 from bidscramble.scramble_json import scramble_json
 from bidscramble.scramble_nii import scramble_nii
 from bidscramble.scramble_fif import scramble_fif
+from bidscramble.scramble_brainvision import scramble_brainvision
 from bidscramble.scramble_swap import scramble_swap
 from bidscramble.scramble_pseudo import scramble_pseudo
-
-
-def test_scramble_fif(tmp_path):
-
-    # Create the input data
-    fiffile = 'sub-01/ses-meg/meg/sub-01_ses-meg_task-facerecognition_run-01_meg.fif'
-    (tmp_path/'input'/'sub-01'/'ses-meg'/'meg').mkdir(parents=True)
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/participants.tsv', tmp_path/'input'/'participants.tsv')
-    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{fiffile}", tmp_path/'input'/fiffile)
-
-    # Create nulled output data
-    scramble_fif(tmp_path/'input', tmp_path/'output', r'sub.*\.fif', False, '')
-    assert (tmp_path/'output'/fiffile).is_file()
-    assert not (tmp_path/'output'/'participants.tsv').is_file()
-
-    # Fif-files with time-series data come in 3 flavours that use different reader functions
-    isevoked  = False
-    isepoched = False
-    israw     = True
-    if israw:
-        obj = mne.io.read_raw_fif(tmp_path/'output'/fiffile, preload=True)
-    elif isevoked:
-        obj = mne.Evoked(tmp_path/'output'/fiffile)
-    elif isepoched:
-        raise Exception('cannot read epoched FIF file')
-
-    # Check that the FIF data is properly nulled
-    data = obj.get_data()
-    assert data.shape       == (395, 540100)
-    assert np.sum(data[99]) == 0        # check one channel in the middle of the array
 
 
 def test_scramble_stub(tmp_path):
@@ -227,6 +199,64 @@ def test_scramble_nii(tmp_path):
     assert outdata.sum() > 1000000
     assert outdata.sum() - indata.sum() < 1
     assert np.abs(outdata - indata).sum() > 1000
+
+
+def test_scramble_fif(tmp_path):
+
+    # Create the input data
+    (tmp_path/'input'/'sub-01'/'ses-meg'/'meg').mkdir(parents=True)
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json', tmp_path/'input'/'dataset_description.json')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/README', tmp_path/'input'/'README')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES', tmp_path/'input'/'CHANGES')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/participants.tsv', tmp_path/'input'/'participants.tsv')
+    megfile = 'sub-01/ses-meg/meg/sub-01_ses-meg_task-facerecognition_run-01_meg.fif'
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{megfile}", tmp_path/'input'/megfile)
+
+    # Create nulled output data
+    scramble_fif(tmp_path/'input', tmp_path/'output', r'sub.*\.fif', False, '')
+    assert (tmp_path/'output'/megfile).is_file()
+    assert not (tmp_path/'output'/'participants.tsv').is_file()
+
+    # fif files come in 3 flavours that use different reader functions
+    isevoked  = False
+    isepoched = False
+    israw     = True
+    if israw:
+        obj = mne.io.read_raw_fif(tmp_path/'output'/megfile, preload=True)
+    elif isevoked:
+        obj = mne.Evoked(tmp_path/'output'/megfile)
+    elif isepoched:
+        raise Exception('cannot read epoched FIF file')
+
+    # Check that the output data is properly nulled
+    data = obj.get_data()
+    assert data.shape == (395, 540100)
+    assert np.sum(data[99]) == 0        # check one channel in the middle of the array
+
+
+def test_scramble_brainvision(tmp_path):
+    # Create the input data
+    (tmp_path/'input'/'sub-02'/'ses-01'/'eeg').mkdir(parents=True)
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/dataset_description.json', tmp_path/'input'/'dataset_description.json')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/README', tmp_path/'input'/'README')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/CHANGES', tmp_path/'input'/'CHANGES')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/participants.tsv', tmp_path/'input'/'participants.tsv')
+    eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.eeg'
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
+    eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vmrk'
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
+    eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vhdr'
+    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
+
+    # Create nulled output data
+    scramble_brainvision(tmp_path/'input', tmp_path/'output', r'sub.*\.vhdr', False, '')
+    assert (tmp_path/'output'/eegfile).is_file()
+    assert not (tmp_path/'output'/'participants.tsv').is_file()
+
+    # Check that the output data is properly nulled
+    (vhdr, vmrk, data) = brainvision.read(tmp_path/'output'/eegfile)
+    assert data.shape == (64, 5226400)
+    assert np.sum(data[32]) == 0        # check one channel in the middle of the array
 
 
 def test_scramble_swap(tmp_path):

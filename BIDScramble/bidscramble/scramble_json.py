@@ -16,11 +16,11 @@ def clearvalues(data: dict, preserve: str):
             data[key] = type(value)()
 
 
-def scramble_json(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, preserve: str='^$', dryrun: bool=False, **_):
+def scramble_json(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, preserve: str='^$', dryrun: bool=False, **_):
 
     # Defaults
-    inputdir  = Path(bidsfolder).resolve()
-    outputdir = Path(outputfolder).resolve()
+    inputdir  = Path(inputdir).resolve()
+    outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all selected json files
     inputfiles = get_inputfiles(inputdir, select, '*.json', bidsvalidate)

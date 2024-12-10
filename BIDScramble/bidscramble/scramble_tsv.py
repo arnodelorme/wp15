@@ -6,11 +6,11 @@ from pathlib import Path
 from . import get_inputfiles
 
 
-def scramble_tsv(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str= '', preserve: str= '^$', dryrun: bool=False, **_):
+def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str= '', preserve: str= '^$', dryrun: bool=False, **_):
 
     # Defaults
-    inputdir  = Path(bidsfolder).resolve()
-    outputdir = Path(outputfolder).resolve()
+    inputdir  = Path(inputdir).resolve()
+    outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
     inputfiles = get_inputfiles(inputdir, select, '*.tsv', bidsvalidate)
@@ -19,7 +19,7 @@ def scramble_tsv(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: 
         # Load the (zipped) tsv data
         tsvdata = pd.read_csv(inputfile, sep='\t')
 
-        # Permute columns that are not of interest (i.e. preserve the relation between columns of interest)
+        # Permute the data in each of the columns of no interest, preserve the order of the data in the columns of interest
         if method == 'permute':
             for column in tsvdata.columns:
                 if not re.fullmatch(preserve or '^$', column):

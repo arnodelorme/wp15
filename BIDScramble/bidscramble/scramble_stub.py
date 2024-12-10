@@ -7,11 +7,15 @@ from pathlib import Path
 from . import get_inputfiles, __version__, __description__, __url__
 
 
-def scramble_stub(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, dryrun: bool=False, **_):
+def scramble_stub(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, dryrun: bool=False, **_):
 
     # Defaults
-    inputdir  = Path(bidsfolder).resolve()
-    outputdir = Path(outputfolder).resolve()
+    inputdir  = Path(inputdir).resolve()
+    outputdir = Path(outputdir).resolve()
+
+    # Ensure that the output directory exists
+    if not outputdir.is_dir():
+      outputdir.mkdir(parents=True, exist_ok=True)
 
     # Create placeholder output files for selected input files
     print(f"Creating BIDS stub data in: {outputdir}")

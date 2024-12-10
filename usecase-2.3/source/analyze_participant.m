@@ -1,5 +1,9 @@
 function analyze_participant(inputprefix, outputprefix)
 
+    % This code is shared under the CC0 license
+    %
+    % Copyright (C) 2024, SIESTA workpackage 15 team
+
     if ~exist(outputprefix, 'dir')
         mkdir(outputprefix);
     end

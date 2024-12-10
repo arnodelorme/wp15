@@ -7,13 +7,13 @@ from pathlib import Path
 from . import get_inputfiles, prune_participants_tsv
 
 
-def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
+def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
     """
     Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
     anywhere in the filepath as well as inside all text files (such as json and tsv-files).
 
-    :param bidsfolder:   The path to the input dataset
-    :param outputfolder: The path to the output dataset
+    :param inputdir:     The path to the input dataset
+    :param outputdir:    The path to the output dataset
     :param select:       The regular expression pattern to select the files of interest
     :param bidsvalidate: If True, BIDS files are skipped if they do not validate
     :param method:       The method to generate the pseudonyms
@@ -29,8 +29,8 @@ def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidat
     """
 
     # Resolve the input and output paths
-    inputdir   = Path(bidsfolder).resolve()
-    outputdir  = Path(outputfolder).resolve()
+    inputdir   = Path(inputdir).resolve()
+    outputdir  = Path(outputdir).resolve()
     outputdir_ = outputdir/'tmpdir_swap' if method != 'original' else outputdir
 
     # Create pseudonyms for all selected subject identifiers

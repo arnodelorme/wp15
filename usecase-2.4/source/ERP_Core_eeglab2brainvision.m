@@ -1,3 +1,7 @@
+% This code is shared under the CC0 license
+%
+% Copyright (C) 2024, SIESTA workpackage 15 team
+
 % This script converts the data files in the original dataset from the EEGLAB format
 % (*.set and *.fdt) to the BrainVision Core file format (*.vhdr, *.vmrk and *.eeg).
 %

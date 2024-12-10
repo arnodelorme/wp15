@@ -48,63 +48,6 @@ mkdir output
 
 ## Analysis pipeline
 
-### Software installation
-
-This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox.
-Once EEGLAB is installed, 
-and the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin. 
-
-The LIMO tools must be placed inside the EEGLAB plugin folder as shown below.
-
-```console
-git clone https://github.com/SIESTA-eu/wp15.git
-cd wp15
-wget https://sccn.ucsd.edu/eeglab/currentversion/eeglab_current.zip
-unzip eeglab_current.zip
-rm eeglab_current.zip
-git clone -b master https://github.com/LIMO-EEG-Toolbox/limo_tools.git
-mv limo_tools eeglab2024.0/plugins/
-```
-
-You should now have something like:
-
-    README.md (this file)
-    ERP_Core_WB.m
-    input
-    ├── CHANGES
-    ├── LICENSE
-    ├── [..]
-    ├── sub-001
-    ├── sub-002
-    ├── sub-003
-    └── [..]
-    eeglab2024.0
-    ├── [..]
-    ├── eeglab.m
-    ├── eeglab.prj
-    ├── functions
-    ├── plugins
-    │   └── limo_tools
-    └── [..]
-
-There are also 6 additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, clean_rawdata, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there. This is best to install those directly from within the matlab environment, also ensuring all paths are set. This is performed by running [ERP_Core_WB_install.m](https://github.com/SIESTA-eu/wp15/blob/main/usecase-2.4/ERP_Core_WB_install.m)
-
-Once all is installed, the EEGLAB plugins directory should look like this
-
-    eeglab2024.0
-    ├── [..]
-    ├── eeglab.m
-    ├── eeglab.prj
-    ├── functions
-    ├── plugins
-    │   └── bids-matlab-tools8.0
-    │   └── clean_rawdata2.91
-    │   └── Fieldtrip-lite20240111
-    │   └── ICLabel1.6
-    │   └── limo_tools
-    │   └── PICARD1.0
-    │   └── zapline-plus1.2.1
-
 ### Legal aspects of the software
 
 MATLAB is commercial software.
@@ -115,32 +58,136 @@ LIMO MEEG is open-source software released under the MIT License.
 
 FieldTrip is open source software and released under the GPLv3 license.
 
-### Executing the pipeline
+The code that is specific to the analysis pipeline is shared under the CC0 license.
 
-Executing the pipeline from the Linux command-line is done like this:
+### Software installation
+
+This requires the GitHub wp15 repository, [MATLAB](https://www.mathworks.com) with the [EEGLAB](https://sccn.ucsd.edu/eeglab) external toolbox. Once EEGLAB is installed, the [LIMO MEEG master version](https://github.com/LIMO-EEG-Toolbox/limo_tools/tree/master) plugin needs to be installed inside the EEGLAB plugin folder as shown below.
+
+There are also a number of additional EEGLAB plugins/dependencies (bids-matlab-tools, zapline-plus, bva-io, clean_rawdata, Firfilt, PICARD, ICLabel and Fieldtrip-lite). Some come by default with EEGLAB, but the code below ensures they are all there.
 
 ```console
-matlab -nojvm -nodisplay -nosplash -r "restoredefaultpath; ERP_Core_WB_install; ERP_Core_WB('input', 'output'); exit"
+git clone https://github.com/SIESTA-eu/wp15.git
+cd wp15/usecase2.4
+
+wget https://github.com/sccn/eeglab/archive/refs/tags/2024.2.1.zip
+unzip 2024.2.1.zip
+mv eeglab-2024.2.1 eeglab
+rm 2024.2.1.zip
+
+git clone -b v4.0 --depth 1 https://github.com/LIMO-EEG-Toolbox/limo_tools.git
+mv limo_tools           eeglab/plugins/limo_tools
+
+wget https://sccn.ucsd.edu/eeglab/plugins/fieldtrip-lite-20240111.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/bva-io1.73.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/firfilt2.8.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/ICLabel1.6.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/clean_rawdata2.91.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/zapline-plus1.2.1.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/picard-matlab.zip
+wget https://sccn.ucsd.edu/eeglab/plugins/bids-matlab-tools8.0.zip
+
+unzip fieldtrip-lite-20240111.zip 
+unzip bva-io1.73.zip 
+unzip firfilt2.8.zip 
+unzip ICLabel1.6.zip 
+unzip clean_rawdata2.91.zip 
+unzip zapline-plus1.2.1.zip 
+unzip picard-matlab.zip 
+unzip bids-matlab-tools8.0.zip 
+
+rm *.zip
+
+mv fieldtrip-20240111   eeglab/plugins/Fieldtrip-lite20240111
+mv bva-io               eeglab/plugins/bva-io1.73
+mv firfilt              eeglab/plugins/firfilt2.8
+mv ICLabel              eeglab/plugins/ICLabel1.6
+mv clean_rawdata        eeglab/plugins/clean_rawdata2.91
+mv zapline-plus-1.2.1   eeglab/plugins/apline-plus1.2.1
+mv picard-matlab        eeglab/plugins/PICARD1.0
+mv bids-matlab-tools    eeglab/plugins/bids-matlab-tools8.0
 ```
+
+Once all is installed, it should look like this
+
+```console
+├── README.md (this file)
+├── source
+│   ├── bidsapp.m
+│   ├── ERP_Core_WB.m
+│   ├── ERP_Core_WB_install.m
+│   └── ERP_Core_eeglab2brainvision.m
+├── eeglab
+│   ├── [..]
+│   ├── eeglab.m
+│   ├── eeglab.prj
+│   ├── functions
+│   ├── plugins
+│   |   └── bids-matlab-tools8.0
+│   |   └── bva-io1.73
+│   |   └── clean_rawdata2.91
+│   |   └── Fieldtrip-lite20240111
+│   |   └── firfilt2.8
+│   |   └── ICLabel1.6
+│   |   └── limo_tools
+│   |   └── PICARD1.0
+│   |   └── zapline-plus1.2.1
+│   │   └── [..]
+├── input
+│   ├── CHANGES
+│   ├── LICENSE
+│   ├── [..]
+│   ├── sub-001
+│   ├── sub-002
+│   ├── sub-003
+│   └── [..]
+└── output
+```
+
+Alternatively, you can install the software in an Apptainer container image.
+
+```console
+cd wp15/usecase-2.4
+apptainer build usecase-2.4.sif container.def
+cd ../..
+```
+
+### Executing the pipeline
 
 Executing the pipeline from the MATLAB command window is done like this:
 
 ```matlab
-restoredefaultpath;
-ERP_Core_WB_install;
-ERP_Core_WB(fullfile(pwd, 'input'), fullfile(pwd, 'output'))
+cd wp15/usecase-2.4
+restoredefaultpath
+addpath eeglab
+addpath source
+
+bidsapp input output participant
+bidsapp input output group
 ```
 
-where `input` is the input folder and `output` the output folder. The absolute paths need to be provided for the pipeline to run smoothly.
+Executing the pipeline from the Linux terminal is done like this:
 
-> **Note**: The MATLAB functions `ERP_Core_WB_install.m` and `ERP_Core_WB.m` must be in the MATLAB path or in the present working directory.
+```console
+matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp input output participant"
+matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp input output group"
+```
+
+Executing the pipeline from the Apptainer image is done like this:
+
+```console
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.4.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.4.sif input output group
+```
+
+It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
 
 ## Cleaning up
 
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input scrambled output
+rm -rf input output
 ```
 
 ## Scrambled data
@@ -151,5 +198,6 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
 
 ```console
 scramble input scrambled stub
-[WIP]
+scramble input scrambled json -p '.*'
+scramble input scrambled brainvision -s '.*_eeg\.vhdr'
 ```

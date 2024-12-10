@@ -13,12 +13,12 @@ from typing import List
 from . import get_inputfiles
 
 
-def scramble_nii(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False,
+def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str= '', fwhm: float=0, dims: List[str]=(), independent: bool=False,
                  radius: float=1, freqrange: List[float]=(0,0), amplitude: float=1, cluster: str='', dryrun: bool=False, **_):
 
     # Defaults
-    inputdir  = Path(bidsfolder).resolve()
-    outputdir = Path(outputfolder).resolve()
+    inputdir  = Path(inputdir).resolve()
+    outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
     inputfiles = get_inputfiles(inputdir, select, '*.nii*', bidsvalidate)
@@ -43,7 +43,7 @@ def scramble_nii(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: 
             for inputfile in inputfiles:
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                job.args       = ['-m', __name__, bidsfolder, outputfolder, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
+                job.args       = ['-m', __name__, inputdir, outputdir, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
                 job.jobName    = f"scramble_nii_{subid}_{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))

@@ -1,3 +1,7 @@
+# This code is shared under the CC0 license
+#
+# Copyright (C) 2024, SIESTA workpackage 15 team
+
 # This part of the script deals with possibly missing packages on-the-fly:
 # It downloads them and puts them in a tempdir + adds the tempdir to the path
 tdir <- tempdir()

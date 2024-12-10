@@ -15,7 +15,7 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-You can then install the BIDScramble tools using git (with authentication for wp15) and pip.
+You can then install the BIDScramble tools using git and pip.
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git     # Or download the code yourself
@@ -28,65 +28,66 @@ To scramble BIDS data you can run the command-line tool named ``scramble``. At i
 
 ### scramble
 
-```
-usage: scramble [-h] bidsfolder outputfolder {stub,tsv,json,nii,fif,swap,pseudo} ...
+```console
+usage: scramble [-h] inputdir outputdir {stub,tsv,json,nii,fif,brainvision,swap,pseudo} ...
 
 The general workflow to build up a scrambled dataset is by consecutively running `scramble` for actions of your
 choice. For instance, you could first run `scramble` with the `stub` action to create a dummy dataset with only
 the file structure and some basic files, and then run `scramble` with the `nii` action  to specifically add
 scrambled NIfTI data (see examples below). To combine different scrambling actions, simply re-run `scramble` using
-the already scrambled data as input folder.
+the already scrambled data as input directory.
 
 positional arguments:
-  bidsfolder            The BIDS (or BIDS-like) input directory with the original data
-  outputfolder          The output directory with the scrambled pseudo data
+  inputdir              The BIDS (or BIDS-like) input directory with the original data
+  outputdir             The output directory with the scrambled pseudo data
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
 
 Action:
-  {stub,tsv,json,nii,fif,swap,pseudo}
+  {stub,tsv,json,nii,fif,brainvision,swap,pseudo}
                         Add -h, --help for more information
-    stub                Saves a dummy bidsfolder skeleton in outputfolder
-    tsv                 Saves scrambled tsv files in outputfolder
-    json                Saves scrambled json files in outputfolder
-    nii                 Saves scrambled NIfTI files in outputfolder
-    fif                 Saves scrambled FIF files in outputfolder
-    swap                Saves swapped file contents in outputfolder
-    pseudo              Saves pseudonymized file names and contents in outputfolder
+    stub                Saves a dummy inputdir skeleton in outputdir
+    tsv                 Saves scrambled tsv files in outputdir
+    json                Saves scrambled json files in outputdir
+    nii                 Saves scrambled NIfTI files in outputdir
+    fif                 Saves scrambled FIF files in outputdir
+    brainvision         Saves scrambled BrainVision files in outputdir
+    swap                Saves swapped file contents in outputdir
+    pseudo              Saves pseudonymized file names and contents in outputdir
 
 examples:
-  scramble data/bids data/synthetic stub -h
-  scramble data/bids data/synthetic nii -h
+  scramble inputdir outputdir stub -h
+  scramble inputdir outputdir nii -h
 ```
 
 #### Action: stub
 
-```
-usage: scramble bidsfolder outputfolder stub [-h] [-s PATTERN] [-d]
+```console
+usage: scramble inputdir outputdir stub [-h] [-s PATTERN] [-d]
 
 Creates a copy of the input directory in which all files are empty stubs. Exceptions to this are the
 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff' files, which are copied over and
 updated if possible.
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+                        input data. Files that match are scrambled and saved in outputdir (default: .*)
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
-  scramble data/bids data/synthetic stub
-  scramble data/bids data/synthetic stub -s '.*\.(nii|json|tsv)'
-  scramble data/bids data/synthetic stub -s '.*(?<!derivatives)'
-  scramble data/bids data/synthetic stub -s '(?!sub.*scans.tsv|/func/).*'
+  scramble inputdir outputdir stub
+  scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'
+  scramble inputdir outputdir stub -s '.*(?<!derivatives)'
+  scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
 #### Action: tsv
 
-```
-usage: scramble bidsfolder outputfolder tsv [-h] [-s PATTERN] [-d] {permute} ...
+```console
+usage: scramble inputdir outputdir tsv [-h] [-s PATTERN] [-d] {permute} ...
 
 Adds scrambled versions of the tsv files in the input directory to the output directory. If no scrambling method
 is specified, the default behavior is to null all values.
@@ -96,23 +97,47 @@ positional arguments:
     permute             Randomly permute the column values of the tsv files
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+                        input data. Files that match are scrambled and saved in outputdir (default: .*)
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
 
 examples:
-  scramble data/bids data/synthetic tsv
-  scramble data/bids data/synthetic tsv permute
-  scramble data/bids data/synthetic tsv permute -s '.*_events.tsv' -p '.*'
-  scramble data/bids data/synthetic tsv permute -s participants.tsv -p (participant_id|SAS.*)
+  scramble inputdir outputdir tsv
+  scramble inputdir outputdir tsv permute
+  scramble inputdir outputdir tsv permute -s '.*_events.tsv' -p '.*'
+  scramble inputdir outputdir tsv permute -s participants.tsv -p (participant_id|SAS.*)
+```
+
+#### Action: json
+
+```console
+usage: scramble inputdir outputdir json [-h] [-s PATTERN] [-d] [-p PATTERN]
+
+Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
+preserve expression is specified, the default behavior is to null all values.
+
+options:
+  -h, --help            Show this help message and exit
+  -s PATTERN, --select PATTERN
+                        A fullmatch regular expression pattern that is matched against the relative path of the
+                        input data. Files that match are scrambled and saved in outputdir (default: .*)
+  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
+  -p PATTERN, --preserve PATTERN
+                        A fullmatch regular expression pattern that is matched against all keys in the json
+                        files. The json values are copied over when a key matches positively (default: None)
+
+examples:
+  scramble inputdir outputdir json
+  scramble inputdir outputdir json participants.json -p '.*'
+  scramble inputdir outputdir json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
 ```
 
 #### Action: nii
 
-```
-usage: scramble bidsfolder outputfolder nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
+```console
+usage: scramble inputdir outputdir nii [-h] [-s PATTERN] [-d] [-c [SPECS]]
                                              {blur,permute,diffuse,wobble} ...
 
 Adds scrambled versions of the NIfTI files in the input directory to the output directory. If no scrambling
@@ -127,10 +152,10 @@ positional arguments:
     wobble              Deform the images using 3D random waveforms
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+                        input data. Files that match are scrambled and saved in outputdir (default: .*)
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
   -c [SPECS], --cluster [SPECS]
                         Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC)
@@ -139,49 +164,25 @@ options:
                         premature parsing -- see examples) (default: None)
 
 examples:
-  scramble data/bids data/synthetic nii
-  scramble data/bids data/synthetic nii diffuse -h
-  scramble data/bids data/synthetic nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
-  scramble data/bids data/synthetic nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
-```
-
-#### Action: json
-
-```
-usage: scramble bidsfolder outputfolder json [-h] [-s PATTERN] [-d] [-p PATTERN]
-
-Adds scrambled key-value versions of the json files in the input directory to the output directory. If no
-preserve expression is specified, the default behavior is to null all values.
-
-options:
-  -h, --help            show this help message and exit
-  -s PATTERN, --select PATTERN
-                        A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
-  -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
-  -p PATTERN, --preserve PATTERN
-                        A fullmatch regular expression pattern that is matched against all keys in the json
-                        files. The json values are copied over when a key matches positively (default: None)
-
-examples:
-  scramble data/bids data/synthetic json
-  scramble data/bids data/synthetic json participants.json -p '.*'
-  scramble data/bids data/synthetic json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'
+  scramble inputdir outputdir nii
+  scramble inputdir outputdir nii diffuse -h
+  scramble inputdir outputdir nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'
+  scramble inputdir outputdir nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'
 ```
 
 #### Action: swap
 
-```
-usage: scramble bidsfolder outputfolder swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
+```console
+usage: scramble inputdir outputdir swap [-h] [-s PATTERN] [-d] [-g ENTITY [ENTITY ...]]
 
 Randomly swappes the content of data files between a group of similar files in the input directory and save them
 as output.
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default: .*)
+                        input data. Files that match are scrambled and saved in outputdir (default: .*)
   -d, --dryrun          Do not save anything, only print the output filenames in the terminal (default: False)
   -g ENTITY [ENTITY ...], --grouping ENTITY [ENTITY ...]
                         A list of (full-name) BIDS entities that make up a group between which file contents are
@@ -189,30 +190,29 @@ options:
                         specification.readthedocs.io/en/stable/appendices/entities.html (default: ['subject'])
 
 examples:
-  scramble data/bids data/synthetic swap
-  scramble data/bids data/synthetic swap -s '.*\.(nii|json|tsv)'
-  scramble data/bids data/synthetic swap -s '.*(?<!derivatives)'
-  scramble data/bids data/synthetic swap -g subject session run
+  scramble inputdir outputdir swap
+  scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'
+  scramble inputdir outputdir swap -s '.*(?<!derivatives)'
+  scramble inputdir outputdir swap -g subject session run
 ```
 
 #### Action: pseudo
 
-```
-usage: scramble bidsfolder outputfolder pseudo [-h] [-s PATTERN] [-b] [-d] [-p PATTERN] [-r {yes,no}]
+```console
+usage: scramble inputdir outputdir pseudo [-h] [-s PATTERN] [-b] [-d] [-p PATTERN] [-r {yes,no}]
                                                {random,permute,original}
 
-Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
-anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym anywhere in the filepath as well as inside all text files (such as json and tsv-files).
 
 positional arguments:
   {random,permute,original}
                         The method to generate the pseudonyms
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputfolder (default:
+                        input data. Files that match are scrambled and saved in outputdir (default:
                         ^(?!\.).*)
   -b, --bidsvalidate    If given, all input files are checked for BIDS compliance when first indexed, and non-
                         compliant files are ignored (as in pybids.BIDSLayout) (default: False)
@@ -225,9 +225,9 @@ options:
                         input directory (such as participants.tsv, etc) (default: yes)
 
 examples:
-  scramble data/bids data/synthetic pseudo
-  scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003/).*' 
-  scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
+  scramble inputdir outputdir         pseudo
+  scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003/).*' 
+  scramble inputdir outputdir_keep1   pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
 ```
 
 ## Legal Aspects
@@ -237,5 +237,5 @@ This code is released under the GPLv3 license.
 ## Related tools
 
 - https://github.com/PennLINC/CuBIDS
-- https://peerherholz.github.io/BIDSonym/
+- https://peerherholz.github.io/BIDSonym
 - https://arx.deidentifier.org
