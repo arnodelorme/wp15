@@ -6,9 +6,29 @@ from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles, prune_participants_tsv
 
-def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
 
-    # Defaults
+def scramble_pseudo(bidsfolder: str, outputfolder: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
+    """
+    Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
+    anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+
+    :param bidsfolder:   The path to the input dataset
+    :param outputfolder: The path to the output dataset
+    :param select:       The regular expression pattern to select the files of interest
+    :param bidsvalidate: If True, BIDS files are skipped if they do not validate
+    :param method:       The method to generate the pseudonyms
+    :param pattern:      The fullmatch regular expression pattern that is used to extract the subject label from the relative filepath
+    :param rootfiles:    If 'yes', include all files in the root of the input directory (such as participants.tsv, etc)
+    :param dryrun:       If True, do not modify anything
+
+    Examples
+    --------
+    scramble data/bids data/synthetic pseudo
+    scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003/).*'
+    scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
+    """
+
+    # Resolve the input and output paths
     inputdir   = Path(bidsfolder).resolve()
     outputdir  = Path(outputfolder).resolve()
     outputdir_ = outputdir/'tmpdir_swap' if method != 'original' else outputdir
