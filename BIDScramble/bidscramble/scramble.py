@@ -2,6 +2,7 @@
 
 import argparse
 import textwrap
+from pathlib import Path
 from .scramble_stub import scramble_stub
 from .scramble_tsv import scramble_tsv
 from .scramble_json import scramble_json
@@ -215,8 +216,13 @@ def main():
     addparser_swap(subparsers,          help='Saves swapped file contents in outputdir')
     addparser_pseudo(subparsers,        help='Saves pseudonymized file names and contents in outputdir')
 
-    # Execute the scramble function
+    # Parse the input arguments
     args = parser.parse_args()
+
+    # Ensure the output directory exists
+    Path(args.outputdir).mkdir(parents=True, exist_ok=True)
+
+    # Execute the scramble function
     args.func(**vars(args))
 
 
