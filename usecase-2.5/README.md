@@ -120,6 +120,17 @@ apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif inputdir output
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf input
-rm -rf output
+rm -rf input output
+```
+
+## Scrambled data
+
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
+
+ A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
+
+```console
+scramble input scrambled stub
+scramble input scrambled json -p '(?!AcquisitionTime).*'
+scramble input scrambled nii permute y -i
 ```
