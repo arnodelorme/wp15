@@ -96,23 +96,23 @@ addpath spm12/config
 addpath spm12/matlabbatch
 addpath source
 
-bidsapp input output participant
-bidsapp input output group
+bidsapp inputdir outputdir participant
+bidsapp inputdir outputdir group
 ```
 
 Executing the pipeline from the Linux terminal is done using:
 
 ```console
 cd wp15/usecase-2.5
-matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp input output participant"
-matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp input output group"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp inputdir outputdir participant"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp inputdir outputdir group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif inputdir outputdir participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif inputdir outputdir group
 ```
 
 ## Cleaning up

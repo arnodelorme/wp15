@@ -77,8 +77,8 @@ Executing the pipeline from the R-based Apptainer image is done like this:
 
 ```console
 mkdir output
-apptainer run usecase-2.1.sif input output participant
-apptainer run usecase-2.1.sif input output group
+apptainer run usecase-2.1.sif inputdir outputdir participant
+apptainer run usecase-2.1.sif inputdir outputdir group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
@@ -100,16 +100,16 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-matlab -batch "restoredefaultpath; addpath source; bidsapp input output participant"
-matlab -batch "restoredefaultpath; addpath source; bidsapp input output group"
+matlab -batch "restoredefaultpath; addpath source; bidsapp inputdir outputdir participant"
+matlab -batch "restoredefaultpath; addpath source; bidsapp inputdir outputdir group"
 ```
 
 Executing the pipeline from the MATLAB-based Apptainer image is done like this:
 
 ```console
 mkdir output
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif inputdir outputdir participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif inputdir outputdir group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
@@ -119,7 +119,7 @@ Note that this specific analysis pipeline does not have any computations at the 
 Cleaning up the input and output data can be done using:
 
 ```console
-rm -rf input output
+rm -rf inputdir outputdir
 ```
 
 ## Scrambled data
@@ -129,7 +129,7 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble input scrambled stub
-scramble input scrambled tsv permute -s participants.tsv
-scramble input scrambled json -p '.*' -s participants.json
+scramble inputdir outputdir stub
+scramble inputdir outputdir tsv permute -s participants.tsv
+scramble inputdir outputdir json -p '.*' -s participants.json
 ```
