@@ -10,7 +10,7 @@ The data rights holder should specify how large the dataset is that they want to
 
 Since large amounts of data are expected to be transferred (many GB, over many files), the transfer may take a considerable time.
 
-There should be a possibility to check the completeness and integrity of the transferred files, for example using the [md5sum](https://en.wikipedia.org/wiki/Md5sum) application.
+There should be a possibility to check the completeness and integrity of the transferred files, for example using a [manifest file](https://en.wikipedia.org/wiki/Manifest_file) containing checksums and an application like [md5sum](https://en.wikipedia.org/wiki/Md5sum).
 
 The product owner should get information from the data rights holder on:
 

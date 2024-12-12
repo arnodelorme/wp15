@@ -8,4 +8,4 @@ The data rights holder can use the data transfer mechanism provided by SIESTA to
 
 ## Downloading the data by the platform owner
 
-The data rights holder can provide instructions and access to the SIESTA product owner to download the data. Besides explaining how the data transfer works, the data rights holder must provide a method to check completeness and integrity of the data after transfer, for example by providing an [md5sum](https://en.wikipedia.org/wiki/Md5sum) manifest file.
+The data rights holder can provide instructions and access to the SIESTA product owner to download the data. Besides explaining how the data transfer works, the data rights holder must provide a method to check completeness and integrity of the data after transfer, for example by providing a [manifest file](https://en.wikipedia.org/wiki/Manifest_file) with checksums.
