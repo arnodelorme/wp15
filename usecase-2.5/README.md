@@ -130,7 +130,7 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble input scrambled stub
-scramble input scrambled json -p '(?!AcquisitionTime).*'
-scramble input scrambled nii permute y -i
+scramble inputdir outputdir stub
+scramble inputdir outputdir json -p '(?!AcquisitionTime).*'
+scramble inputdir outputdir nii permute y -i
 ```
