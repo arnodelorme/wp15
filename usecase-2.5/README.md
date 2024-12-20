@@ -94,7 +94,7 @@ restoredefaultpath
 addpath spm12
 addpath spm12/config
 addpath spm12/matlabbatch
-addpath source
+addpath work
 
 bidsapp inputdir outputdir participant
 bidsapp inputdir outputdir group
@@ -104,8 +104,8 @@ Executing the pipeline from the Linux terminal is done using:
 
 ```console
 cd wp15/usecase-2.5
-matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp inputdir outputdir participant"
-matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath spm12 spm12/config spm12/matlabbatch source; bidsapp inputdir outputdir group"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12/config spm12/matlabbatch; bidsapp inputdir outputdir participant"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12/config spm12/matlabbatch; bidsapp inputdir outputdir group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
@@ -125,7 +125,7 @@ rm -rf input output
 
 ## Scrambled data
 
-As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
+As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly.
 
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 

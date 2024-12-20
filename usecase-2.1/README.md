@@ -70,7 +70,7 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-Rscript source/pipeline.R --inputdir input --outputdir output  
+Rscript work/pipeline.R --inputdir input --outputdir output  
 ```
 
 Executing the pipeline from the R-based Apptainer image is done like this:
@@ -100,8 +100,8 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-matlab -batch "restoredefaultpath; addpath source; bidsapp inputdir outputdir participant"
-matlab -batch "restoredefaultpath; addpath source; bidsapp inputdir outputdir group"
+matlab -batch "restoredefaultpath; addpath work; bidsapp inputdir outputdir participant"
+matlab -batch "restoredefaultpath; addpath work; bidsapp inputdir outputdir group"
 ```
 
 Executing the pipeline from the MATLAB-based Apptainer image is done like this:

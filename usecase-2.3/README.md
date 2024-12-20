@@ -90,7 +90,7 @@ Executing the pipeline from the MATLAB command window is done like this:
 cd wp15/usecase-2.3
 restoredefaultpath
 addpath fieldtrip
-addpath source
+addpath work
 analyze_participant('input', 'output')
 analyze_group('input', 'output')
 ```

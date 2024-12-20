@@ -8,9 +8,9 @@ From: ubuntu:24.04    # Alternatively use a ready-made MATLAB base image: https:
   MLM_LICENSE_FILE="" # should point to the license server as port@server
 
 %files
-  source/bidsapp.m             /work/bidsapp.m
-  source/ERP_Core_WB.m         /work/ERP_Core_WB.m
-  source/ERP_Core_WB_install.m /work/ERP_Core_WB_install.m
+  work/bidsapp.m             /work/bidsapp.m
+  work/ERP_Core_WB.m         /work/ERP_Core_WB.m
+  work/ERP_Core_WB_install.m /work/ERP_Core_WB_install.m
 
 %post
   ################################################################################
