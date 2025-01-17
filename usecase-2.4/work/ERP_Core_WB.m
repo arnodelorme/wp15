@@ -15,7 +15,7 @@ function out = ERP_Core_WB(InputDataset,OutputLocation,AnalysisLevel,varargin)
 %         - AnalysisLevel describes the analysis AnalysisLevel, either '1' for each subject
 %           preprocessing and 1st AnalysisLevel GLM, or '2' for the group AnalysisLevel
 %           analysis using beta parameters and contrasts from the 1st AnalysisLevel
-%         - options as key-value pairs
+%         - options as key-value pairs (or a matlab structure with fields as keys)
 %         'TaskLabel',{'name1,'name2'} is a cell-array with TaskLabel name to analyze
 %                (by default it is {'ERN','MMN','N170','N2pc','N400','P3'})
 %         'SubjectLabel',{'sub-001','sub-002','sub-003','sub-005','sub-006','sub-009'}
@@ -52,8 +52,7 @@ function out = ERP_Core_WB(InputDataset,OutputLocation,AnalysisLevel,varargin)
 %         second_level_files = ERP_Core_WB(OutputLocation, [], '2','TaskLabel',TaskLabel)
 %
 % Cyril Pernet, during the spring of 2024 + various updates by Marcel and
-% Jan-Mathijs -- updated Decembre 2024/January 2025 to match BIDS App spec for
-% for containarization
+% Jan-Mathijs -- updated Decembre 2024/January 2025 to match BIDS App spec for containarization
 
 % -----------------------------------------------------------------
 %% before computing, check inputs, putpuits, dependencies, etc ..
@@ -100,6 +99,12 @@ end
 
 options = {};
 if nargin>3
+    % deal with structure
+    if nargin==4 && isstruct(varargin{1})
+        tmp = [fieldnames(varargin{1}).'; struct2cell(varargin{1}).'];
+        varargin = tmp(:).';
+    end
+    % noew varargin is the usual stuff
     index = 1;
     for opt =1:2:length(varargin)
         options{index} = varargin{opt}; index = index + 1; %#ok<AGROW>
@@ -176,7 +181,10 @@ else
 end
 
 if any(cellfun(@(x) contains(x,'estimation'),options))
-    estimation = varargin{find(cellfun(@(x) contains(x,'estimation'),varargin))*2};
+   estimation = varargin(find(cellfun(@(x) contains(x,'estimation'),options))*2);
+    if ~any(strcmpi(estimation,{'OLS','WLS','IRLS'}))
+        error('estimation value invalid')
+    end
 else
     estimation = 'WLS';
 end
@@ -193,7 +201,7 @@ if any(cellfun(@(x) contains(x,'tfce'),options))
         error('tfce value must be set to 1 or 0 (currently %g\n)',tfce)
     end
 else
-    tfce = 1000;
+    tfce = 1;
 end
 
 % -----------------------------------------------------------------
