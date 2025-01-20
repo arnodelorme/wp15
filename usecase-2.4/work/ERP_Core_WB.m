@@ -79,10 +79,16 @@ if nargin >= 3
         AnalysisLevel = num2str(AnalysisLevel);
     end
 
-    if ~strcmp(AnalysisLevel,{'1','2'})
+    if ~strcmp(AnalysisLevel,{'1','participant','subject','2','group'})
         error('input error: AnalysisLevel must 1 or 2')
     end
     
+    if any(strcmp(AnalysisLevel,{'participant','subject'}))
+        AnalysisLevel = '1';
+    elseif strcmp(AnalysisLevel,'group')
+        AnalysisLevel = '2';
+    end
+
     if isempty(OutputLocation)
         if strcmp(AnalysisLevel,'1')
             OutputLocation = fullfile(InputDataset,'derivatives');
@@ -102,9 +108,9 @@ if nargin>3
     % deal with structure
     if nargin==4 && isstruct(varargin{1})
         tmp = [fieldnames(varargin{1}).'; struct2cell(varargin{1}).'];
-        varargin = tmp(:).';
+        varargin = tmp(:).'; % varargin as cell array as usual 
     end
-    % noew varargin is the usual stuff
+    
     index = 1;
     for opt =1:2:length(varargin)
         options{index} = varargin{opt}; index = index + 1; %#ok<AGROW>
@@ -197,7 +203,7 @@ end
 
 if any(cellfun(@(x) contains(x,'tfce'),options))
     tfce = varargin{find(cellfun(@(x) strcmp(x,'tfce'),options))*2};
-    if tfce >1 || ~isnumeric(tfce)
+    if tfce >1 || ~isnumeric(single(tfce)) % add single in case of bolean
         error('tfce value must be set to 1 or 0 (currently %g\n)',tfce)
     end
 else
@@ -311,7 +317,11 @@ if strcmpi(AnalysisLevel,'1')
                 end
 
                 % ICA cleaning
-                EEG(s) = pop_runica(EEG(s), 'icatype',ICAname,'maxiter',500,'mode','standard','concatcond','on','options',{'pca',EEG(s).nbchan-1});
+                if strcmpi(ICAname,'picard')
+                    EEG(s) = pop_runica(EEG(s), 'icatype',ICAname,'maxiter',500,'mode','standard','concatcond','on', 'options',{'pca',EEG(s).nbchan-1});
+                else 
+                    EEG(s) = pop_runica(EEG(s), 'icatype',ICAname,'concatcond','on', 'options',{'pca',EEG(s).nbchan-1});
+                end
                 EEG(s) = pop_iclabel(EEG(s), 'default');
                 EEG(s) = pop_icflag(EEG(s),[NaN NaN;0.8 1;0.8 1;NaN NaN;NaN NaN;NaN NaN;NaN NaN]);
                 EEG(s) = pop_subcomp(EEG(s),[],0);
@@ -574,6 +584,29 @@ end
 
 if strcmpi(AnalysisLevel,'2')
     out.AnalysisLevel = 2;
+   
+    % if InputDataset is the root folder of all/some tasks - edit TaskLabel
+    if length(TaskLabel) == 6 % all tasks, ie not specified input
+        % find current folders
+        [~,OutputLocationName] = fileparts(OutputLocation);
+        taskfolders            = dir(InputDataset);
+        taskfolders(1:2)       = [];
+        OutputLocationFolder   = find(arrayfun(@(x) strcmpi(x.name,OutputLocationName), taskfolders));
+        if ~isempty(OutputLocationFolder)
+            taskfolders(OutputLocationFolder) = [];
+        end
+        % check if those are the task folders
+        for t = size(taskfolders,1):-1:1
+            tmp = find(cellfun(@(x) strcmpi(x,taskfolders(t).name), TaskLabel));
+            if ~isempty(tmp)
+                tasksubset(t) = tmp; clear tmp
+            end
+        end
+        tasksubset(tasksubset==0)=[];
+        if ~isempty(tasksubset)
+            TaskLabel = TaskLabel(tasksubset);
+        end
+    end
 
     for t = 1:length(TaskLabel)
 
@@ -608,11 +641,28 @@ if strcmpi(AnalysisLevel,'2')
             end
         end
 
+        % could be that we deal wth the STUDY level, but we want LIMO level
+        if exist(fullfile(indir,['derivatives' filesep 'LIMO_' TaskLabel{t}]),"dir")
+            indir = fullfile(indir,'derivatives');
+        end
+
         if ~contains(OutputLocation,TaskLabel{t})
             outdir = fullfile(OutputLocation,TaskLabel{t});
         else
             outdir = OutputLocation;
         end
+
+        if ~contains(outdir,TaskLabel{t}) && ~all(contains(outdir,{'2','level'}))
+            if contains(outdir,TaskLabel{t})
+                outdir = fullfile(outdir,'2nd_level');
+            elseif all(contains(outdir,{'2','level'}))
+                outdir = fullfile(outdir,TaskLabel{t});
+            else
+                outdir = fullfile(outdir,['2nd_level' filesep TaskLabel{t}]);
+            end            
+        end
+        mkdir(outdir);
+        cd(outdir);
 
         % start processing
         if strcmpi(TaskLabel{t},'ERN')
@@ -621,8 +671,8 @@ if strcmpi(AnalysisLevel,'2')
 
             for c = 1:3
                 if c == 1
-                    mkdir(fullfile(outdir,['2nd_level' filesep 'ERN']));
-                    cd(fullfile(outdir,['2nd_level' filesep 'ERN']));
+                    mkdir(fullfile(outdir,'ERN'));
+                    cd(fullfile(outdir,'ERN'));
                     limo_random_select('one sample t-test',AvgChanlocs,...
                         'LIMOfiles',con1_files,'parameter',1, 'analysis_type',...
                         'Full scalp analysis', 'type','Channels','nboot',nboot,'tfce',tfce);
@@ -632,8 +682,8 @@ if strcmpi(AnalysisLevel,'2')
                         1, AvgChanlocs.expected_chanlocs, 'mean', 'Trimmed mean', 21,'FCz_ERP')                    
                     out.(TaskLabel{t}).ERN = get_rfxfiles(pwd);
                 elseif c == 2
-                    mkdir(fullfile(outdir,['2nd_level' filesep 'CRN']));
-                    cd(fullfile(outdir,['2nd_level' filesep 'CRN']));
+                    mkdir(fullfile(outdir,'CRN'));
+                    cd(fullfile(outdir,'CRN'));
                     limo_random_select('one sample t-test',AvgChanlocs,...
                         'LIMOfiles',con2_files,'parameter',1, 'analysis_type',...
                         'Full scalp analysis', 'type','Channels','nboot',nboot,'tfce',tfce);
@@ -643,8 +693,8 @@ if strcmpi(AnalysisLevel,'2')
                         1, AvgChanlocs.expected_chanlocs, 'mean', 'Trimmed mean', 21,'FCz_ERP')
                     out.(TaskLabel{t}).CRN = get_rfxfiles(pwd);
                 else
-                    mkdir(fullfile(outdir,['2nd_level' filesep 'Difference_wave']));
-                    cd(fullfile(outdir,['2nd_level' filesep 'Difference_wave']));
+                    mkdir(fullfile(outdir,'Difference_wave'));
+                    cd(fullfile(outdir,'Difference_wave'));
                     for N=size(con1_files,2):-1:1
                         data{1,N} = con1_files{N};
                         data{2,N} = con2_files{N};
@@ -670,8 +720,6 @@ if strcmpi(AnalysisLevel,'2')
 
         elseif strcmpi(TaskLabel{t},'MMN')
 
-            mkdir(fullfile(outdir,['2nd_level' filesep 'MMN']));
-            cd(fullfile(outdir,['2nd_level' filesep 'MMN']));
             limo_random_select('paired t-test',AvgChanlocs,...
                 'LIMOfiles',fullfile(fullfile(indir,['LIMO_' TaskLabel{t}]),'Beta_files_MMN_MMN_GLM_Channels_Time_WLS.txt'), ...
                 'parameter',[1 2], 'analysis_type',...
@@ -691,8 +739,8 @@ if strcmpi(AnalysisLevel,'2')
         elseif strcmpi(TaskLabel{t},'N170')
             [~,~,con1_files] = limo_get_files([],[],[],fullfile([indir filesep 'LIMO_' TaskLabel{t}],'con1_files.txt'));
             [~,~,con2_files] = limo_get_files([],[],[],fullfile([indir filesep 'LIMO_' TaskLabel{t}],'con2_files.txt'));
-            mkdir(fullfile(outdir,['2nd_level' filesep 'Cars_vs_Faces']));
-            cd(fullfile(outdir,['2nd_level' filesep 'Cars_vs_Faces']));
+            mkdir(fullfile(outdir,'Cars_vs_Faces'));
+            cd(fullfile(outdir,'Cars_vs_Faces'));
             limo_random_select('paired t-test',AvgChanlocs,...
                 'LIMOfiles',fullfile(fullfile(indir,['LIMO_' TaskLabel{t}]),'Beta_files_N170_N170_GLM_Channels_Time_WLS.txt'), ...
                 'parameter',[2 1], 'analysis_type',...
@@ -709,8 +757,8 @@ if strcmpi(AnalysisLevel,'2')
             save('ERP_difference','Diff')
             out.(TaskLabel{t}).N170.Cars_vs_Faces = get_rfxfiles(pwd);
 
-            mkdir(fullfile(outdir,['2nd_level' filesep 'Cars_vs_Faces_controlled']));
-            cd(fullfile(outdir,['2nd_level' filesep 'Cars_vs_Faces_controlled']));
+            mkdir(fullfile(outdir,'Cars_vs_Faces_controlled'));
+            cd(fullfile(outdir,'Cars_vs_Faces_controlled'));
             for N=size(con1_files,1):-1:1
                 data{1,N} = con1_files{N};
                 data{2,N} = con2_files{N};
@@ -754,8 +802,6 @@ if strcmpi(AnalysisLevel,'2')
             out.(TaskLabel{t}).N170.Cars_vs_Faces_Controlled = get_rfxfiles(pwd);
 
         elseif strcmpi(TaskLabel{t},'N2pc')
-            mkdir(fullfile(outdir,'2nd_level'));
-            cd(fullfile(outdir,'2nd_level'));
             labels = arrayfun(@(x) x.labels, AvgChanlocs.expected_chanlocs, 'UniformOutput', false);
             table_channels{1} = labels(1:12)'; table_channels{2} = labels([16 18 19 20 23:30])';
             channels = limo_pair_channels(AvgChanlocs.expected_chanlocs,'pairs',table_channels,'figure','off');
@@ -796,8 +842,6 @@ if strcmpi(AnalysisLevel,'2')
         elseif strcmpi(TaskLabel{t},'N400')
             [~,~,con1_files] = limo_get_files([],[],[],fullfile([indir filesep 'LIMO_' TaskLabel{t}],'con1_files.txt'));
             [~,~,con2_files] = limo_get_files([],[],[],fullfile([indir filesep 'LIMO_' TaskLabel{t}],'con2_files.txt'));
-            mkdir(fullfile(outdir,'2nd_level'));
-            cd(fullfile(outdir,'2nd_level'));
             for N=size(con1_files,2):-1:1
                 data{1,N} = con1_files{N};
                 data{2,N} = con2_files{N};
@@ -828,8 +872,6 @@ if strcmpi(AnalysisLevel,'2')
         elseif strcmpi(TaskLabel{t},'P3')
             [~,~,con1_files] = limo_get_files([],[],[],fullfile([indir filesep 'LIMO_' TaskLabel{t}],'con1_files.txt'));
             [~,~,con2_files] = limo_get_files([],[],[],fullfile([indir filesep 'LIMO_' TaskLabel{t}],'con2_files.txt'));
-            mkdir(fullfile(outdir,['2nd_level' filesep 'P3']));
-            cd(fullfile(outdir,['2nd_level' filesep 'P3']));
             for N=size(con1_files,2):-1:1
                 data{1,N} = con2_files{N};
                 data{2,N} = con1_files{N};
