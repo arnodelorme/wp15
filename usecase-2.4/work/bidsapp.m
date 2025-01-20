@@ -11,7 +11,7 @@ function bidsapp(varargin)
 % Use as
 %   bidsapp -h 
 %   bidsapp -v
-%   bidsapp InputDataset OutputLocation AnalysisLevel [options]
+%   bidsapp(InputDataset,OutputLocation,AnalysisLevel,options)
 %
 % -h,--help       shows this help and exit
 % -v,--version    shows the eeglab and limo versions and exit
@@ -76,39 +76,49 @@ else % at least 3 imputs
         InputDataset   = varargin{1};
         OutputLocation = varargin{2};
         AnalysisLevel  = varargin{3}; % participant or group
+        if any(strcmp(AnalysisLevel,{'participant','subject'}))
+            AnalysisLevel = '1';
+        elseif strcmp(AnalysisLevel,'group')
+            AnalysisLevel = '2';
+        else
+            error('AnalysisLevel should either be ''participant'' or ''group''');
+        end
+
         % everything else is now key-value pairs
-        isoption = false(numel(varargin)/2);
-        for i=1:2:numel(varargin)
-            if contains(varargin{opt},'TaskLabel','IgnoreCase',true)
+        index = 0;
+        isoption = false((numel(varargin)-3)/2,1);
+        for i=4:2:numel(varargin)
+            index = index+1;
+            if contains(varargin{i},'TaskLabel','IgnoreCase',true)
                 options.TaskLabel = varargin{i+1};
-                isoption(i) = true;
-            elseif contains(varargin{opt},'SubjectLabel','IgnoreCase',true)
+                isoption(index) = true;
+            elseif contains(varargin{i},'SubjectLabel','IgnoreCase',true)
                options.SubjectLabel = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'high_pass','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'high_pass','IgnoreCase',true)
                 options.high_pass = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'ICAname','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'ICAname','IgnoreCase',true)
                 options.ICAname = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'epoch_window','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'epoch_window','IgnoreCase',true)
                 options.epoch_window = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'baseline_window','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'baseline_window','IgnoreCase',true)
                 options.baseline_window = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'analysis_window','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'analysis_window','IgnoreCase',true)
                 options.analysis_window = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'estimation','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'estimation','IgnoreCase',true)
                 options.estimation = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'nboot','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'nboot','IgnoreCase',true)
                 options.nboot = varargin{i+1};
-               isoption(i) = true;
-            elseif contains(varargin{opt},'tfce','IgnoreCase',true)
+               isoption(index) = true;
+            elseif contains(varargin{i},'tfce','IgnoreCase',true)
                options.tfce = varargin{i+1};
-               isoption(i) = true;
+               isoption(index) = true;
             end
         end % for inputs/options
     end % nargin 3 and above
@@ -123,10 +133,6 @@ elseif ~isa(AnalysisLevel, 'char') && ~isa(AnalysisLevel, 'string')
   error('incorrect specification of AnalysisLevel');
 end
 
-if ~strcmpi(level, 'participant') && ~strcmpi(level, 'group')
-  error('AnalysisLevel should either be ''participant'' or ''group''');
-end
-
 if ~exist(InputDataset, 'dir')
   error('input directory does not exist');
 end
@@ -139,14 +145,17 @@ if ~exist(OutputLocation, 'dir')
   end
 end
 
-isoption(2:2:end) = true;
 if ~all(isoption)
   % find and show the first incorrect option
   incorrect = find(isoption==false, 1, 'first');
-  error('unsupported option ''%s''', varargin{incorrect});
+  error('unsupported option ''%s''', varargin{incorrect-1});
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % call the actual code to execute the pipeline
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-ERP_Core_WB(InputDataset,OutputLocation,AnalysisLevel,options)
+if exist("options","var")
+    ERP_Core_WB(InputDataset,OutputLocation,AnalysisLevel,options)
+else
+    ERP_Core_WB(InputDataset,OutputLocation,AnalysisLevel)
+end
