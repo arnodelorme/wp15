@@ -60,7 +60,7 @@ The R-software can be installed on a Linux, MacOS or Windows computer, specifica
 Alternatively, you can install the software in an Apptainer container image.
 
 ```console
-cd wp15/usecase-2.1
+cd wp15/usecase-2.1 && cp work/pipeline.R pipeline.R
 apptainer build usecase-2.1.sif container-r.def
 ```
 
@@ -70,13 +70,12 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-Rscript work/pipeline.R --inputdir input --outputdir output  
+Rscript work/pipeline.R --inputdir inputdir --outputdir outputdir
 ```
 
 Executing the pipeline from the R-based Apptainer image is done like this:
 
 ```console
-mkdir output
 apptainer run usecase-2.1.sif inputdir outputdir participant
 apptainer run usecase-2.1.sif inputdir outputdir group
 ```
@@ -140,10 +139,15 @@ While working with scrambled data, you can ensure that to what degree intended p
 
 DatLeak detects data leakage in anonymized datasets by comparing the original data with the scrambled version. It calculates percentage of full leakage (where all variables in a row match) and partial leakage (where some, but not all, variables match). These calculation help assess the effectiveness of the anonymization process.
 
-Assuming you are in **usecase-2.1** directory.
+Assuming you are in **usecase-2.1** directory. Clone the repo:
 ```console
 cd ../../
-git clone https://github.com/SIESTA-eu/DatLeak.git
+git clone https://github.com/SIESTA-eu/DatLeak.git && cd DatLeak/
+```
+
+### Usage
+
+```console
 python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv -999 
 ```
 
