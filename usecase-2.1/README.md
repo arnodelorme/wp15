@@ -13,7 +13,7 @@ The analysis pipeline demonstrated here only uses the tabular data that is inclu
 The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
 ```console
-mkdir input
+mkdir inputdir
 cd input
 wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
 wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
@@ -38,7 +38,7 @@ The output data consist of a `results.tsv` file that contains the averaged age, 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
-mkdir output
+mkdir outputdir
 ```
 
 ## Analysis pipeline
