@@ -14,7 +14,7 @@ The data rights holder can provide instructions and access to the SIESTA product
 
 ### For the raw data (the uploaded ones)
 
-It is the responsability of the data rights holder to ensure that users of the data do not access information posing risk in identifying participants, in particular in the participants.tsv. For instance, if one includes geolocation information, and the user pipeline reads this information, it could be leveraged to re-identify people. We have developed an app that can help checking the information privacy in such file: https://github.com/CPernet/metaprivBIDS.
+It is the responsibility of the data rights holder to ensure that users of the data do not access information posing risk in identifying participants, in particular in the participants.tsv. For instance, if one includes geolocation information, and the user pipeline reads this information, it could be leveraged to re-identify people. We have developed an app that can help checking the information privacy in such file: https://github.com/CPernet/metaprivBIDS.
 
 ### For the anonymized data
 
