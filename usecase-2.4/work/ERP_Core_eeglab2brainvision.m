@@ -34,7 +34,7 @@ for i=1:numel(d)
     ft_write_data(outputfile, dat, 'header', hdr, 'dataformat', 'brainvision_eeg')
   elseif endsWith(inputfile, '.fdt')
     % skip, this contains the data that goes with the set file
-  elseif endsWith(inputfile, '_scans.stv')
+  elseif endsWith(inputfile, '_scans.tsv')
     % skip, the filenames in these are not valid any more
   else
     % copy any other file

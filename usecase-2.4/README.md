@@ -112,7 +112,7 @@ Once all is installed, it should look like this
 
 ```console
 ├── README.md (this file)
-├── source
+├── work
 │   ├── bidsapp.m
 │   ├── ERP_Core_WB.m
 │   ├── ERP_Core_WB_install.m
@@ -160,7 +160,7 @@ Executing the pipeline from the MATLAB command window is done like this:
 cd wp15/usecase-2.4
 restoredefaultpath
 addpath eeglab
-addpath source
+addpath work
 
 bidsapp inputdir outputdir participant
 bidsapp inputdir outputdir group
