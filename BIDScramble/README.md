@@ -291,9 +291,9 @@ options:
                         root of the input directory (such as participants.tsv, etc) (default: yes)
 
 examples:
-  scramble inputdir outputdir pseudo
-  scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003/).*' 
-  scramble inputdir outputdir_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
+  scramble inputdir outputdir         pseudo
+  scramble inputdir outputdir_remove1 pseudo random   -s '(?!sub-003/).*' 
+  scramble inputdir outputdir_keep1   pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
 ```
 
 ## Legal Aspects
