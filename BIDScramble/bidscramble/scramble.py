@@ -25,7 +25,7 @@ parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit 
 class DefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter): pass
 
 
-def addparser_stub(parsers, help: str):
+def addparser_stub(parsers, _help: str):
 
     description = textwrap.dedent("""
     Creates a copy of the input directory in which all files are empty stubs. Exceptions to
@@ -38,11 +38,11 @@ def addparser_stub(parsers, help: str):
               "  scramble inputdir outputdir stub -s '.*(?<!derivatives)'\n"
               "  scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'\n ")
 
-    parser = parsers.add_parser('stub', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('stub', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.set_defaults(func=scramble_stub)
 
 
-def addparser_tsv(parsers, help: str):
+def addparser_tsv(parsers, _help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the tsv files in the input directory to the output directory. If
@@ -54,7 +54,7 @@ def addparser_tsv(parsers, help: str):
               "  scramble inputdir outputdir tsv permute -s '.*_events.tsv' -p '.*'\n"
               '  scramble inputdir outputdir tsv permute -s participants.tsv -p (participant_id|SAS.*)\n ')
 
-    parser = parsers.add_parser('tsv', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('tsv', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.set_defaults(func=scramble_tsv)
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
@@ -63,7 +63,7 @@ def addparser_tsv(parsers, help: str):
     subparser.add_argument('-p','--preserve', metavar='PATTERN', help='A regular expression pattern that is matched against tsv column names. The exact relationship (row order) between the matching columns is then preserved, i.e. they are permuted in conjunction instead of independently')
 
 
-def addparser_json(parsers, help: str):
+def addparser_json(parsers, _help: str):
 
     description = textwrap.dedent("""
     Adds scrambled key-value versions of the json files in the input directory to the output
@@ -75,12 +75,12 @@ def addparser_json(parsers, help: str):
               "  scramble inputdir outputdir json participants.json -p '.*'\n"
               "  scramble inputdir outputdir json 'sub-.*.json' -p '(?!AcquisitionTime|Date).*'\n ")
 
-    parser = parsers.add_parser('json', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('json', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.add_argument('-p','--preserve', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against all keys in the json files. The json values are copied over when a key matches positively')
     parser.set_defaults(func=scramble_json)
 
 
-def addparser_nii(parsers, help: str):
+def addparser_nii(parsers, _help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the NIfTI files in the input directory to the output directory.
@@ -92,7 +92,7 @@ def addparser_nii(parsers, help: str):
               "  scramble inputdir outputdir nii diffuse 2 -s 'sub-.*_MP2RAGE.nii.gz' -c '--mem=5000 --time=0:20:00'\n"
               "  scramble inputdir outputdir nii wobble -a 2 -f 1 8 -s 'sub-.*_T1w.nii'\n ")
 
-    parser = parsers.add_parser('nii', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('nii', parents=[parent_nii], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.set_defaults(func=scramble_nii)
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
@@ -109,7 +109,7 @@ def addparser_nii(parsers, help: str):
     subparser.add_argument('-f','--freqrange', metavar='FREQ', help='The lowest and highest spatial frequency (in mm) of the random waveform', nargs=2, type=float, default=[1, 5])
 
 
-def addparser_fif(parsers, help: str):
+def addparser_fif(parsers, _help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the FIF files in the input directory to the output directory. If
@@ -119,7 +119,7 @@ def addparser_fif(parsers, help: str):
               '  scramble inputdir outputdir fif\n'
               '  scramble inputdir outputdir fif permute\n')
 
-    parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('fif', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.set_defaults(func=scramble_fif)
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
@@ -127,7 +127,7 @@ def addparser_fif(parsers, help: str):
     subparser  = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the MEG samples in each channel')
 
 
-def addparser_brainvision(parsers, help: str):
+def addparser_brainvision(parsers, _help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the BrainVision EEG files in the input directory to the output
@@ -137,7 +137,7 @@ def addparser_brainvision(parsers, help: str):
               '  scramble inputdir outputdir brainvision\n'
               '  scramble inputdir outputdir brainvision permute\n')
 
-    parser = parsers.add_parser('brainvision', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('brainvision', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.set_defaults(func=scramble_brainvision)
 
     subparsers = parser.add_subparsers(dest='method', help='Scrambling method (default: null). Add -h, --help for more information')
@@ -145,7 +145,7 @@ def addparser_brainvision(parsers, help: str):
     subparser  = subparsers.add_parser('permute', parents=[parent], description=description, help='Randomly permute the EEG samples in each channel')
 
 
-def addparser_swap(parsers, help: str):
+def addparser_swap(parsers, _help: str):
 
     description = textwrap.dedent("""
     Randomly swaps the content of data files between a group of similar files in the input
@@ -157,12 +157,12 @@ def addparser_swap(parsers, help: str):
               "  scramble inputdir outputdir swap -s '.*(?<!derivatives) -b'\n"
               "  scramble inputdir outputdir swap -g subject session run\n ")
 
-    parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.add_argument('-g','--grouping', metavar='ENTITY', help='A list of (full-name) BIDS entities that make up a group between which file contents are swapped. See: https://bids-specification.readthedocs.io/en/stable/appendices/entities.html', nargs='+', default=['subject'], type=str)
     parser.set_defaults(func=scramble_swap)
 
 
-def addparser_pseudo(parsers, help: str):
+def addparser_pseudo(parsers, _help: str):
 
     description = textwrap.dedent("""
     Adds pseudonymized versions of the input directory to the output directory, such that the
@@ -174,7 +174,7 @@ def addparser_pseudo(parsers, help: str):
               "  scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003/).*' \n"
               "  scramble inputdir outputdir_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'\n ")
 
-    parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=help)
+    parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.add_argument('method', help='The method to generate the pseudonyms', choices=['random','permute','original'], default='permute')
     parser.add_argument('-p','--pattern', help='The fullmatch regular expression pattern that is used to extract the subject label from the relative filepath', default='^sub-(.*?)/.*')
     parser.add_argument('-r','--rootfiles', help='In addition to the included files (see `--select` for usage), include all files in the root of the input directory (such as participants.tsv, etc)', choices=['yes','no'], default='yes')
@@ -202,14 +202,14 @@ def main():
 
     # Add the subparsers
     subparsers = parser.add_subparsers(title='Action', help='Add -h, --help for more information', required=True)
-    addparser_stub(subparsers,          help='Saves a dummy inputdir skeleton in outputdir')
-    addparser_tsv(subparsers,           help='Saves scrambled tsv files in outputdir')
-    addparser_json(subparsers,          help='Saves scrambled json files in outputdir')
-    addparser_nii(subparsers,           help='Saves scrambled NIfTI files in outputdir')
-    addparser_fif(subparsers,           help='Saves scrambled FIF files in outputdir')
-    addparser_brainvision(subparsers,   help='Saves scrambled BrainVision files in outputdir')
-    addparser_swap(subparsers,          help='Saves swapped file contents in outputdir')
-    addparser_pseudo(subparsers,        help='Saves pseudonymized file names and contents in outputdir')
+    addparser_stub(subparsers, _help='Saves a dummy inputdir skeleton in outputdir')
+    addparser_tsv(subparsers, _help='Saves scrambled tsv files in outputdir')
+    addparser_json(subparsers, _help='Saves scrambled json files in outputdir')
+    addparser_nii(subparsers, _help='Saves scrambled NIfTI files in outputdir')
+    addparser_fif(subparsers, _help='Saves scrambled FIF files in outputdir')
+    addparser_brainvision(subparsers, _help='Saves scrambled BrainVision files in outputdir')
+    addparser_swap(subparsers, _help='Saves swapped file contents in outputdir')
+    addparser_pseudo(subparsers, _help='Saves pseudonymized file names and contents in outputdir')
 
     # Parse the input arguments
     args = parser.parse_args()
