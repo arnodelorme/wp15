@@ -30,8 +30,7 @@ def addparser_stub(parsers, help: str):
     description = textwrap.dedent("""
     Creates a copy of the input directory in which all files are empty stubs. Exceptions to
     this are the 'dataset_description.json', 'README', 'CHANGES', 'LICENSE' and 'CITATION.cff'
-    files, which are copied over and updated if possible.
-    """)
+    files, which are copied over and updated if possible.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir stub\n'
@@ -47,8 +46,7 @@ def addparser_tsv(parsers, help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the tsv files in the input directory to the output directory. If
-    no scrambling method is specified, the default behavior is to null all values.
-    """)
+    no scrambling method is specified, the default behavior is to null all values.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir tsv\n'
@@ -70,8 +68,7 @@ def addparser_json(parsers, help: str):
     description = textwrap.dedent("""
     Adds scrambled key-value versions of the json files in the input directory to the output
     directory. If no preserve expression is specified, the default behavior is to null all
-    values.
-    """)
+    values.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir json\n'
@@ -87,8 +84,7 @@ def addparser_nii(parsers, help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the NIfTI files in the input directory to the output directory.
-    If no scrambling method is specified, the default behavior is to null all image values.
-    """)
+    If no scrambling method is specified, the default behavior is to null all image values.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir nii\n'
@@ -117,8 +113,7 @@ def addparser_fif(parsers, help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the FIF files in the input directory to the output directory. If
-    no scrambling method is specified, the default behavior is to null the data.
-    """)
+    no scrambling method is specified, the default behavior is to null the data.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir fif\n'
@@ -136,8 +131,7 @@ def addparser_brainvision(parsers, help: str):
 
     description = textwrap.dedent("""
     Adds scrambled versions of the BrainVision EEG files in the input directory to the output
-    directory. If no scrambling method is specified, the default behavior is to null the data.
-    """)
+    directory. If no scrambling method is specified, the default behavior is to null the data.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir brainvision\n'
@@ -155,8 +149,7 @@ def addparser_swap(parsers, help: str):
 
     description = textwrap.dedent("""
     Randomly swaps the content of data files between a group of similar files in the input
-    directory and save them as output.
-    """)
+    directory and save them as output.""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir swap\n'
@@ -174,8 +167,7 @@ def addparser_pseudo(parsers, help: str):
     description = textwrap.dedent("""
     Adds pseudonymized versions of the input directory to the output directory, such that the
     subject label is replaced by a pseudonym anywhere in the filepath as well as inside all
-    text files (such as json and tsv-files).
-    """)
+    text files (such as json and tsv-files).""")
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir pseudo\n'
