@@ -65,4 +65,4 @@ The product owner should get information from the data user on:
 
 SInce the data user cannot have direct access to the sensitive data, the computation is to be initiated by the product owner. Following the computations, the results are potentially reviewd by the data rights holder and shared with the data user.
 
-The analysis is to be implemented by the data user as a containerized [BIDS application](https://doi.org/10.1371/journal.pcbi.1005209). To allow development, testing , and deployment on the compute environment of the data user, we have settled on [Apptainer](https://apptainer.org). If needed, the platform owner should be able to convert the apptainer image into a docker image.
+The analysis is to be implemented by the data user as a containerized [BIDS application](https://doi.org/10.1371/journal.pcbi.1005209). To allow development, testing , and deployment on the compute environment of the data user, we have settled on [Apptainer](https://apptainer.org). If needed, the platform operator should be able to convert the apptainer image into a docker image.
