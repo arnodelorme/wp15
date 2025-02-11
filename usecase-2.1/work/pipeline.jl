@@ -1,55 +1,82 @@
-using DataFrames
+#!/usr/bin/env julia
+
+# This code is shared under the CC0 license
+#
+# Copyright (C) 2024, SIESTA workpackage 15 team
+
+using ArgParse
 using CSV
+using DataFrames
+using Statistics
 
-function pipeline(options::Dict)
-    # PIPELINE to compute some averages over participants using the data
-    # in the participants.tsv file from a BIDS dataset.
-    #
-    # Use as
-    #   pipeline(options)
-    # where the options input argument is a dictionary with the following fields
-    #   options[:inputdir]  = string
-    #   options[:outputdir] = string
-    #   options[:verbose]   = boolean
-    #   options[:start_idx] = number, can be nothing
-    #   options[:stop_idx]  = number, can be nothing
-    #
-    # See also BIDSAPP
+############################################################
+# Parse the command line arguments
+############################################################
 
-    if haskey(options, :version) && options[:version]
-        println("version = unknown")
-        return
+function parse_commandline()
+    s = ArgParseSettings()
+
+    @add_arg_table s begin
+        "inputdir"
+            help = "the input directory"
+            required = true
+        "outputdir"
+            help = "the output directory"
+            required = true
+        "level"
+            help = "the analysis level, either 'participant' or 'group'"
+            required = true
+        "--start-idx"
+            help = "index of the first participant to include, one-offset"
+            arg_type = Int
+            default = 0
+        "--stop-idx"
+            help = "index of the last participant to include, one-offset"
+            arg_type = Int
+            default = 0
+        "--verbose", "-v"
+            help = "give more verbose information for debugging"
+            action = :store_true
     end
 
-    if haskey(options, :verbose) && options[:verbose]
+    return parse_args(s)
+end
+
+##########################################################################
+# Compute the averages of the age, height, and weight of the participants
+##########################################################################
+
+function main(options)
+
+    if haskey(options, "verbose") && options["verbose"]
         println("options =")
         display(options)
     end
 
-    if haskey(options, :level) && options[:level] == "participant"
-        # there is nothing to do at the participant level
+    if haskey(options, "level") && options["level"] == "participant"
+        println("nothing to do at the participant level")
         return
     end
 
-    inputfile  = joinpath(options[:inputdir], "participants.tsv")
-    outputfile = joinpath(options[:outputdir], "results.tsv")
+    inputfile  = joinpath(options["inputdir"], "participants.tsv")
+    outputfile = joinpath(options["outputdir"], "results.tsv")
 
     # Read the participants.tsv file into a DataFrame
-    participants = CSV.read(inputfile, DataFrame; delim='\t')
+    participants = CSV.read(inputfile, DataFrame; delim='\t', missingstring="n/a")
 
-    if haskey(options, :verbose) && options[:verbose]
+    if haskey(options, "verbose") && options["verbose"]
         println("data contains $(nrow(participants)) participants")
     end
 
     # Select participants based on start_idx and stop_idx
-    if haskey(options, :stop_idx) && !isnothing(options[:stop_idx])
-        participants = participants[1:options[:stop_idx], :]
+    if haskey(options, "stop_idx") && options["stop_idx"] > 0
+        participants = participants[1:options["stop_idx"], :]
     end
-    if haskey(options, :start_idx) && !isnothing(options[:start_idx])
-        participants = participants[options[:start_idx]:end, :]
+    if haskey(options, "start_idx") && options["start_idx"] > 0
+        participants = participants[options["start_idx"]:end, :]
     end
 
-    if haskey(options, :verbose) && options[:verbose]
+    if haskey(options, "verbose") && options["verbose"]
         println("selected $(nrow(participants)) participants")
     end
 
@@ -65,10 +92,18 @@ function pipeline(options::Dict)
         averagedWeight = [averagedWeight]
     )
 
-    if haskey(options, :verbose) && options[:verbose]
+    if haskey(options, "verbose") && options["verbose"]
         display(result)
     end
 
     # Write the results to a TSV file
     CSV.write(outputfile, result; delim='\t', writeheader=false)
 end
+
+##########################################################################
+# execute the code if it is run as a script
+##########################################################################
+
+options = parse_commandline()
+main(options)
+
