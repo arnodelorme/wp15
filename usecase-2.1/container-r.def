@@ -5,7 +5,7 @@ From: ubuntu:24.04
   Author Robert Oostenveld
 
 %files
-  pipeline.R /work/pipeline.R
+  work/pipeline.R /work/pipeline.R
 
 %post
   chmod +x /work/pipeline.R
