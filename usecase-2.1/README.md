@@ -1,6 +1,6 @@
 # SIESTA - work package 15 - use case 2.1
 
-This implements an analysis of tabular data. Specifically, it computes the mean age, height and weight over a group of participants.
+This implements a very simple analysis of the tabular data that accompanies a neuroimaging dataset. Specifically, it computes the mean age, height and weight over a group of participants.
 
 The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
