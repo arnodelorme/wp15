@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 # This code is shared under the CC0 license
 #
 # Copyright (C) 2024, SIESTA workpackage 15 team
@@ -58,5 +60,6 @@ averagedWeight <- mean(participants$Weight, na.rm = TRUE)
 result <- data.frame(averagedage, averagedHeight, averagedWeight)
 print(result)
 
-#
+# write the results to disk
 write.table(result, file=outputfile, sep="\t", col.names=FALSE, row.names=FALSE)
+
