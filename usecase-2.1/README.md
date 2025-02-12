@@ -39,7 +39,8 @@ The output data consist of a `results.tsv` file that contains the averaged age, 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
-mkdir outputdir
+cd wp15/usecase-2.1
+mkdir output
 ```
 
 ## Analysis pipeline
