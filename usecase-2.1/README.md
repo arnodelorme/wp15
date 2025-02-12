@@ -59,7 +59,7 @@ The code that is specific to the analysis pipeline is shared under the CC0 licen
 
 ### Installation of the R version
 
-The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory. Alternatively, it is possible to make an [Apptainer](https://apptainer.org) container with all analysis software and dependencies.
+The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` and `dplyr` packages are ideally installed and on the path. If these packages are not available, they will be downloaded and installed in a temporary directory. 
 
 Alternatively, you can install the software in an Apptainer container image.
 
@@ -113,8 +113,8 @@ Executing the pipeline from the MATLAB-based Apptainer image is done like this:
 
 ```console
 cd wp15/usecase-2.1
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
