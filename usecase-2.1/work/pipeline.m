@@ -10,8 +10,8 @@ function pipeline(varargin)
 % Optional arguments:
 %   -h,--help           Show this help and exit.
 %   --verbose           Enable verbose output.
-%   --start_idx <num>   Start index for participant selection.
-%   --stop_idx <num>    Stop index for participant selection.
+%   --start-idx <num>   Start index for participant selection.
+%   --stop-idx <num>    Stop index for participant selection.
 
 % This code is shared under the CC0 license
 %
