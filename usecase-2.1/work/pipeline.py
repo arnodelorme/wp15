@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
+
 """This pipeline computes averages from the participants.tsv file
+
+Use as 
+   ./pipeline.py [options] <inputdir> <outputdir> <level>
+where the input and output directory must be specified, and the 
+level is either "group" or "participant".
+
+Optional arguments:
+  -h,--help           Show this help and exit.
+  --verbose           Enable verbose output.
+  --start-idx <num>   Start index for participant selection.
+  --stop-idx <num>    Stop index for participant selection.
 
 This code is shared under the CC0 license
 
@@ -75,7 +87,7 @@ if __name__ == "__main__":
     parser.add_argument('outputdir', type=str, help='Directory to save results.tsv')
     parser.add_argument('level', type=str, help='The analysis level', choices=['participant', 'group'])
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
-    parser.add_argument('--start_idx', type=int, default=None, help='Start index for participant selection')
-    parser.add_argument('--stop_idx', type=int, default=None, help='Stop index for participant selection')
+    parser.add_argument('--start-idx', type=int, default=None, help='Start index for participant selection')
+    parser.add_argument('--stop-idx', type=int, default=None, help='Stop index for participant selection')
 
     main(vars(parser.parse_args()))
