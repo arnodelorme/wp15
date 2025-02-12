@@ -1,6 +1,6 @@
 # SIESTA - work package 15 - use case 2.1
 
-This implements an analysis of tabular data. Specifically, it computes the mean age, height and weight over a group of participants.
+This implements a very simple analysis of the tabular data that accompanies a neuroimaging dataset. Specifically, it computes the mean age, height and weight over a group of participants.
 
 The pipeline is expected to be executed on a Linux computer, although it might also work on macOS or Windows.
 
@@ -13,8 +13,8 @@ The analysis pipeline demonstrated here only uses the tabular data that is inclu
 The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
 ```console
-mkdir inputdir
-cd inputdir
+mkdir input
+cd input
 wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
 wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
 wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
@@ -60,8 +60,8 @@ The R-software can be installed on a Linux, MacOS or Windows computer, specifica
 Alternatively, you can install the software in an Apptainer container image.
 
 ```console
-cd wp15/usecase-2.1 && cp work/pipeline.R pipeline.R
-apptainer build usecase-2.1.sif container-r.def
+cd wp15/usecase-2.1
+apptainer build container-r.sif container-r.def
 ```
 
 ### Executing the R version of the pipeline
@@ -70,14 +70,15 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-Rscript work/pipeline.R --inputdir inputdir --outputdir outputdir
+Rscript work/pipeline.R input output participant
+Rscript work/pipeline.R input output group
 ```
 
 Executing the pipeline from the R-based Apptainer image is done like this:
 
 ```console
-apptainer run usecase-2.1.sif inputdir outputdir participant
-apptainer run usecase-2.1.sif inputdir outputdir group
+apptainer run container-r.sif input output participant
+apptainer run container-r.sif input output group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
@@ -90,7 +91,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.1
-apptainer build usecase-2.1.sif container-matlab.def
+apptainer build container-matlab.sif container-matlab.def
 ```
 
 ### Executing the MATLAB version of the pipeline
@@ -99,16 +100,15 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-matlab -batch "restoredefaultpath; addpath work; bidsapp inputdir outputdir participant"
-matlab -batch "restoredefaultpath; addpath work; bidsapp inputdir outputdir group"
+matlab -batch "restoredefaultpath; addpath work; pipeline inputdir outputdir participant"
+matlab -batch "restoredefaultpath; addpath work; pipeline inputdir outputdir group"
 ```
 
 Executing the pipeline from the MATLAB-based Apptainer image is done like this:
 
 ```console
-mkdir output
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif inputdir outputdir participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.1.sif inputdir outputdir group
+apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
@@ -133,29 +133,27 @@ scramble inputdir outputdir tsv permute -s participants.tsv
 scramble inputdir outputdir json -p '.*' -s participants.json
 ```
 
-# DatLeak
+## DatLeak
 
-While working with scrambled data, you can ensure that to what degree intended patterns or information are leaked from the original dataset where you can use [DatLeak](https://github.com/SIESTA-eu/DatLeak) repository. This repository provides a method to test for potential data leakage, checking whether the scrambled variables still contain any identifiable patterns that could be traced back to the original participants. Running DatLeak on scrambled datasets helps confirm that the anonymization process is robust and protects participant privacy.
+For the scrambled data you can ensure to what degree intended patterns or information are leaked from the original dataset. You can use [DatLeak](https://github.com/SIESTA-eu/DatLeak) to test for potential data leakage, checking whether the scrambled variables still contain any identifiable patterns that could be traced back to the original participants. DatLeak detects data leakage in anonymized datasets by comparing the original data with the scrambled version. It calculates percentage of full leakage (where all variables in a row match) and partial leakage (where some, but not all, variables match). These calculation help assess the effectiveness of the anonymization process.  Running DatLeak on scrambled datasets helps confirm that the anonymization process is robust and protects participant privacy.
 
-DatLeak detects data leakage in anonymized datasets by comparing the original data with the scrambled version. It calculates percentage of full leakage (where all variables in a row match) and partial leakage (where some, but not all, variables match). These calculation help assess the effectiveness of the anonymization process.
+Assuming you are in the `wp15/usecase-2.1` directory, we go two directories up and clone the DatLeak repository:
 
-Assuming you are in **usecase-2.1** directory. Clone the repo:
 ```console
 cd ../../
-git clone https://github.com/SIESTA-eu/DatLeak.git && cd DatLeak/
+git clone https://github.com/SIESTA-eu/DatLeak.git
 ```
 
-### Usage
+To run DatLeak, we return to the `wp15/usecase-2.1` where we assume the input and scrambled data to be located. 
 
 ```console
-python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv -999 
+cd wp15/usecase-2.1
+python ../../DatLeak/DatLeak.py input/participants.tsv scrambled/participants.tsv -999 
 ```
 
-### Ouput 
+This will output a report containing the following:
 
 - Partial Leakage: The percentage of rows with partial leakage.
 - Full Leakage: The percentage of rows with full leakage.
 - Average Matching cells per row.
 - Standard Deviation of matching cells per row.
-
-To read more about DatLeak, please visit [DatLeak](https://github.com/SIESTA-eu/DatLeak)
