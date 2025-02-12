@@ -7,6 +7,9 @@ From: ubuntu:24.04
 %files
 
 %post
+  ################################################################################
+  # general updates to the base image
+  ################################################################################
   apt update -y
   echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
   echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections

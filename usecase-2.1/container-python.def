@@ -1,41 +1,27 @@
 BootStrap: docker
-From: ubuntu:24.04
-
-%labels
-  Author Robert Oostenveld
+From: python:3
 
 %files
   work/pipeline.py /work/pipeline.py
 
 %post
-  chmod +x /work/pipeline.py
+  ################################################################################
+  # general updates to the base image
+  ################################################################################
   apt update -y
   echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
   echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
   DEBIAN_FRONTEND=noninteractive apt install -y tzdata
-  apt install -y python3
+
+  ################################################################################
+  # post installation of dependencies
+  ################################################################################
   pip install pandas
+  chmod +x /work/pipeline.py
 
 %environment
   export LC_ALL=C
 
 %runscript
-  # parse command line arguments
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  if [ -z ${1} ] ; then echo Error: input directory must be specified && exit 1 ; fi
-  if [ -z ${2} ] ; then echo Error: output directory must be specified && exit 1 ; fi
-  if [ -z ${3} ] ; then echo Error: analysis level must be specified as participant or group && exit 1 ; fi
-  export INPUTDIR=${1}
-  export OUTPUTDIR=${2}
-  export LEVEL=${3}
-
-  if [ ${LEVEL} = "participant" ] ; then
-    mkdir -p ${OUTPUTDIR}
-    echo Nothing to be done
-  elif [ ${LEVEL} = "group" ] ; then
-    mkdir -p ${OUTPUTDIR}
-    python3 /work/pipeline.py --inputdir ${INPUTDIR} --outputdir ${OUTPUTDIR}
-  else
-    echo Error: analysis level must be specified as participant or group && exit 1
-  fi
-
+  python /work/pipeline.py "$@"

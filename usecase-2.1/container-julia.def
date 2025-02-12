@@ -1,42 +1,29 @@
 Bootstrap: docker
-From: ubuntu:24.04
-
-%labels
-    Author Robert Oostenveld
-    Description "Ubuntu 24.04 with Julia installed"
+From: julia:latest
 
 %files
   work/pipeline.jl /work/pipeline.jl
 
 %post
-    # Update and install necessary packages
-    apt update -y
-    echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
-    echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
-    DEBIAN_FRONTEND=noninteractive apt install -y tzdata
-    apt install -y \
-        wget \
-        curl \
-        build-essential \
-        git \
-        python3 \
-        python3-pip
+  ################################################################################
+  # general updates to the base image
+  ################################################################################
+  apt update -y
+  echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
+  echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
+  DEBIAN_FRONTEND=noninteractive apt install -y tzdata
 
-    # Install Julia
-    JULIA_VERSION="1.10"  # Replace with the desired Julia version
-    JULIA_URL="https://julialang-s3.julialang.org/bin/linux/x64/${JULIA_VERSION}/julia-${JULIA_VERSION}-linux-x86_64.tar.gz"
-    mkdir -p /opt/julia
-    curl -L $JULIA_URL | tar -xz -C /opt/julia --strip-components=1
-
-    # Add Julia to the PATH
-    ln -s /opt/julia/bin/julia /usr/local/bin/julia
-
-    # Clean up
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+  ################################################################################
+  # post installation of dependencies
+  ################################################################################
+  echo 'import Pkg; Pkg.add("ArgParse")'   | julia
+  echo 'import Pkg; Pkg.add("CSV")'        | julia
+  echo 'import Pkg; Pkg.add("DataFrames")' | julia
+  echo 'import Pkg; Pkg.add("Statistics")' | julia
+  chmod +x /work/pipeline.jl
 
 %environment
-    export PATH="/opt/julia/bin:$PATH"
 
 %runscript
-    exec julia "$@"
-
+  # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
+  julia /work/pipeline.jl "$@"
