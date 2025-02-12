@@ -162,22 +162,22 @@ restoredefaultpath
 addpath eeglab
 addpath work
 
-bidsapp inputdir outputdir participant
-bidsapp inputdir outputdir group
+bidsapp input output participant
+bidsapp input output group
 ```
 
 Executing the pipeline from the Linux terminal is done like this:
 
 ```console
-matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp inputdir outputdir participant"
-matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp inputdir outputdir group"
+matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp input output participant"
+matlab -batch "cd wp15/usecase-2.4; restoredefaultpath; addpath eeglab source; bidsapp input output group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.4.sif inputdir outputdir participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.4.sif inputdir outputdir group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.4.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.4.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
@@ -187,7 +187,7 @@ It may be neccessay to use the `--bind` option to map the external and internal 
 Cleaning up the input and output data is done using:
 
 ```console
-rm -rf inputdir outputdir
+rm -rf input output
 ```
 
 ## Scrambled data
@@ -197,7 +197,7 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble inputdir outputdir stub
-scramble inputdir outputdir json -p '.*'
-scramble inputdir outputdir brainvision -s '.*_eeg\.vhdr'
+scramble input output stub
+scramble input output json -p '.*'
+scramble input output brainvision -s '.*_eeg\.vhdr'
 ```
