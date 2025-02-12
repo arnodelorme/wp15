@@ -70,7 +70,7 @@ assert(out.AnalysisLevel==1,'Analysis Level 1 not started')
 assert(length(fieldnames(out))==3,sprintf('2 tasks specified but %g fields found',length(fieldnames(out))-1))
 assert(all(isfield(out,tasks)),sprintf('1st level task %s is missing although specified as input',tasks{~isfield(out,tasks)}))
 
-%% Test 3c - are the N participants reqested present
+%% Test 3c - are the N participants requested present
 for t = 1:length(tasks)
     test = any([length(out.(tasks{t}).participant)==length(SubjectLabels)-1, ...
         length(out.(tasks{t}).participant)==length(SubjectLabels)]);

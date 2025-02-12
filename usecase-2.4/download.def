@@ -1,0 +1,26 @@
+BootStrap: docker
+From: python:3
+
+%labels
+  Author Robert Oostenveld
+
+%files
+
+%post
+  python3 -m venv /venv
+  . /venv/bin/activate
+  pip install osfclient
+
+%environment
+  export LC_ALL=C
+
+%runscript
+  . /venv/bin/activate
+
+  echo Downloading from OSF to ${1}
+  mkdir -p ${1} || exit
+  osf -p 9f5w7 clone ${1}
+
+  echo Moving the files into place
+  mv ${1}/osfstorage/ERP_CORE_BIDS_Raw_Files/* ${1}
+  rm -rf ${1}/osfstorage/ERP_CORE_BIDS_Raw_Files

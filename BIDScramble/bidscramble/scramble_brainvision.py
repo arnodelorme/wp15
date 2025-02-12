@@ -6,6 +6,7 @@ from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles
 
+
 def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', dryrun: bool=False, **_):
 
     # Defaults
@@ -18,21 +19,15 @@ def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidat
 
         (vhdr, vmrk, data) = brainvision.read(inputfile)
 
-        def do_permute(data):
-            # scramble the samples in each channel
+        # Apply the scrambling method
+        if method == 'permute':             # Scramble the samples in each channel
             rng = np.random.default_rng()
             for channel in range(data.shape[0]):
                 data[channel] = rng.permutation(data[channel])
-            return data
 
-        def do_null(data):
-            return data * 0
+        elif method == 'null':              # Make all values zero
+            data *= 0
 
-        # Apply the scrambling method
-        if method == 'permute':
-            data = do_permute(data)
-        elif method == 'null':
-            data = do_null(data)
         else:
             raise ValueError(f"Unknown brainvision-scramble method: {method}")
 

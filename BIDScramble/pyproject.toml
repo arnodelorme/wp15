@@ -21,7 +21,6 @@ dependencies    = ['pandas',
                    'tqdm',
                    'drmaa',
                    'mne',
-                   'mne_bids',
                    'brainvision']
 
 [project.urls]

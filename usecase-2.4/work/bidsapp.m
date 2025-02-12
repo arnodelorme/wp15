@@ -39,7 +39,7 @@ function bidsapp(varargin)
 %                         Core TaskLabels {'ERN','MMN','N170','N2pc','N400','P3'}
 %          estimation - the LIMO procedure to estimate the models' parameters
 %                       'WLS' (default) or 'OLS'
-%          nboot - the number of boostrap to execute for the 2nd level
+%          nboot - the number of bootstrap to execute for the 2nd level
 %                  analysis (default 1000, set to 0 for none)
 %          tfce - 1 (default) or 0 to additionally compute tfce for the 2nd
 %                 level analysis
@@ -69,7 +69,7 @@ if nargin == 1
     else
         error('expected argument -h or -v')
     end
-else % at least 3 imputs
+else % at least 3 inputs
     if nargin < 3 
         error('at least 3 arguments in needed, InputDataset, OutputLocation, AnalysisLevel')
     else

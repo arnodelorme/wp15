@@ -36,7 +36,7 @@ function out = ERP_Core_WB(InputDataset,OutputLocation,AnalysisLevel,varargin)
 %                         Core TaskLabels {'ERN','MMN','N170','N2pc','N400','P3'}
 %          estimation - the LIMO procedure to estimate the models' parameters
 %                       'WLS' (default) or 'OLS'
-%          nboot - the number of boostrap to execute for the 2nd level
+%          nboot - the number of bootstrap to execute for the 2nd level
 %                  analysis (default 1000, set to 0 for none)
 %          tfce - 1 (default) or 0 to additionally compute tfce for the 2nd
 %                 level analysis
@@ -203,7 +203,7 @@ end
 
 if any(cellfun(@(x) contains(x,'tfce'),options))
     tfce = varargin{find(cellfun(@(x) strcmp(x,'tfce'),options))*2};
-    if tfce >1 || ~isnumeric(single(tfce)) % add single in case of bolean
+    if tfce >1 || ~isnumeric(single(tfce)) % add single in case of boolean
         error('tfce value must be set to 1 or 0 (currently %g\n)',tfce)
     end
 else
@@ -289,7 +289,7 @@ if strcmpi(AnalysisLevel,'1')
         end
         save(fullfile(outdir, 'AvgChanlocs.mat'),'AvgChanlocs')
 
-        %% Pre-procesing
+        %% Pre-processing
         % for each subject, downsample, clean 50Hz, remove bad channels,
         % interpolate, re-reference to the average, run ICA to remove
         % eye and muscle artefacts, delete bad segments
@@ -641,7 +641,7 @@ if strcmpi(AnalysisLevel,'2')
             end
         end
 
-        % could be that we deal wth the STUDY level, but we want LIMO level
+        % could be that we deal with the STUDY level, but we want LIMO level
         if exist(fullfile(indir,['derivatives' filesep 'LIMO_' TaskLabel{t}]),"dir")
             indir = fullfile(indir,'derivatives');
         end

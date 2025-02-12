@@ -29,9 +29,9 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
     if cluster:
 
         # Lazy import to avoid import errors on non-HPC systems
-        from drmaa import Session as drmaasession
+        from drmaa import Session as DrmaaSession
 
-        with drmaasession() as pbatch:
+        with DrmaaSession() as pbatch:
             jobids                  = []
             job                     = pbatch.createJobTemplate()
             job.jobEnvironment      = os.environ
@@ -66,7 +66,7 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
 
         # Apply the scrambling method
         if method == 'permute':
-            axis = dict([(d,n) for n,d in enumerate(['x','y','z','t','u','v','w'])])    # NB: Assumes data is oriented in a standard way (i.e. no dim-flips, no rotations > 45 deg)
+            axis = dict([(d,i) for i,d in enumerate(['x','y','z','t','u','v','w'])])    # NB: Assumes data is oriented in a standard way (i.e. no dim-flips, no rotations > 45 deg)
             for dim in dims:
                 if independent:
                     np.random.default_rng().permuted(data, axis=axis[dim], out=data)

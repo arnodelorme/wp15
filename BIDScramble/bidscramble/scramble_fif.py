@@ -7,6 +7,22 @@ from tqdm import tqdm
 from pathlib import Path
 from . import get_inputfiles
 
+
+def do_permute(data: np.ndarray) -> np.ndarray:
+    # scramble the samples in each channel
+    rng = np.random.default_rng()
+    for channel in range(data.shape[0]):
+        data[channel] = rng.permutation(data[channel])
+
+    return data
+
+
+def do_null(data: np.ndarray) -> np.ndarray:
+    data *= 0
+
+    return data
+
+
 def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', dryrun: bool=False, **_):
 
     # Defaults
@@ -19,8 +35,8 @@ def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
 
         # Figure out which reader function to use, fif-files with time-series data come in 3 flavours
         fiffstuff = mne.io.show_fiff(inputfile)
-        isevoked  = re.search('FIFFB_EVOKED', fiffstuff) != None
-        isepoched = re.search('FIFFB_MNE_EPOCHS', fiffstuff) != None
+        isevoked  = re.search('FIFFB_EVOKED', fiffstuff) is not None
+        isepoched = re.search('FIFFB_MNE_EPOCHS', fiffstuff) is not None
         israw     = not isepoched and not isevoked
 
         # Read the data
@@ -31,21 +47,13 @@ def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
         elif isepoched:
             raise Exception(f"cannot read epoched FIF file: {inputfile}")
 
-        def do_permute(data):
-            # scramble the samples in each channel
-            rng = np.random.default_rng()
-            for channel in range(data.shape[0]):
-                data[channel] = rng.permutation(data[channel])
-            return data
-
-        def do_null(data):
-            return data * 0
-
         # Apply the scrambling method
         if method == 'permute':
             obj.apply_function(do_permute)
+
         elif method == 'null':
             obj.apply_function(do_null)
+
         else:
             raise ValueError(f"Unknown fif-scramble method: {method}")
 

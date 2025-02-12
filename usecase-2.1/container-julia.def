@@ -1,8 +1,8 @@
-BootStrap: docker
-From: r-base
+Bootstrap: docker
+From: julia:latest
 
 %files
-  work/pipeline.R /work/pipeline.R
+  work/pipeline.jl /work/pipeline.jl
 
 %post
   ################################################################################
@@ -16,13 +16,14 @@ From: r-base
   ################################################################################
   # post installation of dependencies
   ################################################################################
-  R -e 'install.packages("optparse", dependencies=TRUE, repos="https://cloud.r-project.org")'
-  R -e 'install.packages("dplyr", dependencies=TRUE, repos="https://cloud.r-project.org")'
-  chmod +x /work/pipeline.R
+  echo 'import Pkg; Pkg.add("ArgParse")'   | julia
+  echo 'import Pkg; Pkg.add("CSV")'        | julia
+  echo 'import Pkg; Pkg.add("DataFrames")' | julia
+  echo 'import Pkg; Pkg.add("Statistics")' | julia
+  chmod +x /work/pipeline.jl
 
 %environment
-  export LC_ALL=C
 
 %runscript
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  Rscript /work/pipeline.R "$@"
+  julia /work/pipeline.jl "$@"

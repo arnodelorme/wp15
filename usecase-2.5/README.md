@@ -96,23 +96,23 @@ addpath spm12/config
 addpath spm12/matlabbatch
 addpath work
 
-bidsapp inputdir outputdir participant
-bidsapp inputdir outputdir group
+bidsapp input output participant
+bidsapp input output group
 ```
 
 Executing the pipeline from the Linux terminal is done using:
 
 ```console
 cd wp15/usecase-2.5
-matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12/config spm12/matlabbatch; bidsapp inputdir outputdir participant"
-matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12/config spm12/matlabbatch; bidsapp inputdir outputdir group"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12/config spm12/matlabbatch; bidsapp input output participant"
+matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12/config spm12/matlabbatch; bidsapp input output group"
 ```
 
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif inputdir outputdir participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif inputdir outputdir group
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
 ```
 
 ## Cleaning up
@@ -130,7 +130,7 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble inputdir outputdir stub
-scramble inputdir outputdir json -p '(?!AcquisitionTime).*'
-scramble inputdir outputdir nii permute y -i
+scramble input output stub
+scramble input output json -p '(?!AcquisitionTime).*'
+scramble input output nii permute y -i
 ```

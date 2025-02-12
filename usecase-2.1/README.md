@@ -13,6 +13,7 @@ The analysis pipeline demonstrated here only uses the tabular data that is inclu
 The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
 ```console
+cd wp15/usecase-2.1
 mkdir input
 cd input
 wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
@@ -45,17 +46,21 @@ mkdir outputdir
 
 ### Legal aspects of the software
 
-The R-package and the optparse package are licensed under GPL-2 or GPL-3.
+The R-package and the optparse package are Open Source and licensed under GPL-2 or GPL-3.
 
 MATLAB is commercial software and requires a license.
 
-The Apptainer software is licensed under [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
+The Julia software is Open Source and licensed under the MIT License.
+
+The Python software is Open Source and licensed under the PSL License.
+
+The Apptainer software is licensed under the [BSD-3-Clause](https://apptainer.org/docs/admin/main/license.html).
 
 The code that is specific to the analysis pipeline is shared under the CC0 license.
 
 ### Installation of the R version
 
-The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` package is ideally installed and on the path. If the `optparse` package is not available, it will be downloaded and installed in a temporary directory. Alternatively, it is possible to make an [Apptainer](https://apptainer.org) container with all analysis software and dependencies.
+The R-software can be installed on a Linux, MacOS or Windows computer, specifically including the `Rscript` binary. The `optparse` and `dplyr` packages are ideally installed and on the path. If these packages are not available, they will be downloaded and installed in a temporary directory. 
 
 Alternatively, you can install the software in an Apptainer container image.
 
@@ -77,6 +82,7 @@ Rscript work/pipeline.R input output group
 Executing the pipeline from the R-based Apptainer image is done like this:
 
 ```console
+cd wp15/usecase-2.1
 apptainer run container-r.sif input output participant
 apptainer run container-r.sif input output group
 ```
@@ -85,7 +91,7 @@ Note that this specific analysis pipeline does not have any computations at the 
 
 ### Installation of the MATLAB version
 
-The MATLAB version of the pipeline only requires a recent MATLAB version and the source directory to be on the MATLAB path.
+The MATLAB version of the pipeline only requires a recent MATLAB version and the work directory to be on the MATLAB path.
 
 Alternatively, you can install the software in an Apptainer container image.
 
@@ -107,6 +113,7 @@ matlab -batch "restoredefaultpath; addpath work; pipeline input output group"
 Executing the pipeline from the MATLAB-based Apptainer image is done like this:
 
 ```console
+cd wp15/usecase-2.1
 apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output participant
 apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output group
 ```
@@ -128,9 +135,9 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble input output stub
-scramble input output tsv permute -s participants.tsv
-scramble input output json -p '.*' -s participants.json
+scramble input scrambled stub
+scramble input scrambled tsv permute -s participants.tsv
+scramble input scrambled json -p '.*' -s participants.json
 ```
 
 ## DatLeak

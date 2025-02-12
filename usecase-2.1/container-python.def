@@ -1,8 +1,8 @@
 BootStrap: docker
-From: r-base
+From: python:3
 
 %files
-  work/pipeline.R /work/pipeline.R
+  work/pipeline.py /work/pipeline.py
 
 %post
   ################################################################################
@@ -16,13 +16,12 @@ From: r-base
   ################################################################################
   # post installation of dependencies
   ################################################################################
-  R -e 'install.packages("optparse", dependencies=TRUE, repos="https://cloud.r-project.org")'
-  R -e 'install.packages("dplyr", dependencies=TRUE, repos="https://cloud.r-project.org")'
-  chmod +x /work/pipeline.R
+  pip install pandas
+  chmod +x /work/pipeline.py
 
 %environment
   export LC_ALL=C
 
 %runscript
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  Rscript /work/pipeline.R "$@"
+  python /work/pipeline.py "$@"
