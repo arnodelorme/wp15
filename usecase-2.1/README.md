@@ -100,8 +100,8 @@ Executing the pipeline from the Linux terminal is done like this:
 
 ```console
 cd wp15/usecase-2.1
-matlab -batch "restoredefaultpath; addpath work; pipeline inputdir outputdir participant"
-matlab -batch "restoredefaultpath; addpath work; pipeline inputdir outputdir group"
+matlab -batch "restoredefaultpath; addpath work; pipeline input output participant"
+matlab -batch "restoredefaultpath; addpath work; pipeline input output group"
 ```
 
 Executing the pipeline from the MATLAB-based Apptainer image is done like this:
@@ -118,7 +118,7 @@ Note that this specific analysis pipeline does not have any computations at the 
 Cleaning up the input and output data can be done using:
 
 ```console
-rm -rf inputdir outputdir
+rm -rf input output
 ```
 
 # Scrambled data
@@ -128,9 +128,9 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble inputdir outputdir stub
-scramble inputdir outputdir tsv permute -s participants.tsv
-scramble inputdir outputdir json -p '.*' -s participants.json
+scramble input output stub
+scramble input output tsv permute -s participants.tsv
+scramble input output json -p '.*' -s participants.json
 ```
 
 ## DatLeak
