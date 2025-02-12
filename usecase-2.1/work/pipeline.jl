@@ -84,12 +84,12 @@ function main(options)
         println("data contains $(nrow(participants)) participants")
     end
 
-    # Select participants based on start_idx and stop_idx
-    if haskey(options, "stop_idx") && options["stop_idx"] > 0
-        participants = participants[1:options["stop_idx"], :]
+    # Select participants based on start-idx and stop-idx
+    if haskey(options, "stop-idx") && options["stop-idx"] > 0
+        participants = participants[1:options["stop-idx"], :]
     end
-    if haskey(options, "start_idx") && options["start_idx"] > 0
-        participants = participants[options["start_idx"]:end, :]
+    if haskey(options, "start-idx") && options["start-idx"] > 0
+        participants = participants[options["start-idx"]:end, :]
     end
 
     if haskey(options, "verbose") && options["verbose"]
