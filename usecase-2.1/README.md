@@ -13,6 +13,7 @@ The analysis pipeline demonstrated here only uses the tabular data that is inclu
 The complete input data consists of 5585 files with a combined size of 30.67GB. The analysis only requires a few of those files to be downloaded.
 
 ```console
+cd wp15/usecase-2.1
 mkdir input
 cd input
 wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
@@ -38,6 +39,7 @@ The output data consist of a `results.tsv` file that contains the averaged age, 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
+cd wp15/usecase-2.1
 mkdir output
 ```
 
@@ -127,14 +129,39 @@ Cleaning up the input and output data can be done using:
 rm -rf input output
 ```
 
-## Scrambled data
+# Scrambled data
 
 As in SIESTA the data is assumed to be sensitive, the analysis is conceived to be designed and implemented on a scrambled version of the dataset. Note that that is not needed here, as the original input and output data can be accessed directly. 
 
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble input output stub
-scramble input output tsv permute -s participants.tsv
-scramble input output json -p '.*' -s participants.json
+scramble input scrambled stub
+scramble input scrambled tsv permute -s participants.tsv
+scramble input scrambled json -p '.*' -s participants.json
 ```
+
+## DatLeak
+
+For the scrambled data you can ensure to what degree intended patterns or information are leaked from the original dataset. You can use [DatLeak](https://github.com/SIESTA-eu/DatLeak) to test for potential data leakage, checking whether the scrambled variables still contain any identifiable patterns that could be traced back to the original participants. DatLeak detects data leakage in anonymized datasets by comparing the original data with the scrambled version. It calculates percentage of full leakage (where all variables in a row match) and partial leakage (where some, but not all, variables match). These calculation help assess the effectiveness of the anonymization process.  Running DatLeak on scrambled datasets helps confirm that the anonymization process is robust and protects participant privacy.
+
+Assuming you are in the `wp15/usecase-2.1` directory, we go two directories up and clone the DatLeak repository:
+
+```console
+cd ../../
+git clone https://github.com/SIESTA-eu/DatLeak.git
+```
+
+To run DatLeak, we return to the `wp15/usecase-2.1` where we assume the input and scrambled data to be located. 
+
+```console
+cd wp15/usecase-2.1
+python ../../DatLeak/DatLeak.py input/participants.tsv scrambled/participants.tsv -999 
+```
+
+This will output a report containing the following:
+
+- Partial Leakage: The percentage of rows with partial leakage.
+- Full Leakage: The percentage of rows with full leakage.
+- Average Matching cells per row.
+- Standard Deviation of matching cells per row.
