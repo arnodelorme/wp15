@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
-# BIDS pipeline for computing averages from participants.tsv file
+# This pipeline computes averages from the participants.tsv file
 #
-# Example 
-#    ./pipeline.py --inputdir /path/to/input --outputdir /path/to/output
+# Use as 
+#    ./pipeline.py [options] <inputdir> <outputdir> <level>
+# where the input and output directory must be specified, and the 
+# level is either "group" or "participant".
 #
 # Optional arguments:
-#   --verbose: Enable verbose output.
-#   --start_idx: Start index for participant selection.
-#   --stop_idx: Stop index for participant selection.
-#   --version: Print version and exit.
+#   -h,--help           Show this help and exit.
+#   --verbose           Enable verbose output.
+#   --start_idx <num>   Start index for participant selection.
+#   --stop_idx <num>    Stop index for participant selection.
 
 # This code is shared under the CC0 license
 #
@@ -24,26 +26,25 @@ import argparse
 ############################################################
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Compute averages from BIDS participants.tsv file.")
+    parser = argparse.ArgumentParser(description="This computes averages from the participants.tsv file.")
     parser.add_argument('inputdir', type=str, help="Directory containing participants.tsv")
     parser.add_argument('outputdir', type=str, help="Directory to save results.tsv")
     parser.add_argument('level', type=str, help="Participant or group level")
     parser.add_argument('--verbose', action='store_true', help="Enable verbose output")
     parser.add_argument('--start_idx', type=int, default=None, help="Start index for participant selection")
     parser.add_argument('--stop_idx', type=int, default=None, help="Stop index for participant selection")
-    parser.add_argument('--version', action='store_true', help="Print version and exit")
 
     # Parse arguments
     args = parser.parse_args()
 
     # Create options dictionary
     options = {
-        'inputdir': args.inputdir,
-        'outputdir': args.outputdir,
         'verbose': args.verbose,
         'start_idx': args.start_idx,
         'stop_idx': args.stop_idx,
-        'version': args.version
+        'inputdir': args.inputdir,
+        'outputdir': args.outputdir,
+        'level': args.level
     }
 
     return options
@@ -55,17 +56,16 @@ def parse_args():
 
 def main(options):
 
-    if 'version' in options and options['version']:
-        print("version = unknown")
-        return
-
     if 'verbose' in options and options['verbose']:
         print("options =")
         print(options)
 
     if 'level' in options and options['level'] == "participant":
-        # there is nothing to do at the participant level
+        print("nothing to do at the participant level")
         return
+
+    # Create the output directory and its parents if they don't exist
+    os.makedirs(options['outputdir'], exist_ok=True)
 
     inputfile  = os.path.join(options['inputdir'], "participants.tsv")
     outputfile = os.path.join(options['outputdir'], "results.tsv")

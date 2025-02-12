@@ -1,28 +1,17 @@
 function pipeline(varargin)
 
-% PIPELINE to compute some averages over participants using the data
-% in the participants.tsv file from a BIDS dataset.
+% This pipeline computes averages from the participants.tsv file
 %
-% This is implemented for the MATLAB-based pipelines in SIESTA and follows
-% https://doi.org/10.1371/journal.pcbi.1005209. Each MATLAB-based pipeline should
-% have its own copy of this function, adapted to the specific requirements. The main
-% task of this wrapper is to parse the input arguments consistently and then to call
-% the actual code that implements the participant- or group-level analysis.
+% Use as 
+%    pipeline [options] <inputdir> <outputdir> <level>
+% where the input and output directory must be specified, and the 
+% level is either "group" or "participant".
 %
-% Use as
-%   pipeline [options] <inputdir> <outputdir> <level>
-%
-% The inputdir must be a directory containing a BIDS dataset.
-% The outputdir must be a directory that will contain the result.
-% The level must be 'participant' or 'group'.
-%
-% Supported options
-%   -h,--help         show this help and exit
-%   -v,--verbose      show more verbose information for debugging
-%   --start-idx <num> index of the first participant to include, one-offset
-%   --stop-idx <num>  index of the last participant to include, one-offset
-%
-% See also INPUTPARSER, ARGUMENTS, FT_GETOPT
+% Optional arguments:
+%   -h,--help           Show this help and exit.
+%   --verbose           Enable verbose output.
+%   --start_idx <num>   Start index for participant selection.
+%   --stop_idx <num>    Stop index for participant selection.
 
 % This code is shared under the CC0 license
 %
@@ -137,7 +126,7 @@ if options.verbose
 end
 
 if strcmp(options.level, 'participant')
-  % there is nothing to do at the participant level
+  disp("nothing to do at the participant level")
   return
 end
 

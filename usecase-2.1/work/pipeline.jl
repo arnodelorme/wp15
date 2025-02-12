@@ -1,5 +1,18 @@
 #!/usr/bin/env julia
 
+# This pipeline computes averages from the participants.tsv file
+#
+# Use as 
+#    ./pipeline.jl [options] <inputdir> <outputdir> <level>
+# where the input and output directory must be specified, and the 
+# level is either "group" or "participant".
+#
+# Optional arguments:
+#   -h,--help           Show this help and exit.
+#   --verbose           Enable verbose output.
+#   --start_idx <num>   Start index for participant selection.
+#   --stop_idx <num>    Stop index for participant selection.
+
 # This code is shared under the CC0 license
 #
 # Copyright (C) 2024, SIESTA workpackage 15 team
@@ -57,6 +70,9 @@ function main(options)
         println("nothing to do at the participant level")
         return
     end
+
+    # Create the output directory and its parents if they don't exist
+    mkpath(options["outputdir"])
 
     inputfile  = joinpath(options["inputdir"], "participants.tsv")
     outputfile = joinpath(options["outputdir"], "results.tsv")

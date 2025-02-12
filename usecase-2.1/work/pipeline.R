@@ -1,5 +1,18 @@
 #!/usr/bin/env Rscript
 
+# This pipeline computes averages from the participants.tsv file
+#
+# Use as 
+#    ./pipeline.R [options] <inputdir> <outputdir> <level>
+# where the input and output directory must be specified, and the 
+# level is either "group" or "participant".
+#
+# Optional arguments:
+#   -h,--help           Show this help and exit.
+#   --verbose           Enable verbose output.
+#   --start_idx <num>   Start index for participant selection.
+#   --stop_idx <num>    Stop index for participant selection.
+
 # This code is shared under the CC0 license
 #
 # Copyright (C) 2024, SIESTA workpackage 15 team
@@ -7,48 +20,84 @@
 # This part of the script deals with possibly missing packages on-the-fly:
 # It downloads them and puts them in a tempdir + adds the tempdir to the path
 tdir <- tempdir()
-.libPaths(tdir)
+.libPaths(c(tdir, .libPaths()))
 
-hasgetopt    <- c("getopt") %in% rownames(installed.packages())
 hasoptparse  <- c("optparse") %in% rownames(installed.packages())
 hasdplyr     <- c("dplyr") %in% rownames(installed.packages())
-if (hasgetopt==FALSE)    {install.packages("getopt",   lib=tdir, dependencies=FALSE, repos="https://cloud.r-project.org")}
-if (hasoptparse==FALSE)  {install.packages("optparse", lib=tdir, dependencies=FALSE, repos="https://cloud.r-project.org")}
+if (hasoptparse==FALSE)  {install.packages("optparse", lib=tdir, dependencies=TRUE, repos="https://cloud.r-project.org")}
 if (hasdplyr==FALSE)     {install.packages("dplyr", lib=tdir, dependencies=TRUE, repos="https://cloud.r-project.org")}
 
 # Load the required package for the option parsing
-library("optparse")
+library("optparse", warn.conflicts = FALSE)
 # Load the required package for column selection
-library("dplyr")
+library("dplyr", warn.conflicts = FALSE)
 
-option_list = list(
-  make_option(c("-i", "--inputdir"), type="character", default=NULL,
-              help="input directory", metavar="character"),
-  make_option(c("-o", "--outputdir"), type="character", default=NULL,
-              help="output directory", metavar="character")
-);
+# Define the option parser
+option_list <- list(
+  make_option(c("-v", "--verbose"), action="store_true", default=FALSE,
+              help="Print extra output"),
+  make_option(c("--start-idx"), type="integer", default=0,
+              help="Start index for participant selection", metavar="INTEGER"),
+  make_option(c("--stop-idx"), type="integer", default=0,
+              help="Stop index for participant selection", metavar="INTEGER")
+)
 
-usage = "usage: Rscript %prog -f INPUTDIR -o OUTPUTDIR"
-opt_parser = OptionParser(usage=usage, option_list=option_list);
-opt = parse_args(opt_parser);
+# Parse the options
+parser <- OptionParser(option_list=option_list, 
+                       usage = "usage: %prog [options] input output level",
+                       description = "This pipeline computes averages from the participants.tsv file.")
+arguments <- parse_args(parser, positional_arguments = 3)
+opts <- arguments$options
+args <- arguments$args
 
-if (is.null(opt$inputdir)){
-  print_help(opt_parser)
-  stop("Input directory must be supplied.", call.=FALSE)
+# Check if help was requested
+if (opts$help) {
+  print_help(parser)
+  quit(status = 0)
 }
 
-if (is.null(opt$outputdir)){
-  print_help(opt_parser)
-  stop("Output directory must be supplied.", call.=FALSE)
+# Assign positional arguments
+inputdir <- args[1]
+outputdir <- args[2]
+level <- args[3]
+
+# Print verbose output if requested
+if (opts$verbose) {
+  cat("Verbose mode enabled\n")
+  cat("Input directory:", inputdir, "\n")
+  cat("Output directory:", outputdir, "\n")
+  cat("Level:", level, "\n")
+  cat("Starting index:", opts$'start-idx', "\n")
+  cat("Stopping index:", opts$'stop-idx', "\n")
 }
+
+if (level=="participant") {
+    print("nothing to do at the participant level")
+    quit(status = 0)
+}
+
+# create the output directory and its parents if they don't exist
+dir.create(outputdir, recursive = TRUE, showWarnings = FALSE)
 
 #
-inputfile  <- file.path(opt$inputdir, c("participants.tsv"))
-outputfile <- file.path(opt$outputdir, c("results.tsv"))
+inputfile  <- file.path(inputdir, c("participants.tsv"))
+outputfile <- file.path(outputdir, c("results.tsv"))
 
 # read table, deal with missing values
 participants <- read.csv(inputfile, sep="\t", na.strings=c("n/a"))
-print(participants %>% select(1:5))
+
+# select the rows
+if (opts$'stop-idx'>0) {
+  participants <- participants[1:opts$'stop-idx', ]
+}
+if (opts$'start-idx'>0) {
+  participants <- participants[opts$'start-idx':nrow(participants), ]
+}
+
+# print some of the columns
+if (opts$verbose) {
+  print(participants %>% select(1:5))
+}
 
 # use the column names and capitalization from the original dataset
 # ignore missing values
@@ -58,7 +107,10 @@ averagedWeight <- mean(participants$Weight, na.rm = TRUE)
 
 # construct table with results
 result <- data.frame(averagedage, averagedHeight, averagedWeight)
-print(result)
+
+if (opts$verbose) {
+  print(result)
+}
 
 # write the results to disk
 write.table(result, file=outputfile, sep="\t", col.names=FALSE, row.names=FALSE)
