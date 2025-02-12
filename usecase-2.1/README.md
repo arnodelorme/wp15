@@ -159,9 +159,11 @@ cd wp15/usecase-2.1
 python ../../DatLeak/DatLeak.py input/participants.tsv scrambled/participants.tsv -999 
 ```
 
-This will output a report containing the following:
+This will output a report with the percentage of rows with partial leakage, the percentage of rows with full leakage, the average matching cells per row, and the standard deviation of the matching cells per row.
 
-- Partial Leakage: The percentage of rows with partial leakage.
-- Full Leakage: The percentage of rows with full leakage.
-- Average Matching cells per row.
-- Standard Deviation of matching cells per row.
+```
+Partial Leakage: 18.33%
+Full Leakage: 81.67%
+Average Matching Cells per Row: 254.03
+Standard Deviation of Matching Cells per Row: 10.15
+```
