@@ -50,11 +50,13 @@ def main(options: dict):
     if options.get('verbose'):
         print(f"data contains {len(participants)} participants")
 
-    # Select participants based on start_idx and stop_idx
+    # Select participants based on start_idx and stop_idx, these are specified using 1-indexing
+    print(options.get('start_idx'))
+    print(options.get('stop_idx'))
     if options.get('stop_idx') is not None:
-        participants = participants.iloc[:options['stop_idx']]
+        participants = participants.iloc[:(options['stop_idx'])]
     if options.get('start_idx') is not None:
-        participants = participants.iloc[options['start_idx']:]
+        participants = participants.iloc[(options['start_idx']-1):]
     if options.get('verbose'):
         print(f"selected {len(participants)} participants")
 
