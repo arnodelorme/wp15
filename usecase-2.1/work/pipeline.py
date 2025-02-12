@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""
-This pipeline computes averages from the participants.tsv file
-
-Use as
-   ./pipeline.py [options] <inputdir> <outputdir> <level>
-where the input and output directory must be specified, and the
-level is either "group" or "participant".
-
-Optional arguments:
-  -h,--help           Show this help and exit.
-  --verbose           Enable verbose output.
-  --start_idx <num>   Start index for participant selection.
-  --stop_idx <num>    Stop index for participant selection.
+"""This pipeline computes averages from the participants.tsv file
 
 This code is shared under the CC0 license
 
@@ -82,12 +70,12 @@ def main(options: dict):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="This computes averages from the participants.tsv file.")
-    parser.add_argument('inputdir', type=str, help="Directory containing participants.tsv")
-    parser.add_argument('outputdir', type=str, help="Directory to save results.tsv")
-    parser.add_argument('level', type=str, help="Participant or group level")
-    parser.add_argument('--verbose', action='store_true', help="Enable verbose output")
-    parser.add_argument('--start_idx', type=int, default=None, help="Start index for participant selection")
-    parser.add_argument('--stop_idx', type=int, default=None, help="Stop index for participant selection")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('inputdir', type=str, help='Directory containing participants.tsv')
+    parser.add_argument('outputdir', type=str, help='Directory to save results.tsv')
+    parser.add_argument('level', type=str, help='The analysis level', choices=['participant', 'group'])
+    parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
+    parser.add_argument('--start_idx', type=int, default=None, help='Start index for participant selection')
+    parser.add_argument('--stop_idx', type=int, default=None, help='Stop index for participant selection')
 
     main(vars(parser.parse_args()))
