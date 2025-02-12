@@ -75,7 +75,7 @@ if __name__ == "__main__":
     parser.add_argument('outputdir', type=str, help='Directory to save results.tsv')
     parser.add_argument('level', type=str, help='The analysis level', choices=['participant', 'group'])
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
-    parser.add_argument('--start-idx', type=int, default=None, help='Start index for participant selection')
-    parser.add_argument('--stop-idx', type=int, default=None, help='Stop index for participant selection')
+    parser.add_argument('--start_idx', type=int, default=None, help='Start index for participant selection')
+    parser.add_argument('--stop_idx', type=int, default=None, help='Stop index for participant selection')
 
     main(vars(parser.parse_args()))
