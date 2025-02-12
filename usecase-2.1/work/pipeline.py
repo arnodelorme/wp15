@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
+"""
+This pipeline computes averages from the participants.tsv file
 
-# This pipeline computes averages from the participants.tsv file
-#
-# Use as 
-#    ./pipeline.py [options] <inputdir> <outputdir> <level>
-# where the input and output directory must be specified, and the 
-# level is either "group" or "participant".
-#
-# Optional arguments:
-#   -h,--help           Show this help and exit.
-#   --verbose           Enable verbose output.
-#   --start_idx <num>   Start index for participant selection.
-#   --stop_idx <num>    Stop index for participant selection.
+Use as
+   ./pipeline.py [options] <inputdir> <outputdir> <level>
+where the input and output directory must be specified, and the
+level is either "group" or "participant".
 
-# This code is shared under the CC0 license
-#
-# Copyright (C) 2024, SIESTA workpackage 15 team
+Optional arguments:
+  -h,--help           Show this help and exit.
+  --verbose           Enable verbose output.
+  --start_idx <num>   Start index for participant selection.
+  --stop_idx <num>    Stop index for participant selection.
+
+This code is shared under the CC0 license
+
+Copyright (C) 2024, SIESTA workpackage 15 team
+"""
 
 import pandas as pd
 import argparse
