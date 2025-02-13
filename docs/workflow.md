@@ -27,8 +27,8 @@ Run the particpant-level analysis on the single subjects.
 
     ./mergeparticipant.sif participant-* participant-merged
 
-At this level we can and therefore should implement a test. One option is to run 
-the particpant-level analysis on all subjects together and check that results 
+At this level we can implement a test. One option for that is to run the
+particpant-level analysis on all subjects together and check that results 
 are consistent with the merged results.
 
     ./pipeline.sif input participant-all participant
@@ -53,8 +53,6 @@ Run the group-level analysis on the leave-one-out resampled datasets.
 
 Run the group-level analysis on all subjects together and add the calibrated noise.
 
-This would also be another moomemnt to test and compare the average of the `group-merged` and the `group-all` data.
-
     ./pipeline.sif input+derivatives group-all 
     ./addnoise.sif group-all noise group-with-noise
 
@@ -62,42 +60,48 @@ This would also be another moomemnt to test and compare the average of the `grou
 
 Review the results with the calibrated noise and release them to the data user.
 
-
 # Required applications or containers
 
-addnoise.sif
-calibratenoise.sif
-compare.sif
-datleak.sif
-download.sif 
-leaveoneout.sif
-mergederivatives.sif
-mergegroup.sif
-mergeparticipant.sif
-pipeline.sif 
-scramble.sif
-singlesubject.sif
+- download.sif 
+- scramble.sif
+- datleak.sif
+- singlesubject.sif
+- pipeline.sif (participant-level, on single-subject data)
+- mergeparticipant.sif
+- pipeline.sif (participant-level, on all data)
+- compare.sif
+- mergederivatives.sif
+- leaveoneout.sif
+- pipeline.sif (group-level, on resampled data)
+- mergegroup.sif
+- pipeline.sif (group-level, on all data, not resampled)
+- compare.sif
+- calibratenoise.sif
+- addnoise.sif
 
 # Required data directories or volumes
 
-input
-scrambled
-output
-singlesubject-xxx
-participant-xxx
-participant-merged
-participant-all
-input+derivatives
-leaveoneout-xxx
-group-xxx
-group-merged
-noise
-group-all
-group-with-noise
+- input
+- scrambled
+- output
+- singlesubject-xxx
+- participant-xxx
+- participant-merged
+- participant-all
+- input+derivatives
+- leaveoneout-xxx
+- group-xxx
+- group-merged
+- noise
+- group-all
+- group-with-noise
 
-# Ideas
+# Ideas for testing and sanity checks
+
+The comparison between the participant-merged and the participant-all is already specified above.
 
 Compare the file and directory structure of `group-xxx` with those of `group-all`.
-Compare the file and directory structure of `noise` with those of `group-all`.
-Compare the file and directory structure of `group-with-noise` with those of `group-all`.
 
+Compare the file and directory structure of `noise` with those of `group-all`.
+
+Compare the file and directory structure of `group-with-noise` with those of `group-all`.
