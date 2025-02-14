@@ -30,7 +30,7 @@ def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
     outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = get_inputfiles(inputdir, select, '*.fif', bidsvalidate)
+    inputfiles, _ = get_inputfiles(inputdir, select, '*.fif', bidsvalidate)
     for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         # Figure out which reader function to use, fif-files with time-series data come in 3 flavours

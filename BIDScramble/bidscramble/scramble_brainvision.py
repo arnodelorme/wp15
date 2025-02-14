@@ -14,7 +14,7 @@ def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidat
     outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = get_inputfiles(inputdir, select, '*.vhdr', bidsvalidate)
+    inputfiles, _ = get_inputfiles(inputdir, select, '*.vhdr', bidsvalidate)
     for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         (vhdr, vmrk, data) = brainvision.read(inputfile)

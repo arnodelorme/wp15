@@ -23,7 +23,7 @@ def scramble_json(inputdir: str, outputdir: str, select: str, bidsvalidate: bool
     outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all selected json files
-    inputfiles = get_inputfiles(inputdir, select, '*.json', bidsvalidate)
+    inputfiles, _ = get_inputfiles(inputdir, select, '*.json', bidsvalidate)
     for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         # Load the json data

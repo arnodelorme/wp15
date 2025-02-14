@@ -21,7 +21,7 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
     outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = get_inputfiles(inputdir, select, '*.nii*', bidsvalidate)
+    inputfiles, _ = get_inputfiles(inputdir, select, '*.nii*', bidsvalidate)
     if not inputfiles:
         return
 
