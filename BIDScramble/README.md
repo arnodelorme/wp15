@@ -284,7 +284,7 @@ options:
                         A fullmatch regular expression pattern that is matched against the relative path of the
                         input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -p PATTERN, --pattern PATTERN
-                        The fullmatch regular expression pattern that is used to extract the subject label from
+                        The findall() regular expression pattern that is used to extract the subject label from
                         the relative filepath. NB: Do not change this if the input data is in BIDS (default:
                         ^sub-(.*?)(?:/|$).*
   -r {yes,no}, --rootfiles {yes,no}
