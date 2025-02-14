@@ -171,7 +171,7 @@ def addparser_pseudo(parsers, _help: str):
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir pseudo\n'
-              "  scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003).*' \n"
+              "  scramble inputdir outputdir_remove1 pseudo random  -s '?!sub-003(/.*)?' \n"
               "  scramble inputdir outputdir_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'\n ")
 
     parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
