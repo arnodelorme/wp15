@@ -86,7 +86,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
                     pseudoitem = outputdir/str(inputitem.relative_to(inputdir)).replace(f"sub-{subjectid}", f"sub-{pseudonym}")
                     print(f"\tRenaming sub-{subjectid} -> {pseudoitem}")
                     if not dryrun:
-                        if pseudoitem.is_file():
+                        if outputitem.is_file():
                             pseudoitem.parent.mkdir(parents=True, exist_ok=True)
                             outputitem.rename(pseudoitem)
                         else:
