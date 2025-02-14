@@ -285,7 +285,8 @@ options:
                         input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
   -p PATTERN, --pattern PATTERN
                         The fullmatch regular expression pattern that is used to extract the subject label from
-                        the relative filepath (default: ^sub-(.*?)/.*)
+                        the relative filepath. NB: Do not change this if the input data is in BIDS (default:
+                        ^sub-(.*?)/.*)
   -r {yes,no}, --rootfiles {yes,no}
                         In addition to the included files (see `--select` for usage), include all files in the
                         root of the input directory (such as participants.tsv, etc) (default: yes)

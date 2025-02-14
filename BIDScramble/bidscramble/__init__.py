@@ -24,7 +24,7 @@ def get_inputfiles(inputdir: pathlib.Path, select: str, pattern: str='*', bidsva
         inputfiles = [fpath for fpath in inputfiles if not BIDSValidator().is_bids(fpath.as_posix())]
 
     if not inputfiles:
-        print(f"No files found in {inputdir} using '{select}'")
+        print(f"WARNING: No files found in {inputdir} using '{select}'")
     else:
         print(f"Found {len(inputfiles)} input files using '{select}'")
 
