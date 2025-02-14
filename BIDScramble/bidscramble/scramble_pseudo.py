@@ -25,7 +25,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
     --------
     scramble data/bids data/synthetic pseudo
     scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003(/|$)).*'
-    scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*'
+    scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003(/|$).*'
     """
 
     # Resolve the input and output paths
