@@ -82,8 +82,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
             for subjectid, pseudonym in zip(subjectids, pseudonyms):
 
                 # Pseudonymize the filepath
-                is_rootfile = inputitem.parent == inputdir and outputitem.is_file()
-                if (subjectid in inputid or is_rootfile) and outputitem.exists():       # NB: This does not support the inheritance principle (sub-* files in root)
+                if (subjectid in inputid or inputitem in rootfiles) and outputitem.exists():       # NB: This does not support the inheritance principle (sub-* files in root)
                     pseudoitem = outputdir/str(inputitem.relative_to(inputdir)).replace(f"sub-{subjectid}", f"sub-{pseudonym}")
                     print(f"\tRenaming sub-{subjectid} -> {pseudoitem}")
                     if not dryrun:
