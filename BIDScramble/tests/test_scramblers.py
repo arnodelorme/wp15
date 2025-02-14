@@ -24,6 +24,7 @@ def test_scramble_stub(tmp_path):
     # Create the input data
     (tmp_path/'input'/'code').mkdir(parents=True)
     (tmp_path/'input'/'derivatives').mkdir()
+    (tmp_path/'input'/'derivatives'/'placeholder.txt').touch()
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv', tmp_path/'input'/'participants.tsv')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'participants.json')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json', tmp_path/'input'/'dataset_description.json')
@@ -35,7 +36,7 @@ def test_scramble_stub(tmp_path):
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    scramble_stub(tmp_path/'input', tmp_path/'output', '.*(?<!derivatives)', False)
+    scramble_stub(tmp_path/'input', tmp_path/'output', '(?!.*/derivatives(/|$)).*', False)
 
     # Check that all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()

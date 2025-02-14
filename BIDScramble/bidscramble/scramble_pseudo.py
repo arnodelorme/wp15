@@ -7,7 +7,7 @@ from pathlib import Path
 from . import get_inputfiles, prune_participants_tsv
 
 
-def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str, pattern: str, rootfiles: str, dryrun: bool=False, **_):
+def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str, participant: str, rootfiles: str, dryrun: bool=False, **_):
     """
     Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
     anywhere in the filepath as well as inside all text files (such as json and tsv-files).
@@ -17,7 +17,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
     :param select:       The regular expression pattern to select the files of interest
     :param bidsvalidate: If True, BIDS files are skipped if they do not validate
     :param method:       The method to generate the pseudonyms
-    :param pattern:      The findall() regular expression pattern that is used to extract the subject label from the relative filepath
+    :param participant:  The findall() regular expression pattern that is used to extract the subject label from the relative filepath
     :param rootfiles:    If 'yes', include all files in the root of the input directory (such as participants.tsv, etc.)
     :param dryrun:       If True, do not modify anything
 
@@ -37,7 +37,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
     rootfiles             = [rootfile for rootfile in inputdir.iterdir() if rootfiles=='yes' and rootfile.is_file() and not (outputdir/rootfile.name).is_file()]
     inputfiles, inputdirs = get_inputfiles(inputdir, select, '*', bidsvalidate)
     inputfiles           += [rootfile for rootfile in rootfiles if rootfile not in inputfiles]
-    subjectids            = sorted(set(subid for item in inputfiles + inputdirs for subid in re.findall(pattern, str(item.relative_to(inputdir))) if subid))
+    subjectids            = sorted(set(subid for item in inputfiles + inputdirs for subid in re.findall(participant, str(item.relative_to(inputdir))) if subid))
     if method == 'random':
         pseudonyms = [next(tempfile._get_candidate_names()).replace('_','x') for _ in subjectids]
     elif method == 'permute':
@@ -78,7 +78,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
                 pass
 
             # Replace each subjectid with its pseudonym
-            inputid = re.findall(pattern, str(inputitem.relative_to(inputdir)))
+            inputid = re.findall(participant, str(inputitem.relative_to(inputdir)))
             for subjectid, pseudonym in zip(subjectids, pseudonyms):
 
                 # Pseudonymize the filepath

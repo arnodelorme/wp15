@@ -35,7 +35,7 @@ def addparser_stub(parsers, _help: str):
     epilog = ('examples:\n'
               '  scramble inputdir outputdir stub\n'
               "  scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'\n"
-              "  scramble inputdir outputdir stub -s '.*(?<!derivatives)'\n"
+              "  scramble inputdir outputdir stub -s '(?!.*/derivatives(/|$)).*'\n"
               "  scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'\n ")
 
     parser = parsers.add_parser('stub', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
@@ -154,7 +154,7 @@ def addparser_swap(parsers, _help: str):
     epilog = ('examples:\n'
               '  scramble inputdir outputdir swap\n'
               "  scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'\n"
-              "  scramble inputdir outputdir swap -s '.*(?<!derivatives) -b'\n"
+              "  scramble inputdir outputdir swap -s '(?!.*/derivatives(/|$)).*' -b\n"
               "  scramble inputdir outputdir swap -g subject session run\n ")
 
     parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
@@ -176,7 +176,7 @@ def addparser_pseudo(parsers, _help: str):
 
     parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.add_argument('method', help='The method to generate the pseudonyms', choices=['random','permute','original'], default='permute')
-    parser.add_argument('-p','--pattern', help='The findall() regular expression pattern that is used to extract the subject label from the relative filepath. NB: Do not change this if the input data is in BIDS format', default='^sub-(.*?)(?:/|$).*')
+    parser.add_argument('-p','--participant', metavar='PATTERN', help='The findall() regular expression pattern that is used to extract the subject label from the relative filepath. NB: Do not change this if the input data is in BIDS format', default='^sub-(.*?)(?:/|$).*')
     parser.add_argument('-r','--rootfiles', help='In addition to the included files (see `--select` for usage), include all files in the root of the input directory (such as participants.tsv, etc)', choices=['yes','no'], default='yes')
     parser.set_defaults(func=scramble_pseudo)
 

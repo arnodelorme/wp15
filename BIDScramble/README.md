@@ -82,7 +82,7 @@ options:
 examples:
   scramble inputdir outputdir stub
   scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir stub -s '.*(?<!derivatives)'
+  scramble inputdir outputdir stub -s '(?!.*/derivatives(/|$)).*'
   scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
@@ -258,7 +258,7 @@ options:
 examples:
   scramble inputdir outputdir swap
   scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir swap -s '.*(?<!derivatives) -b'
+  scramble inputdir outputdir swap -s '(?!.*/derivatives(/|$)).*' -b
   scramble inputdir outputdir swap -g subject session run
 ```
 
@@ -283,7 +283,7 @@ options:
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
                         input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
-  -p PATTERN, --pattern PATTERN
+  -p PATTERN, --participant PATTERN
                         The findall() regular expression pattern that is used to extract the subject label from
                         the relative filepath. NB: Do not change this if the input data is in BIDS (default:
                         ^sub-(.*?)(?:/|$).*
