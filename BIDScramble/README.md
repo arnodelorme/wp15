@@ -77,7 +77,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir stub
@@ -106,7 +106,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir tsv
@@ -130,7 +130,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -p PATTERN, --preserve PATTERN
                         A fullmatch regular expression pattern that is matched against all keys in the json
                         files. The json values are copied over when a key matches positively (default: None)
@@ -166,7 +166,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -c [SPECS], --cluster [SPECS]
                         Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC)
                         cluster. You can add an opaque DRMAA argument with native specifications for your HPC
@@ -200,7 +200,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir fif
@@ -227,7 +227,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir brainvision
@@ -249,7 +249,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -g ENTITY [ENTITY ...], --grouping ENTITY [ENTITY ...]
                         A list of (full-name) BIDS entities that make up a group between which file contents are
                         swapped. See: https://bids-
@@ -282,7 +282,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -p PATTERN, --pattern PATTERN
                         The fullmatch regular expression pattern that is used to extract the subject label from
                         the relative filepath. NB: Do not change this if the input data is in BIDS (default:

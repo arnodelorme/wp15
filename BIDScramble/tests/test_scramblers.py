@@ -329,7 +329,7 @@ def test_scramble_pseudo(tmp_path):
     (tmp_path/'input'/'.git').mkdir()
 
     # Pseudonymize the data using permuted subject identifiers
-    scramble_pseudo(tmp_path/'input', tmp_path/'output', r'^(?!\.).*', True, 'permute', '^sub-(.*?)(?:/|$).*', 'yes')
+    scramble_pseudo(tmp_path/'input', tmp_path/'output', r'(?!\.).*', True, 'permute', '^sub-(.*?)(?:/|$).*', 'yes')
     assert (tmp_path/'output'/'participants.json').is_file()
     assert (tmp_path/'output'/edfpath).is_file()
     assert (tmp_path/'output'/'.bidsignore').is_file()

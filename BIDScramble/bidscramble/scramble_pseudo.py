@@ -17,7 +17,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
     :param select:       The regular expression pattern to select the files of interest
     :param bidsvalidate: If True, BIDS files are skipped if they do not validate
     :param method:       The method to generate the pseudonyms
-    :param pattern:      The fullmatch regular expression pattern that is used to extract the subject label from the relative filepath
+    :param pattern:      The findall() regular expression pattern that is used to extract the subject label from the relative filepath
     :param rootfiles:    If 'yes', include all files in the root of the input directory (such as participants.tsv, etc.)
     :param dryrun:       If True, do not modify anything
 
