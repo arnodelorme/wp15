@@ -84,7 +84,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
                 # Pseudonymize the filepath
                 if (subjectid in inputid or inputitem in rootfiles) and outputitem.exists():       # NB: This does not support the inheritance principle (sub-* files in root)
                     pseudoitem = outputdir/str(inputitem.relative_to(inputdir)).replace(f"sub-{subjectid}", f"sub-{pseudonym}")
-                    print(f"\tRenaming sub-{subjectid} -> {pseudoitem}")
+                    print(f"\t{'Renaming' if outputitem.is_file() else 'Making'} sub-{subjectid} -> {pseudoitem}")
                     if not dryrun:
                         if outputitem.is_file():
                             pseudoitem.parent.mkdir(parents=True, exist_ok=True)

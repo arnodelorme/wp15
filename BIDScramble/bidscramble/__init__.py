@@ -21,7 +21,7 @@ def get_inputfiles(inputdir: pathlib.Path, select: str, pattern: str='*', bidsva
 
     inputitems = [item for item in inputdir.rglob(pattern) if re.fullmatch(select, str(item.relative_to(inputdir)))]
     inputfiles = [fpath  for fpath  in inputitems if fpath.is_file()]
-    inputdirs  = [folder for folder in inputitems if folder.is_dir()]
+    inputdirs  = [folder for folder in inputitems if folder.is_dir() and folder.name not in ('.','..')]
 
     if bidsvalidate:
         inputfiles = [fpath for fpath in inputfiles if not BIDSValidator().is_bids(fpath.as_posix())]
@@ -29,27 +29,28 @@ def get_inputfiles(inputdir: pathlib.Path, select: str, pattern: str='*', bidsva
     if not inputfiles:
         print(f"WARNING: No files found in {inputdir} using '{select}'")
     else:
-        print(f"Found {len(inputfiles)} input files using '{select}'")
+        print(f"Found {len(inputfiles)} input files and {len(inputdirs)} directories using '{select}'")
 
     return sorted(inputfiles), sorted(inputdirs)       # TODO: create a class and return input objects?
 
 
-def prune_participants_tsv(inputdir: pathlib.Path):
+def prune_participants_tsv(rootdir: pathlib.Path):
     """
     Removes rows from the participants tsv file if their subject directories do not exist
 
-    :param inputdir: The BIDS (or BIDS-like) input directory with the participants.tsv file
+    :param rootdir: The BIDS (or BIDS-like) input directory with the participants.tsv file
     :return:
     """
 
-    participants_tsv = inputdir/'participants.tsv'
+    participants_tsv = rootdir/'participants.tsv'
     if participants_tsv.is_file():
 
+        print(f"--> {participants_tsv}")
         table = pd.read_csv(participants_tsv, sep='\t', dtype=str, index_col='participant_id')
         for subid in table.index:
             if not isinstance(subid, str):  # Can happen with anonymized data
                 return
-            if not (inputdir/subid).is_dir():
+            if not (rootdir/subid).is_dir():
                 print(f"Pruning {subid} record from {participants_tsv}")
                 table.drop(subid, inplace=True)
 
