@@ -7,7 +7,7 @@ name            = 'bidscramble'
 description     = 'Generates scrambled datasets that are organized according to the Brain Imaging Data Structure (BIDS)'
 version         = '0.0.3'
 readme          = 'README.md'
-requires-python = '>= 3.8'
+requires-python = '>= 3.9'
 authors         = [{email = 'm.zwiers@donders.ru.nl'}, {name = 'Marcel Zwiers'}]
 classifiers     = ['Programming Language :: Python :: 3.8',
                      'Operating System :: OS Independent',
@@ -37,7 +37,7 @@ testpaths       = ['tests']
 legacy_tox_ini = """
 [tox]
 min_version     = 4.0
-envlist         = py38, py312
+envlist         = py39, py313
 
 [testenv]
 deps            = pytest
