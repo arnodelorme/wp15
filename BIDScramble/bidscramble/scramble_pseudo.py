@@ -24,8 +24,8 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
     Examples
     --------
     scramble data/bids data/synthetic pseudo
-    scramble data/bids data/synthetic_remove1 pseudo random  -s ''(?!sub-003(/|$)).*'?'
-    scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
+    scramble data/bids data/synthetic_remove1 pseudo random  -s '(?!sub-003(/|$)).*'
+    scramble data/bids data/synthetic_keep1 pseudo original -s 'sub-003/.*'
     """
 
     # Resolve the input and output paths
@@ -37,7 +37,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
     rootfiles             = [rootfile for rootfile in inputdir.iterdir() if rootfiles=='yes' and rootfile.is_file() and not (outputdir/rootfile.name).is_file()]
     inputfiles, inputdirs = get_inputfiles(inputdir, select, '*', bidsvalidate)
     inputfiles           += [rootfile for rootfile in rootfiles if rootfile not in inputfiles]
-    subjectids            = sorted(set(subid for item in set(inputfiles + inputdirs) for subid in re.findall(pattern, str(item.relative_to(inputdir))) if subid))
+    subjectids            = sorted(set(subid for item in inputfiles + inputdirs for subid in re.findall(pattern, str(item.relative_to(inputdir))) if subid))
     if method == 'random':
         pseudonyms = [next(tempfile._get_candidate_names()).replace('_','x') for _ in subjectids]
     elif method == 'permute':

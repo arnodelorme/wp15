@@ -9,7 +9,7 @@ version         = '0.0.3'
 readme          = 'README.md'
 requires-python = '>= 3.9'
 authors         = [{email = 'm.zwiers@donders.ru.nl'}, {name = 'Marcel Zwiers'}]
-classifiers     = ['Programming Language :: Python :: 3.8',
+classifiers     = ['Programming Language :: Python :: 3.9',
                      'Operating System :: OS Independent',
                      'Intended Audience :: Science/Research']
 dependencies    = ['pandas',
