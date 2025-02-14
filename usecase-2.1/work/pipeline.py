@@ -2,17 +2,6 @@
 
 """This pipeline computes averages from the participants.tsv file
 
-Use as 
-   ./pipeline.py [options] <inputdir> <outputdir> <level>
-where the input and output directory must be specified, and the 
-level is either "group" or "participant".
-
-Optional arguments:
-  -h,--help           Show this help and exit.
-  --verbose           Enable verbose output.
-  --start-idx <num>   Start index for participant selection.
-  --stop-idx <num>    Stop index for participant selection.
-
 This code is shared under the CC0 license
 
 Copyright (C) 2024, SIESTA workpackage 15 team
