@@ -17,6 +17,18 @@ from pathlib import Path
 ##########################################################################
 
 def main(options: dict):
+    """
+    This function computes averages from the participants.tsv file
+
+    The Options keys:
+    -----------------
+      - inputdir:   Directory containing participants.tsv (str)
+      - outputdir:  Directory to save results.tsv (str)
+      - level:      Analysis level, either "group" or "participant" (str)
+      - verbose:    Enable verbose output (bool)
+      - start-idx:  Start index for participant selection (int)
+      - stop-idx:   Stop index for participant selection (int)
+    """
 
     if options.get('verbose'):
         print('options =')
