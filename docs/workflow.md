@@ -4,7 +4,7 @@
 
     ./download.sif input
     ./scramble.sif input scrambled <options>
-    ./datleak.sif input scrambled <options>
+    ./privacy.sif input scrambled <options>
 
 ## Data user
 
@@ -58,13 +58,15 @@ Run the group-level analysis on all subjects together and add the calibrated noi
 
 ## Data rights holder
 
-Review the results with the calibrated noise and release them to the data user.
+Review the group-level results with the calibrated noise and release them to the data user.
+
+    ./privacy.sif group-with-noise
 
 # Required applications or containers
 
 - download.sif 
 - scramble.sif
-- datleak.sif
+- privacy.sif (on the scrambled input data)
 - singlesubject.sif
 - pipeline.sif (participant-level, on single-subject data)
 - mergeparticipant.sif
@@ -78,6 +80,7 @@ Review the results with the calibrated noise and release them to the data user.
 - compare.sif
 - calibratenoise.sif
 - addnoise.sif
+- privacy.sif (on the differentially private output data)
 
 # Required data directories or volumes
 
