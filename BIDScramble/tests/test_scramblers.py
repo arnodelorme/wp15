@@ -36,7 +36,7 @@ def test_scramble_stub(tmp_path):
     (tmp_path/'input'/'dataset_description.json').write_text(description)
 
     # Create the output data
-    scramble_stub(tmp_path/'input', tmp_path/'output', '(?!.*/derivatives(/|$)).*', False)
+    scramble_stub(tmp_path/'input', tmp_path/'output', '(?!.*derivatives(/|$)).*', False)
 
     # Check that all output data - `derivatives` + `LICENSE` is there
     assert (tmp_path/'output'/'LICENSE').is_file()

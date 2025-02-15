@@ -82,7 +82,7 @@ options:
 examples:
   scramble inputdir outputdir stub
   scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir stub -s '(?!.*/derivatives(/|$)).*'
+  scramble inputdir outputdir stub -s '(?!derivatives(/|$)).*'
   scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
@@ -258,7 +258,7 @@ options:
 examples:
   scramble inputdir outputdir swap
   scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir swap -s '(?!.*/derivatives(/|$)).*' -b
+  scramble inputdir outputdir swap -s '(?!derivatives(/|$)).*' -b
   scramble inputdir outputdir swap -g subject session run
 ```
 

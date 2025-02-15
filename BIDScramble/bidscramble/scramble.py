@@ -35,7 +35,7 @@ def addparser_stub(parsers, _help: str):
     epilog = ('examples:\n'
               '  scramble inputdir outputdir stub\n'
               "  scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'\n"
-              "  scramble inputdir outputdir stub -s '(?!.*/derivatives(/|$)).*'\n"
+              "  scramble inputdir outputdir stub -s '(?!derivatives(/|$)).*'\n"
               "  scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'\n ")
 
     parser = parsers.add_parser('stub', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
@@ -154,7 +154,7 @@ def addparser_swap(parsers, _help: str):
     epilog = ('examples:\n'
               '  scramble inputdir outputdir swap\n'
               "  scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'\n"
-              "  scramble inputdir outputdir swap -s '(?!.*/derivatives(/|$)).*' -b\n"
+              "  scramble inputdir outputdir swap -s '(?!derivatives(/|$)).*' -b\n"
               "  scramble inputdir outputdir swap -g subject session run\n ")
 
     parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
