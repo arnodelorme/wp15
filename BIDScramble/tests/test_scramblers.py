@@ -24,7 +24,6 @@ def test_scramble_stub(tmp_path):
     # Create the input data
     (tmp_path/'input'/'code').mkdir(parents=True)
     (tmp_path/'input'/'derivatives').mkdir()
-    (tmp_path/'input'/'derivatives'/'placeholder.txt').touch()
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv', tmp_path/'input'/'participants.tsv')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/participants.json', tmp_path/'input'/'participants.json')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json', tmp_path/'input'/'dataset_description.json')
