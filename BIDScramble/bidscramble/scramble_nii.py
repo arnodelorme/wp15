@@ -43,11 +43,11 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
             for inputfile in inputfiles:
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                job.args       = ['-m', __name__, inputdir, outputdir, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
+                job.args       = ['-m', __name__, inputdir, outputdir, inputfile.relative_to(inputdir), bidsvalidate, method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
                 job.jobName    = f"scramble_nii_{subid}_{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))
-                print(f"Job output logs are written to: {job.outputPath}")
+            print(f"HPC output logs are written to: {outputdir/'logs'}")
 
             watchjobs(pbatch, jobids)
             pbatch.deleteJobTemplate(job)
