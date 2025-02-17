@@ -21,7 +21,7 @@ If your node installation is up-to-date and working then make sure you have an o
 npm install -g @openneuro/cli
 
 openneuro login
-openneuro download ds003826 input   # Choose snapshot 3.0.1
+openneuro download ds003826 -s 3.0.1 input
 ```
 
 Tip: Use e.g. Node.js version 21.7.3 if you get errors from the openneuro client
