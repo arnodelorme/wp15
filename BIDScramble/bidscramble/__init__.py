@@ -13,7 +13,7 @@ __url__         = metadata.metadata('bidscramble')['Project-URL']
 def get_inputfiles(inputdir: pathlib.Path, select: str, pattern: str='*', bidsvalidate: bool=False) -> Tuple[List[pathlib.Path], List[pathlib.Path]]:
     """
     :param inputdir:     The input directory from which files are retrieved using rglob
-    :param select:       The regular expression pattern to select the files of interest
+    :param select:       The fullmatch regular expression pattern to select the files of interest
     :param pattern:      The rglob search pattern (e.g. useful for additional filtering on file extension)
     :param bidsvalidate: Filters out BIDS files if True
     :return:             The input files and directories of interest

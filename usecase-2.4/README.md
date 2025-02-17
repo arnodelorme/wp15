@@ -199,5 +199,5 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
 ```console
 scramble input output stub
 scramble input output json -p '.*'
-scramble input output brainvision -s '.*_eeg\.vhdr'
+scramble input output brainvision
 ```

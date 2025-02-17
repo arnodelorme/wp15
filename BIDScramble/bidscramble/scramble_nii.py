@@ -43,10 +43,11 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
             for inputfile in inputfiles:
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
-                job.args       = ['-m', __name__, inputdir, outputdir, inputfile.relative_to(inputdir), method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
+                job.args       = ['-m', __name__, inputdir, outputdir, inputfile.relative_to(inputdir), bidsvalidate, method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
                 job.jobName    = f"scramble_nii_{subid}_{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))
+            print(f"HPC output logs are written to: {outputdir/'logs'}")
 
             watchjobs(pbatch, jobids)
             pbatch.deleteJobTemplate(job)
@@ -181,7 +182,7 @@ def watchjobs(pbatch, jobids: list):
     qbar.close(), rbar.close()
     print(f"Finished processing all {len(jobids)} jobs")
 
-    failedjobs = [jobid for jobid in jobids if pbatch.jobStatus(jobid)=='failed']
+    failedjobs = [jobid for jobid in jobids if pbatch.jobStatus(jobid) == 'failed']
     if failedjobs:
         print(f"ERROR: {len(failedjobs)} HPC jobs failed to run:\n{failedjobs}\nThis may well be due to an underspecified `--cluster` input option (e.g. not enough memory)")
 
@@ -191,15 +192,15 @@ if __name__ == '__main__':
 
     args = sys.argv[1:]
     """ Non-str scramble_nii() arguments indices (zero-based) that are passed as strings:
-    4  fwhm: float
-    5  dims: List[str]=()
-    6  independent: bool=False
-    7  radius: float=1
-    8  freqrange: List[float]=(0,0)
-    9  amplitude: float=1
-    11 dryrun: bool=False
+    5  fwhm: float
+    6  dims: List[str]=()
+    7  independent: bool=False
+    8  radius: float=1
+    9  freqrange: List[float]=(0,0)
+    10 amplitude: float=1
+    12 dryrun: bool=False
     """
-    for n in list(range(4, 10)) + [11]:
+    for n in list(range(5, 11)) + [12]:
         args[n] = ast.literal_eval(args[n])
     print('Running scramble_nii with args:', args)
 

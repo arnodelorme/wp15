@@ -136,9 +136,9 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble input scrambled stub
-scramble input scrambled tsv permute -s participants.tsv
-scramble input scrambled json -p '.*' -s participants.json
+scramble input output stub
+scramble input output tsv permute -s participants.tsv
+scramble input output json -p '.*' -s participants.json
 ```
 
 ## DatLeak
