@@ -14,7 +14,7 @@ def scramble_pseudo(inputdir: str, outputdir: str, select: str, bidsvalidate: bo
 
     :param inputdir:     The path to the input dataset
     :param outputdir:    The path to the output dataset
-    :param select:       The regular expression pattern to select the files of interest
+    :param select:       The fullmatch regular expression pattern to select the files of interest
     :param bidsvalidate: If True, BIDS files are skipped if they do not validate
     :param method:       The method to generate the pseudonyms
     :param participant:  The findall() regular expression pattern that is used to extract the subject label from the relative filepath
