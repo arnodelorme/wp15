@@ -25,7 +25,7 @@ def scramble_brainvision(inputdir: str, outputdir: str, select: str, bidsvalidat
             for channel in range(data.shape[0]):
                 data[channel] = rng.permutation(data[channel])
 
-        elif method == 'null':              # Make all values zero
+        elif method in ('null', None):          # Make all values zero
             data *= 0
 
         else:

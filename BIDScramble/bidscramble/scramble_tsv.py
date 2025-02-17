@@ -24,7 +24,7 @@ def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
             for column in tsvdata.columns:
                 if not re.fullmatch(preserve or '^$', column):
                     tsvdata[column] = np.random.permutation(tsvdata[column])
-        elif method == 'null':
+        elif method in ('null', None):
             tsvdata = pd.DataFrame(columns=tsvdata.columns, index=tsvdata.index)
         else:
             raise ValueError(f"Unknown tsv-scramble method: {method}")

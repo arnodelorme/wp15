@@ -51,7 +51,7 @@ def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
         if method == 'permute':
             obj.apply_function(do_permute)
 
-        elif method == 'null':
+        elif method in ('null', None):
             obj.apply_function(do_null)
 
         else:

@@ -44,7 +44,7 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
                 subid          = inputfile.name.split('_')[0].split('-')[1]
                 sesid          = inputfile.name.split('_')[1].split('-')[1] if '_ses-' in inputfile.name else ''
                 job.args       = ['-m', __name__, inputdir, outputdir, inputfile.relative_to(inputdir), bidsvalidate, method, fwhm, dims, independent, radius, freqrange, amplitude, '', dryrun]
-                job.jobName    = f"scramble_nii_{subid}_{sesid}"
+                job.jobName    = f"scramble_nii_sub-{subid}_ses-{sesid}"
                 job.outputPath = f"{os.getenv('HOSTNAME')}:{outputdir/'logs'/job.jobName}.out"
                 jobids.append(pbatch.runJob(job))
             print(f"HPC output logs are written to: {outputdir/'logs'}")
@@ -119,7 +119,7 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
                         slab = (slice(None),) * dim + (i,)   # https://stackoverflow.com/questions/42817508/get-the-i-th-slice-of-the-k-th-dimension-in-a-numpy-array
                         data[slab] = np.roll(data[slab], round(amplitude * wobble[i]), axis=axis if axis < dim else axis - 1)
 
-        elif method == 'null':
+        elif method in ('null', None):
             data = data * 0
 
         else:
