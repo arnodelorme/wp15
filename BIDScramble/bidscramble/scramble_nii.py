@@ -200,8 +200,8 @@ if __name__ == '__main__':
     10 amplitude: float=1
     12 dryrun: bool=False
     """
+    print('Running scramble_nii with args:', args)
     for n in list(range(5, 11)) + [12]:
         args[n] = ast.literal_eval(args[n])
-    print('Running scramble_nii with args:', args)
 
     scramble_nii(*args)
