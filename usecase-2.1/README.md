@@ -21,6 +21,7 @@ wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
 wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
 wget https://s3.amazonaws.com/openneuro.org/ds004148/README
 wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
+for SUBJ in `seq -w 60`; do mkdir sub-${SUBJ} ; done
 cd ..
 ```
 
