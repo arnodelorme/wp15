@@ -192,6 +192,7 @@ if __name__ == '__main__':
 
     args = sys.argv[1:]
     """ Non-str scramble_nii() arguments indices (zero-based) that are passed as strings:
+    3  bidsvalidate: bool=False
     5  fwhm: float
     6  dims: List[str]=()
     7  independent: bool=False
@@ -200,8 +201,9 @@ if __name__ == '__main__':
     10 amplitude: float=1
     12 dryrun: bool=False
     """
-    print('Running scramble_nii with args:', args)
-    for n in list(range(5, 11)) + [12]:
+    print('Running scramble_nii with commandline args:', args)
+    for n in [3, 5, 7, 8, 9, 10, 12]:
         args[n] = ast.literal_eval(args[n])
+    args[6] = args[6][1:-1].replace(' ','').split(',') if args[6] else []
 
     scramble_nii(*args)
