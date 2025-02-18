@@ -25,4 +25,4 @@ Stage: final
     pip install wp15/BIDScramble
 
 %runscript
-    exec scramble $1 $2 pseudo original -s "(?!sub-${3}(/|$)).*"
+    exec scramble $1 $2 pseudo original -s "(?!${3}(/|$)).*"
