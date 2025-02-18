@@ -17,11 +17,11 @@ Develop the pipeline and test it.
 
 Run the particpant-level analysis on the single subjects.
 
-    for SUBJ in `seq -w $NSUBJ`; do 
+    for SUBJ in `seq $NSUBJ`; do
         ./singlesubject.sif input singlesubject-$SUBJ $SUBJ
     done
 
-    for SUBJ in `seq -w $NSUBJ`; do 
+    for SUBJ in `seq $NSUBJ`; do
         ./pipeline.sif singlesubject-$SUBJ participant-$SUBJ participant
     done
 
@@ -40,11 +40,11 @@ We then add the participant-level derivatives to the input dataset.
 
 Run the group-level analysis on the leave-one-out resampled datasets.
 
-    for SUBJ in `seq -w $NSUBJ`; do 
+    for SUBJ in `seq $NSUBJ`; do
         ./leaveoneout.sif input+derivatives leaveoneout-$SUBJ $SUBJ
     done
 
-    for SUBJ in `seq -w $NSUBJ`; do 
+    for SUBJ in `seq $NSUBJ`; do
         ./pipeline.sif leaveoneout-$SUBJ group-$SUBJ group
     done
 
