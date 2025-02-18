@@ -8,7 +8,7 @@ Stage: final
     * Debian stable,
     * The latest BIDScramble version at the time of creation
 
-    The general form to run singlesubject commands is:
+    The general form to run the singlesubject command is:
 
         apptainer run singlesubject.sif <input> <output> <participant_id>
 
