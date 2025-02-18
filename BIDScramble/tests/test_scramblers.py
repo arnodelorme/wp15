@@ -205,12 +205,13 @@ def test_scramble_fif(tmp_path):
 
     # Create the input data
     (tmp_path/'input'/'sub-01'/'ses-meg'/'meg').mkdir(parents=True)
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json', tmp_path/'input'/'dataset_description.json')
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/README', tmp_path/'input'/'README')
-    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES', tmp_path/'input'/'CHANGES')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/dataset_description.json', tmp_path/'input'/'dataset_description.json')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/README', tmp_path/'input'/'README')
+    urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/CHANGES', tmp_path/'input'/'CHANGES')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds000117/participants.tsv', tmp_path/'input'/'participants.tsv')
     megfile = 'sub-01/ses-meg/meg/sub-01_ses-meg_task-facerecognition_run-01_meg.fif'
-    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{megfile}", tmp_path/'input'/megfile)
+    # urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds000117/{megfile}", tmp_path/'input'/megfile)      # = 820MB -> replace with MNE file (below)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/MEG/sample/sample_audvis_trunc_raw.fif', tmp_path/'input'/megfile)
 
     # Create nulled output data
     scramble_fif(tmp_path/'input', tmp_path/'output', r'sub.*\.fif', False, 'null')
@@ -230,7 +231,7 @@ def test_scramble_fif(tmp_path):
 
     # Check that the output data is properly nulled
     data = obj.get_data()
-    assert data.shape == (395, 540100)
+    assert data.shape == (376, 6007)
     assert np.sum(data[99]) == 0        # check one channel in the middle of the array
 
 
@@ -242,11 +243,12 @@ def test_scramble_brainvision(tmp_path):
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/CHANGES', tmp_path/'input'/'CHANGES')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/participants.tsv', tmp_path/'input'/'participants.tsv')
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.eeg'
-    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
+    # urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)  # = 1.2GB
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/test_NO.eeg', tmp_path/'input'/eegfile)
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vmrk'
-    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/test_NO.vmrk', tmp_path/'input'/eegfile)
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vhdr'
-    urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/test_NO.vhdr', tmp_path/'input'/eegfile)
 
     # Create nulled output data
     scramble_brainvision(tmp_path/'input', tmp_path/'output', r'sub.*\.vhdr', False, 'null')
