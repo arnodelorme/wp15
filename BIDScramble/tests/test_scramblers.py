@@ -243,12 +243,16 @@ def test_scramble_brainvision(tmp_path):
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/CHANGES', tmp_path/'input'/'CHANGES')
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/participants.tsv', tmp_path/'input'/'participants.tsv')
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.eeg'
-    # urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)  # = 1.2GB
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/test_NO.eeg', tmp_path/'input'/eegfile)
+    # urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)  # = 1.2GB -> replace with MNE files (below)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/Analyzer_nV_Export.eeg', tmp_path/'input'/eegfile)
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vmrk'
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/test_NO.vmrk', tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/Analyzer_nV_Export.vmrk', tmp_path/'input'/eegfile)
+    data = (tmp_path/'input'/eegfile).read_text()
+    (tmp_path/'input'/eegfile).write_text(data.replace('Analyzer_nV_Export', 'sub-02_ses-01_task-letters_run-01_eeg'))
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vhdr'
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/test_NO.vhdr', tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/Analyzer_nV_Export.vhdr', tmp_path/'input'/eegfile)
+    data = (tmp_path/'input'/eegfile).read_text()
+    (tmp_path/'input'/eegfile).write_text(data.replace('Analyzer_nV_Export', 'sub-02_ses-01_task-letters_run-01_eeg'))
 
     # Create nulled output data
     scramble_brainvision(tmp_path/'input', tmp_path/'output', r'sub.*\.vhdr', False, 'null')
