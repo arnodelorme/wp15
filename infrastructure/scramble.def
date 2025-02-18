@@ -1,19 +1,28 @@
-BootStrap: docker
-From: ubuntu:24.04
+Bootstrap: docker
+From: python:3.13-slim
+Stage: final
 
-%files
+%help
+    This BIDScramble Apptainer image includes:
 
-%post
-  ################################################################################
-  # general updates to the base image
-  ################################################################################
-  apt update -y
-  echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
-  echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
-  DEBIAN_FRONTEND=noninteractive apt install -y tzdata
+    * Debian stable,
+    * The latest BIDScramble version at the time of creation
+
+    The general form to run scramble commands is:
+
+        apptainer run scramble.sif <scramble_args>
 
 %environment
-  export LC_ALL=C
+    export PIP_NO_CACHE_DIR=off
+
+%post
+    # Install git
+    apt update && apt -y install git
+
+    # Install BIDScramble (update the repo source later)
+    # pip install bidscramble
+    git clone https://github.com/SIESTA-eu/wp15.git
+    pip install wp15/BIDScramble
 
 %runscript
-  echo Nothing to see here, please come back later...
+    exec scramble $@
