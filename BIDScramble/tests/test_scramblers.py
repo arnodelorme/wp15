@@ -244,15 +244,15 @@ def test_scramble_brainvision(tmp_path):
     urllib.request.urlretrieve('https://s3.amazonaws.com/openneuro.org/ds004951/participants.tsv', tmp_path/'input'/'participants.tsv')
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.eeg'
     # urllib.request.urlretrieve(f"https://s3.amazonaws.com/openneuro.org/ds004951/{eegfile}", tmp_path/'input'/eegfile)  # = 1.2GB -> replace with MNE files (below)
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/Analyzer_nV_Export.eeg', tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/robertoostenveld/brainvision/refs/heads/main/test/test.eeg', tmp_path/'input'/eegfile)
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vmrk'
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/Analyzer_nV_Export.vmrk', tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/robertoostenveld/brainvision/refs/heads/main/test/test.vmrk', tmp_path/'input'/eegfile)
     data = (tmp_path/'input'/eegfile).read_text()
-    (tmp_path/'input'/eegfile).write_text(data.replace('Analyzer_nV_Export', 'sub-02_ses-01_task-letters_run-01_eeg'))
+    (tmp_path/'input'/eegfile).write_text(data.replace('test', 'sub-02_ses-01_task-letters_run-01_eeg'))
     eegfile = 'sub-02/ses-01/eeg/sub-02_ses-01_task-letters_run-01_eeg.vhdr'
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/mne-tools/mne-testing-data/refs/heads/master/Brainvision/Analyzer_nV_Export.vhdr', tmp_path/'input'/eegfile)
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/robertoostenveld/brainvision/refs/heads/main/test/test.vhdr', tmp_path/'input'/eegfile)
     data = (tmp_path/'input'/eegfile).read_text()
-    (tmp_path/'input'/eegfile).write_text(data.replace('Analyzer_nV_Export', 'sub-02_ses-01_task-letters_run-01_eeg'))
+    (tmp_path/'input'/eegfile).write_text(data.replace('test', 'sub-02_ses-01_task-letters_run-01_eeg'))
 
     # Create nulled output data
     scramble_brainvision(tmp_path/'input', tmp_path/'output', r'sub.*\.vhdr', False, 'null')
@@ -261,8 +261,8 @@ def test_scramble_brainvision(tmp_path):
 
     # Check that the output data is properly nulled
     (vhdr, vmrk, data) = brainvision.read(tmp_path/'output'/eegfile)
-    assert data.shape == (64, 5226400)
-    assert np.sum(data[32]) == 0        # check one channel in the middle of the array
+    assert data.shape == (32, 7900)
+    assert np.sum(data[16]) == 0        # check one channel in the middle of the array
 
 
 def test_scramble_swap(tmp_path):
