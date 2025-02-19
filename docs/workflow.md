@@ -9,7 +9,7 @@
 ## Data user
 
 Develop the pipeline and test it.
-     
+
     ./pipeline.sif scrambled output participant
     ./pipeline.sif scrambled output group
     
@@ -17,10 +17,12 @@ Develop the pipeline and test it.
 
 Run the particpant-level analysis on the single subjects.
 
-    for SUB in input/sub-*; do
-        PID=$(basename "$SUB")
-        ./singlesubject.sif input singlesubject-$PID $PID
-        ./pipeline.sif singlesubject-$PID participant-$PID participant
+    for SUBJ in `seq $NSUBJ`; do
+        ./singlesubject.sif input singlesubject-$SUBJ $SUBJ
+    done
+
+    for SUBJ in `seq $NSUBJ`; do
+        ./pipeline.sif singlesubject-$SUBJ participant-$SUBJ participant
     done
 
     ./mergeparticipant.sif participant-* participant-merged
@@ -38,10 +40,12 @@ We then add the participant-level derivatives to the input dataset.
 
 Run the group-level analysis on the leave-one-out resampled datasets.
 
-    for SUB in input+derivatives/sub-*; do
-        PID=$(basename "$SUB")
-        ./leaveoneout.sif input+derivatives leaveoneout-$PID $PID
-        ./pipeline.sif leaveoneout-$PID group-$PID group
+    for SUBJ in `seq $NSUBJ`; do
+        ./leaveoneout.sif input+derivatives leaveoneout-$SUBJ $SUBJ
+    done
+
+    for SUBJ in `seq $NSUBJ`; do
+        ./pipeline.sif leaveoneout-$SUBJ group-$SUBJ group
     done
 
     ./mergegroup.sif group-* group-merged
