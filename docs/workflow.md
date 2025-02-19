@@ -25,7 +25,7 @@ Run the particpant-level analysis on the single subjects.
         ./pipeline.sif singlesubject-$SUBJ participant-$SUBJ participant
     done
 
-    ./mergeparticipant.sif participant-* participant-merged
+    ./mergeparticipant.sif participant-merged $(eval echo participant-{1..$NSUBJ})
 
 At this level we can implement a test. One option for that is to run the
 particpant-level analysis on all subjects together and check that results 

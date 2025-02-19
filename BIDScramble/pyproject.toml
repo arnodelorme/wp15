@@ -29,6 +29,7 @@ repository      = 'https://github.com/SIESTA-eu/wp15'
 
 [project.scripts]
 scramble        = 'bidscramble.scramble:main'
+merge           = 'bidscramble.merge:main'
 
 [tool.pytest.ini_options]
 testpaths       = ['tests']
