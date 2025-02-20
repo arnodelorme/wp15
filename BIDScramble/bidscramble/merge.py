@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
+
 """
 Merges non-overlapping/partial (e.g. single subject) BIDS datasets with identically processed derivative data
 """
+
 import argparse
 import pandas as pd
 import shutil
@@ -36,11 +39,11 @@ def merge(outputdir: str, inputdirs: List[str]):
         participants_tsv = inputdir/'participants.tsv'
         if participants_tsv.is_file():
             print(f"Merging: {participants_tsv}")
-            table = pd.concat([pd, pd.read_csv(participants_tsv, sep='\t', dtype=str, index_col='participant_id')])
+            table = pd.concat([table, pd.read_csv(participants_tsv, sep='\t', dtype=str, index_col='participant_id')])
 
         for subdir in inputdir.glob('sub-*'):
             print(f"Merging: {subdir.name} -> {outputdir}")
-            shutil.copytree(subdir, outputdir)
+            shutil.copytree(subdir, outputdir/subdir.name)
 
     # Save the merged participants table to disk
     if not table.empty:
