@@ -39,7 +39,10 @@ def merge(outputdir: str, inputdirs: List[str]):
         participants_tsv = inputdir/'participants.tsv'
         if participants_tsv.is_file():
             print(f"Merging: {participants_tsv}")
-            table = pd.concat([table, pd.read_csv(participants_tsv, sep='\t', dtype=str, index_col='participant_id')])
+            table      = pd.concat([table, pd.read_csv(participants_tsv, sep='\t', dtype=str, index_col='participant_id')])
+            duplicates = table.index[table.index.duplicated()].unique()
+            if not duplicates.empty:
+                raise Exception(f"ERROR: Got duplicate participant IDs {duplicates.tolist()} when merging: {inputdir}")
 
         for subdir in inputdir.glob('sub-*'):
             print(f"Merging: {subdir.name} -> {outputdir}")
