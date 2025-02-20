@@ -10,7 +10,7 @@ import ast
 from tqdm import tqdm
 from pathlib import Path
 from typing import List
-from . import get_inputfiles
+from . import get_inputfiles, drmaa_nativespec
 
 
 def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', fwhm: float=0, dims: List[str]=(), independent: bool=False,
@@ -132,32 +132,6 @@ def scramble_nii(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
             outputfile.parent.mkdir(parents=True, exist_ok=True)
             outputimg = nib.Nifti1Image(data, inputimg.affine, inputimg.header)
             nib.save(outputimg, outputfile)
-
-
-def drmaa_nativespec(specs: str, session) -> str:
-    """
-    Converts (CLI default) native Torque walltime and memory specifications to the DRMAA implementation (currently only Slurm is supported)
-
-    :param specs:   Native Torque walltime and memory specifications, e.g. '-l walltime=00:10:00,mem=2gb' from argparse CLI
-    :param session: The DRMAA session
-    :return:        The converted native specifications
-    """
-
-    jobmanager: str = session.drmaaImplementation
-
-    if '-l ' in specs and 'pbs' not in jobmanager.lower():
-
-        if 'slurm' in jobmanager.lower():
-            specs = (specs.replace('-l ', '')
-                          .replace(',', ' ')
-                          .replace('walltime', '--time')
-                          .replace('mem', '--mem')
-                          .replace('gb','000'))
-        else:
-            print(f"WARNING: Default `--cluster` native specifications are not (yet) provided for {jobmanager}. Please add them to your command if you get DRMAA errors")
-            specs = ''
-
-    return specs.strip()
 
 
 def watchjobs(pbatch, jobids: list):
