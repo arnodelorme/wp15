@@ -212,8 +212,8 @@ examples:
 ```console
 usage: scramble inputdir outputdir brainvision [-h] [-d] [-b] [-s PATTERN] {null,permute} ...
 
-Adds scrambled versions of the BrainVision EEG files in the input directory to the output directory. If no scrambling method
-is specified, the default behavior is to null the data.
+Adds scrambled versions of the BrainVision EEG files in the input directory to the output directory. If no
+scrambling method is specified, the default behavior is to null the data.
 
 positional arguments:
   {null,permute}        Scrambling method (default: null). Add -h, --help for more information
@@ -268,8 +268,8 @@ examples:
 usage: scramble inputdir outputdir pseudo [-h] [-d] [-b] [-s PATTERN] [-p PATTERN] [-r {yes,no}]
                                           {random,permute,original}
 
-Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
-anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+Adds pseudonymized versions of the input directory to the output directory, such that the subject label is
+replaced by a pseudonym anywhere in the filepath as well as inside all text files (such as json and tsv-files).
 
 positional arguments:
   {random,permute,original}
@@ -295,6 +295,23 @@ examples:
   scramble inputdir outputdir         pseudo
   scramble inputdir outputdir_remove1 pseudo random   -s '(?!sub-003(/|$)).*' 
   scramble inputdir outputdir_keep1   pseudo original -s 'sub-003/.*'
+```
+
+### merge
+
+```console
+usage: merge [-h] outputdir inputdirs [inputdirs ...]
+
+Merges non-overlapping/partial (e.g. single subject) BIDS datasets with identically processed derivative data
+
+positional arguments:
+  outputdir   The output directory with the merged data
+  inputdirs   The list of BIDS (or BIDS-like) input directories with the partial (e.g. single- subject) data
+
+options:
+  -h, --help  show this help message and exit
+
+examples: merge outputdir singlesubject-1 singlesubject-2 singlesubject-3
 ```
 
 ## Legal Aspects
