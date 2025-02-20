@@ -8,9 +8,9 @@ Stage: final
     * Debian stable,
     * The latest BIDScramble version at the time of creation
 
-    The general form to run the mergeparticipant command is:
+    The general form to run the mergesubjects command is:
 
-        apptainer run mergeparticipant.sif <output> <inputs>
+        apptainer run mergesubjects.sif <output> <inputs>
 
 %environment
     export PIP_NO_CACHE_DIR=off
