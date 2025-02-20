@@ -22,26 +22,22 @@ Run the particpant-level analysis on the single subjects.
     done
 
     for SUBJ in `seq $NSUBJ`; do
-        ./pipeline.sif singlesubject-$SUBJ participant-$SUBJ participant
+        ./pipeline.sif singlesubject-$SUBJ singlesubject-$SUBJ/derivatives participant
     done
 
-    ./mergeparticipant.sif participant-merged $(eval echo participant-{1..$NSUBJ})
+    ./mergesubjects.sif subjects-merged $(eval echo singlesubject-{1..$NSUBJ})
 
 At this level we can implement a test. One option for that is to run the
 particpant-level analysis on all subjects together and check that results 
 are consistent with the merged results.
 
-    ./pipeline.sif input participant-all participant
-    ./compare.sif participant-all participant-merged
-
-We then add the participant-level derivatives to the input dataset. 
-
-    ./mergederivatives.sif input participants-merged input+derivatives
+    ./pipeline.sif input input-copy/derivatives participant
+    ./compare.sif input-copy subjects-merged
 
 Run the group-level analysis on the leave-one-out resampled datasets.
 
     for SUBJ in `seq $NSUBJ`; do
-        ./leaveoneout.sif input+derivatives leaveoneout-$SUBJ $SUBJ
+        ./leaveoneout.sif subjects-merged leaveoneout-$SUBJ $SUBJ
     done
 
     for SUBJ in `seq $NSUBJ`; do
@@ -53,7 +49,7 @@ Run the group-level analysis on the leave-one-out resampled datasets.
 
 Run the group-level analysis on all subjects together and add the calibrated noise.
 
-    ./pipeline.sif input+derivatives group-all 
+    ./pipeline.sif subjects-merged group-all 
     ./addnoise.sif group-all noise group-with-noise
 
 ## Data rights holder
@@ -69,7 +65,7 @@ Review the group-level results with the calibrated noise and release them to the
 - privacy.sif (on the scrambled input data)
 - singlesubject.sif
 - pipeline.sif (participant-level, on single-subject data)
-- mergeparticipant.sif
+- mergesubjects.sif
 - pipeline.sif (participant-level, on all data)
 - compare.sif
 - mergederivatives.sif
@@ -88,10 +84,8 @@ Review the group-level results with the calibrated noise and release them to the
 - scrambled
 - output
 - singlesubject-xxx
-- participant-xxx
-- participant-merged
-- participant-all
-- input+derivatives
+- subjects-merged
+- input-copy
 - leaveoneout-xxx
 - group-xxx
 - group-merged
@@ -101,7 +95,7 @@ Review the group-level results with the calibrated noise and release them to the
 
 # Ideas for testing and sanity checks
 
-The comparison between the participant-merged and the participant-all is already specified above.
+The comparison between the subjects-merged and the input-copy is already specified above.
 
 Compare the file and directory structure of `group-xxx` with those of `group-all`.
 
