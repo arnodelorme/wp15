@@ -22,7 +22,7 @@ Run the particpant-level analysis on the single subjects.
     done
 
     for SUBJ in `seq $NSUBJ`; do
-        ./pipeline.sif singlesubject-$SUBJ singlesubject-$SUBJ/derivatives participant
+        ./pipeline.sif singlesubject-$SUBJ singlesubject-$SUBJ/derivatives/output participant
     done
 
     ./mergesubjects.sif subjects-merged $(eval echo singlesubject-{1..$NSUBJ})
@@ -31,7 +31,7 @@ At this level we can implement a test. One option for that is to run the
 particpant-level analysis on all subjects together and check that results 
 are consistent with the merged results.
 
-    ./pipeline.sif input input-copy/derivatives participant
+    ./pipeline.sif input input-copy/derivatives/output participant
     ./compare.sif input-copy subjects-merged
 
 Run the group-level analysis on the leave-one-out resampled datasets.
