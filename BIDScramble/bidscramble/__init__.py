@@ -1,3 +1,4 @@
+import sys
 import pathlib
 import re
 import pandas as pd
@@ -55,3 +56,24 @@ def prune_participants_tsv(rootdir: pathlib.Path):
                 table.drop(subid, inplace=True)
 
         table.to_csv(participants_tsv, sep='\t', encoding='utf-8', na_rep='n/a')
+
+
+def console_scripts(show: bool=False) -> list:
+    """
+    :param show:    Print the installed console scripts if True
+    :return:        List of BIDScramble console scripts
+    """
+
+    if show: print('Executable tools:')
+
+    scripts = []
+    if sys.version_info.major == 3 and sys.version_info.minor < 10:
+        console_scripts = metadata.entry_points()['console_scripts']                 # Raises DeprecationWarning for python >= 3.10: SelectableGroups dict interface is deprecated
+    else:
+        console_scripts = metadata.entry_points().select(group='console_scripts')    # The select method was introduced in python = 3.10
+    for script in console_scripts:
+        if script.value.startswith('bidscramble'):
+            scripts.append(script.name)
+            if show: print(f"- {script.name}")
+
+    return scripts
