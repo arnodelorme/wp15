@@ -1,0 +1,70 @@
+name: Apptainer Build Push
+
+on:
+  push:
+    tags:
+      - '*'           # Push events to every tag not containing /
+
+jobs:
+  build-test-container:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    container:
+        image: kaczmarj/apptainer:latest
+        options: --privileged
+
+    name: Build Container
+    steps:
+
+      - name: Check Out Code
+        uses: actions/checkout@v4
+
+      - name: Build Container
+        run: |
+          apptainer build download-2.1.sif usecase-2.1/download.def
+          apptainer build download-2.2.sif usecase-2.2/download.def
+          apptainer build download-2.3.sif usecase-2.3/download.def
+          apptainer build download-2.4.sif usecase-2.4/download.def
+          apptainer build download-2.5.sif usecase-2.5/download.def
+
+          apptainer build pipeline-2.1.sif usecase-2.1/container-r.def # there is also a container based on MATLAB, Python, and R
+          apptainer build pipeline-2.2.sif usecase-2.2/container.def
+          apptainer build pipeline-2.3.sif usecase-2.3/container.def
+          apptainer build pipeline-2.4.sif usecase-2.4/container.def
+          apptainer build pipeline-2.5.sif usecase-2.5/container.def
+
+          apptainer build scramble.sif         infrastructure/scramble.def
+          apptainer build singlesubject.sif    infrastructure/singlesubject.def
+          apptainer build mergederivatives.sif infrastructure/mergederivatives.def
+          apptainer build mergesubjects.sif    infrastructure/mergesubjects.def
+          apptainer build leaveoneout.sif      infrastructure/leaveoneout.def
+          # apptainer build mergegroup.sif       infrastructure/mergegroup.def
+          # apptainer build calibratenoise.sif   infrastructure/calibratenoise.def
+          # apptainer build addnoise.sif         infrastructure/addnoise.def
+
+      - name: Login and Push Container
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
+          apptainer push download-2.1.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push download-2.2.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push download-2.3.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push download-2.4.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push download-2.5.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.5.sif:${GITHUB_REF_NAME}
+
+          apptainer push pipeline-2.1.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push pipeline-2.2.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push pipeline-2.3.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push pipeline-2.4.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push pipeline-2.5.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.5.sif:${GITHUB_REF_NAME}
+
+          apptainer push scramble.sif         oras://ghcr.io/${{ github.repository_owner }}/scramble.sif:${GITHUB_REF_NAME}
+          apptainer push singlesubject.sif    oras://ghcr.io/${{ github.repository_owner }}/singlesubject.sif:${GITHUB_REF_NAME}
+          apptainer push mergederivatives.sif oras://ghcr.io/${{ github.repository_owner }}/mergederivatives.sif:${GITHUB_REF_NAME}
+          apptainer push mergesubjects.sif    oras://ghcr.io/${{ github.repository_owner }}/mergesubjects.sif:${GITHUB_REF_NAME}
+          apptainer push leaveoneout.sif      oras://ghcr.io/${{ github.repository_owner }}/leaveoneout.sif:${GITHUB_REF_NAME}
+          # apptainer push mergegroup.sif       oras://ghcr.io/${{ github.repository_owner }}/mergegroup.sif:${GITHUB_REF_NAME}
+          # apptainer push calibratenoise.sif   oras://ghcr.io/${{ github.repository_owner }}/calibratenoise.sif:${GITHUB_REF_NAME}
+          # apptainer push addnoise.sif         oras://ghcr.io/${{ github.repository_owner }}/addnoise.sif:${GITHUB_REF_NAME}
