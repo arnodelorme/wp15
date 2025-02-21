@@ -6,7 +6,7 @@ on:
       - '*'           # Push events to every tag not containing /
 
 jobs:
-  build-test-container:
+  build-push-containers:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,7 +16,7 @@ jobs:
         image: kaczmarj/apptainer:latest
         options: --privileged
 
-    name: Build Container
+    name: Build and Push Containers
     steps:
 
       - name: Check Out Code
@@ -51,7 +51,7 @@ jobs:
           # apptainer build addnoise.sif         infrastructure/addnoise.def
           cd ..
 
-      - name: Login and Push Container
+      - name: Login and Push Containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
           apptainer push usecase-2.1/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.1.sif:${GITHUB_REF_NAME}
