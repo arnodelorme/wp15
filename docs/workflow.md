@@ -1,10 +1,12 @@
 # SIESTA computational workflow
 
+Note that whenever `containerXXX.sif` is mentioned below, it is assumed that this might be either an Apptainer (for wp15 development and testing), or a Docker container (for execution in Kubernetes). Arguments that are specified to the containers correspond to the input and the output directories (for wp15 development and testing) or the encrypted volumes that are to be mounted. The Apptainer or Docker containers do not take additional command-line options that are to be specified by the data rights holder or data user. The interaction of the data rights holder or data user happens _inside_ the container. For this purpose, some of the containers will need to provide an interactive graphical desktop with VNC or ThinLinc.
+
 ## Data rights holder
 
     ./download.sif input
-    ./scramble.sif input scrambled <options>
-    ./privacy.sif input scrambled <options>
+    ./scramble.sif input scrambled
+    ./privacy.sif input scrambled
 
 ## Data user
 
@@ -25,14 +27,9 @@ Run the particpant-level analysis on the single subjects.
         ./pipeline.sif singlesubject-$SUBJ singlesubject-$SUBJ/derivatives/output participant
     done
 
+_The call above assumes that the `singlesubject-$SUBJ` directory is writable and that the pipeline writes results in a subdirectory `singlesubject-$SUBJ/derivatives/output`. This is probably not realistic in a Docker scenario that accesses only volumes, not directories. In that case a separate `mergederivatives.sif` step might be needed to merge the singlesubject input data with the singlesubject derivative data. The resulting volumes for all participants are then merged in the next step. See [issue #61](https://github.com/SIESTA-eu/wp15/issues/61)._
+
     ./mergesubjects.sif subjects-merged $(eval echo singlesubject-{1..$NSUBJ})
-
-At this level we can implement a test. One option for that is to run the
-particpant-level analysis on all subjects together and check that results 
-are consistent with the merged results.
-
-    ./pipeline.sif input input-copy/derivatives/output participant
-    ./compare.sif input-copy subjects-merged
 
 Run the group-level analysis on the leave-one-out resampled datasets.
 
@@ -44,7 +41,7 @@ Run the group-level analysis on the leave-one-out resampled datasets.
         ./pipeline.sif leaveoneout-$SUBJ group-$SUBJ group
     done
 
-    ./mergegroup.sif group-* group-merged
+    ./mergegroup.sif $(eval echo group-{1..$NSUBJ}) group-merged
     ./calibratenoise.sif group-merged noise
 
 Run the group-level analysis on all subjects together and add the calibrated noise.
@@ -60,15 +57,13 @@ Review the group-level results with the calibrated noise and release them to the
 
 # Required applications or containers
 
-- download.sif 
+- download.sif
 - scramble.sif
 - privacy.sif (on the scrambled input data)
 - singlesubject.sif
 - pipeline.sif (participant-level, on single-subject data)
-- mergesubjects.sif
-- pipeline.sif (participant-level, on all data)
-- compare.sif
 - mergederivatives.sif
+- mergesubjects.sif
 - leaveoneout.sif
 - pipeline.sif (group-level, on resampled data)
 - mergegroup.sif
@@ -85,20 +80,9 @@ Review the group-level results with the calibrated noise and release them to the
 - output
 - singlesubject-xxx
 - subjects-merged
-- input-copy
 - leaveoneout-xxx
 - group-xxx
 - group-merged
 - noise
 - group-all
 - group-with-noise
-
-# Ideas for testing and sanity checks
-
-The comparison between the subjects-merged and the input-copy is already specified above.
-
-Compare the file and directory structure of `group-xxx` with those of `group-all`.
-
-Compare the file and directory structure of `noise` with those of `group-all`.
-
-Compare the file and directory structure of `group-with-noise` with those of `group-all`.
