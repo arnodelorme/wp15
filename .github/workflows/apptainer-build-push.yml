@@ -22,20 +22,24 @@ jobs:
       - name: Check Out Code
         uses: actions/checkout@v4
 
-      - name: Build Container
+      - name: Build Download Containers
         run: |
-          cd usecase-2.1 && apptainer build download-2.1.sif download.def && cd ..
-          cd usecase-2.2 && apptainer build download-2.2.sif download.def && cd ..
-          cd usecase-2.3 && apptainer build download-2.3.sif download.def && cd ..
-          cd usecase-2.4 && apptainer build download-2.4.sif download.def && cd ..
-          cd usecase-2.5 && apptainer build download-2.5.sif download.def && cd ..
+          cd usecase-2.1 && apptainer build download.sif download.def && cd ..
+          cd usecase-2.2 && apptainer build download.sif download.def && cd ..
+          cd usecase-2.3 && apptainer build download.sif download.def && cd ..
+          cd usecase-2.4 && apptainer build download.sif download.def && cd ..
+          cd usecase-2.5 && apptainer build download.sif download.def && cd ..
 
-          cd usecase-2.1 && apptainer build pipeline-2.1.sif container-r.def && cd ..
-          cd usecase-2.2 && apptainer build pipeline-2.2.sif container-r.def && cd ..
-          cd usecase-2.3 && apptainer build pipeline-2.3.sif container-r.def && cd ..
-          cd usecase-2.4 && apptainer build pipeline-2.4.sif container-r.def && cd ..
-          cd usecase-2.5 && apptainer build pipeline-2.5.sif container-r.def && cd ..
+      - name: Build Pipeline Containers
+        run: |
+          cd usecase-2.1 && apptainer build pipeline.sif container-r.def && cd ..  # there are also containers based on MATLAB, Python, and Julia
+          cd usecase-2.2 && apptainer build pipeline.sif container.def && cd ..
+          cd usecase-2.3 && apptainer build pipeline.sif container.def && cd ..
+          cd usecase-2.4 && apptainer build pipeline.sif container.def && cd ..
+          cd usecase-2.5 && apptainer build pipeline.sif container.def && cd ..
 
+      - name: Build Infrastructure Containers
+        run: |
           cd infrastructure
           apptainer build scramble.sif         infrastructure/scramble.def
           apptainer build singlesubject.sif    infrastructure/singlesubject.def
