@@ -24,20 +24,20 @@ jobs:
 
       - name: Build containers
         run: |
-          cd usecase-2.1 && apptainer build download.sif download.def && cd ..
-          cd usecase-2.2 && apptainer build download.sif download.def && cd ..
-          cd usecase-2.3 && apptainer build download.sif download.def && cd ..
-          cd usecase-2.4 && apptainer build download.sif download.def && cd ..
-          cd usecase-2.5 && apptainer build download.sif download.def && cd ..
+          cd ${{ github.workspace }}/usecase-2.1 && apptainer build download.sif download.def
+          cd ${{ github.workspace }}/usecase-2.2 && apptainer build download.sif download.def
+          cd ${{ github.workspace }}/usecase-2.3 && apptainer build download.sif download.def
+          cd ${{ github.workspace }}/usecase-2.4 && apptainer build download.sif download.def
+          cd ${{ github.workspace }}/usecase-2.5 && apptainer build download.sif download.def
 
       - name: Login and push containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
-          apptainer push usecase-2.1/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.1.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.2/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.2.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.3/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.3.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.4/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.4.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.5/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.5.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/usecase-2.1/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/usecase-2.2/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/usecase-2.3/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/usecase-2.4/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/usecase-2.5/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.5.sif:${GITHUB_REF_NAME}
 
   build-pipeline:
     name: Build and push pipeline containers
@@ -57,11 +57,11 @@ jobs:
 
       - name: Build pipeline containers
         run: |
-          cd usecase-2.1 && apptainer build pipeline.sif container-r.def && cd ..  # there are also containers based on MATLAB, Python, and Julia
-          cd usecase-2.2 && apptainer build pipeline.sif container.def && cd ..
-          cd usecase-2.3 && apptainer build pipeline.sif container.def && cd ..
-          cd usecase-2.4 && apptainer build pipeline.sif container.def && cd ..
-          cd usecase-2.5 && apptainer build pipeline.sif container.def && cd ..
+          cd ${{ github.workspace }}/usecase-2.1 && apptainer build pipeline.sif container-r.def  # there are also containers based on MATLAB, Python, and Julia
+          cd ${{ github.workspace }}/usecase-2.2 && apptainer build pipeline.sif container.def
+          cd ${{ github.workspace }}/usecase-2.3 && apptainer build pipeline.sif container.def
+          cd ${{ github.workspace }}/usecase-2.4 && apptainer build pipeline.sif container.def
+          cd ${{ github.workspace }}/usecase-2.5 && apptainer build pipeline.sif container.def
 
 
       - name: Login and push containers
@@ -91,25 +91,23 @@ jobs:
 
       - name: Build containers
         run: |
-          cd infrastructure
-          apptainer build scramble.sif         infrastructure/scramble.def
-          apptainer build singlesubject.sif    infrastructure/singlesubject.def
-          apptainer build mergederivatives.sif infrastructure/mergederivatives.def
-          apptainer build mergesubjects.sif    infrastructure/mergesubjects.def
-          apptainer build leaveoneout.sif      infrastructure/leaveoneout.def
-          # apptainer build mergegroup.sif       infrastructure/mergegroup.def
-          # apptainer build calibratenoise.sif   infrastructure/calibratenoise.def
-          # apptainer build addnoise.sif         infrastructure/addnoise.def
-          cd ..
+          cd ${{ github.workspace }}/infrastructure && apptainer build scramble.sif         scramble.def
+          cd ${{ github.workspace }}/infrastructure && apptainer build singlesubject.sif    singlesubject.def
+          cd ${{ github.workspace }}/infrastructure && apptainer build mergederivatives.sif mergederivatives.def
+          cd ${{ github.workspace }}/infrastructure && apptainer build mergesubjects.sif    mergesubjects.def
+          cd ${{ github.workspace }}/infrastructure && apptainer build leaveoneout.sif      leaveoneout.def
+          # cd ${{ github.workspace }}/infrastructure && apptainer build mergegroup.sif       mergegroup.def
+          # cd ${{ github.workspace }}/infrastructure && apptainer build calibratenoise.sif   calibratenoise.def
+          # cd ${{ github.workspace }}/infrastructure && apptainer build addnoise.sif         addnoise.def
 
       - name: Login and push containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
-          apptainer push infrastructure/scramble.sif         oras://ghcr.io/${{ github.repository_owner }}/scramble.sif:${GITHUB_REF_NAME}
-          apptainer push infrastructure/singlesubject.sif    oras://ghcr.io/${{ github.repository_owner }}/singlesubject.sif:${GITHUB_REF_NAME}
-          apptainer push infrastructure/mergederivatives.sif oras://ghcr.io/${{ github.repository_owner }}/mergederivatives.sif:${GITHUB_REF_NAME}
-          apptainer push infrastructure/mergesubjects.sif    oras://ghcr.io/${{ github.repository_owner }}/mergesubjects.sif:${GITHUB_REF_NAME}
-          apptainer push infrastructure/leaveoneout.sif      oras://ghcr.io/${{ github.repository_owner }}/leaveoneout.sif:${GITHUB_REF_NAME}
-          # apptainer push infrastructure/mergegroup.sif       oras://ghcr.io/${{ github.repository_owner }}/mergegroup.sif:${GITHUB_REF_NAME}
-          # apptainer push infrastructure/calibratenoise.sif   oras://ghcr.io/${{ github.repository_owner }}/calibratenoise.sif:${GITHUB_REF_NAME}
-          # apptainer push infrastructure/addnoise.sif         oras://ghcr.io/${{ github.repository_owner }}/addnoise.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/infrastructure/scramble.sif         oras://ghcr.io/${{ github.repository_owner }}/scramble.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/infrastructure/singlesubject.sif    oras://ghcr.io/${{ github.repository_owner }}/singlesubject.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/infrastructure/mergederivatives.sif oras://ghcr.io/${{ github.repository_owner }}/mergederivatives.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/infrastructure/mergesubjects.sif    oras://ghcr.io/${{ github.repository_owner }}/mergesubjects.sif:${GITHUB_REF_NAME}
+          apptainer push ${{ github.workspace }}/infrastructure/leaveoneout.sif      oras://ghcr.io/${{ github.repository_owner }}/leaveoneout.sif:${GITHUB_REF_NAME}
+          # apptainer push ${{ github.workspace }}/infrastructure/mergegroup.sif       oras://ghcr.io/${{ github.repository_owner }}/mergegroup.sif:${GITHUB_REF_NAME}
+          # apptainer push ${{ github.workspace }}/infrastructure/calibratenoise.sif   oras://ghcr.io/${{ github.repository_owner }}/calibratenoise.sif:${GITHUB_REF_NAME}
+          # apptainer push ${{ github.workspace }}/infrastructure/addnoise.sif         oras://ghcr.io/${{ github.repository_owner }}/addnoise.sif:${GITHUB_REF_NAME}
