@@ -4,9 +4,11 @@ on:
   push:
     tags:
       - '*'           # Push events to every tag not containing /
-
+ 
 jobs:
-  build-push-containers:
+  build-download:
+    name: Build and push download containers
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,13 +18,11 @@ jobs:
         image: kaczmarj/apptainer:latest
         options: --privileged
 
-    name: Build and Push Containers
     steps:
-
-      - name: Check Out Code
+      - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Build Download Containers
+      - name: Build containers
         run: |
           cd usecase-2.1 && apptainer build download.sif download.def && cd ..
           cd usecase-2.2 && apptainer build download.sif download.def && cd ..
@@ -30,7 +30,32 @@ jobs:
           cd usecase-2.4 && apptainer build download.sif download.def && cd ..
           cd usecase-2.5 && apptainer build download.sif download.def && cd ..
 
-      - name: Build Pipeline Containers
+      - name: Login and push containers
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
+          apptainer push usecase-2.1/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.2/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.3/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.4/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.5/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.5.sif:${GITHUB_REF_NAME}
+
+  build-pipeline:
+    name: Build and push pipeline containers
+    
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    container:
+        image: kaczmarj/apptainer:latest
+        options: --privileged
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build pipeline containers
         run: |
           cd usecase-2.1 && apptainer build pipeline.sif container-r.def && cd ..  # there are also containers based on MATLAB, Python, and Julia
           cd usecase-2.2 && apptainer build pipeline.sif container.def && cd ..
@@ -38,7 +63,33 @@ jobs:
           cd usecase-2.4 && apptainer build pipeline.sif container.def && cd ..
           cd usecase-2.5 && apptainer build pipeline.sif container.def && cd ..
 
-      - name: Build Infrastructure Containers
+
+      - name: Login and push containers
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
+          apptainer push usecase-2.1/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.2/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.3/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.4/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.5/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.5.sif:${GITHUB_REF_NAME}
+
+  build-infrastructure:
+    name: Build and push infrastructure containers
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    container:
+        image: kaczmarj/apptainer:latest
+        options: --privileged
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build containers
         run: |
           cd infrastructure
           apptainer build scramble.sif         infrastructure/scramble.def
@@ -51,21 +102,9 @@ jobs:
           # apptainer build addnoise.sif         infrastructure/addnoise.def
           cd ..
 
-      - name: Login and Push Containers
+      - name: Login and push containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
-          apptainer push usecase-2.1/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.1.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.2/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.2.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.3/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.3.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.4/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.4.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.5/download.sif oras://ghcr.io/${{ github.repository_owner }}/download-2.5.sif:${GITHUB_REF_NAME}
-
-          apptainer push usecase-2.1/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.1.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.2/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.2.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.3/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.3.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.4/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.4.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.5/pipeline.sif oras://ghcr.io/${{ github.repository_owner }}/pipeline-2.5.sif:${GITHUB_REF_NAME}
-
           apptainer push infrastructure/scramble.sif         oras://ghcr.io/${{ github.repository_owner }}/scramble.sif:${GITHUB_REF_NAME}
           apptainer push infrastructure/singlesubject.sif    oras://ghcr.io/${{ github.repository_owner }}/singlesubject.sif:${GITHUB_REF_NAME}
           apptainer push infrastructure/mergederivatives.sif oras://ghcr.io/${{ github.repository_owner }}/mergederivatives.sif:${GITHUB_REF_NAME}
