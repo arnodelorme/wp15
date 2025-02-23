@@ -36,16 +36,8 @@ def main(options: dict):
         print('options =')
         print(options)
 
-    if options.get('level') == 'participant':
-        print("nothing to do at the participant level")
-        return
-
-    # Create the output directory and its parents if they don't exist
-    Path(options['outputdir']).mkdir(parents=True, exist_ok=True)
-
     # Read the participants.tsv input file into a DataFrame
     inputfile  = Path(options['inputdir'])/'participants.tsv'
-    outputfile = Path(options['outputdir'])/'results.tsv'
     if not inputfile.is_file():
         print(f"WARNING: input file does not exist: {inputfile}")
         return
@@ -54,31 +46,50 @@ def main(options: dict):
         print(f"data contains {len(participants)} participants")
 
     # Select participants based on start_idx and stop_idx, these are specified using 1-indexing
-    print(options.get('start_idx'))
-    print(options.get('stop_idx'))
     if options.get('stop_idx') is not None:
+        if options.get('verbose'):
+            print('stop_idx = ', options.get('stop_idx'))
         participants = participants.iloc[:(options['stop_idx'])]
     if options.get('start_idx') is not None:
+        if options.get('verbose'):
+            print('start_idx = ', options.get('start_idx'))
         participants = participants.iloc[(options['start_idx']-1):]
     if options.get('verbose'):
         print(f"selected {len(participants)} participants")
 
-    # Compute averages
-    averaged_age    = participants['age'].mean(skipna=True)
-    averaged_height = participants['Height'].mean(skipna=True)
-    averaged_weight = participants['Weight'].mean(skipna=True)
+    # Create the output directory and its parents if they don't exist
+    Path(options['outputdir']).mkdir(parents=True, exist_ok=True)
 
-    # Put the results in a DataFrame
-    result = pd.DataFrame({
-        'averagedAge': [averaged_age],
-        'averagedHeight': [averaged_height],
-        'averagedWeight': [averaged_weight]
-    })
-    if options.get('verbose'):
-        print(result)
+    if options.get('level') == 'participant':
+        print("nothing to do at the participant level, only creating participant-level output directories")
 
-    # Write the results to a TSV file
-    result.to_csv(outputfile, sep='\t', index=False, header=False)
+        for sub in participants['participant_id']:
+            outputdir = Path(options['outputdir'])/f'{sub}'
+            Path(outputdir).mkdir(parents=True, exist_ok=True)
+
+    elif options.get('level') == 'group':
+        outputfile = Path(options['outputdir'])/'group'/'results.tsv'
+
+        # Create the group output directory and its parents if they don't exist
+        outputdir = Path(options['outputdir'])/'group'
+        outputdir.mkdir(parents=True, exist_ok=True)
+
+        # Compute averages
+        averaged_age    = participants['age'].mean(skipna=True)
+        averaged_height = participants['Height'].mean(skipna=True)
+        averaged_weight = participants['Weight'].mean(skipna=True)
+
+        # Put the results in a DataFrame
+        result = pd.DataFrame({
+            'averagedAge': [averaged_age],
+            'averagedHeight': [averaged_height],
+            'averagedWeight': [averaged_weight]
+        })
+        if options.get('verbose'):
+            print(result)
+
+        # Write the results to a TSV file
+        result.to_csv(outputfile, sep='\t', index=False, header=False)
 
 
 ##########################################################################
