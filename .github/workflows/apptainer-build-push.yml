@@ -22,9 +22,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Lowercase organization    # see https://github.com/orgs/community/discussions/25768
+      - name: Lowercase namespace    # see https://github.com/orgs/community/discussions/25768
         run: |
-          echo "ORGANIZATION=${GITHUB_REPOSITORY_OWNER@L}" >> "${GITHUB_ENV}"
+          echo "NAMESPACE=$( echo ${GITHUB_REPOSITORY_OWNER} | tr '[:upper:]' '[:lower:]' )" >> "${GITHUB_ENV}"
 
       - name: Build containers
         run: |
@@ -37,11 +37,11 @@ jobs:
       - name: Login and push containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
-          apptainer push ${GITHUB_WORKSPACE}/usecase-2.1/download.sif oras://ghcr.io/${ORGANIZATION}/download-2.1.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/usecase-2.2/download.sif oras://ghcr.io/${ORGANIZATION}/download-2.2.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/usecase-2.3/download.sif oras://ghcr.io/${ORGANIZATION}/download-2.3.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/usecase-2.4/download.sif oras://ghcr.io/${ORGANIZATION}/download-2.4.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/usecase-2.5/download.sif oras://ghcr.io/${ORGANIZATION}/download-2.5.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/usecase-2.1/download.sif oras://ghcr.io/${NAMESPACE}/download-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/usecase-2.2/download.sif oras://ghcr.io/${NAMESPACE}/download-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/usecase-2.3/download.sif oras://ghcr.io/${NAMESPACE}/download-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/usecase-2.4/download.sif oras://ghcr.io/${NAMESPACE}/download-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/usecase-2.5/download.sif oras://ghcr.io/${NAMESPACE}/download-2.5.sif:${GITHUB_REF_NAME}
 
   build-pipeline:
     name: Build and push pipeline containers
@@ -59,9 +59,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Lowercase organization    # see https://github.com/orgs/community/discussions/25768
+      - name: Lowercase namespace    # see https://github.com/orgs/community/discussions/25768
         run: |
-          echo "ORGANIZATION=${GITHUB_REPOSITORY_OWNER@L}" >> "${GITHUB_ENV}"
+          echo "NAMESPACE=$( echo ${GITHUB_REPOSITORY_OWNER} | tr '[:upper:]' '[:lower:]' )" >> "${GITHUB_ENV}"
 
       - name: Build pipeline containers
         run: |
@@ -75,11 +75,11 @@ jobs:
       - name: Login and push containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
-          apptainer push usecase-2.1/pipeline.sif oras://ghcr.io/${ORGANIZATION}/pipeline-2.1.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.2/pipeline.sif oras://ghcr.io/${ORGANIZATION}/pipeline-2.2.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.3/pipeline.sif oras://ghcr.io/${ORGANIZATION}/pipeline-2.3.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.4/pipeline.sif oras://ghcr.io/${ORGANIZATION}/pipeline-2.4.sif:${GITHUB_REF_NAME}
-          apptainer push usecase-2.5/pipeline.sif oras://ghcr.io/${ORGANIZATION}/pipeline-2.5.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.1/pipeline.sif oras://ghcr.io/${NAMESPACE}/pipeline-2.1.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.2/pipeline.sif oras://ghcr.io/${NAMESPACE}/pipeline-2.2.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.3/pipeline.sif oras://ghcr.io/${NAMESPACE}/pipeline-2.3.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.4/pipeline.sif oras://ghcr.io/${NAMESPACE}/pipeline-2.4.sif:${GITHUB_REF_NAME}
+          apptainer push usecase-2.5/pipeline.sif oras://ghcr.io/${NAMESPACE}/pipeline-2.5.sif:${GITHUB_REF_NAME}
 
   build-infrastructure:
     name: Build and push infrastructure containers
@@ -97,9 +97,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Lowercase organization    # see https://github.com/orgs/community/discussions/25768
+      - name: Lowercase namespace    # see https://github.com/orgs/community/discussions/25768
         run: |
-          echo "ORGANIZATION=${GITHUB_REPOSITORY_OWNER@L}" >> "${GITHUB_ENV}"
+          echo "NAMESPACE=$( echo ${GITHUB_REPOSITORY_OWNER} | tr '[:upper:]' '[:lower:]' )" >> "${GITHUB_ENV}"
 
       - name: Build containers
         run: |
@@ -115,11 +115,11 @@ jobs:
       - name: Login and push containers
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u "${{ github.actor }}" --password-stdin oras://ghcr.io
-          apptainer push ${GITHUB_WORKSPACE}/infrastructure/scramble.sif         oras://ghcr.io/${ORGANIZATION}/scramble.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/infrastructure/singlesubject.sif    oras://ghcr.io/${ORGANIZATION}/singlesubject.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/infrastructure/mergederivatives.sif oras://ghcr.io/${ORGANIZATION}/mergederivatives.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/infrastructure/mergesubjects.sif    oras://ghcr.io/${ORGANIZATION}/mergesubjects.sif:${GITHUB_REF_NAME}
-          apptainer push ${GITHUB_WORKSPACE}/infrastructure/leaveoneout.sif      oras://ghcr.io/${ORGANIZATION}/leaveoneout.sif:${GITHUB_REF_NAME}
-          # apptainer push ${GITHUB_WORKSPACE}/infrastructure/mergegroup.sif       oras://ghcr.io/${ORGANIZATION}/mergegroup.sif:${GITHUB_REF_NAME}
-          # apptainer push ${GITHUB_WORKSPACE}/infrastructure/calibratenoise.sif   oras://ghcr.io/${ORGANIZATION}/calibratenoise.sif:${GITHUB_REF_NAME}
-          # apptainer push ${GITHUB_WORKSPACE}/infrastructure/addnoise.sif         oras://ghcr.io/${ORGANIZATION}/addnoise.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/infrastructure/scramble.sif         oras://ghcr.io/${NAMESPACE}/scramble.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/infrastructure/singlesubject.sif    oras://ghcr.io/${NAMESPACE}/singlesubject.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/infrastructure/mergederivatives.sif oras://ghcr.io/${NAMESPACE}/mergederivatives.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/infrastructure/mergesubjects.sif    oras://ghcr.io/${NAMESPACE}/mergesubjects.sif:${GITHUB_REF_NAME}
+          apptainer push ${GITHUB_WORKSPACE}/infrastructure/leaveoneout.sif      oras://ghcr.io/${NAMESPACE}/leaveoneout.sif:${GITHUB_REF_NAME}
+          # apptainer push ${GITHUB_WORKSPACE}/infrastructure/mergegroup.sif       oras://ghcr.io/${NAMESPACE}/mergegroup.sif:${GITHUB_REF_NAME}
+          # apptainer push ${GITHUB_WORKSPACE}/infrastructure/calibratenoise.sif   oras://ghcr.io/${NAMESPACE}/calibratenoise.sif:${GITHUB_REF_NAME}
+          # apptainer push ${GITHUB_WORKSPACE}/infrastructure/addnoise.sif         oras://ghcr.io/${NAMESPACE}/addnoise.sif:${GITHUB_REF_NAME}
