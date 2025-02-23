@@ -58,7 +58,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The to-be-shared data in the output folder has the following directory structure:
 
 ```console
-|-- groupresults
+|-- group
 |   |-- DOTS_run-001
 |   |-- DOTS_run-002
 |   |-- Motion_run-001
