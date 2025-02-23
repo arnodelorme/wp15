@@ -1,6 +1,9 @@
 BootStrap: docker
 From: python:3
 
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
+
 %files
   work/pipeline.py /work/pipeline.py
 

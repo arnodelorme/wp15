@@ -12,6 +12,9 @@ Stage: final
 
         apptainer run mergesubjects.sif <output> <inputs>
 
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
+
 %environment
     export PIP_NO_CACHE_DIR=off
 

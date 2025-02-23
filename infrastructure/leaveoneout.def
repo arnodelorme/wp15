@@ -12,6 +12,9 @@ Stage: final
 
         apptainer run leaveoneout.sif <input> <output> <participant_nr>
 
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
+
 %environment
     export PIP_NO_CACHE_DIR=off
 
