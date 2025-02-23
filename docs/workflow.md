@@ -48,7 +48,7 @@ Run the group-level analysis on the leave-one-out resampled datasets.
 
 Run the group-level analysis on all subjects together and add the calibrated noise.
 
-    ./pipeline.sif subjects-merged group-all 
+    ./pipeline.sif subjects-merged group-all group
     ./addnoise.sif group-all noise group-with-noise
 
 ## Data rights holder
