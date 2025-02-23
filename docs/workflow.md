@@ -1,8 +1,10 @@
 # SIESTA computational workflow
 
-Note that whenever `containerXXX.sif` is mentioned below, it is assumed that this might be either an Apptainer (for wp15 development and testing), or a Docker container (for execution in Kubernetes). Arguments that are specified to the containers correspond to the input and the output directories (for wp15 development and testing) or the encrypted volumes that are to be mounted. The Apptainer or Docker containers do not take additional command-line options that are to be specified by the data rights holder or data user. The interaction of the data rights holder or data user happens _inside_ the container. For this purpose, some of the containers will need to provide an interactive graphical desktop with VNC or ThinLinc.
+Note that whenever `containerXXX.sif` is mentioned below, it is assumed that this might be either an Apptainer (for wp15 development and testing), or a Docker container (for execution in Kubernetes). Arguments that are specified to the containers correspond to the input and the output directories (for wp15 development and testing) or the encrypted volumes that are to be mounted. The Apptainer or Docker containers do not take additional command-line options that are to be specified by the data rights holder or by the data user. The interaction of the data rights holder or data user with tools and data happens _inside_ the container. For this purpose, some of the containers will need to provide an interactive graphical desktop with VNC or ThinLinc.
 
 ## Data rights holder
+
+Transfer the data to the platform and provide a scrambled version.
 
     ./download.sif input
     ./scramble.sif input scrambled
@@ -10,7 +12,7 @@ Note that whenever `containerXXX.sif` is mentioned below, it is assumed that thi
 
 ## Data user
 
-Develop the pipeline and test it.
+Develop the pipeline and test it on the scrambled data.
 
     ./pipeline.sif scrambled output participant
     ./pipeline.sif scrambled output group
