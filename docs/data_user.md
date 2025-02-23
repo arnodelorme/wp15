@@ -30,7 +30,7 @@ T.b.d.
 
 The data user must specify to the platform operator what the storage requirements are for the analysis. How many file are created, how much storage does that require, what is the retention period of the intermediate data, and what data files comprise the final results that the data user needs.
 
-The original dataset is not directly accessible to the data user and will allways remain read-only. The analysis pipeline should not write any results to the original dataset. There is one output directory to hold the intermediate (scratch) results, the participant-level results, and the group-level results. It is up to the data user how to organize the data in the output directory.
+The original dataset is not directly accessible to the data user and will always remain read-only. The analysis pipeline should not write any results to the original dataset. There is one output directory to hold the intermediate (scratch) results, the participant-level results, and the group-level results. It is up to the data user how to organize the data in the output directory.
 
 ## Computational requirements
 
