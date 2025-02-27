@@ -2,16 +2,16 @@
 
 # This pipeline computes averages from the participants.tsv file
 #
-# Use as 
+# Use as
 #    ./pipeline.R [options] <inputdir> <outputdir> <level>
-# where the input and output directory must be specified, and the 
+# where the input and output directory must be specified, and the
 # level is either "group" or "participant".
 #
 # Optional arguments:
 #   -h,--help           Show this help and exit.
 #   --verbose           Enable verbose output.
-#   --start_idx <num>   Start index for participant selection.
-#   --stop_idx <num>    Stop index for participant selection.
+#   --start-idx <num>   Start index for participant selection.
+#   --stop-idx <num>    Stop index for participant selection.
 
 # This code is shared under the CC0 license
 #
@@ -71,17 +71,8 @@ if (opts$verbose) {
   cat("Stopping index:", opts$'stop-idx', "\n")
 }
 
-if (level=="participant") {
-    print("nothing to do at the participant level")
-    quit(status = 0)
-}
-
-# create the output directory and its parents if they don't exist
-dir.create(outputdir, recursive = TRUE, showWarnings = FALSE)
-
 #
 inputfile  <- file.path(inputdir, c("participants.tsv"))
-outputfile <- file.path(outputdir, c("results.tsv"))
 
 # read table, deal with missing values
 participants <- read.csv(inputfile, sep="\t", na.strings=c("n/a"))
@@ -99,19 +90,32 @@ if (opts$verbose) {
   print(participants %>% select(1:5))
 }
 
-# use the column names and capitalization from the original dataset
-# ignore missing values
-averagedage <- mean(participants$age, na.rm = TRUE)
-averagedHeight <- mean(participants$Height, na.rm = TRUE)
-averagedWeight <- mean(participants$Weight, na.rm = TRUE)
+# create the output directory and its parents if they don't exist
+dir.create(outputdir, recursive = TRUE, showWarnings = FALSE)
 
-# construct table with results
-result <- data.frame(averagedage, averagedHeight, averagedWeight)
+if (level == "participant") {
+  print("nothing to do at the participant level, only creating participant-level output directories")
+  for (i in 1:nrow(participants)) {
+    dir.create(file.path(outputdir, participants$participant_id[i]), recursive = TRUE, showWarnings = FALSE)
+  }
 
-if (opts$verbose) {
-  print(result)
+} else if (level == "group") {
+  outputfile <- file.path(outputdir, "group", "results.tsv")
+  dir.create(file.path(outputdir, "group"), recursive = TRUE, showWarnings = FALSE)
+
+  # use the column names and capitalization from the original dataset
+  # ignore missing values
+  averagedage <- mean(participants$age, na.rm = TRUE)
+  averagedHeight <- mean(participants$Height, na.rm = TRUE)
+  averagedWeight <- mean(participants$Weight, na.rm = TRUE)
+
+  # construct table with results
+  result <- data.frame(averagedage, averagedHeight, averagedWeight)
+
+  if (opts$verbose) {
+    print(result)
+  }
+
+  # write the results to disk
+  write.table(result, file=outputfile, sep="\t", col.names=FALSE, row.names=FALSE)
 }
-
-# write the results to disk
-write.table(result, file=outputfile, sep="\t", col.names=FALSE, row.names=FALSE)
-

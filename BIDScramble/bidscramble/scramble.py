@@ -16,7 +16,7 @@ from .scramble_pseudo import scramble_pseudo
 parent = argparse.ArgumentParser(add_help=False)
 parent.add_argument('-d','--dryrun', help='Do not save anything, only print the output filenames in the terminal', action='store_true')
 parent.add_argument('-b','--bidsvalidate', help='If given, all input files are checked for BIDS compliance when first indexed, and excluded when non-compliant (as in pybids.BIDSLayout)', action='store_true')
-parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputdir', default=r'^(?!\.).*')
+parent.add_argument('-s','--select', metavar='PATTERN', help='A fullmatch regular expression pattern that is matched against the relative path of the input data. Files that match are scrambled and saved in outputdir', default=r'(?!\.).*')
 parent_nii = argparse.ArgumentParser(add_help=False, parents=[parent])
 parent_nii.add_argument('-c','--cluster', help='Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC) cluster. You can add an opaque DRMAA argument with native specifications for your HPC resource manager (NB: Use quotes and include at least one space character to prevent premature parsing -- see examples)',
                         metavar='SPECS', nargs='?', const='-l mem=4gb,walltime=0:15:00', type=str)
@@ -35,7 +35,7 @@ def addparser_stub(parsers, _help: str):
     epilog = ('examples:\n'
               '  scramble inputdir outputdir stub\n'
               "  scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'\n"
-              "  scramble inputdir outputdir stub -s '.*(?<!derivatives)'\n"
+              "  scramble inputdir outputdir stub -s '(?!derivatives(/|$)).*'\n"
               "  scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'\n ")
 
     parser = parsers.add_parser('stub', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
@@ -154,7 +154,7 @@ def addparser_swap(parsers, _help: str):
     epilog = ('examples:\n'
               '  scramble inputdir outputdir swap\n'
               "  scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'\n"
-              "  scramble inputdir outputdir swap -s '.*(?<!derivatives) -b'\n"
+              "  scramble inputdir outputdir swap -s '(?!derivatives(/|$)).*' -b\n"
               "  scramble inputdir outputdir swap -g subject session run\n ")
 
     parser = parsers.add_parser('swap', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
@@ -171,12 +171,12 @@ def addparser_pseudo(parsers, _help: str):
 
     epilog = ('examples:\n'
               '  scramble inputdir outputdir pseudo\n'
-              "  scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003/).*' \n"
-              "  scramble inputdir outputdir_keep1 pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'\n ")
+              "  scramble inputdir outputdir_remove1 pseudo random  -s '(?!sub-003(/|$)).*' \n"
+              "  scramble inputdir outputdir_keep1 pseudo original -s 'sub-003(/|$).*'\n ")
 
     parser = parsers.add_parser('pseudo', parents=[parent], formatter_class=DefaultsFormatter, description=description, epilog=epilog, help=_help)
     parser.add_argument('method', help='The method to generate the pseudonyms', choices=['random','permute','original'], default='permute')
-    parser.add_argument('-p','--pattern', help='The fullmatch regular expression pattern that is used to extract the subject label from the relative filepath', default='^sub-(.*?)/.*')
+    parser.add_argument('-p','--participant', metavar='PATTERN', help='The findall() regular expression pattern that is used to extract the subject label from the relative filepath. NB: Do not change this if the input data is in BIDS format', default='^sub-(.*?)(?:/|$).*')
     parser.add_argument('-r','--rootfiles', help='In addition to the included files (see `--select` for usage), include all files in the root of the input directory (such as participants.tsv, etc)', choices=['yes','no'], default='yes')
     parser.set_defaults(func=scramble_pseudo)
 

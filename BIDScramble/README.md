@@ -77,12 +77,12 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir stub
   scramble inputdir outputdir stub -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir stub -s '.*(?<!derivatives)'
+  scramble inputdir outputdir stub -s '(?!derivatives(/|$)).*'
   scramble inputdir outputdir stub -s '(?!sub.*scans.tsv|/func/).*'
 ```
 
@@ -106,7 +106,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir tsv
@@ -130,7 +130,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -p PATTERN, --preserve PATTERN
                         A fullmatch regular expression pattern that is matched against all keys in the json
                         files. The json values are copied over when a key matches positively (default: None)
@@ -166,7 +166,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -c [SPECS], --cluster [SPECS]
                         Use the DRMAA library to submit the scramble jobs to a high-performance compute (HPC)
                         cluster. You can add an opaque DRMAA argument with native specifications for your HPC
@@ -200,7 +200,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir fif
@@ -212,8 +212,8 @@ examples:
 ```console
 usage: scramble inputdir outputdir brainvision [-h] [-d] [-b] [-s PATTERN] {null,permute} ...
 
-Adds scrambled versions of the BrainVision EEG files in the input directory to the output directory. If no scrambling method
-is specified, the default behavior is to null the data.
+Adds scrambled versions of the BrainVision EEG files in the input directory to the output directory. If no
+scrambling method is specified, the default behavior is to null the data.
 
 positional arguments:
   {null,permute}        Scrambling method (default: null). Add -h, --help for more information
@@ -227,7 +227,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
 
 examples:
   scramble inputdir outputdir brainvision
@@ -249,7 +249,7 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
   -g ENTITY [ENTITY ...], --grouping ENTITY [ENTITY ...]
                         A list of (full-name) BIDS entities that make up a group between which file contents are
                         swapped. See: https://bids-
@@ -258,7 +258,7 @@ options:
 examples:
   scramble inputdir outputdir swap
   scramble inputdir outputdir swap -s '.*\.(nii|json|tsv)'
-  scramble inputdir outputdir swap -s '.*(?<!derivatives) -b'
+  scramble inputdir outputdir swap -s '(?!derivatives(/|$)).*' -b
   scramble inputdir outputdir swap -g subject session run
 ```
 
@@ -268,8 +268,8 @@ examples:
 usage: scramble inputdir outputdir pseudo [-h] [-d] [-b] [-s PATTERN] [-p PATTERN] [-r {yes,no}]
                                           {random,permute,original}
 
-Adds pseudonymized versions of the input directory to the output directory, such that the subject label is replaced by a pseudonym
-anywhere in the filepath as well as inside all text files (such as json and tsv-files).
+Adds pseudonymized versions of the input directory to the output directory, such that the subject label is
+replaced by a pseudonym anywhere in the filepath as well as inside all text files (such as json and tsv-files).
 
 positional arguments:
   {random,permute,original}
@@ -282,18 +282,36 @@ options:
                         excluded when non-compliant (as in pybids.BIDSLayout) (default: False)
   -s PATTERN, --select PATTERN
                         A fullmatch regular expression pattern that is matched against the relative path of the
-                        input data. Files that match are scrambled and saved in outputdir (default: ^(?!\.).*)
-  -p PATTERN, --pattern PATTERN
-                        The fullmatch regular expression pattern that is used to extract the subject label from
-                        the relative filepath (default: ^sub-(.*?)/.*)
+                        input data. Files that match are scrambled and saved in outputdir (default: (?!\.).*)
+  -p PATTERN, --participant PATTERN
+                        The findall() regular expression pattern that is used to extract the subject label from
+                        the relative filepath. NB: Do not change this if the input data is in BIDS (default:
+                        ^sub-(.*?)(?:/|$).*
   -r {yes,no}, --rootfiles {yes,no}
                         In addition to the included files (see `--select` for usage), include all files in the
                         root of the input directory (such as participants.tsv, etc) (default: yes)
 
 examples:
   scramble inputdir outputdir         pseudo
-  scramble inputdir outputdir_remove1 pseudo random   -s '(?!sub-003/).*' 
-  scramble inputdir outputdir_keep1   pseudo original -s 'sub-003/.*' -p '/S_(.*?)/'
+  scramble inputdir outputdir_remove1 pseudo random   -s '(?!sub-003(/|$)).*' 
+  scramble inputdir outputdir_keep1   pseudo original -s 'sub-003/.*'
+```
+
+### merge
+
+```console
+usage: merge [-h] outputdir inputdirs [inputdirs ...]
+
+Merges non-overlapping/partial (e.g. single subject) BIDS datasets with identically processed derivative data
+
+positional arguments:
+  outputdir   The output directory with the merged data
+  inputdirs   The list of BIDS (or BIDS-like) input directories with the partial (e.g. single- subject) data
+
+options:
+  -h, --help  show this help message and exit
+
+examples: merge outputdir singlesubject-1 singlesubject-2 singlesubject-3
 ```
 
 ## Legal Aspects

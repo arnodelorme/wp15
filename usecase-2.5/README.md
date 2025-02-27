@@ -15,15 +15,33 @@ mkdir input
 aws s3 cp --recursive --no-sign-request s3://openneuro.org/ds004934/ input
 ```
 
-To resume an partially complete download that was interrupted you can do
+To resume a partially complete download that was interrupted you can do
 
 ```console
 aws s3 sync --no-sign-request s3://openneuro.org/ds004934/ input
 ```
 
+Alternatively, you can download the data with the openneuro [cli](https://docs.openneuro.org/packages/openneuro-cli.html) (requires Node.js v18 or higher to be installed). To install a specific (latest) version of Node.js you can [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation(s) from there:
+
+```console
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install node    # "node" is an alias for the latest version
+```
+
+If your node installation is up-to-date and working then make sure you have an openneuro account and in a new termminal run:
+
+```console
+npm install -g @openneuro/cli
+
+openneuro login
+openneuro download ds004934 -s 1.0.0 input
+```
+
+Tip: Use e.g. Node.js version 21.7.3 if you get errors from the openneuro client
+
 ### Data citation
 
-The dataset itself can be cites with
+The dataset itself can be cited with
 
 - Shari Liu and Kirsten Lydic and Lingjie Mei and Rebecca Saxe (2024). fMRI dataset: Violations of psychological and physical expectations in human adult brains. OpenNeuro. [Dataset] [doi:10.18112/openneuro.ds004934.v1.0.0](https://doi.org/10.18112/openneuro.ds004934.v1.0.0).
 
@@ -40,7 +58,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The to-be-shared data in the output folder has the following directory structure:
 
 ```console
-|-- groupresults
+|-- group
 |   |-- DOTS_run-001
 |   |-- DOTS_run-002
 |   |-- Motion_run-001
@@ -52,6 +70,11 @@ The to-be-shared data in the output folder has the following directory structure
 Besides this, the output folder contains the per-subject intermediate (first-level) results. Those results are not to be shared and should not be on the whitelist
 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared.
+
+```console
+cd wp15/usecase-2.5
+mkdir output
+```
 
 ## Analysis pipeline
 
@@ -81,7 +104,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.5
-apptainer build usecase-2.5.sif container.def
+apptainer build pipeline.sif pipeline.def
 ```
 
 ### Executing the pipeline
@@ -111,8 +134,9 @@ matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
+cd wp15/usecase-2.5
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
 ```
 
 ## Cleaning up
@@ -120,6 +144,7 @@ apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output gr
 Cleaning up the input and output data is done using:
 
 ```console
+cd wp15/usecase-2.5
 rm -rf input output
 ```
 

@@ -13,7 +13,7 @@ def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
     outputdir = Path(outputdir).resolve()
 
     # Create pseudo-random out data for all files of each included data type
-    inputfiles = get_inputfiles(inputdir, select, '*.tsv', bidsvalidate)
+    inputfiles, _ = get_inputfiles(inputdir, select, '*.tsv', bidsvalidate)
     for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         # Load the (zipped) tsv data
@@ -24,7 +24,7 @@ def scramble_tsv(inputdir: str, outputdir: str, select: str, bidsvalidate: bool,
             for column in tsvdata.columns:
                 if not re.fullmatch(preserve or '^$', column):
                     tsvdata[column] = np.random.permutation(tsvdata[column])
-        elif method == 'null':
+        elif method in ('null', None):
             tsvdata = pd.DataFrame(columns=tsvdata.columns, index=tsvdata.index)
         else:
             raise ValueError(f"Unknown tsv-scramble method: {method}")

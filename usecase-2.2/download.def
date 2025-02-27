@@ -1,5 +1,5 @@
 BootStrap: docker
-From: ubuntu:24.04
+From: node:23
 
 %labels
   org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
@@ -16,19 +16,16 @@ From: ubuntu:24.04
   echo 'tzdata tzdata/Zones/Europe select Amsterdam' | debconf-set-selections
   DEBIAN_FRONTEND=noninteractive apt install -y tzdata
   apt install -y wget
+  npm install -g @openneuro/cli # this installs it for all users
+  echo '{"url":"https://openneuro.org/","apikey":"","errorReporting":false}' > /.openneuro
 
 %environment
   export LC_ALL=C
 
 %runscript
+  # the openneuro cli requires the settings file to be in the home directory
+  [ -f ${HOME}/.openneuro ] || cp /.openneuro ${HOME}
   echo Creating directory ${1}
   mkdir -p ${1} || exit 
-  cd ${1} || exit 
   echo Downloading into directory ${1} ...
-  wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.tsv
-  wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
-  wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
-  wget https://s3.amazonaws.com/openneuro.org/ds004148/README
-  wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
-  for SUBJ in `seq -w 60`; do mkdir sub-${SUBJ} ; done
-
+  openneuro download ds003826 -s 3.0.1 ${1}

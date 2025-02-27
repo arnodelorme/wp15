@@ -1,19 +1,16 @@
 import subprocess
-from importlib.metadata import entry_points
-from bidscramble.scramble_nii import drmaa_nativespec
+from bidscramble import console_scripts, drmaa_nativespec
 
 
-def test_cli():
-
-    console_scripts = entry_points().select(group='console_scripts')    # The select method was introduced in python = 3.10
-
-    entrypoints = []
-    for script in console_scripts:
-        if script.value.startswith('bidscramble'):
-            entrypoints.append(script.name)
-            process = subprocess.run(f"{script.name} -h", shell=True)
-            assert process.returncode == 0
-    assert 'scramble' in entrypoints
+def test_cli_help():
+    print(scripts := console_scripts(True))
+    assert 'scramble' in scripts
+    assert 'merge' in scripts
+    for command in scripts:
+        process = subprocess.run(f"{command} -h", shell=True, capture_output=True, text=True)
+        print(f"{command} -h\n{process.stderr}\n{process.stdout}")
+        assert process.stdout
+        assert process.returncode == 0
 
 
 def test_drmaa_nativespec():

@@ -10,8 +10,8 @@ function pipeline(varargin)
 % Optional arguments:
 %   -h,--help           Show this help and exit.
 %   --verbose           Enable verbose output.
-%   --start_idx <num>   Start index for participant selection.
-%   --stop_idx <num>    Stop index for participant selection.
+%   --start-idx <num>   Start index for participant selection.
+%   --stop-idx <num>    Stop index for participant selection.
 
 % This code is shared under the CC0 license
 %
@@ -103,14 +103,6 @@ if ~exist(inputdir, 'dir')
   error('input directory does not exist');
 end
 
-if ~exist(outputdir, 'dir')
-  warning('creating output directory');
-  [success, message] = mkdir(outputdir);
-  if ~success
-    error(message);
-  end
-end
-
 % add these to the options structure
 options.inputdir  = inputdir;
 options.outputdir = outputdir;
@@ -125,14 +117,7 @@ if options.verbose
   disp(options);
 end
 
-if strcmp(options.level, 'participant')
-  disp("nothing to do at the participant level")
-  return
-end
-
-inputfile  = fullfile(options.inputdir, 'participants.tsv');
-outputfile = fullfile(options.outputdir, 'results.tsv');
-
+inputfile = fullfile(options.inputdir, 'participants.tsv');
 participants = readtable(inputfile, 'FileType', 'text', 'Delimiter', '\t', 'VariableNamingRule', 'preserve');
 
 if options.verbose
@@ -151,19 +136,46 @@ if options.verbose
   fprintf('selected %d participants\n', size(participants, 1));
 end
 
-averagedage  = mean(participants.age, 'omitnan');
-averagedHeight = mean(participants.Height, 'omitnan');
-averagedWeight = mean(participants.Weight, 'omitnan');
-
-% put the results in a table
-result = table(averagedage, averagedHeight, averagedWeight);
-
-if options.verbose
-  disp(result);
+if ~exist(options.outputdir, 'dir')
+  warning('creating output directory');
+  [success, message] = mkdir(options.outputdir);
+  if ~success
+    error(message);
+  end
 end
 
-if options.verbose
-  disp(['writing to ' outputfile]);
-end
+if strcmp(options.level, 'participant')
+  disp("nothing to do at the participant level, only creating participant-level output directories")
+  for i=1:numel(participants.participant_id)
+    [success, message] = mkdir(fullfile(options.outputdir, participants.participant_id{i}));
+    if ~success
+      error(message);
+    end
+  end
+  
+elseif strcmp(options.level, 'group')
+  outputfile = fullfile(options.outputdir, 'group', 'results.tsv');
+  
+  % create the group output directory and its parents if they don't exist
+  [success, message] = mkdir(fullfile(options.outputdir, 'group'));
+  if ~success
+    error(message);
+  end
 
-writetable(result, outputfile, 'FileType', 'text', 'Delimiter', '\t', 'WriteVariableNames', false);
+  averagedage    = mean(participants.age, 'omitnan');
+  averagedHeight = mean(participants.Height, 'omitnan');
+  averagedWeight = mean(participants.Weight, 'omitnan');
+  
+  % put the results in a table
+  result = table(averagedage, averagedHeight, averagedWeight);
+  
+  if options.verbose
+    disp(result);
+  end
+  
+  if options.verbose
+    disp(['writing to ' outputfile]);
+  end
+  
+  writetable(result, outputfile, 'FileType', 'text', 'Delimiter', '\t', 'WriteVariableNames', false);
+end % if level
