@@ -41,6 +41,7 @@ The output data consists of MRI QC parameters of each participant
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
+cd wp15/usecase-2.2
 mkdir output
 ```
 
@@ -57,6 +58,7 @@ The MRIQC software is licensed under [Apache-2.0](https://spdx.org/licenses/Apac
 Running the analysis pipeline requires a working [Apptainer installation](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux) (version >= 2.5). Next the [MRIQC](https://mriqc.readthedocs.io/en/latest/) container needs to be downloaded:
 
 ```console
+cd wp15/usecase-2.2
 apptainer pull mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 ```
 
@@ -65,7 +67,7 @@ apptainer pull mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-mkdir output
+cd wp15/usecase-2.2
 apptainer run --cleanenv mriqc-24.0.0.sif input output participant
 apptainer run --cleanenv mriqc-24.0.0.sif input output group
 ```
@@ -75,6 +77,7 @@ apptainer run --cleanenv mriqc-24.0.0.sif input output group
 Cleaning up the input and output data is done using:
 
 ```console
+cd wp15/usecase-2.2
 rm -rf input output
 ```
 
