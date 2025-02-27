@@ -68,7 +68,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.1
-apptainer build pipeline-2.1.sif container-r.def
+apptainer build pipeline.sif container-r.def
 ```
 
 ### Executing the R version of the pipeline
@@ -85,8 +85,8 @@ Executing the pipeline from the Apptainer image is done like this:
 
 ```console
 cd wp15/usecase-2.1
-apptainer run pipeline-2.1.sif input output participant
-apptainer run pipeline-2.1.sif input output group
+apptainer run pipeline.sif input output participant
+apptainer run pipeline.sif input output group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.

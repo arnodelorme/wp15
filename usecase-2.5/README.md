@@ -104,7 +104,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.5
-apptainer build pipeline-2.5.sif container.def
+apptainer build pipeline.sif pipeline.def
 ```
 
 ### Executing the pipeline
@@ -135,8 +135,8 @@ Executing the pipeline from the Apptainer image is done like this:
 
 ```console
 cd wp15/usecase-2.5
-apptainer run --env MLM_LICENSE_FILE=port@server pipeline-2.5.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server pipeline-2.5.sif input output group
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
 ```
 
 ## Cleaning up
