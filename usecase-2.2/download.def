@@ -2,6 +2,7 @@ BootStrap: docker
 From: node:23
 
 %labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
   Author Robert Oostenveld
 
 %files

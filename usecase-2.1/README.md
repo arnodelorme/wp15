@@ -68,7 +68,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.1
-apptainer build container-r.sif container-r.def
+apptainer build pipeline.sif container-r.def
 ```
 
 ### Executing the R version of the pipeline
@@ -81,52 +81,22 @@ Rscript work/pipeline.R input output participant
 Rscript work/pipeline.R input output group
 ```
 
-Executing the pipeline from the R-based Apptainer image is done like this:
+Executing the pipeline from the Apptainer image is done like this:
 
 ```console
 cd wp15/usecase-2.1
-apptainer run container-r.sif input output participant
-apptainer run container-r.sif input output group
-```
-
-Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
-
-### Installation of the MATLAB version
-
-The MATLAB version of the pipeline only requires a recent MATLAB version and the work directory to be on the MATLAB path.
-
-Alternatively, you can install the software in an Apptainer container image.
-
-```console
-cd wp15/usecase-2.1
-apptainer build container-matlab.sif container-matlab.def
-```
-
-### Executing the MATLAB version of the pipeline
-
-Executing the pipeline from the Linux terminal is done like this:
-
-```console
-cd wp15/usecase-2.1
-matlab -batch "restoredefaultpath; addpath work; pipeline input output participant"
-matlab -batch "restoredefaultpath; addpath work; pipeline input output group"
-```
-
-Executing the pipeline from the MATLAB-based Apptainer image is done like this:
-
-```console
-cd wp15/usecase-2.1
-apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output group
+apptainer run pipeline.sif input output participant
+apptainer run pipeline.sif input output group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
 
 ## Cleaning up
 
-Cleaning up the input and output data can be done using:
+Cleaning up the input and output data is done using:
 
 ```console
+cd wp15/usecase-2.1
 rm -rf input output
 ```
 

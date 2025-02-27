@@ -49,6 +49,7 @@ The output data that is to be shared consists of folders and files that represen
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
+cd wp15/usecase-2.3
 mkdir output
 ```
 
@@ -78,7 +79,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.3
-apptainer build usecase-2.3.sif container.def
+apptainer build pipeline.sif pipeline.def
 cd ../..
 ```
 
@@ -106,8 +107,9 @@ matlab -batch "restoredefaultpath; addpath fieldtrip source; bidsapp input outpu
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.3.sif input output group
+cd wp15/usecase-2.3
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
 ```
 
 It may be neccessay to use the `--bind` option to map the external and internal directories with input and output data.
@@ -120,7 +122,7 @@ Cleaning up the input and output data is done using:
 source venv/bin/activate
 
 # drop all downloaded data
-cd input
+cd wp15/usecase-2.3/input
 datalad drop *
 cd ..
 

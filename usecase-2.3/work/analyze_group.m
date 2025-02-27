@@ -245,3 +245,34 @@ function analyze_group(inputprefix, outputprefix)
     cfg.filetype = 'html';
     cfg.filename = fullfile(grouppath, 'faces_cmb_vs_scrambled_cmb_clusterstat');
     ft_analysispipeline(cfg, faces_cmb_vs_scrambled_cmb_clusterstat);
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% get the average timecourse from the 10 "most significant" channels
+    %% in the famous versus unfamiliar contrast
+
+    masksum = sum(famous_cmb_vs_unfamiliar_cmb_diff.mask,2);
+    [count, indx] = sort(masksum, 'descend');
+
+    % take the 10 channels with largest number of significant timepoints
+    chansel = indx(1:10);
+    % start from the end to not mess up the order when removing elements
+    for i=10:-1:1
+      % remove channels that have no significant timepoints
+      % this is unlikely, but could happen
+      if count(i)<1
+        chansel(i) = [];
+      end
+    end
+    if ~isempty(chansel)
+      avgsel = mean(famous_cmb_vs_unfamiliar_cmb_diff.avg(chansel,:),1);
+    else
+      avgsel = nan(size(famous_cmb_vs_unfamiliar_cmb_diff.time));
+    end
+
+    result = table(1000*famous_cmb_vs_unfamiliar_cmb_diff.time', 1e15*avgsel', 'VariableNames', {'time (ms)', 'field (fT)'});
+
+    figure; plot(result{:,1}, result{:,2})
+    xlabel(result.Properties.VariableNames{1})
+    ylabel(result.Properties.VariableNames{2})
+
+    writetable(result, fullfile(grouppath,'results.tsv'), 'FileType','text', Delimiter='\t')

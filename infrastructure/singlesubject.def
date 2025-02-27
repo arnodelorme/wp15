@@ -12,6 +12,9 @@ Stage: final
 
         apptainer run singlesubject.sif <input> <output> <participant_nr>
 
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
+
 %environment
     export PIP_NO_CACHE_DIR=off
 
@@ -26,7 +29,7 @@ Stage: final
 
 %runscript
     PID=$(ls -d $1/sub-* | sed -n "${3}p" | xargs basename)
-    if [[ -z "$PID" ]]; then
+    if [ -z "$PID" ]; then
         echo "Error: No data found for participant_nr $3" >&2
         exit 1
     fi

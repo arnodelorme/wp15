@@ -1,6 +1,9 @@
 Bootstrap: docker
 From: julia:latest
 
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
+
 %files
   work/pipeline.jl /work/pipeline.jl
 

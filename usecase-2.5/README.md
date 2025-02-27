@@ -58,7 +58,7 @@ The input dataset has been released under the [CC0](https://spdx.org/licenses/CC
 The to-be-shared data in the output folder has the following directory structure:
 
 ```console
-|-- groupresults
+|-- group
 |   |-- DOTS_run-001
 |   |-- DOTS_run-002
 |   |-- Motion_run-001
@@ -70,6 +70,11 @@ The to-be-shared data in the output folder has the following directory structure
 Besides this, the output folder contains the per-subject intermediate (first-level) results. Those results are not to be shared and should not be on the whitelist
 
 The `whitelist.txt` file contains a complete list of the output data that is to be shared.
+
+```console
+cd wp15/usecase-2.5
+mkdir output
+```
 
 ## Analysis pipeline
 
@@ -99,7 +104,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.5
-apptainer build usecase-2.5.sif container.def
+apptainer build pipeline.sif pipeline.def
 ```
 
 ### Executing the pipeline
@@ -129,8 +134,9 @@ matlab -batch "cd wp15/usecase-2.5; restoredefaultpath; addpath work spm12 spm12
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output group
+cd wp15/usecase-2.5
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output participant
+apptainer run --env MLM_LICENSE_FILE=port@server pipeline.sif input output group
 ```
 
 ## Cleaning up
@@ -138,6 +144,7 @@ apptainer run --env MLM_LICENSE_FILE=port@server usecase-2.5.sif input output gr
 Cleaning up the input and output data is done using:
 
 ```console
+cd wp15/usecase-2.5
 rm -rf input output
 ```
 

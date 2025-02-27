@@ -7,13 +7,13 @@ function secondLevel_works(path_output, list_runs, list_subjects)
 matlabbatch = cell(3 + numel(list_subjects),1);
 
 % Define output directory for second-level results
-outputdir = fullfile(path_output, 'groupresults');
+outputdir = fullfile(path_output, 'group');
 if ~exist(outputdir, 'dir')
   mkdir(outputdir);
 end
 
 for r = 1:numel(list_runs)
-  outputdir = fullfile(path_output, 'groupresults', list_runs{r});
+  outputdir = fullfile(path_output, 'group', list_runs{r});
   if ~exist(outputdir, 'dir')
     mkdir(outputdir);
   end

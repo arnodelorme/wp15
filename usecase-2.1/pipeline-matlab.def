@@ -1,6 +1,9 @@
 BootStrap: docker
 From: ubuntu:24.04
 
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
+
 %files
   work/pipeline.m  /work/pipeline.m
 
