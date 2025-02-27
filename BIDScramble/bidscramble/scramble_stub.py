@@ -15,8 +15,7 @@ def scramble_stub(inputdir: str, outputdir: str, select: str, bidsvalidate: bool
 
     # Create placeholder output files for selected input files
     print(f"Creating BIDS stub data in: {outputdir}")
-    inputfiles = get_inputfiles(inputdir, select, '*', bidsvalidate)        # NB: this skips empty directories
-    inputdirs  = [folder for folder in inputdir.rglob('*') if re.fullmatch(select, str(folder.relative_to(inputdir))) and folder.is_dir()]
+    inputfiles, inputdirs = get_inputfiles(inputdir, select, '*', bidsvalidate)        # NB: this skips empty directories
     for inputitem in tqdm(inputdirs + inputfiles, unit='file', colour='green', leave=False):
         outputitem = outputdir/inputitem.relative_to(inputdir)
         tqdm.write(f"--> {outputitem}")

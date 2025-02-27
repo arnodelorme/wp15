@@ -7,9 +7,9 @@ name            = 'bidscramble'
 description     = 'Generates scrambled datasets that are organized according to the Brain Imaging Data Structure (BIDS)'
 version         = '0.0.3'
 readme          = 'README.md'
-requires-python = '>= 3.8'
+requires-python = '>= 3.9'
 authors         = [{email = 'm.zwiers@donders.ru.nl'}, {name = 'Marcel Zwiers'}]
-classifiers     = ['Programming Language :: Python :: 3.8',
+classifiers     = ['Programming Language :: Python :: 3.9',
                      'Operating System :: OS Independent',
                      'Intended Audience :: Science/Research']
 dependencies    = ['pandas',
@@ -29,6 +29,7 @@ repository      = 'https://github.com/SIESTA-eu/wp15'
 
 [project.scripts]
 scramble        = 'bidscramble.scramble:main'
+merge           = 'bidscramble.merge:main'
 
 [tool.pytest.ini_options]
 testpaths       = ['tests']
@@ -37,7 +38,7 @@ testpaths       = ['tests']
 legacy_tox_ini = """
 [tox]
 min_version     = 4.0
-envlist         = py38, py312
+envlist         = py39, py313
 
 [testenv]
 deps            = pytest

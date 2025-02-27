@@ -10,8 +10,8 @@
 # Optional arguments:
 #   -h,--help           Show this help and exit.
 #   --verbose           Enable verbose output.
-#   --start_idx <num>   Start index for participant selection.
-#   --stop_idx <num>    Stop index for participant selection.
+#   --start-idx <num>   Start index for participant selection.
+#   --stop-idx <num>    Stop index for participant selection.
 
 # This code is shared under the CC0 license
 #
@@ -66,55 +66,63 @@ function main(options)
         display(options)
     end
 
-    if haskey(options, "level") && options["level"] == "participant"
-        println("nothing to do at the participant level")
-        return
-    end
-
-    # Create the output directory and its parents if they don't exist
-    mkpath(options["outputdir"])
-
-    inputfile  = joinpath(options["inputdir"], "participants.tsv")
-    outputfile = joinpath(options["outputdir"], "results.tsv")
-
     # Read the participants.tsv file into a DataFrame
+    inputfile = joinpath(options["inputdir"], "participants.tsv")
     participants = CSV.read(inputfile, DataFrame; delim='\t', missingstring="n/a")
 
     if haskey(options, "verbose") && options["verbose"]
         println("data contains $(nrow(participants)) participants")
     end
 
-    # Select participants based on start_idx and stop_idx
-    if haskey(options, "stop_idx") && options["stop_idx"] > 0
-        participants = participants[1:options["stop_idx"], :]
+    # Select participants based on start-idx and stop-idx
+    if haskey(options, "stop-idx") && options["stop-idx"] > 0
+        participants = participants[1:options["stop-idx"], :]
     end
-    if haskey(options, "start_idx") && options["start_idx"] > 0
-        participants = participants[options["start_idx"]:end, :]
+    if haskey(options, "start-idx") && options["start-idx"] > 0
+        participants = participants[options["start-idx"]:end, :]
     end
 
     if haskey(options, "verbose") && options["verbose"]
         println("selected $(nrow(participants)) participants")
     end
 
-    # Compute averages
-    averagedAge    = mean(skipmissing(participants.age))
-    averagedHeight = mean(skipmissing(participants.Height))
-    averagedWeight = mean(skipmissing(participants.Weight))
+    # Create the output directory and its parents if they don't exist
+    mkpath(options["outputdir"])
 
-    # Put the results in a DataFrame
-    result = DataFrame(
-        averagedAge = [averagedAge],
-        averagedHeight = [averagedHeight],
-        averagedWeight = [averagedWeight]
-    )
+    if haskey(options, "level") && options["level"] == "participant"
+        println("nothing to do at the participant level, only creating participant-level output directories")
+        for participant in eachrow(participants)
+            participant_dir = joinpath(options["outputdir"], "$(participant.participant_id)")
+            mkpath(participant_dir)
+        end
 
-    if haskey(options, "verbose") && options["verbose"]
-        display(result)
-    end
+    elseif haskey(options, "level") && options["level"] == "group"
+        outputfile = joinpath(options["outputdir"], "group", "results.tsv")
 
-    # Write the results to a TSV file
-    CSV.write(outputfile, result; delim='\t', writeheader=false)
-end
+        # Create the group output directory and its parents if they don't exist
+        mkpath(joinpath(options["outputdir"], "group"))
+
+        # Compute averages
+        averagedAge    = mean(skipmissing(participants.age))
+        averagedHeight = mean(skipmissing(participants.Height))
+        averagedWeight = mean(skipmissing(participants.Weight))
+
+        # Put the results in a DataFrame
+        result = DataFrame(
+            averagedAge = [averagedAge],
+            averagedHeight = [averagedHeight],
+            averagedWeight = [averagedWeight]
+        )
+
+        if haskey(options, "verbose") && options["verbose"]
+            display(result)
+        end
+
+        # Write the results to a TSV file
+        CSV.write(outputfile, result; delim='\t', writeheader=false)
+    end # if level
+
+end # function
 
 ##########################################################################
 # execute the code if it is run as a script

@@ -11,7 +11,7 @@ The [input dataset](https://doi.org/10.18112/openneuro.ds003826.v3.0.1) contains
 Downloading the data with the [cli](https://docs.openneuro.org/packages/openneuro-cli.html) requires Node.js (version 18 or higher) to be installed. To install a specific (latest) version of Node.js you can [install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) and manage your node installation(s) from there:
 
 ```console
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 nvm install node    # "node" is an alias for the latest version
 ```
 
@@ -21,7 +21,7 @@ If your node installation is up-to-date and working then make sure you have an o
 npm install -g @openneuro/cli
 
 openneuro login
-openneuro download ds003826 input   # Choose snapshot 3.0.1
+openneuro download ds003826 -s 3.0.1 input
 ```
 
 Tip: Use e.g. Node.js version 21.7.3 if you get errors from the openneuro client
@@ -41,6 +41,7 @@ The output data consists of MRI QC parameters of each participant
 The `whitelist.txt` file contains a complete list of the output data that is to be shared. 
 
 ```console
+cd wp15/usecase-2.2
 mkdir output
 ```
 
@@ -57,6 +58,7 @@ The MRIQC software is licensed under [Apache-2.0](https://spdx.org/licenses/Apac
 Running the analysis pipeline requires a working [Apptainer installation](https://apptainer.org/docs/admin/main/installation.html#installation-on-linux) (version >= 2.5). Next the [MRIQC](https://mriqc.readthedocs.io/en/latest/) container needs to be downloaded:
 
 ```console
+cd wp15/usecase-2.2
 apptainer pull mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 ```
 
@@ -65,7 +67,7 @@ apptainer pull mriqc-24.0.0.sif docker://nipreps/mriqc:24.0.0
 Executing the pipeline from the Apptainer image is done like this:
 
 ```console
-mkdir output
+cd wp15/usecase-2.2
 apptainer run --cleanenv mriqc-24.0.0.sif input output participant
 apptainer run --cleanenv mriqc-24.0.0.sif input output group
 ```
@@ -75,6 +77,7 @@ apptainer run --cleanenv mriqc-24.0.0.sif input output group
 Cleaning up the input and output data is done using:
 
 ```console
+cd wp15/usecase-2.2
 rm -rf input output
 ```
 

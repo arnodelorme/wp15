@@ -20,7 +20,7 @@ def scramble_swap(inputdir: str, outputdir: str, select: str, grouping: list, bi
 
     # Swap all sets of inputfiles
     swapped    = []                 # Already swapped input files
-    inputfiles = get_inputfiles(inputdir, select, '*', bidsvalidate)
+    inputfiles, _ = get_inputfiles(inputdir, select, '*', bidsvalidate)
     for inputfile in tqdm(inputfiles, unit='file', colour='green', leave=False):
 
         if inputfile in swapped:

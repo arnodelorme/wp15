@@ -1,8 +1,11 @@
 BootStrap: docker
-From: python:3
+From: r-base
+
+%labels
+  org.opencontainers.image.source = "https://github.com/SIESTA-eu/wp15"
 
 %files
-  work/pipeline.py /work/pipeline.py
+  work/pipeline.R /work/pipeline.R
 
 %post
   ################################################################################
@@ -16,12 +19,13 @@ From: python:3
   ################################################################################
   # post installation of dependencies
   ################################################################################
-  pip install pandas
-  chmod +x /work/pipeline.py
+  R -e 'install.packages("optparse", dependencies=TRUE, repos="https://cloud.r-project.org")'
+  R -e 'install.packages("dplyr", dependencies=TRUE, repos="https://cloud.r-project.org")'
+  chmod +x /work/pipeline.R
 
 %environment
   export LC_ALL=C
 
 %runscript
   # this follows the BIDS apps specification, see https://doi.org/10.1371/journal.pcbi.1005209
-  python /work/pipeline.py "$@"
+  Rscript /work/pipeline.R "$@"

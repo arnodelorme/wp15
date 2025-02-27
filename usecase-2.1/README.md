@@ -21,6 +21,7 @@ wget https://s3.amazonaws.com/openneuro.org/ds004148/participants.json
 wget https://s3.amazonaws.com/openneuro.org/ds004148/dataset_description.json
 wget https://s3.amazonaws.com/openneuro.org/ds004148/README
 wget https://s3.amazonaws.com/openneuro.org/ds004148/CHANGES
+for SUBJ in `seq -w 60`; do mkdir sub-${SUBJ} ; done
 cd ..
 ```
 
@@ -67,7 +68,7 @@ Alternatively, you can install the software in an Apptainer container image.
 
 ```console
 cd wp15/usecase-2.1
-apptainer build container-r.sif container-r.def
+apptainer build pipeline.sif container-r.def
 ```
 
 ### Executing the R version of the pipeline
@@ -80,52 +81,22 @@ Rscript work/pipeline.R input output participant
 Rscript work/pipeline.R input output group
 ```
 
-Executing the pipeline from the R-based Apptainer image is done like this:
+Executing the pipeline from the Apptainer image is done like this:
 
 ```console
 cd wp15/usecase-2.1
-apptainer run container-r.sif input output participant
-apptainer run container-r.sif input output group
-```
-
-Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
-
-### Installation of the MATLAB version
-
-The MATLAB version of the pipeline only requires a recent MATLAB version and the work directory to be on the MATLAB path.
-
-Alternatively, you can install the software in an Apptainer container image.
-
-```console
-cd wp15/usecase-2.1
-apptainer build container-matlab.sif container-matlab.def
-```
-
-### Executing the MATLAB version of the pipeline
-
-Executing the pipeline from the Linux terminal is done like this:
-
-```console
-cd wp15/usecase-2.1
-matlab -batch "restoredefaultpath; addpath work; pipeline input output participant"
-matlab -batch "restoredefaultpath; addpath work; pipeline input output group"
-```
-
-Executing the pipeline from the MATLAB-based Apptainer image is done like this:
-
-```console
-cd wp15/usecase-2.1
-apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output participant
-apptainer run --env MLM_LICENSE_FILE=port@server container-matlab.sif input output group
+apptainer run pipeline.sif input output participant
+apptainer run pipeline.sif input output group
 ```
 
 Note that this specific analysis pipeline does not have any computations at the participant level, but the participant step is included for completeness.
 
 ## Cleaning up
 
-Cleaning up the input and output data can be done using:
+Cleaning up the input and output data is done using:
 
 ```console
+cd wp15/usecase-2.1
 rm -rf input output
 ```
 
@@ -136,9 +107,9 @@ As in SIESTA the data is assumed to be sensitive, the analysis is conceived to b
  A scrambled version of the data can be generated using [BIDScramble](https://github.com/SIESTA-eu/wp15/tree/main/BIDScramble).
 
 ```console
-scramble input scrambled stub
-scramble input scrambled tsv permute -s participants.tsv
-scramble input scrambled json -p '.*' -s participants.json
+scramble input output stub
+scramble input output tsv permute -s participants.tsv
+scramble input output json -p '.*' -s participants.json
 ```
 
 ## DatLeak
@@ -159,9 +130,11 @@ cd wp15/usecase-2.1
 python ../../DatLeak/DatLeak.py input/participants.tsv scrambled/participants.tsv -999 
 ```
 
-This will output a report containing the following:
+This will output a report with the percentage of rows with partial leakage, the percentage of rows with full leakage, the average matching cells per row, and the standard deviation of the matching cells per row.
 
-- Partial Leakage: The percentage of rows with partial leakage.
-- Full Leakage: The percentage of rows with full leakage.
-- Average Matching cells per row.
-- Standard Deviation of matching cells per row.
+```
+Partial Leakage: 18.33%
+Full Leakage: 81.67%
+Average Matching Cells per Row: 254.03
+Standard Deviation of Matching Cells per Row: 10.15
+```
