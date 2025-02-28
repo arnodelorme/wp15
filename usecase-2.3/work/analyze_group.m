@@ -251,12 +251,12 @@ function analyze_group(inputprefix, outputprefix)
     %% in the famous versus unfamiliar contrast
 
     masksum = sum(famous_cmb_vs_unfamiliar_cmb_diff.mask,2);
-    [count, indx] = sort(masksum, 'descend');
+    [count, index] = sort(masksum, 'descend');
 
     % take the 10 channels with largest number of significant timepoints
-    chansel = indx(1:10);
+    chansel = index(1:10);
     % start from the end to not mess up the order when removing elements
-    for i=10:-1:1
+    for i = 10:-1:1
       % remove channels that have no significant timepoints
       % this is unlikely, but could happen
       if count(i)<1
