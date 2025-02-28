@@ -8,7 +8,7 @@ from pathlib import Path
 from . import get_inputfiles
 
 
-def do_permute(data):
+def do_permute(data: np.ndarray) -> np.ndarray:
     # scramble the samples in each channel
     rng = np.random.default_rng()
     for channel in range(data.shape[0]):
@@ -17,8 +17,10 @@ def do_permute(data):
     return data
 
 
-def do_null(data):
-    return data*0
+def do_null(data: np.ndarray) -> np.ndarray:
+    data *= 0
+
+    return data
 
 
 def scramble_fif(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, method: str='null', dryrun: bool=False, **_):
