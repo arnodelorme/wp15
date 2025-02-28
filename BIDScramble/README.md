@@ -20,6 +20,7 @@ You can then install the BIDScramble tools using git and pip.
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git     # Or download the code yourself
 pip install wp15/BIDScramble                        # Or use an alternative installer
+pip install wp15/BIDScramble[fif]                   # Use this if you have fif data
 ```
 
 ## Usage
