@@ -10,6 +10,7 @@ def clearvalues(data: dict, preserve: str):
     for key, value in data.items():
         if isinstance(value, dict):
             clearvalues(value, preserve)
+            continue
         if re.fullmatch(preserve, str(key)):
             continue
         else:
