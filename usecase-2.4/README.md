@@ -111,7 +111,7 @@ cd wp15/usecase-2.4
 mkdir output
 ```
 
-### Checking the instalation
+### Checking the installation
 
 Once all is installed, it should look like this
 
