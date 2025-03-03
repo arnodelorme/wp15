@@ -20,8 +20,10 @@ dependencies    = ['pandas',
                    'bids-validator',
                    'tqdm',
                    'drmaa',
-                   'mne',
                    'brainvision']
+
+[project.optional-dependencies]
+fif             = ['mne']
 
 [project.urls]
 homepage        = 'https://github.com/SIESTA-eu/wp15'
@@ -38,9 +40,10 @@ testpaths       = ['tests']
 legacy_tox_ini = """
 [tox]
 min_version     = 4.0
-envlist         = py39, py313
+envlist         = py39, py310, py311, py312, py313
 
 [testenv]
+extras          = fif
 deps            = pytest
 commands        = pytest
 """

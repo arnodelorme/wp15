@@ -8,15 +8,12 @@ From: python:3
 %files
 
 %post
-  python3 -m venv /venv
-  . /venv/bin/activate
   pip install osfclient
 
 %environment
   export LC_ALL=C
 
 %runscript
-  . /venv/bin/activate
 
   echo Downloading from OSF to ${1}
   mkdir -p ${1} || exit

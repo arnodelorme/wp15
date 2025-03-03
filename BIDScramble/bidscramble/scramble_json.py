@@ -9,11 +9,11 @@ def clearvalues(data: dict, preserve: str):
 
     for key, value in data.items():
         if isinstance(value, dict):
-            clearvalues(value, preserve)
-        if re.fullmatch(preserve, str(key)):
-            continue
+            clearvalues(value, preserve)        # Recursively clear the dictionary
+        elif re.fullmatch(preserve, str(key)):
+            pass                                # Preserve the value
         else:
-            data[key] = type(value)()
+            data[key] = type(value)()           # Clear the value
 
 
 def scramble_json(inputdir: str, outputdir: str, select: str, bidsvalidate: bool, preserve: str='^$', dryrun: bool=False, **_):
