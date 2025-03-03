@@ -276,6 +276,9 @@ if strcmpi(AnalysisLevel,'1')
             [STUDY, ALLEEG] = pop_importbids(InputDataset, 'bidsevent','on','bidschanloc','on', ...
                 'bidstask',TaskLabel{t},'eventtype', 'value', 'outputdir' ,outdir, 'studyName',TaskLabel{t}, 'subjects', sublist);
         end
+        if length(ALLEEG) == 1
+            ALLEEG = eeg_checkset(ALLEEG, 'loaddata');
+        end
         ALLEEG = pop_select( ALLEEG, 'nochannel',{'HEOG_left','HEOG_right','VEOG_lower'});
         STUDY = pop_statparams(STUDY, 'default');
         [STUDY,~,AvgChanlocs] = std_prepare_neighbors(STUDY, ALLEEG, 'force', 'on');
@@ -619,6 +622,8 @@ if strcmpi(AnalysisLevel,'2')
             indir      = fullfile(InputDataset,TaskLabel{t});
         elseif contains(InputDataset,TaskLabel{t})
             indir     = InputDataset;
+        else
+            error('Enter the name of a folder containing the task name(s)')
         end
 
         if isfile(fullfile(indir,'AvgChanlocs.mat'))
