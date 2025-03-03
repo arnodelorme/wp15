@@ -9,7 +9,8 @@ from . import get_inputfiles
 
 
 def do_permute(data: np.ndarray) -> np.ndarray:
-    # scramble the samples in each channel
+    """scramble the samples in each channel"""
+
     rng = np.random.default_rng()
     for channel in range(data.shape[0]):
         data[channel] = rng.permutation(data[channel])

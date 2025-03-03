@@ -13,8 +13,7 @@ The input data consists of 1671 files with a combined size of 84.82GB and can be
 ```console
 python -m venv venv
 source venv/bin/activate
-python -m pip install datalad
-python -m pip install datalad-installer
+pip install datalad datalad-installer
 
 datalad-installer git-annex -m datalad/git-annex:release --install-dir venv
 mv venv/usr/lib/* venv/lib/.
