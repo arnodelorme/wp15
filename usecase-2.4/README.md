@@ -69,7 +69,7 @@ There are also a number of additional EEGLAB plugins/dependencies (bids-matlab-t
 
 ```console
 git clone https://github.com/SIESTA-eu/wp15.git
-cd wp15/usecase2.4
+cd wp15/usecase-2.4
 
 wget https://github.com/sccn/eeglab/archive/refs/tags/2024.2.1.zip
 unzip 2024.2.1.zip
