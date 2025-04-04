@@ -4,14 +4,17 @@ _This contains the draft end-user documentation for the medical imaging use case
 
 The 2nd use case in the SIESTA project is on medical imaging and restricts its focus to neuroimaging. In SIESTA it is dealt with in work package 15. Hence sometimes we refer to it as "wp15" and at other moments as "usecase-2".
 
-## Data
+## Anonymized, Scrambled or Synthetic Input Data
 
-In this work package we distinguish four types of data:
+In this work package we distinguish two types of input data:
 
-1. Source or input data. This type of data typically concerns original data that, alongside features of scienctific interest, contains a rich set of _indirect_ personal data (but no _direct_ personal data). When combined with other data sources, indirect personal data may allow for re-identification of direct personal data (such as a subject's name or birthdate), and hence makes the input data unfit for unrestricted public sharing.
+1. Source or input data. This type of data typically concerns original data that, alongside features of scientific interest, contains a rich set of _indirect_ personal data (but no _direct_ personal data). When combined with other data sources, indirect personal data may allow for re-identification of direct personal data (such as a subject's name or birthdate), and hence makes the input data unfit for unrestricted public sharing.
 2. Scrambled or synthetic data. This type of data is derived from the input data, such that the indirect personal features have been removed (to a varying degree) from the data, while the scientific features of interest are preserved sufficiently to allow implementing and testing an analysis pipeline.
-3. Results from the pipeline. The results of the pipeline applied to the scrambled data are available to the data user, but the results of the pipeline applied to the input data are not directly accessible.
-4. Differentially private output data. This type of data results from applying the pipeline to the input data and adding enough noise to be differentially private. This data no longer contains any direct or indirect personal data and is therefore always fit for sharing externally.
+
+## Output Data
+
+1. Results from the pipeline. The results of the pipeline applied to the scrambled data are available to the data user, but the results of the pipeline applied to the input data are not directly accessible.
+2. Differentially private output data. This type of data results from applying the pipeline to the input data and adding enough noise to be differentially private. This data no longer contains any direct or indirect personal data and is therefore always fit for sharing externally.
 
 ## User roles
 
