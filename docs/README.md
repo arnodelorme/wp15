@@ -4,6 +4,8 @@ _This contains the draft end-user documentation for the medical imaging use case
 
 The 2nd use case in the SIESTA project is on medical imaging and restricts its focus to neuroimaging. In SIESTA it is dealt with in work package 15. Hence sometimes we refer to it as "wp15" and at other moments as "usecase-2".
 
+The primary goal of WP15 focuses on enabling **developers to build analysis pipelines on privacy-preserving data** they have not directly seen. The workflow ensures sensitive input data remains protected, while still allowing meaningful pipeline development, execution, and sharing through controlled access.
+
 ## Anonymized, Scrambled or Synthetic Input Data
 
 In this work package we distinguish two types of input data:
